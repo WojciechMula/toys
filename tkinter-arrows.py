@@ -2,22 +2,34 @@
 
 from Tkinter import *
 
-root = Tk()
-canv = Canvas(root, background='white')
-canv.pack(fill=BOTH, expand=1)
+def set(*ignored):
+	canv.itemconfig(line, arrowshape=(d1.get(), d2.get(), d3.get()))
 
-dy = 20
-y  = dy
-for j in [0, 15]:
-	for i in xrange(5, 30, 5):
-		canv.create_line(10, y, 10+200, y,
-		     arrow=BOTH, arrowshape=(i, j, 8))
-		y += dy
+root  = Tk()
+frame = Frame(root)
+d1    = IntVar()
+d2    = IntVar()
+d3    = IntVar()
+d1.trace_variable('w', set)
+d2.trace_variable('w', set)
+d3.trace_variable('w', set)
 
-while True:
-	try:
-		root.mainloop()
-		break
-	except KeyboardInterrupt:
-		pass
-	
+m     = 50
+sd1   = Scale(frame, from_=-m, to=m, orient=HORIZONTAL, variable=d1)
+sd2   = Scale(frame, from_=-m, to=m, orient=HORIZONTAL, variable=d2)
+sd3   = Scale(frame, from_=0,  to=m, orient=HORIZONTAL, variable=d3)
+sd1.pack(fill=X, expand=1)
+sd2.pack(fill=X, expand=1)
+sd3.pack(fill=X, expand=1)
+
+
+canv  = Canvas(root, background='white')
+canv .pack(side=LEFT, fill=BOTH, expand=1)
+frame.pack(side=LEFT)
+
+line = canv.create_line(m, 2.5*m, m+200, 2.5*m, arrow=BOTH)
+
+d1.set(3)
+d2.set(8)
+d3.set(10)
+root.mainloop()
