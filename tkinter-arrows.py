@@ -18,14 +18,14 @@ m     = 50
 sd1   = Scale(frame, from_=-m, to=m, orient=HORIZONTAL, variable=d1)
 sd2   = Scale(frame, from_=-m, to=m, orient=HORIZONTAL, variable=d2)
 sd3   = Scale(frame, from_=0,  to=m, orient=HORIZONTAL, variable=d3)
-sd1.pack(fill=X, expand=1)
-sd2.pack(fill=X, expand=1)
-sd3.pack(fill=X, expand=1)
+sd1.pack(fill=X)
+sd2.pack(fill=X)
+sd3.pack(fill=X)
 
 
 canv  = Canvas(root, background='white')
-canv .pack(side=LEFT, fill=BOTH, expand=1)
-frame.pack(side=LEFT)
+canv .pack(side=LEFT, fill=BOTH)
+frame.pack(side=RIGHT, fill=X)
 
 line = canv.create_line(m, 2.5*m, m+200, 2.5*m, arrow=BOTH)
 
