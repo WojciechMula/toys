@@ -5,7 +5,6 @@ def tag_lower(self):
 	try:
 		item = canv.find_withtag('current')[0]
 		canv.tag_lower(item, 'all')
-		print canv.itemcget(item, 'outline')
 	except IndexError:
 		pass
 
