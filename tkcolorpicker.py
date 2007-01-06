@@ -1,4 +1,12 @@
+# -*- coding: iso-8859-2 -*-
+# Tkinter: Simple color picker
+# ============================
 #
+# Wojciech Mu³a
+# wojciech_mula@poczta.onet.pl
+# public domain
+#
+# last update: 4.12.2006
 
 import Tkinter
 from Tkconstants import *
@@ -40,7 +48,6 @@ class ColorPicker(Tkinter.Frame):
 		self.color = None
 		self.highlight_item(self.items[3])
 
-
 	def highlight_item(self, item):
 		color = self.canvas.itemcget(item, 'fill')
 		if color == self.color:
@@ -73,5 +80,12 @@ class ColorPicker(Tkinter.Frame):
 					(j+1)*dh + dy
 				)
 				c += 1
+
+########################################################################
+### Demo
+if __name__ == '__main__':
+	root = Tkinter.Tk()
+	ColorPicker(100, 100, root).pack()
+	root.mainloop()
 
 # vim: ts=4 sw=4
