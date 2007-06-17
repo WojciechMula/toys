@@ -1,3 +1,19 @@
+/*
+	$Date: 2007-06-17 21:41:45 $, $Revision: 1.4 $
+	
+	Grab tty as image (PNM)
+
+	License: public domain
+
+	compile:
+		gcc -O2 ttyscreenshot.c -o ttyscreenshot
+	
+	
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.mula.w.pl/
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
@@ -27,24 +43,23 @@ byte font[256][32];
 
 /* palette data */
 byte palette[16][3] = {
-	{   0,    0,    0}, /* black */
-	{   0,    0,  255}, /* blue */
-	{   0,  139,    0}, /* dark green */
-	{   0,  139,  139}, /* dark cyan */
-	{ 139,    0,    0}, /* dark red */
-	{ 139,    0,  139}, /* dark magenta */
-	{ 255,   64,   64}, /* brown */
-	{ 211,  211,  211}, /* light gray */
-	{ 169,  169,  169}, /* dark gray */
-	{ 173,  216,  230}, /* light blue */
-	{ 144,  238,  144}, /* light green */
-	{ 224,  255,  255}, /* light cyan */
-	{ 255,    0,    0}, /* light red */
-	{ 255,    0,  255}, /* light magenta */
-	{ 255,  255,    0}, /* yellow */
-	{ 255,  255,  255}  /* white */
+	{  0,   0,   0},
+	{170,   0,   0},
+	{  0, 170,   0},
+	{170,  85,   0},
+	{  0,   0, 170},
+	{170,   0, 170},
+	{  0, 170, 170},
+	{170, 170, 170},
+	{ 85,  85,  85},
+	{255,  85,  85},
+	{ 85, 255,  85},
+	{255, 255,  85},
+	{ 85,  85, 255},
+	{255,  85, 255},
+	{ 85, 255, 255},
+	{255, 255, 255}
 };
-
 
 
 void usage() {
@@ -59,7 +74,9 @@ void usage() {
 		"9 pixels is a default width use by EGA/VGA cards,\n"
 		"8 pixels isn't.\n"
 		"\n"
-		"You need permissions to read /dev/vcsa[console-num] device",
+		"You need permissions to read /dev/vcsa[console-num] device.\n"
+		"\n"
+		"Author: Wojciech Mu³a, http://www.mula.w.pl/\n",
 		
 		stderr
 	);
@@ -105,7 +122,12 @@ int main(int argv, char* argc[]) {
 	ioctl(fd, GIO_FONTX, &dsc); ordie("ioctl(GIO_FONTX)");
 
 	/* 3. Load palette */
-	ioctl(fd, GIO_CMAP, &palette); ordie("ioctl(GIO_CMAP)");
+	ioctl(fd, GIO_CMAP, &palette);
+	if (errno) {
+		fprintf(stderr, "Can't load palette, using defaults.  Reason [errno=%d]: %s\n", errno, strerror(errno));
+		errno = 0;
+	}
+		
 	close(fd); ordie("close(tty)");
 
 	/* 4. Get dimensions of console */
@@ -159,7 +181,8 @@ int main(int argv, char* argc[]) {
 					back = attr >> 4;
 					
 					expandbits(font[c][y], fore, back);
-					
+				
+					/* repeat last column of some characters */
 					if (c >= 0xbf && c <= 0xdf && (font[c][y] & 0x01))
 						fwrite(&palette[fore][0], 3, 1, stdout);
 					else
