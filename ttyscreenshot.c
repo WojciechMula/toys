@@ -21,18 +21,8 @@ void ordie(char* info) {
 	}
 }
 
-void get_EGA_font(unsigned char font[256][32]) {
-	struct consolefontdesc dsc;
-	int tty = open("/dev/tty", O_RDWR); ordie("open");
-	
-	dsc.charcount	= 256;
-	dsc.charheight	= 16;
-	dsc.chardata	= (void*)font;
-	ioctl(tty, GIO_FONTX, &dsc); ordie("ioctl(GIO_FONTX)");
-	close(tty); ordie("close");
-}
-
 typedef unsigned char byte;
+typedef unsigned short int word;
 
 byte font[256][32];
 
@@ -55,33 +45,39 @@ byte palette[16][3] = {
 	{ 255,  255,  255}  // white
 };
 
+void get_EGA_font(unsigned char font[256][32]) {
+	struct consolefontdesc dsc;
+	int tty = open("/dev/tty", O_RDWR); ordie("open");
+	int i;
+	
+	dsc.charcount	= 256;
+	dsc.charheight	= 16;
+	dsc.chardata	= (void*)font;
+	ioctl(tty, GIO_FONTX, &dsc); ordie("ioctl(GIO_FONTX)");
+
+	ioctl(tty, GIO_CMAP, &palette); ordie("ioctl(GIO_CMAP)");
+	close(tty); ordie("close");
+}
+
+
+byte swapbits(byte b) {
+	// input:  8-bit number (bits order in a nibble: 3,2,1,0)
+	// output: 8-bit number (bits order in a nibble: 3,0,1,2)
+	return (b & 0xaa) | ((b & 0x44) >> 2) | ((b & 0x11) << 2);
+}
+
+
 void expand8(byte b, byte fore, byte back) {
 	byte mask = 0x80;
-	byte i;
-
 	while (mask) {
 		if (b & mask)
-			for (i=0; i<3; i++)
-				putchar(palette[fore][i]);
+			fwrite(&palette[fore][0], 3, 1, stdout);
 		else
-			for (i=0; i<3; i++)
-				putchar(palette[back][i]);
+			fwrite(&palette[back][0], 3, 1, stdout);
 		mask >>= 1;
 	}
 }
 
-void expand9(byte b, char repeat, byte fore, byte back) {
-	byte i;
-
-	expand8(b, fore, back);
-
-	if (repeat && (b & 0x80))
-		for (i=0; i<3; i++)
-			putchar(palette[fore][i]);
-	else
-		for (i=0; i<3; i++)
-			putchar(palette[back][i]);
-}
 
 void usage() {
 	puts("usage...");
@@ -90,57 +86,83 @@ void usage() {
 
 
 int main(int argv, char* argc[]) {
-	get_EGA_font(font);
-	FILE* vcsa;
-	unsigned int lines, columns;
-	unsigned int col, line, y, c, attr;
+	int vcsa;
+	byte lines, columns, c, attr, fore, back;
+	
+	unsigned int col, line, y;
 	int cw, term;
 	char path[PATH_MAX];
+	byte* char_row;
+	
+	get_EGA_font(font);
+	int i;
 
 	if (argv < 3)
 		usage();
 
 	cw = atof(argc[1]);
-	if (cw != 8 && cw != 9) {
+	if (cw != 8 && cw != 9)
 		usage();
-	}
 
 	term = atof(argc[2]);
 	snprintf(path, PATH_MAX, "/dev/vcsa%d", term);
-	vcsa = fopen(path, "r"); ordie("fopen");
+	vcsa = open(path, O_RDWR); ordie("open");
 
-	lines   = getc(vcsa);
-	columns = getc(vcsa);
+	read(vcsa, &lines, 1);   ordie("read(lines)");
+	read(vcsa, &columns, 1); ordie("read(columns)");
 
+	char_row = (byte*)malloc(columns*2); ordie("malloc");
+	if (char_row == NULL) {
+		errno=1;
+		ordie("malloc");
+	}
+	
 	printf("P6\n%d %d\n255\n", columns*cw, lines*16);
+
+	lseek(vcsa, 4, SEEK_SET);
 
 	if (cw == 8)
 		for (line=0; line < lines; line++) {
+			read(vcsa, char_row, columns*2);
+			for (col=1; col < columns*2; col+=2) 
+				char_row[col] = swapbits(char_row[col]);
+
 			for (y=0; y < 16; y++) {
-				fseek(vcsa, 4 + line*columns*2, SEEK_SET);
-				for (col=0; col < columns; col++) {
-					c = getc(vcsa);
-					attr = getc(vcsa);
-					expand8(font[c][y], attr & 0x0f, (attr >> 4) & 0x07);
+				for (col=0; col < columns*2; col+=2) {
+					c = char_row[col];
+					attr = char_row[col+1];
+
+					fore = attr & 0x0f;
+					back = attr >> 4;
+					expand8(font[c][y], fore, back);
 				}
 			}
 		}
 	else
 		for (line=0; line < lines; line++) {
+			read(vcsa, char_row, columns*2);
+			for (col=1; col < columns*2; col+=2) 
+				char_row[col] = swapbits(char_row[col]);
+
 			for (y=0; y < 16; y++) {
-				fseek(vcsa, 4 + line*columns*2, SEEK_SET);
-				for (col=0; col < columns; col++) {
-					c = getc(vcsa);
-					attr = getc(vcsa);
-					if ((c > 0xbf) && (c <= 0xdf))
-						expand9(font[c][y], 1, attr & 0x0f, (attr >> 4) & 0x07);
+				for (col=0; col < columns*2; col+=2) {
+					c = char_row[col];
+					attr = char_row[col+1];
+					
+					fore = attr & 0x0f;
+					back = attr >> 4;
+					
+					expand8(font[c][y], fore, back);
+					
+					if (c >= 0xbf && c <= 0xdf && (font[c][y] & 0x01))
+						fwrite(&palette[fore][0], 3, 1, stdout);
 					else
-						expand9(font[c][y], 0, attr & 0x0f, (attr >> 4) & 0x07);
+						fwrite(&palette[back][0], 3, 1, stdout);
 				}
 			}
 		}
 
-	fclose(vcsa);
+	close(vcsa);
 	return 0;
 }
 
