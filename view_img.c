@@ -1,4 +1,6 @@
 /* 
+ * $Date: 2007-06-20 10:31:50 $ $Revision: 1.2 $
+ *
  * This simple program display b/w image (128x256 pixels)
  * on Linux terminal run on EGA/VGA video card.
  *
@@ -48,6 +50,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -109,7 +112,7 @@ void setcell(int x, int y) {
 int main(int argc, char* argv[]) {
 	struct consolefontdesc dsc;
 	int tty;
-	int x, y, k;
+	int x, y;
 	unsigned int ucs2;
 	unsigned char b;
 	char root = false;
@@ -157,17 +160,17 @@ int main(int argc, char* argv[]) {
     	printf("\033%%@"); /* turn off UTF-8 */
 
 	/* save original font */
-	dsc.chardata = font_sav;
+	dsc.chardata = (void*)font_sav;
 	ioctl(tty, GIO_FONTX, &dsc); ordie("GIO_FONTX");
 	/* set new font -- our image */
-	dsc.chardata = font;
+	dsc.chardata = (void*)font;
 	ioctl(tty, PIO_FONTX, &dsc); ordie("PIO_FONTX");
 
 	/* wait for user */
 	getchar();
 	
 	/* restore original font */
-	dsc.chardata = font_sav;
+	dsc.chardata = (void*)font_sav;
 	ioctl(tty, PIO_FONTX, &dsc); ordie("PIO_FONTX (2)");
 	
 	close(tty); ordie("close");
