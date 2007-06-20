@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-06-17 21:41:45 $, $Revision: 1.4 $
+	$Date: 2007-06-20 18:25:15 $, $Revision: 1.5 $
 	
 	Grab tty as image (PNM)
 
@@ -16,6 +16,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <limits.h>
 #include <errno.h>
 #include <string.h>
@@ -29,20 +30,19 @@
 #include <sys/kd.h>
 
 extern int errno;
-typedef unsigned char byte;
 
 /* aux functions */
-byte swapbits(byte b);
-void expandbits(byte b, byte fore, byte back);
+uint8_t swapbits(uint8_t b);
+void expandbits(uint8_t b, uint8_t fore, uint8_t back);
 void die(char*);
 void ordie(char*);
 
 
 /* font data */
-byte font[256][32];
+uint8_t font[256][32];
 
 /* palette data */
-byte palette[16][3] = {
+uint8_t palette[16][3] = {
 	{  0,   0,   0},
 	{170,   0,   0},
 	{  0, 170,   0},
@@ -91,12 +91,12 @@ int main(int argv, char* argc[]) {
 	char path[PATH_MAX];
 	
 	int  char_width, console_num;	/* program arguments */
-	byte lines, columns;			/* dimensions of console */
+	uint8_t lines, columns;			/* dimensions of console */
 
 	/* aux vars: */
-	byte c, attr, fore, back;
+	uint8_t c, attr, fore, back;
 	int  col, line, y;
-	byte* char_row;
+	uint8_t* char_row;
 
 
 	/* 1. Parse program arguments */
@@ -138,7 +138,7 @@ int main(int argv, char* argc[]) {
 	read(fd, &columns, 1); ordie("read(columns)");
 
 	/* 5. Allocate cache memory for a chars row */
-	char_row = (byte*)malloc(columns*2);
+	char_row = (uint8_t*)malloc(columns*2);
 	if (char_row == NULL)
 		die("malloc failed");
 	
@@ -197,15 +197,15 @@ int main(int argv, char* argc[]) {
 }
 
 
-byte swapbits(byte b) {
+uint8_t swapbits(uint8_t b) {
 	/* input:  8-bit number (bits order in a nibble: 3,2,1,0) */
 	/* output: 8-bit number (bits order in a nibble: 3,0,1,2) */
 	return (b & 0xaa) | ((b & 0x44) >> 2) | ((b & 0x11) << 2);
 }
 
 
-void expandbits(byte b, byte fore, byte back) {
-	byte mask = 0x80;
+void expandbits(uint8_t b, uint8_t fore, uint8_t back) {
+	uint8_t mask = 0x80;
 	while (mask) {
 		if (b & mask)
 			fwrite(&palette[fore][0], 3, 1, stdout);
