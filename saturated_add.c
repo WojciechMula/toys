@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-06-29 23:11:55 $, $Revision: 1.2 $
+	$Date: 2007-06-30 00:00:09 $, $Revision: 1.3 $
 
 	Demo program use to test/profile asm routines
 	that perform saturated add of two 16bpp images.
@@ -36,6 +36,7 @@ void usage(FILE* file) {
 "\n"
 "a. progname test mmx|x86 times\n"
 "b. progname view mmx|x86 filename.ppm\n"
+"c. progname help\n"
 "\n"
 "a. Run procedure x86 or MMX optimized that perform saturated\n"
 "   addition as many times as user want. Useful for profiling.\n"
