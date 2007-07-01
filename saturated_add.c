@@ -1,14 +1,14 @@
 /*
-	$Date: 2007-06-30 00:00:09 $, $Revision: 1.3 $
+	$Date: 2007-07-01 23:21:09 $, $Revision: 1.4 $
 
-	Demo program use to test/profile asm routines
-	that perform saturated add of two 16bpp images.
-	Algorithms were described on my webpage (polish
-	text) http://www.mula.w.pl/artices/saturared_add.html
+	+    1    +    2    +    3    +    4    +    5    +    6    +     7   +
+	01234567890123456789012345678901234567890123456789012345678901234567890
+	Demo program use to test/profile asm routines that perform saturated
+	add of two 16bpp images.	Algorithms were described on my webpage (polish
+	text) http://www.mula.w.pl/artices/saturared_add.html.
 
-	load_ppm.c is also availlable on my site:
-	http://www.mula.w.pl/snippets/load_ppm.c
-	(no headers!).
+	Additional files aer required: load_ppm.c, load_ppm.h, Xscr.c, Xscr.h;
+	avaiable on my site: http://www.mula.w.pl/snippets/index.html.
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -27,6 +27,7 @@
 #include <X11/Xlib.h>
 
 #include "load_ppm.c"
+#include "Xscr.c"
 
 void usage(FILE* file) {
 	const char* usage =
@@ -165,70 +166,75 @@ uint16_t image1[480][640];
 uint16_t image2[480][640];
 uint16_t image3[480][640];
 
-/* X-Window local variables ****************************/
-Display	*display;  // display
-int	screen;    // main screen
-Window	window;
-GC      defaultGC; // graphics context
-
-int init_graphics() {
-//	XSetWindowAttributes wa;
-
-	// try open defult display
-	display = XOpenDisplay(NULL);
-	if (!display)
-		die("Can't open display.");
-	
-	screen = DefaultScreen(display);
-	if (DefaultDepth(display, screen) != 16)
-		die("This program needs depth 16bpp, your screen is %dbpp", DefaultDepth(display, screen));
-
-	window = XCreateSimpleWindow( // make a simple window
-		display, 
-		RootWindow(display, screen),
-		0, 0,
-		640, 480,
-		1,
-		BlackPixel(display, screen),
-		WhitePixel(display, screen)
-		);
-
-//	wa.backing_store = Always;
-//	XChangeWindowAttributes(display, window, CWBackingStore, &wa);
-
-	XMapWindow(display, window); // show it on the screen
-
-	// setup graphics context
-	defaultGC = XCreateGC(display, window, 0, 0);
-	XSetForeground(display, defaultGC, BlackPixel(display, screen) );
-	XSetBackground(display, defaultGC, WhitePixel(display, screen) );
-
-	XFlush(display); // send command to the X-server
-	return 1;
-}
 
 char* short_help =
-	"a, <Enter> - add image2 to image1\n"
+	"a, <Enter>, <Space> - add image2 to image1\n"
 	"r    - reset image1 (use original image)\n"
 	"\n"
 	"i    - set image2 to original image \n"
 	"c    - set image2 to const value (R=1, G=2, B=1)\n"
 	"\n"
-	"m    - use MMX procedure\n"
-	"x    - use x86 procedure\n"
-	"\n"
 	"?, h - this help\n"
 	"q    - quit\n";
+
+char MMX;
+
+void keyboard(int x, int y, Time t, KeySym c, State s, unsigned int state) {
+	if (s == Released)
+		return;
+
+
+	switch (c) {
+		case XK_question:
+		case XK_h:
+		case XK_H:
+			puts(short_help);
+			break;
+
+		case XK_r:
+		case XK_R:
+			memcpy( (void*)&image1[0][0], (void*)&image3[0][0], 640*480*2);
+			Xscr_redraw_now();
+			break;
+
+		case XK_i:
+		case XK_I:
+			memcpy( (void*)&image2[0][0], (void*)&image3[0][0], 640*480*2);
+			break;
+
+		case XK_c:
+		case XK_C:
+			for (y=0; y < 480; y++)
+				for (x=0; x < 640; x++)
+					image2[y][x] = 0x0841;
+			break;
+
+		case XK_a:
+		case XK_A:
+		case XK_Return:
+		case XK_space:
+			if (MMX)
+				MMX_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
+			else
+				x86_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
+			Xscr_redraw();
+			break;
+
+		case XK_q:
+		case XK_Q:
+			Xscr_quit();
+			break;
+	}
+}
 
 
 int main(int argc, char* argv[]) {
 	int times, result, c, x, y;
 	uint16_t R, G, B;
 	int img_width, img_height, img_bits;
-	char MMX, update, quit;
+	char update, quit;
 	char ans[256];
 	uint8_t *img, *pix;
-	XImage* image;
 
 	FILE* file;
 
@@ -268,111 +274,36 @@ int main(int argc, char* argv[]) {
 		file = fopen(argv[3], "rb");
 		if (!file)
 			die("Can't read %s", argv[3]);
-		result = load_ppm(file, &img_width, &img_height, &img_bits, &img);
+		result = ppm_load_16bpp(file, &img_width, &img_height, &img_bits, &img, 0);
 		fclose(file);
 
 		if (result < 0)
-			die("PPM file error: %s", PPM_errmsg[-result]);
+			die("PPM file error: %s", PPM_errormsg[-result]);
 		if (img_width != 640 || img_height != 480)
 			die("Wrong dimensions of image: %dx%d, required 640x480",
 			    img_width, img_height);
 		if (img_bits != 255)
 			die("PPM max value is %d, required 255", img_bits);
 
-	
-		pix = &img[0];
-		for (y=0; y < 480; y++)
-			for (x=0; x < 640; x++) {
-				R = (*pix++) >> 3;
-				G = (*pix++) >> 2;
-				B = (*pix++) >> 3;
-				image1[y][x] = (R << 11) | (G << 5) | B;
-			}
-
+		memcpy( (void*)&image1[0][0], (void*)img, 640*480*2);
+		memcpy( (void*)&image2[0][0], (void*)img, 640*480*2);
+		memcpy( (void*)&image3[0][0], (void*)img, 640*480*2);
 		free(img);
-		memcpy( (void*)&image2[0][0], (void*)&image1[0][0], 640*480*2);
-		memcpy( (void*)&image3[0][0], (void*)&image1[0][0], 640*480*2);
 
-		if (!init_graphics())
-			die("Can't open display");
 	
-		image = XCreateImage(display, DefaultVisual(display, screen),
-			16, ZPixmap, 0, (char*)&image1[0][0],
-			640, 480, 16, 0);
-		
 		puts(short_help);
-		update = 1;
-		quit   = 0;
-		while (!quit) {
-			if (update) {
-				XPutImage(display, window, DefaultGC(display, screen),
-				          image, 0, 0, 0, 0, 640, 480);
-				XSync(display, 1);
-				update = 0;
-			}
-			
-			fprintf(stdout, "> ");
-			fflush(stdout);
-			fgets(ans, sizeof(ans), stdin);
-		
-			c = (strlen(ans) <= 2) ? ans[0] : 0;
-			switch (c) {
-				case '?':
-				case 'h':
-				case 'H':
-					puts(short_help);
-					break;
+		result = Xscr_mainloop(
+			640, 480, DEPTH_16bpp, (uint8_t*)&image1[0][0], false,
+			keyboard, NULL, NULL,
+			"Saturated add of 16bpp pixels"
+		);
 
-				case 'm':
-				case 'M':
-					puts("Use MMX routine");
-					MMX = 1;
-					break;
-				
-				case 'x':
-				case 'X':
-					puts("Use x86 routine");
-					MMX = 0;
-					break;
-
-				case 'r':
-				case 'R':
-					memcpy( (void*)&image1[0][0], (void*)&image3[0][0], 640*480*2);
-					update = 1;
-					break;
-
-				case 'i':
-				case 'I':
-					memcpy( (void*)&image2[0][0], (void*)&image3[0][0], 640*480*2);
-					break;
-
-				case 'c':
-				case 'C':
-					for (y=0; y < 480; y++)
-						for (x=0; x < 640; x++)
-							image2[y][x] = 0x0841;
-					break;
-
-				case 'a':
-				case 'A':
-				case '\n':
-					if (MMX)
-						MMX_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
-					else
-						x86_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
-					update = 1;
-					break;
-
-				case 'q':
-				case 'Q':
-					quit = 1;
-					break;
-			}
+		if (result < 0) {
+			printf("Xscr error: %s\n", Xscr_errormsg[-result]);
+			return 1;
 		}
-		fputc('\n', stdout);
-
-		XCloseDisplay(display);
-		return 0;
+		else
+			return 0;
 	}
 
 	usage(stdout);
