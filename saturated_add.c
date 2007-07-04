@@ -1,14 +1,16 @@
 /*
-	$Date: 2007-07-01 23:21:09 $, $Revision: 1.4 $
+	$Date: 2007-07-04 22:14:57 $, $Revision: 1.5 $
 
-	+    1    +    2    +    3    +    4    +    5    +    6    +     7   +
-	01234567890123456789012345678901234567890123456789012345678901234567890
 	Demo program use to test/profile asm routines that perform saturated
 	add of two 16bpp images.	Algorithms were described on my webpage (polish
 	text) http://www.mula.w.pl/artices/saturared_add.html.
 
-	Additional files aer required: load_ppm.c, load_ppm.h, Xscr.c, Xscr.h;
-	avaiable on my site: http://www.mula.w.pl/snippets/index.html.
+	Additional files are required if compiled with option -DUSE_Xscr:
+	* load_ppm.c, load_ppm.h (PPM files loader)
+	  http://www.mula.w.pl/snippets/index.html
+
+	* Xscr.c, Xscr.h ([simple] direct-screen abstraction for X Window)
+	  http://www.mula.w.pl/proj/index.html
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -24,10 +26,12 @@
 #include <stdarg.h>
 #include <string.h>
 #include <errno.h>
-#include <X11/Xlib.h>
 
-#include "load_ppm.c"
-#include "Xscr.c"
+//#define USE_Xscr
+#ifdef USE_Xscr
+#  include "load_ppm.h"
+#  include "Xscr.h"
+#endif
 
 void usage(FILE* file) {
 	const char* usage =
@@ -35,16 +39,21 @@ void usage(FILE* file) {
 "Saturated add of 16bpp images\n"
 "Author: Wojciech Mula, wojciech_mula@poczta.onet.pl\n"
 "\n"
-"a. progname test mmx|x86 times\n"
-"b. progname view mmx|x86 filename.ppm\n"
-"c. progname help\n"
+"a. progname help\n"
+"b. progname test mmx|x86 times\n"
+#ifdef USE_Xscr
+"c. progname view mmx|x86 filename.ppm\n"
+#endif
 "\n"
-"a. Run procedure x86 or MMX optimized that perform saturated\n"
+"b. Run procedure x86 or MMX optimized that perform saturated\n"
 "   addition as many times as user want. Useful for profiling.\n"
+#ifdef USE_Xscr
 "\n"
-"b. Perform saturated addition on given PPM (RGB, 640x480, 24bpp).\n"
+"c. Perform saturated addition on given PPM (RGB, 640x480, 24bpp).\n"
 "   Image is displayed in X-Window, user controls program through\n"
-"   commands entered in console.\n";
+"   commands entered in console.\n"
+#endif
+; // <- ";"
 
 	fputs(usage, file);
 }
@@ -162,11 +171,14 @@ extern int errno;
 void ordie(char* info, ...);
 void die(char* info, ...);
 
-uint16_t image1[480][640];
-uint16_t image2[480][640];
-uint16_t image3[480][640];
+#define SIZEX 640
+#define SIZEY 480
 
+uint16_t image1[SIZEY][SIZEX];
+uint16_t image2[SIZEY][SIZEX];
+uint16_t image3[SIZEY][SIZEX];
 
+#ifdef USE_Xscr
 char* short_help =
 	"a, <Enter>, <Space> - add image2 to image1\n"
 	"r    - reset image1 (use original image)\n"
@@ -179,7 +191,7 @@ char* short_help =
 
 char MMX;
 
-void keyboard(int x, int y, Time t, KeySym c, State s, unsigned int state) {
+void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int state) {
 	if (s == Released)
 		return;
 
@@ -193,19 +205,19 @@ void keyboard(int x, int y, Time t, KeySym c, State s, unsigned int state) {
 
 		case XK_r:
 		case XK_R:
-			memcpy( (void*)&image1[0][0], (void*)&image3[0][0], 640*480*2);
+			memcpy( (void*)&image1[0][0], (void*)&image3[0][0], SIZEX*SIZEY*2);
 			Xscr_redraw_now();
 			break;
 
 		case XK_i:
 		case XK_I:
-			memcpy( (void*)&image2[0][0], (void*)&image3[0][0], 640*480*2);
+			memcpy( (void*)&image2[0][0], (void*)&image3[0][0], SIZEX*SIZEY*2);
 			break;
 
 		case XK_c:
 		case XK_C:
-			for (y=0; y < 480; y++)
-				for (x=0; x < 640; x++)
+			for (y=0; y < SIZEY; y++)
+				for (x=0; x < SIZEX; x++)
 					image2[y][x] = 0x0841;
 			break;
 
@@ -214,9 +226,9 @@ void keyboard(int x, int y, Time t, KeySym c, State s, unsigned int state) {
 		case XK_Return:
 		case XK_space:
 			if (MMX)
-				MMX_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
+				MMX_saturated_add(&image1[0][0], &image2[0][0], SIZEX, SIZEY);
 			else
-				x86_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
+				x86_saturated_add(&image1[0][0], &image2[0][0], SIZEX, SIZEY);
 			Xscr_redraw();
 			break;
 
@@ -226,15 +238,12 @@ void keyboard(int x, int y, Time t, KeySym c, State s, unsigned int state) {
 			break;
 	}
 }
-
+#endif
 
 int main(int argc, char* argv[]) {
-	int times, result, c, x, y;
-	uint16_t R, G, B;
+	int times, result;
 	int img_width, img_height, img_bits;
-	char update, quit;
-	char ans[256];
-	uint8_t *img, *pix;
+	uint8_t *img;
 
 	FILE* file;
 
@@ -249,19 +258,20 @@ int main(int argc, char* argv[]) {
 	}
 	// progname test mmx|x86 times
 	if (strcasecmp(argv[1], "test") == 0 && argc == 4) {
-		int times;
 		times = atoi(argv[3]) > 0 ? atoi(argv[3]) : 1000;
 		if (strcasecmp(argv[2], "MMX") == 0) {
 			while (times--)
-				MMX_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
+				MMX_saturated_add(&image1[0][0], &image2[0][0], SIZEX, SIZEY);
 			return 0;
 		}
 		if (strcasecmp(argv[2], "x86") == 0) {
 			while (times--)
-				x86_saturated_add(&image1[0][0], &image2[0][0], 640, 480);
+				x86_saturated_add(&image1[0][0], &image2[0][0], SIZEX, SIZEY);
 			return 0;
 		}
 	}
+
+#ifdef USE_Xscr
 	// progname view mmx|x86 filename
 	if (strcasecmp(argv[1], "view") == 0 && argc == 4) {
 		if (strcasecmp(argv[2], "mmx") == 0) MMX = 1; else
@@ -279,21 +289,21 @@ int main(int argc, char* argv[]) {
 
 		if (result < 0)
 			die("PPM file error: %s", PPM_errormsg[-result]);
-		if (img_width != 640 || img_height != 480)
+		if (img_width != SIZEX || img_height != SIZEY)
 			die("Wrong dimensions of image: %dx%d, required 640x480",
 			    img_width, img_height);
 		if (img_bits != 255)
 			die("PPM max value is %d, required 255", img_bits);
 
-		memcpy( (void*)&image1[0][0], (void*)img, 640*480*2);
-		memcpy( (void*)&image2[0][0], (void*)img, 640*480*2);
-		memcpy( (void*)&image3[0][0], (void*)img, 640*480*2);
+		memcpy( (void*)&image1[0][0], (void*)img, SIZEX*SIZEY*2);
+		memcpy( (void*)&image2[0][0], (void*)img, SIZEX*SIZEY*2);
+		memcpy( (void*)&image3[0][0], (void*)img, SIZEX*SIZEY*2);
 		free(img);
 
 	
 		puts(short_help);
 		result = Xscr_mainloop(
-			640, 480, DEPTH_16bpp, (uint8_t*)&image1[0][0], false,
+			SIZEX, SIZEY, DEPTH_16bpp, False, (uint8_t*)&image1[0][0],
 			keyboard, NULL, NULL,
 			"Saturated add of 16bpp pixels"
 		);
@@ -305,6 +315,7 @@ int main(int argc, char* argv[]) {
 		else
 			return 0;
 	}
+#endif
 
 	usage(stdout);
 	return 0;
