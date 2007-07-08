@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -37,7 +38,7 @@ void x86blur_calc_gray_sums(
 	"   movb (%%esi), %%bl                    \n\t" // b = pix[0]
 	"   addl $1, %%esi                        \n\t"
 	"                                         \n\t"
-	".2:                                      \n\t"
+	"0:                                       \n\t"
 	"   movb (%%esi), %%cl                    \n\t" // c = pix[x+1]
 	"   addl %%ebx, %%eax                     \n\t" // a += b
 	"   addl $1, %%esi                        \n\t" // pix++;
@@ -49,11 +50,56 @@ void x86blur_calc_gray_sums(
 	"                                         \n\t"
 	"   addl $2, %%edi                        \n\t" // x++;
 	"   subl $1, %%edx                        \n\t"
-	"   jnz  .2                               \n\t"
+	"   jnz  0b                               \n\t"
 	
 	: /* no ouput */
 	: "S" (src_img), "D" (sum_tbl), "d" (width)
 	: "%eax", "%ebx", "%ecx", "memory"
+	);
+}
+
+void mmxblur_calc_gray_sums(
+	uint8_t  *src_img,
+	uint16_t *sum_tbl,
+	unsigned int width
+) {
+	asm(
+	"   pxor %%mm7, %%mm7                     \n\t"
+	"0:                                       \n\t"
+	"   movq 0(%%esi), %%mm0                  \n\t"
+	"   movq 1(%%esi), %%mm1                  \n\t"
+	"   movq 2(%%esi), %%mm2                  \n\t"
+	"                                         \n\t"
+	"   movq %%mm0, %%mm3                     \n\t"
+	"   movq %%mm1, %%mm4                     \n\t"
+	"   movq %%mm2, %%mm5                     \n\t"
+	"                                         \n\t"
+	"   punpcklbw %%mm7, %%mm0                \n\t"
+	"   punpcklbw %%mm7, %%mm1                \n\t"
+	"   punpcklbw %%mm7, %%mm2                \n\t"
+	"                                         \n\t"
+	"   punpckhbw %%mm7, %%mm3                \n\t"
+	"   punpckhbw %%mm7, %%mm4                \n\t"
+	"   punpckhbw %%mm7, %%mm5                \n\t"
+	"                                         \n\t"
+	"   paddw %%mm1, %%mm0                    \n\t"
+	"   paddw %%mm2, %%mm0                    \n\t"
+	"                                         \n\t"
+	"   paddw %%mm4, %%mm3                    \n\t"
+	"   paddw %%mm5, %%mm3                    \n\t"
+	"                                         \n\t"
+	"   movq %%mm0,  0(%%edi)                 \n\t"
+	"   movq %%mm3,  8(%%edi)                 \n\t"
+	"                                         \n\t"
+	"   addl $8,  %%esi                       \n\t"
+	"   addl $16, %%edi                       \n\t"
+	"                                         \n\t"
+	"   subl $1, %%ecx                        \n\t"
+	"   jnz  0b                               \n\t"
+	"                                         \n\t"
+	: /* no ouput */
+	: "S" (src_img), "D" (sum_tbl), "c" (width/8)
+	: "memory"
 	);
 }
 
@@ -70,9 +116,9 @@ void blur_gray_img(
 	int base = 8192;
 
 	memset((void*)&sums[0], 0x00, width*2);
-	x86blur_calc_gray_sums(src_img, &sums[4094], width);
+	mmxblur_calc_gray_sums(src_img, &sums[4094], width);
 	for (y=0; y < height-1; y++) {
-		x86blur_calc_gray_sums(src_img + (y+1)*width, &sums[base], width);
+		mmxblur_calc_gray_sums(src_img + (y+1)*width, &sums[base], width);
 		asm(
 		"                                         \n\t"
 		".L1:                                     \n\t"
@@ -192,13 +238,13 @@ void blur_32bpp_img(
 
 #include <stdio.h>
 #include <string.h>
-#include "Xscr.c"
-#include "load_ppm.c"
+#include "Xscr.h"
+#include "load_ppm.h"
 
 uint8_t *data;
 uint8_t *img;
 
-void keyboard(int x, int y, Time t, KeySym c, State s, unsigned int kb_mask) {
+void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int kb_mask) {
 	if (s == Released) return;
 
 	switch (c) {
@@ -236,7 +282,7 @@ int main(int argc, char* argv[]) {
 		printf("Can't open file %s\n", argv[1]);
 		return 1;
 	}
-	result = ppm_load_gray(f, &width, &height, &maxval, &data, 0);
+	result = ppm_load_gray(f, &width, &height, &maxval, &data, 0, Weigted);
 	fclose(f);
 	if (result < 0) {
 		printf("PPM error: %s\n", PPM_errormsg[-result]);
@@ -246,7 +292,7 @@ int main(int argc, char* argv[]) {
 	img = (uint8_t*)malloc(640*480);
 	memcpy((void*)img, (void*)data, 640*480);
 
-	result = Xscr_mainloop(640, 480, DEPTH_gray, data, False,
+	result = Xscr_mainloop(640, 480, DEPTH_gray, False,data, 
 		keyboard, NULL, NULL, "Blur demo");
 	if (result < 0) {
 		printf("Xscr error: %s\n", Xscr_errormsg[-result]);
