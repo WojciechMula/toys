@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-07-14 16:42:49 $, $Revision: 1.4 $
+	$Date: 2007-07-14 17:39:11 $, $Revision: 1.5 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -340,7 +340,7 @@ uint8_t *img;
 void Xhelp() {
 	puts(
 "b/space - blur image using current blur routine\n"
-"1 - select routine 1 (C languge reference implementation)\n"
+"1 - select routine 1 (C language reference implementation)\n"
 "2 - select routine 2 (assembler x86)\n"
 "3 - select routine 2 (assembler MMX)\n"
 "r - revert image\n"
