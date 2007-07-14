@@ -1,3 +1,28 @@
+/*
+	$Date: 2007-07-14 16:42:49 $, $Revision: 1.4 $
+	
+	Blur grayscale demo, including MMX implementation.
+
+	Algorithm used here is described on my website (polish only).
+	
+	In short words: this is simple (and well known) average
+	of 9 neighbour pixels.  However I've realized that
+	blurring adjacent pixels (and scanlines) require fewer
+	pixels fetches and fewer additions, because we can reuse
+	some pixels fetched in previous iterations and partial
+	sums calculated already.
+
+	Xscr and load_ppm libraries are available on my website, look
+	at http://www.mula.w.pl/snippets/ and http://www.mula.w.pl/proj/.
+
+
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.mula.w.pl
+	
+	License: public domain
+*/
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
