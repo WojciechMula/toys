@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-07-15 10:11:06 $, $Revision: 1.6 $
+	$Date: 2007-07-15 18:13:00 $, $Revision: 1.7 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -39,6 +39,7 @@ uint8_t divide_lookup[255*9 + 1]; // sum \in [0..9*255]
 void initialize_divide_lookup() {
 	unsigned int j, i;
 	for (i=0; i < sizeof(divide_lookup); i++)
+		// divide_lookup[i] = i/9;
 		divide_lookup[i] = (i * (65536/9) + (65536/9)) >> 16;
 }
 
@@ -346,6 +347,17 @@ uint8_t gray_border_color = 0x00;
 uint8_t *data;
 uint8_t *img;
 
+void die(char* info, ...) {
+	va_list ap;
+
+	va_start(ap, info);
+	vfprintf(stderr, info, ap);
+	fprintf(stderr, "\n");
+	va_end(ap);
+
+	exit(EXIT_FAILURE);
+}
+
 #ifdef USE_Xscr
 void Xhelp() {
 	puts(
@@ -426,31 +438,22 @@ void usage() {
 	);
 }
 
-void die(char* info, ...) {
-	va_list ap;
-
-	va_start(ap, info);
-	vfprintf(stderr, info, ap);
-	fprintf(stderr, "\n");
-	va_end(ap);
-
-	exit(EXIT_FAILURE);
-}
-
 int main(int argc, char* argv[]) {
 	FILE* f;
 	int width, height, maxval, result;
 	int count;
 
-#define keyword(string, index) (strcasecmp(argv[index], string) == 0)
+#define iskeyword(string, index) (strcasecmp(argv[index], string) == 0)
 
-	if (argc >= 2 && keyword("help", 1)) {
+	// progname help
+	if (argc >= 2 && iskeyword("help", 1)) {
 		usage();
 		return 0;
 	}
-	if (argc >= 4 && keyword("test", 1)) {
+	// progname test x86|mmx count
+	if (argc >= 4 && iskeyword("test", 1)) {
 		count = atoi(argv[3]) <= 0 ? 100 : atoi(argv[3]);
-		if (keyword("MMX", 2)) {
+		if (iskeyword("MMX", 2)) {
 			data = malloc(PIX_COUNT);
 			if (!data) die("No free memory");
 
@@ -462,7 +465,7 @@ int main(int argc, char* argv[]) {
 			return 0;
 		}
 		else
-		if (keyword("x86", 2)) {
+		if (iskeyword("x86", 2)) {
 			data = malloc(PIX_COUNT);
 			if (!data) die("No free memory");
 			
@@ -473,10 +476,16 @@ int main(int argc, char* argv[]) {
 			free(data);
 			return 0;
 		}
+		else {
+			usage();
+			return 1;
+		}
+
 	}
 #ifdef USE_Xscr
 	else
-	if (argc >= 3 && keyword("view", 1)) {
+	// progname view file_ppm_640x480
+	if (argc >= 3 && iskeyword("view", 1)) {
 		f = fopen(argv[2], "rb");
 		if (!f)
 			die("Can't open file %s\n", argv[2]);
