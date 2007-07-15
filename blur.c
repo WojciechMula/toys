@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-07-14 17:39:11 $, $Revision: 1.5 $
+	$Date: 2007-07-15 10:11:06 $, $Revision: 1.6 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -12,8 +12,9 @@
 	some pixels fetched in previous iterations and partial
 	sums calculated already.
 
-	Xscr and load_ppm libraries are available on my website, look
-	at http://www.mula.w.pl/snippets/ and http://www.mula.w.pl/proj/.
+	Define USE_Xscr symbol to compile interactive version.
+	Xscr and load_ppm [tiny] libraries are available on my website,
+	look at http://www.mula.w.pl/snippets/ and http://www.mula.w.pl/proj/.
 
 
 	Author: Wojciech Mu³a
@@ -326,8 +327,16 @@ define_blur_gray_img_fun(
 
 #include <stdio.h>
 #include <string.h>
-#include "Xscr.h"
-#include "load_ppm.h"
+#include <stdarg.h>
+
+#ifdef USE_Xscr
+#	include "Xscr.h"
+#	include "load_ppm.h"
+#endif
+
+#define IMG_WIDTH	640
+#define IMG_HEIGHT	480
+#define PIX_COUNT	(IMG_WIDTH*IMG_HEIGHT)
 
 typedef enum {C_lang, x86, MMX} Function;
 
@@ -337,6 +346,7 @@ uint8_t gray_border_color = 0x00;
 uint8_t *data;
 uint8_t *img;
 
+#ifdef USE_Xscr
 void Xhelp() {
 	puts(
 "b/space - blur image using current blur routine\n"
@@ -361,7 +371,7 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 
 		case XK_r:
 		case XK_R:
-			memcpy( (void*)data, (void*)img, 640*480);
+			memcpy( (void*)data, (void*)img, PIX_COUNT);
 			Xscr_redraw();
 			break;
 
@@ -382,13 +392,13 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 		case XK_B:
 			switch (current) {
 				case C_lang:
-					blur_gray_img(data, data, 640, 480, gray_border_color);
+					blur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
 					break;
 				case x86:
-					x86blur_gray_img(data, data, 640, 480, gray_border_color);
+					x86blur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
 					break;
 				case MMX:
-					mmxblur_gray_img(data, data, 640, 480, gray_border_color);
+					mmxblur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
 					break;
 			}
 				     
@@ -396,50 +406,118 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 			break;
 	}
 }
+#endif
 
+void usage() {
+	puts(
+"a. progname help\n"
+"b. progname test x86|mmx count\n"
+#ifdef USE_Xscr
+"c. progname view file_ppm_640x480\n"
+#endif
+"\n"
+"a. Print this help.\n"
+"b. Run x86 or mmx routine count times\n"
+#ifdef USE_Xscr
+"c. Display in X Window given file and blur using\n"
+"   selected routine.  See help message printed\n"
+"   on console for details.\n"
+#endif
+	);
+}
 
+void die(char* info, ...) {
+	va_list ap;
+
+	va_start(ap, info);
+	vfprintf(stderr, info, ap);
+	fprintf(stderr, "\n");
+	va_end(ap);
+
+	exit(EXIT_FAILURE);
+}
 
 int main(int argc, char* argv[]) {
 	FILE* f;
 	int width, height, maxval, result;
+	int count;
 
-	if (argc == 1) {
-		printf("usage: progname file.ppm\n");
-		return 1;
-	}
-	f = fopen(argv[1], "rb");
-	if (!f) {
-		printf("Can't open file %s\n", argv[1]);
-		return 1;
-	}
-	result = ppm_load_gray(f, &width, &height, &maxval, &data, 0, Weigted);
-	fclose(f);
-	if (result < 0) {
-		printf("PPM error: %s\n", PPM_errormsg[-result]);
-		return 1;
-	}
-	if (width != 640 || height != 480) {
-		printf("Image 640x480 required");
-		return 1;
-	}
-	img = (uint8_t*)malloc(640*480);
-	if (!img) {
-		printf("Can't allocate memory\n");
-		return 1;
-	}
-	memcpy((void*)img, (void*)data, 640*480);
+#define keyword(string, index) (strcasecmp(argv[index], string) == 0)
 
-	initialize_divide_lookup();
+	if (argc >= 2 && keyword("help", 1)) {
+		usage();
+		return 0;
+	}
+	if (argc >= 4 && keyword("test", 1)) {
+		count = atoi(argv[3]) <= 0 ? 100 : atoi(argv[3]);
+		if (keyword("MMX", 2)) {
+			data = malloc(PIX_COUNT);
+			if (!data) die("No free memory");
 
-	Xhelp();
-	result = Xscr_mainloop(640, 480, DEPTH_gray, False, data,
-		keyboard, NULL, NULL, "Blur grayscale images demo");
-	if (result < 0) {
-		printf("Xscr error: %s\n", Xscr_errormsg[-result]);
+			printf("repeat count: %d\n", count);
+			while (count--)
+				mmxblur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, 0x00);
+
+			free(data);
+			return 0;
+		}
+		else
+		if (keyword("x86", 2)) {
+			data = malloc(PIX_COUNT);
+			if (!data) die("No free memory");
+			
+			printf("repeat count: %d\n", count);
+			while (count--)
+				x86blur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, 0x00);
+
+			free(data);
+			return 0;
+		}
+	}
+#ifdef USE_Xscr
+	else
+	if (argc >= 3 && keyword("view", 1)) {
+		f = fopen(argv[2], "rb");
+		if (!f)
+			die("Can't open file %s\n", argv[2]);
+		
+		result = ppm_load_gray(f, &width, &height, &maxval, &data, 0, Weigted);
+		fclose(f);
+		if (result < 0)
+			die("PPM error: %s\n", PPM_errormsg[-result]);
+		
+		if (width != IMG_WIDTH || height != IMG_HEIGHT)
+			die("Image %dx%d required", IMG_WIDTH, IMG_HEIGHT);
+
+		img = (uint8_t*)malloc(PIX_COUNT);
+		if (!img)
+			die("No free memory");
+		
+		memcpy((void*)img, (void*)data, PIX_COUNT);
+
+		initialize_divide_lookup();
+
+		Xhelp();
+		result = Xscr_mainloop(
+			IMG_WIDTH,
+			IMG_HEIGHT,
+			DEPTH_gray,
+			False,
+			data,
+			keyboard, NULL, NULL,
+			"Blur grayscale images demo"
+		);
+		if (result < 0)
+			die("Xscr error: %s\n", Xscr_errormsg[-result]);
+		else
+			return 0;
+	}
+#endif
+	else {
+		// print usage
+		usage();
 		return 1;
 	}
-
-	return 0;
 }
 
 /*
