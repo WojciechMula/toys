@@ -19,7 +19,7 @@
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-02 16:50:54 $, $Revision: 1.6 $
+    $Date: 2007-09-02 21:02:32 $, $Revision: 1.7 $
 */
 
 
@@ -75,11 +75,11 @@ strcmp:
 
         pcmpistri $imm8, %xmm2, %xmm1
         # sample 1 (strings different):
-        #       xmm1 -> "string\0..."
-        #       xmm2 -> "strXng\0..."
+        #       xmm1 -> "string are diff"
+        #       xmm2 -> "strXng are equa"
         #
-        #       IntRes1 -> 000000001110111
-        #       IntRes2 -> 000000000001000 (negated valid)
+        #       IntRes1 -> 111011111110111b
+        #       IntRes2 -> 000100000001000b (negated valid)
         #       ECX     := bfs(IntRes2) = 3
         #       CF      := 1 (IntRes2 <> 0)
         #       ZF      := 0
@@ -88,9 +88,9 @@ strcmp:
         #       xmm1 -> "string\0..."
         #       xmm2 -> "string\0..."
         #
-        #       IntRes1 -> 000000001111111
-        #       IntRes2 -> 000000000000000 (negated valid)
-        #       ECX     := 16 (no bits in IntRes2)
+        #       IntRes1 -> 000000001111111b
+        #       IntRes2 -> 000000000000000b (negated valid)
+        #       ECX     := 16 (there isn't any bit set in IntRes2)
         #       CF      := 0 (IntRes2 == 0, no diffs)
         #       ZF      := 1 (EOS, i.e. null byte in xmm2)
 
@@ -194,6 +194,7 @@ strchr:
                SSESTR_FIRSTBIT
 
         movd    %eax, %xmm0     # xmm1 := string of length 1 contains char c
+        xor     %edx, %edx      # edx  := NULL
 
     L(mainloop):
         add $16, %esi
@@ -221,14 +222,9 @@ strchr:
         #       ZF      -> 1 (there is a null byte)
 
         ja L(mainloop)  # CF=0 and ZF=0 (no char, no null found)
-    
-        jc L(char_found)
-    L(null_found):
-        xor %eax, %eax  # eax := NULL
-        ret
-
-    L(char_found):
-        lea -16(%esi, %ecx), %eax # eax := char address
+   
+        lea -16(%esi, %ecx), %eax # eax := char address (valid if CF=1, i.e. char found)
+        cmovnc %edx, %eax         # eax := NULL (if CF=0)
         ret
 
 
@@ -333,7 +329,7 @@ is_sxdigit:
         #       mem   -> "10 x 1af7\0"
         #       xmm1  -> "09AZaz"
         #       
-        #                 .......7fa1 x 01 <- '.' - invalid
+        #                 .......7fa1 x 01 <- '.' = invalid
         #       IntRes1 = 0000000111100011b
         #       IntRes2 = 0000000000011100b (negated valid)
         #       CF      = 1 (IntRes2 <> 0)
@@ -353,7 +349,7 @@ is_sxdigit:
         #       mem   -> "5afffefff\0"
         #       xmm1  -> "09AZaz"
         #
-        #                 .......fffefffa51 <- '.' - invalid
+        #                 .......fffefffa51 <- '.' = invalid
         #       IntRes2 = 0000000111111111b
         #       IntRes2 = 0000000000000000b
         #       CF      = 0 (IntRes2 == 0)
@@ -404,7 +400,7 @@ strtolower:
         #       xmm2 -> "REAd SoME TEXt\0" (length 15)
         #       
         #       
-        #                   ..tEXT EMoS dAER   <- '.' - invalid
+        #                   ..tEXT EMoS dAER   <- '.' = invalid
         #       IntRest2 := 0001110110100111b
         #       xmm0     := |000000ff|ffff00ff|ff00ff00|00ffffff|
         #       CF       := 1 (IntRes2 <> 0)
@@ -435,4 +431,6 @@ strtolower:
                         .byte 0x20
                 .endr
 
-/* eof */
+/*
+   vim: et nowrap
+*/
