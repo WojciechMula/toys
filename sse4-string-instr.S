@@ -17,6 +17,7 @@
     Compile:
         gcc -c {other flgs} sse4-string-instr.S
 
+    $Date: 2007-09-02 15:45:49 $, $Revision: 1.3 $
 */
 
 
@@ -41,17 +42,19 @@
 #define SSESTR_FIRSTBIT         0               /* output selection */
 #define SSESTR_LASTBIT          0b1000000       /* for PCMPxSTRI */
 
+.text
+
 
 #undef L
 #define L(name) .L_a##name
 
-/* int strcmp(const char s1, const char* s2);
+/* int strcmp(const char* s1, const char* s2);
 
    inputs:
    - %esi -- s1
    - %edi -- s2
 
-   result
+   result:
    - %eax
  */
 strcmp:
@@ -109,14 +112,14 @@ strcmp:
 #undef L
 #define L(name) .L_b##name
 
-/* int strncmp(const char s1, const char* s2, size_t n);
+/* int strncmp(const char* s1, const char* s2, size_t n);
 
    inputs:
    - %esi -- s1
    - %edi -- s2
    - %eax -- n
 
-   result
+   result:
    - %eax
  */
 strncmp:
@@ -167,19 +170,19 @@ strncmp:
 #undef L
 #define L(name) .L_c##name
 
-/* char* strchr(const char s, int c);
+/* char* strchr(const char* s, int c);
+   
+   comment:
+     If c > 256 then one can search for up to four chars; for
+     example strchr(s, (int)'a' | ((int)'A' << 8) will
+     find 'a' case insensitive.  It is not C-function feature!
 
    inputs:
    - %esi -- s
    - %eax -- c
 
-   result
+   result:
    - %eax
-
-   comment:
-     If c > 256 then one can search for up to four chars; for
-     example strchr(s, (int)'a' | ((int)'A' << 8) will
-     find 'a' case insensitive.  It is not C-function feature!
  */
 strchr:
         imm8 = SSESTR_PACKED_UBYTE | \
@@ -230,19 +233,19 @@ strchr:
 #undef L
 #define L(name) .L_d##name
 
-/* char* strrchr(const char s, int c);
-
-   inputs:
-   - %esi -- s
-   - %eax -- c
-
-   result
-   - %eax
+/* char* strrchr(const char* s, int c);
 
    comment:
      If c > 256 then one can search for up to four chars; for
      example strrchr(s, (int)'a' | ((int)'A' << 8) will
      find 'a' case insensitive.  It is not C-function feature!
+
+   inputs:
+   - %esi -- s
+   - %eax -- c
+
+   result:
+   - %eax
  */
 strrchr:
         imm8 = SSESTR_PACKED_UBYTE | \
@@ -295,3 +298,131 @@ strrchr:
 
 #undef L
 #define L(name) .L_e##name
+/* int is_sxdigit(const char* s);
+
+   comment:
+     Function test if all chars from s matches [0-9A-Fa-f]
+     (sxdigit describe pattern).
+
+   inputs:
+   - %esi -- s
+
+   result:
+   - %eax (0 or 1)
+
+   destroy:
+   - %xmm0, %xmm1
+ */
+is_sxdigit:
+        imm8 = SSESTR_PACKED_UBYTE  | \
+               SSESTR_RANGES        | \
+               SSESTR_NEGATED_VALID | \
+               SSESTR_BITMASK
+
+        movaps  sxdigit, %xmm1
+    L(mainloop):
+        add     $16, %eax
+
+        # implict string length - test if all chars in range or EOS occured
+        pcmpistrm $imm8, -16(%eax), %xmm1
+        # sample 1 (not all chars match):
+        #       mem   -> "10 x 1af7\0"
+        #       xmm1  -> "09AZaz"
+        #       
+        #                 .......7fa1 x 01 <- '.' - invalid
+        #       IntRes1 = 0000000111100011b
+        #       IntRes2 = 0000000000011100b (negated valid)
+        #       CF      = 1 (IntRes2 <> 0)
+        #       ZF      = 1 (null in mem) 
+        #       
+        # sample 2 (all chars match, no null byte):
+        #       mem   -> "5afffefff00011fb"
+        #       xmm1  -> "09AZaz"
+        #
+        #                 bf11000fffefffa51
+        #       IntRes1 = 0000000000000000b
+        #       IntRes2 = 1111111111111111b (negated valid)
+        #       CF      = 0 (IntRes2 == 0)
+        #       ZF      = 0
+        #
+        # sample 3 (all chars match):
+        #       mem   -> "5afffefff\0"
+        #       xmm1  -> "09AZaz"
+        #
+        #                 .......fffefffa51 <- '.' - invalid
+        #       IntRes2 = 0000000111111111b
+        #       IntRes2 = 0000000000000000b
+        #       CF      = 0 (IntRes2 == 0)
+        #       ZF      = 1 (null byte in mem)
+
+        jnc     L(not_match)    # CF=1 -> not match
+        jnz     L(mainloop)     # ZF=1 -> null byte
+
+    L(end_of_string):
+        mov     $1,   %eax
+        mov     $0,   %edx
+        cmovc   %edx, %eax      # eax := CF ? 0 : 1
+        ret
+
+    L(not_match):
+        xor     %eax, %eax
+        ret
+
+
+#undef L
+#define L(name) .L_f##name
+/* void strtolower(const char* s);
+
+   comment:
+     Function change s, encoding of string is ASCII.
+
+   inputs:
+   - %esi -- s
+ */
+strtolower:
+        imm8 = SSESTR_PACKED_UBYTE  | \
+               SSESTR_RANGES        | \
+               SSESTR_UNCHANGED     | \
+               SSESTR_BYTEMASK
+
+        mov     $0x005a41, %eax         # 0x5a41 := 'AZ'
+        movd    %eax, %xmm1             # xmm1 -> range [A-Z]
+        movd    pb_0x20, %xmm3          # xmm3 := packed_byte(0x20)
+
+    L(mainloop):
+        movaps  (%eax), %xmm2
+        add     $16, %eax
+
+        # implict string length - make mask for chars [A-Z] or locate EOS
+        pcmpistrm $imm8, %xmm2, %xmm1
+        # sample: 
+        #       xmm2 -> "REAd SoME TEXt\0" (length 15)
+        #       
+        #       
+        #                   ..tEXT EMoS dAER   <- '.' - invalid
+        #       IntRest2 := 0001110110100111b
+        #       xmm0     := |000000ff|ffff00ff|ff00ff00|00ffffff|
+        #       CF       := 1 (IntRes2 <> 0)
+        #       ZF       := 1 (null byte in mem)
+
+        ja L(mainloop)    # CF=0 and ZF=0 (no update needed, no EOS)
+       
+    L(update):
+        pand %xmm3, %xmm0
+        #       xmm0     := |00000020|20200020|20002000|00202020|
+        pxor %xmm0, %xmm2 # reset 5th bit in big letters
+        #       xmm2 -> "read some text\0"
+        movups %xmm2, -16(%eax) # write back modified 
+        jnz L(mainloop)
+
+        ret
+
+
+
+.data
+        .align 16
+        sxdigit:
+                .byte '0','9','A','F','a','f', 0, 0
+                .word 0, 0, 0, 0, 0, 0
+
+/* eof */
