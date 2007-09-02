@@ -4,6 +4,8 @@
       * strncmp
       * strchr
       * strrchr
+      * is_sxdigit -- validate string
+      * strtolower -- change case of ASCII encoded string
 
     Warning: these function were not tested yet!
     However they **should** work fine.
@@ -15,9 +17,9 @@
     License: public domain
 
     Compile:
-        gcc -c {other flgs} sse4-string-instr.S
+        gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-02 15:45:49 $, $Revision: 1.3 $
+    $Date: 2007-09-02 16:20:58 $, $Revision: 1.4 $
 */
 
 
@@ -374,7 +376,12 @@ is_sxdigit:
 /* void strtolower(const char* s);
 
    comment:
-     Function change s, encoding of string is ASCII.
+     Function changes s; encoding of string is ASCII.
+     Intial value of %eax (see line marked with X)
+     determine function:
+     * 0x00005a41 ("AZ")    - to lower
+     * 0x00007a61 ("az")    - to upper
+     * 0x
 
    inputs:
    - %esi -- s
@@ -385,7 +392,7 @@ strtolower:
                SSESTR_UNCHANGED     | \
                SSESTR_BYTEMASK
 
-        mov     $0x005a41, %eax         # 0x5a41 := 'AZ'
+        mov     $0x00005a41, %eax       # 0x5a41 := 'AZ' (X)
         movd    %eax, %xmm1             # xmm1 -> range [A-Z]
         movd    pb_0x20, %xmm3          # xmm3 := packed_byte(0x20)
 
@@ -408,21 +415,26 @@ strtolower:
         ja L(mainloop)    # CF=0 and ZF=0 (no update needed, no EOS)
        
     L(update):
-        pand %xmm3, %xmm0
-        #       xmm0     := |00000020|20200020|20002000|00202020|
+        pand %xmm3, %xmm0 # xmm0 := |00000020|20200020|20002000|00202020|
         pxor %xmm0, %xmm2 # reset 5th bit in big letters
-        #       xmm2 -> "read some text\0"
-        movups %xmm2, -16(%eax) # write back modified 
+                          # xmm2 -> "read some text\0"
+        movups %xmm2, -16(%eax) # write back modified fragment
         jnz L(mainloop)
 
         ret
 
 
-
+
 .data
         .align 16
         sxdigit:
-                .byte '0','9','A','F','a','f', 0, 0
-                .word 0, 0, 0, 0, 0, 0
+                .byte '0','9','A','F','a','f'
+                .rept 10
+                        .byte 0
+                .endr
+        pb_0x20:
+                .rept 16
+                        .byte 0x20
+                .endr
 
 /* eof */
