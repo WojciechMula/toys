@@ -7,7 +7,7 @@
       * is_sxdigit -- validate string
       * strtolower -- change case of ASCII encoded string
 
-    Warning: these function were not tested yet!
+    Warning: these functions were not tested yet!
     However they **should** work fine.
     
     Author: Wojciech Mula
@@ -19,7 +19,7 @@
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-02 16:20:58 $, $Revision: 1.4 $
+    $Date: 2007-09-02 16:44:38 $, $Revision: 1.5 $
 */
 
 
@@ -94,11 +94,11 @@ strcmp:
         #       CF      := 0 (IntRes2 == 0, no diffs)
         #       ZF      := 1 (EOS, i.e. null byte in xmm2)
 
-        jc  L(diff_found)
-        jnz L(mainloop)
+        ja  L(main_loop)  # CF=0 and ZF=0 (no diff, no null byte)
 
+        jc  L(diff_found) # CF=1 -> offset is given
     L(null_found):
-        # get EOS position
+        # ZF=1 -> # calculate EOS position
         pxor     %xmm0, %xmm0
         pcmpeqb  %xmm2, %xmm0
         pmovmskb %xmm0, %ecx
@@ -145,15 +145,16 @@ strncmp:
         add     $16,    %esi
         add     $16,    %edi
         
-        sub     $16,    %eax            # dec. length
+        sub     $16,    %eax            # decrement
+        sub     $16,    %edx            # both lengths
 
         # explicit length string compare for equal
 
         pcmpestri $imm8, %xmm2, %xmm1
         # for some samples see comments in strcmp
 
+        ja  L(mainloop)
         jc  L(diff_found)
-        jnz L(mainloop)
 
     L(null_found):
         # get EOS position
@@ -219,15 +220,15 @@ strchr:
         #       CF      -> 0
         #       ZF      -> 1 (there is a null byte)
 
-        jc  L(char_found)
-        jnz L(mainloop)
+        ja L(mainloop)  # CF=0 and ZF=0 (no char, no null found)
     
+        jc L(char_found)
     L(null_found):
         xor %eax, %eax  # eax := NULL
         ret
 
     L(char_found):
-        lea -16(%esi, %ecx), %eax
+        lea -16(%esi, %ecx), %eax # eax := char address
         ret
 
 
@@ -283,16 +284,17 @@ strrchr:
         #       CF      -> 1 (IntRes2 <> 0)
         #       ZF      -> 1 (there is a null byte)
 
-        jz   L(null_found)
-        jnc  L(mainloop)
-    L(update):
+        ja   L(mainloop)   # CF=0 and ZF=0 (no char, no null found)
+        jz   L(null_found) # ZF=1 -> null byte
+    L(update): # CF=1 -> position update needed
         lea -16(%esi, %ecx), %eax  # update: last char pos.
         jmp  L(mainloop)
 
 
+        # XXX: use conditional moves?
     L(null_found):
         jnc  L(end)     # CF = 0, no update needed
-        lea -16(%esi, %ecx), %eax  # update: last char pos.
+        lea -16(%esi, %ecx), %eax  # update last char pos.
     L(end):
         ret
 
@@ -342,8 +344,8 @@ is_sxdigit:
         #       xmm1  -> "09AZaz"
         #
         #                 bf11000fffefffa51
-        #       IntRes1 = 0000000000000000b
-        #       IntRes2 = 1111111111111111b (negated valid)
+        #       IntRes1 = 1111111111111111b
+        #       IntRes2 = 0000000000000000b (negated valid)
         #       CF      = 0 (IntRes2 == 0)
         #       ZF      = 0
         #
@@ -357,8 +359,7 @@ is_sxdigit:
         #       CF      = 0 (IntRes2 == 0)
         #       ZF      = 1 (null byte in mem)
 
-        jnc     L(not_match)    # CF=1 -> not match
-        jnz     L(mainloop)     # ZF=1 -> null byte
+        ja      L(main_loop)    # CF=0 and ZF=0 (all match, not EOS)
 
     L(end_of_string):
         mov     $1,   %eax
@@ -366,9 +367,6 @@ is_sxdigit:
         cmovc   %edx, %eax      # eax := CF ? 0 : 1
         ret
 
-    L(not_match):
-        xor     %eax, %eax
-        ret
 
 
 #undef L
@@ -376,15 +374,15 @@ is_sxdigit:
 /* void strtolower(const char* s);
 
    comment:
-     Function changes s; encoding of string is ASCII.
-     Intial value of %eax (see line marked with X)
-     determine function:
+     Function modify s; encoding of string is ASCII.
+     Initial value of eax (see line marked with X)
+     determine action preformed by function:
      * 0x00005a41 ("AZ")    - to lower
      * 0x00007a61 ("az")    - to upper
-     * 0x
+     * 0x7a615a41 ("azAZ")  - swap case
 
    inputs:
-   - %esi -- s
+   - %eax -- s
  */
 strtolower:
         imm8 = SSESTR_PACKED_UBYTE  | \
@@ -392,8 +390,8 @@ strtolower:
                SSESTR_UNCHANGED     | \
                SSESTR_BYTEMASK
 
-        mov     $0x00005a41, %eax       # 0x5a41 := 'AZ' (X)
-        movd    %eax, %xmm1             # xmm1 -> range [A-Z]
+        mov     $0x00005a41, %edx       # 0x5a41 := 'AZ' (X)
+        movd    %edx, %xmm1             # xmm1 -> range [A-Z]
         movd    pb_0x20, %xmm3          # xmm3 := packed_byte(0x20)
 
     L(mainloop):
