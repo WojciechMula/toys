@@ -19,7 +19,7 @@
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-02 16:44:38 $, $Revision: 1.5 $
+    $Date: 2007-09-02 16:50:54 $, $Revision: 1.6 $
 */
 
 
@@ -265,7 +265,7 @@ strrchr:
         # implict string length - find last occurence of c or EOS
         pcmpistri $imm8, -16(%esi), %xmm0
         # sample 1 (char found)
-        #       c       -> 's'
+        #       c       -> 'c'
         #       mem     -> "cat catch scarab"
         #
         #                  baracs hctac tac
@@ -359,7 +359,7 @@ is_sxdigit:
         #       CF      = 0 (IntRes2 == 0)
         #       ZF      = 1 (null byte in mem)
 
-        ja      L(main_loop)    # CF=0 and ZF=0 (all match, not EOS)
+        ja      L(main_loop)    # CF=0 and ZF=0 (all match, no EOS)
 
     L(end_of_string):
         mov     $1,   %eax
