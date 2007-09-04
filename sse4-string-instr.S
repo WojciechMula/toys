@@ -1,7 +1,7 @@
 /*
     Some functions that use SSE4 string instructions:
       * strcmp
-      * strncmp
+      * memcmp
       * strchr
       * strrchr
       * is_sxdigit -- validate string
@@ -19,7 +19,7 @@
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-02 21:02:32 $, $Revision: 1.7 $
+    $Date: 2007-09-04 09:40:46 $, $Revision: 1.8 $
 */
 
 
@@ -29,7 +29,7 @@
 #define SSESTR_PACKED_SBYTE     0b10
 #define SSESTR_PACKED_SWORD     0b11
 
-#define SSESTR_EQUAL_ANY        0               /* equal type */
+#define SSESTR_EQUAL_ANY        0               /* compare method */
 #define SSESTR_EQUAL_EACH       0b1000
 #define SSESTR_EQUAL_ORDERED    0b1100
 #define SSESTR_RANGES           0b0100
@@ -124,7 +124,7 @@ strcmp:
    result:
    - %eax
  */
-strncmp:
+memcmp:
         imm8 = SSESTR_PACKED_UBYTE  | \
                SSESTR_EQUAL_EACH    | \
                SSESTR_NEGATED_VALID | \
