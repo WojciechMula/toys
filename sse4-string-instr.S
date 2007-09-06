@@ -19,7 +19,7 @@
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-04 09:40:46 $, $Revision: 1.8 $
+    $Date: 2007-09-06 15:52:40 $, $Revision: 1.9 $
 */
 
 
@@ -114,7 +114,7 @@ strcmp:
 #undef L
 #define L(name) .L_b##name
 
-/* int strncmp(const char* s1, const char* s2, size_t n);
+/* int memcmp(const char* s1, const char* s2, size_t n);
 
    inputs:
    - %esi -- s1
