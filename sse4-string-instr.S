@@ -1,11 +1,12 @@
 /*
     Some functions that use SSE4 string instructions:
-      * strcmp
-      * memcmp
-      * strchr
-      * strrchr
-      * is_sxdigit -- validate string
-      * strtolower -- change case of ASCII encoded string
+      * strcmp [2007-09-02]
+      * memcmp [2007-09-02]
+      * strchr [2007-09-02] (implict string length)
+      * strchr2 [2007-09-08] (explicit string length)
+      * strrchr [2007-09-02]
+      * is_sxdigit [2007-09-02] -- validate string
+      * strtolower [2007-09-02] -- change case of ASCII encoded string
 
     Warning: these functions were not tested yet!
     However they **should** work fine.
@@ -19,7 +20,7 @@
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-06 15:52:40 $, $Revision: 1.9 $
+    $Date: 2007-09-08 10:55:07 $, $Revision: 1.10 $
 */
 
 
@@ -226,6 +227,54 @@ strchr:
         lea -16(%esi, %ecx), %eax # eax := char address (valid if CF=1, i.e. char found)
         cmovnc %edx, %eax         # eax := NULL (if CF=0)
         ret
+
+
+
+#undef L
+#define L(name) .L_g##name
+
+/* char* strchr2(const char* s, int c);
+   
+   inputs:
+   - %esi -- s
+   - %eax -- c
+
+   result:
+   - %eax
+ */
+strchr2:
+        imm8 = SSESTR_PACKED_UBYTE | \
+               SSESTR_EQUAL_ANY    | \
+               SSESTR_UNCHANGED    | \
+               SSESTR_FIRSTBIT
+
+        movd    %eax, %xmm0     # xmm1 := string contains 'c' and '\0'
+        mov     $2,   %eax      # eax  := length(xmm1) = 2
+        mov     $16,  %edx      # edx  := length(xmm2/mem) = 16 (we'll
+                                #         process all chars)
+
+    L(mainloop):
+        add $16, %esi
+        
+        # explicit string length - find first occurence of c or EOS
+        pcmpestri $imm8, -16(%esi), %xmm0
+        # sample (char or null found)
+        #       c       -> 's'
+        #       mem     -> "Sunrise0s00ssA0s"
+        #       
+        #                  s\0Ass\0\0s\0esirnuS
+        #       IntRes2 -> 1 1011 1 11 10100000b
+        #       ECX     -> bsf(IntRes2) = 5
+        #       CF      -> 1 (IntRes2 <> 0)
+
+        jnc L(mainloop)  # CF=0 (no char, no null found)
+  
+        mov    $0, %edx           # edx := NULL
+        lea -16(%esi, %ecx), %eax # eax := char address
+                                  # (valid if CF=1, i.e. char or null found)
+        cmovnc %edx, %eax         # eax := NULL (if CF=0)
+        ret
+
 
 
 
