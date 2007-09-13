@@ -1,13 +1,13 @@
 /*
-	Calculating dot product using SSE instructions, $Revision: 1.2 $
-
-    Author: Wojciech Mu³a
-    e-mail: wojciech_mula@poczta.onet.pl
-    www:    http://www.mula.w.pl
-    
-    License: public domain
-
-	initial release 13.03.2002, last update $Date: 2007-09-13 18:55:57 $
+	Calculating dot product using SSE instructions, $Revision: 1.3 $
+	
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.mula.w.pl
+	
+	License: public domain
+	
+	initial release 13.03.2002, last update $Date: 2007-09-13 19:10:48 $
 */
 
 #include "sse-aux.inc"
