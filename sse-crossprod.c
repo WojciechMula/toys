@@ -1,5 +1,5 @@
 /*
-	Calculate cross product using SSE instructions, $Revision: 1.1 $
+	Calculate cross product using SSE instructions, $Revision: 1.2 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,36 +7,19 @@
 	
 	License: public domain
 	
-	initial release 11.03.2002, last update $Date: 2007-09-13 17:02:59 $
+	initial release 11.03.2002, last update $Date: 2007-09-13 18:55:38 $
 */
 
 #include "sse-aux.inc"
 
-void cross_prod(float v1[4], float v2[4], float result[4]) {
-#define a v1[0]
-#define b v1[1]
-#define c v1[2]
-#define x v2[0]
-#define y v2[1]
-#define z v2[2]
-	result[0] = b*z - c*y;
-	result[1] = c*x - a*z;
-	result[2] = a*y - b*x;
-#undef a
-#undef b
-#undef c
-#undef x
-#undef y
-#undef z
-}
-
+// start-snippet
 void sse_cross_prod(float v1[4], float v2[4], float result[4]) {
 asm(
     // load vectors                                 index -> 0   1   2   3
     "movups (%0), %%xmm0                    \n" // xmm0 := | a | b | c | . |
     "movups (%1), %%xmm1                    \n" // xmm1 := | x | y | z | . |
     
-	// clone
+    // clone
     "movaps %%xmm0, %%xmm2                  \n"
     "movaps %%xmm1, %%xmm3                  \n"
 
@@ -57,6 +40,26 @@ asm(
     :
     : "r" (v1), "r" (v2), "r" (result)
 );
+}
+// end-snippet
+
+
+void cross_prod(float v1[4], float v2[4], float result[4]) {
+#define a v1[0]
+#define b v1[1]
+#define c v1[2]
+#define x v2[0]
+#define y v2[1]
+#define z v2[2]
+	result[0] = b*z - c*y;
+	result[1] = c*x - a*z;
+	result[2] = a*y - b*x;
+#undef a
+#undef b
+#undef c
+#undef x
+#undef y
+#undef z
 }
 
 
