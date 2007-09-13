@@ -1,5 +1,5 @@
 /*
-	Calculating 4 dot products using SSE instructions, $Revision: 1.1 $
+	Calculating 4 dot products using SSE instructions, $Revision: 1.2 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,11 +7,12 @@
 	
 	License: public domain
 	
-	initial release 11.02.2002, last update $Date: 2007-09-13 16:50:50 $
+	initial release 11.02.2002, last update $Date: 2007-09-13 18:56:07 $
 */
 
 #include "sse-aux.inc"
 
+// start-snippet
 void sse_dot4(float* v1x4, float* v2x4, float* results) {
 asm(
    // load 4 vectors from v1
@@ -55,6 +56,7 @@ asm(
    : "r" (v1x4), "r" (v2x4), "r" (results)
    );
 }
+// end-snippet
 
 
 void dot4(float* v1x4, float* v2x4, float* results) {
