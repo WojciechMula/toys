@@ -20,7 +20,7 @@
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-08 10:55:07 $, $Revision: 1.10 $
+    $Date: 2007-09-14 11:53:13 $, $Revision: 1.11 $
 */
 
 
@@ -50,7 +50,6 @@
 
 #undef L
 #define L(name) .L_a##name
-
 /* int strcmp(const char* s1, const char* s2);
 
    inputs:
@@ -109,12 +108,12 @@ strcmp:
         movzbl  -16(%esi, %ecx), %eax
         sub     %edx, %eax
         ret
+#eof
 
 
 
 #undef L
 #define L(name) .L_b##name
-
 /* int memcmp(const char* s1, const char* s2, size_t n);
 
    inputs:
@@ -168,12 +167,12 @@ memcmp:
         movzbl  -16(%esi, %ecx), %eax
         sub     %edx, %eax
         ret
+#eof
 
 
 
 #undef L
 #define L(name) .L_c##name
-
 /* char* strchr(const char* s, int c);
    
    comment:
@@ -227,12 +226,12 @@ strchr:
         lea -16(%esi, %ecx), %eax # eax := char address (valid if CF=1, i.e. char found)
         cmovnc %edx, %eax         # eax := NULL (if CF=0)
         ret
+#eof
 
 
 
 #undef L
 #define L(name) .L_g##name
-
 /* char* strchr2(const char* s, int c);
    
    inputs:
@@ -274,13 +273,12 @@ strchr2:
                                   # (valid if CF=1, i.e. char or null found)
         cmovnc %edx, %eax         # eax := NULL (if CF=0)
         ret
-
+#eof
 
 
 
 #undef L
 #define L(name) .L_d##name
-
 /* char* strrchr(const char* s, int c);
 
    comment:
@@ -342,6 +340,7 @@ strrchr:
         lea -16(%esi, %ecx), %eax  # update last char pos.
     L(end):
         ret
+#eof
 
 
 
@@ -411,6 +410,7 @@ is_sxdigit:
         mov     $0,   %edx
         cmovc   %edx, %eax      # eax := CF ? 0 : 1
         ret
+#eof
 
 
 
@@ -465,6 +465,7 @@ strtolower:
         jnz L(mainloop)
 
         ret
+#eof
 
 
 
