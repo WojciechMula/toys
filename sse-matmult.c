@@ -1,5 +1,5 @@
 /*
-	Matrix 4x4 multiplication using SSE instructions, $Revision: 1.1 $
+	Matrix 4x4 multiplication using SSE instructions, $Revision: 1.2 $
 	
 	[Aa0 Aa1 Aa2 Aa3]  [Ba0 Ba1 Ba2 Ba3]   [Aa0*Ba0 + Aa1*Bb0 + Aa2*Bc0 + Aa3*Bd0, ..., ..., ...]
 	[Ab0 Ab1 Ab2 Ab3]  [Bb0 Bb1 Bb2 Bb3] = [Ab0*Ba0 + Ab1*Bb0 + Ab2*Bc0 + Ab3*Bd0, ..., ..., ...]
@@ -12,16 +12,17 @@
 	
 	License: public domain
 	
-	initial release 15.09.2007, last update $Date: 2007-09-15 21:45:37 $
+	initial release 15.09.2007, last update $Date: 2007-09-15 21:51:25 $
 */
 
 #include <math.h>
 #include "sse-aux.inc"
 
+// start-snippet
 void sse_matmat_mult(float mat1[4*4], float mat2[4*4], float mat3[4*4]) {
 asm(
     // load all rows from M2, i.e. Ba, Bb, Bc an Bd
-    "movups 0x00(%1), %%xmm4	            \n" // xmm4 := Ba
+    "movups 0x00(%1), %%xmm4                \n" // xmm4 := Ba
     "movups 0x10(%1), %%xmm5                \n" // xmm5 := Bb
     "movups 0x20(%1), %%xmm6                \n" // xmm6 := Bc
     "movups 0x30(%1), %%xmm7                \n" // xmm7 := Bd
@@ -56,6 +57,7 @@ asm(
     : "r" (mat1), "r" (mat2), "r" (mat3)
 );
 }
+// end-snippet
 
 
 void matmat_mult(float mat1[4*4], float mat2[4*4], float mat3[4*4]) {
