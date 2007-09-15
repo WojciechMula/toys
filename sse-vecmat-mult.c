@@ -1,5 +1,6 @@
 /*
-	Multiply vector 1x4 by matrix 4x4 using SSE instructions, $Revision: 1.1 $
+	Multiply vector 1x4 by matrix 4x4 using SSE instructions
+	$Revision: 1.2 $
 	
 		       [a0, a1, a2, a3]   [x*a0 + y*b0 + z*c0 + w*d0]
 		       [b0, b1, b2, b3]   [x*a1 + y*b1 + z*c1 + w*d1]
@@ -13,7 +14,7 @@
 	
 	License: public domain
 	
-	initial release 12.03.2002, last update $Date: 2007-09-15 12:58:50 $
+	initial release 12.03.2002, last update $Date: 2007-09-15 12:59:33 $
 */
 
 
