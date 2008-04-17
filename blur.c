@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-07-15 18:13:00 $, $Revision: 1.7 $
+	$Date: 2008-04-17 19:58:36 $, $Revision: 1.8 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -221,6 +221,76 @@ void mmxblur_gray_calc_sums(
 	sum_tbl[width] += (uint16_t)border_color;
 }
 
+// MMX[2] implementation
+
+void mmx2blur_gray_calc_sums(
+	uint8_t  *src_img,
+	uint8_t   border_color,
+	uint16_t *sum_tbl,
+	unsigned int width
+) {
+	asm(
+	"   pxor %%mm7, %%mm7                     \n\t"
+	"   movq 0(%%esi), %%mm6                  \n\t"
+	"0:                                       \n\t"
+	"   movq %%mm6, %%mm0                     \n\t"
+	"   movq 8(%%esi), %%mm3                  \n\t"
+	"   movq %%mm3, %%mm6                     \n\t"
+	"                                         \n\t"
+	"   movq %%mm0, %%mm1                     \n\t"
+	"   movq %%mm0, %%mm2                     \n\t"
+	"   movq %%mm3, %%mm4                     \n\t"
+	"                                         \n\t"
+	"   psrlq  $8, %%mm1                      \n\t"
+	"   psrlq $16, %%mm2                      \n\t"
+	"   psllq $56, %%mm3                      \n\t"
+	"   psllq $48, %%mm4                      \n\t"
+	"                                         \n\t"
+	"   por %%mm3, %%mm1                      \n\t"
+	"   por %%mm4, %%mm2                      \n\t"
+	"                                         \n\t"
+	"   movq %%mm0, %%mm3                     \n\t"
+	"   movq %%mm1, %%mm4                     \n\t"
+	"   movq %%mm2, %%mm5                     \n\t"
+	"                                         \n\t"
+	"   punpcklbw %%mm7, %%mm0                \n\t"
+	"   punpcklbw %%mm7, %%mm1                \n\t"
+	"   punpcklbw %%mm7, %%mm2                \n\t"
+	"                                         \n\t"
+	"   punpckhbw %%mm7, %%mm3                \n\t"
+	"   punpckhbw %%mm7, %%mm4                \n\t"
+	"   punpckhbw %%mm7, %%mm5                \n\t"
+	"                                         \n\t"
+	"   paddw %%mm1, %%mm0                    \n\t"
+	"   paddw %%mm2, %%mm0                    \n\t"
+	"                                         \n\t"
+	"   paddw %%mm4, %%mm3                    \n\t"
+	"   paddw %%mm5, %%mm3                    \n\t"
+	"                                         \n\t"
+	"   movq %%mm0,  0(%%edi)                 \n\t"
+	"   movq %%mm3,  8(%%edi)                 \n\t"
+	"                                         \n\t"
+	"   addl $8,  %%esi                       \n\t"
+	"   addl $16, %%edi                       \n\t"
+	"                                         \n\t"
+	"   subl $1, %%ecx                        \n\t"
+	"   jnz  0b                               \n\t"
+	"                                         \n\t"
+	: /* no ouput */
+	: "S" (src_img), "D" (sum_tbl+1), "c" (width/8)
+	: "memory"
+	);
+
+	// fix sum for first pixel:
+	sum_tbl[0]  = sum_tbl[1];
+	sum_tbl[0] -= (uint16_t)src_img[0];
+	sum_tbl[0] += (uint16_t)border_color;
+	
+	// fix sum for last pixel:
+	sum_tbl[width] -= (uint16_t)src_img[width];
+	sum_tbl[width] += (uint16_t)border_color;
+}
+
 
 void mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	static uint16_t mul_const[4] = {65536/9, 65536/9, 65536/9, 65536/9};
@@ -323,6 +393,13 @@ define_blur_gray_img_fun(
 define_blur_gray_img_fun(
 	mmxblur_gray_img,
 	mmxblur_gray_calc_sums,
+	mmxblur_gray_calc_avg
+)
+
+
+define_blur_gray_img_fun(
+	mmx2blur_gray_img,
+	mmx2blur_gray_calc_sums,
 	mmxblur_gray_calc_avg
 )
 
@@ -450,7 +527,7 @@ int main(int argc, char* argv[]) {
 		usage();
 		return 0;
 	}
-	// progname test x86|mmx count
+	// progname test x86|mmx|mmx2 count
 	if (argc >= 4 && iskeyword("test", 1)) {
 		count = atoi(argv[3]) <= 0 ? 100 : atoi(argv[3]);
 		if (iskeyword("MMX", 2)) {
@@ -460,6 +537,18 @@ int main(int argc, char* argv[]) {
 			printf("repeat count: %d\n", count);
 			while (count--)
 				mmxblur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, 0x00);
+
+			free(data);
+			return 0;
+		}
+		else
+		if (iskeyword("MMX2", 2)) {
+			data = malloc(PIX_COUNT);
+			if (!data) die("No free memory");
+
+			printf("repeat count: %d\n", count);
+			while (count--)
+				mmx2blur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, 0x00);
 
 			free(data);
 			return 0;
