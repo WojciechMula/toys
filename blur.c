@@ -1,5 +1,5 @@
 /*
-	$Date: 2008-04-17 19:58:36 $, $Revision: 1.8 $
+	$Date: 2008-05-17 17:12:36 $, $Revision: 1.9 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -32,7 +32,7 @@
 #define MAX_GRAY_WIDTH		SUM_TABLE_SIZE
 #define MAX_32bpp_WIDTH		(SUM_TABLE_SIZE/4)
 
-uint16_t SUM_TABLE[3*SUM_TABLE_SIZE];
+uint16_t SUM_TABLE[3*SUM_TABLE_SIZE]__attribute__((aligned (16)));
 
 uint8_t divide_lookup[255*9 + 1]; // sum \in [0..9*255]
 
@@ -277,7 +277,7 @@ void mmx2blur_gray_calc_sums(
 	"   jnz  0b                               \n\t"
 	"                                         \n\t"
 	: /* no ouput */
-	: "S" (src_img), "D" (sum_tbl+1), "c" (width/8)
+	: "S" (src_img), "D" (sum_tbl), "c" (width/8)
 	: "memory"
 	);
 
@@ -327,6 +327,103 @@ void mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	);
 }
 
+// SSE2 implementation
+
+void sse2blur_gray_calc_sums(
+	uint8_t  *src_img,
+	uint8_t   border_color,
+	uint16_t *sum_tbl,
+	unsigned int width
+) {
+	asm(
+	"   pxor %%xmm7, %%xmm7                   \n\t"
+	"   movdqu 0(%%esi), %%xmm6               \n\t"
+	"0:                                       \n\t"
+	"   movdqa %%xmm6, %%xmm0                 \n\t"
+	"   movdqu 16(%%esi), %%xmm6              \n\t"
+	"   movdqa %%xmm6, %%xmm1                 \n\t"
+	"   movdqa %%xmm6, %%xmm2                 \n\t"
+	"                                         \n\t"
+	"   palignr $1, %%xmm0, %%xmm1            \n\t"
+	"   palignr $2, %%xmm0, %%xmm2            \n\t"
+	"                                         \n\t"
+	"   movdqa %%xmm0, %%xmm3                 \n\t"
+	"   movdqa %%xmm1, %%xmm4                 \n\t"
+	"   movdqa %%xmm2, %%xmm5                 \n\t"
+	"                                         \n\t"
+	"   punpcklbw %%xmm7, %%xmm0              \n\t"
+	"   punpcklbw %%xmm7, %%xmm1              \n\t"
+	"   punpcklbw %%xmm7, %%xmm2              \n\t"
+	"                                         \n\t"
+	"   punpckhbw %%xmm7, %%xmm3              \n\t"
+	"   punpckhbw %%xmm7, %%xmm4              \n\t"
+	"   punpckhbw %%xmm7, %%xmm5              \n\t"
+	"                                         \n\t"
+	"   paddw %%xmm1, %%xmm0                  \n\t"
+	"   paddw %%xmm2, %%xmm0                  \n\t"
+	"                                         \n\t"
+	"   paddw %%xmm4, %%xmm3                  \n\t"
+	"   paddw %%xmm5, %%xmm3                  \n\t"
+	"                                         \n\t"
+	"   movdqa %%xmm0,  0(%%edi)              \n\t"
+	"   movdqa %%xmm3, 16(%%edi)              \n\t"
+	"                                         \n\t"
+	"   addl $16, %%esi                       \n\t"
+	"   addl $32, %%edi                       \n\t"
+	"                                         \n\t"
+	"   subl $1, %%ecx                        \n\t"
+	"   jnz  0b                               \n\t"
+	"                                         \n\t"
+	: /* no ouput */
+	: "S" (src_img), "D" (sum_tbl), "c" (width/16)
+	: "memory"
+	);
+
+	// fix sum for first pixel:
+	sum_tbl[0]  = sum_tbl[1];
+	sum_tbl[0] -= (uint16_t)src_img[0];
+	sum_tbl[0] += (uint16_t)border_color;
+	
+	// fix sum for last pixel:
+	sum_tbl[width] -= (uint16_t)src_img[width];
+	sum_tbl[width] += (uint16_t)border_color;
+}
+
+
+void sse2blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
+	static uint16_t mul_const[8] = {65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9};
+	asm(
+	"  movdqu (%%eax), %%xmm7                 \n\t"
+	"0:                                       \n\t"
+	"  movdqa   (%%esi), %%xmm0               \n\t"
+	"  paddw  %c0(%%esi), %%xmm0              \n\t"
+	"  paddw  %c1(%%esi), %%xmm0              \n\t"
+	"                                         \n\t"
+	"  movdqa     16(%%esi), %%xmm1           \n\t"
+	"  paddw %c0+16(%%esi), %%xmm1            \n\t"
+	"  paddw %c1+16(%%esi), %%xmm1            \n\t"
+	"                                         \n\t"
+	"  pmulhw %%xmm7, %%xmm0                  \n\t"
+	"  pmulhw %%xmm7, %%xmm1                  \n\t"
+	"  packuswb %%xmm1, %%xmm0                \n\t"
+	"  movdqa %%xmm0, (%%edi)                 \n\t"
+	"                                         \n\t"
+	"  addl $32, %%esi                        \n\t"
+	"  addl $16, %%edi                        \n\t"
+	"                                         \n\t"
+	"  dec %%ecx                              \n\t"
+	"  jnz 0b                                 \n\t"
+	"                                         \n\t"
+	: /* no output */
+	: "e" (2*SUM_TABLE_SIZE), // SUM_TABLE + SUM_TABLE_SIZE
+	  "e" (4*SUM_TABLE_SIZE), // SUM_TABLE + 2*SUM_TABLE_SIZE
+	  "S" (SUM_TABLE),
+	  "D" (dst_img),
+	  "a" (mul_const),
+	  "c" (width/16)
+	: "memory"
+	);
+}
 
 // scheme
 #define define_blur_gray_img_fun(fun_name, sum_fun_name, avg_fun_name)\
@@ -403,6 +500,14 @@ define_blur_gray_img_fun(
 	mmxblur_gray_calc_avg
 )
 
+
+define_blur_gray_img_fun(
+	sse2blur_gray_img,
+	sse2blur_gray_calc_sums,
+	sse2blur_gray_calc_avg
+)
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
@@ -416,7 +521,7 @@ define_blur_gray_img_fun(
 #define IMG_HEIGHT	480
 #define PIX_COUNT	(IMG_WIDTH*IMG_HEIGHT)
 
-typedef enum {C_lang, x86, MMX} Function;
+typedef enum {C_lang, x86, MMX, MMX2, SSE2} Function;
 
 Function current = C_lang;
 uint8_t gray_border_color = 0x00;
@@ -441,7 +546,9 @@ void Xhelp() {
 "b/space - blur image using current blur routine\n"
 "1 - select routine 1 (C language reference implementation)\n"
 "2 - select routine 2 (assembler x86)\n"
-"3 - select routine 2 (assembler MMX)\n"
+"3 - select routine 3 (assembler MMX)\n"
+"4 - select routine 4 (assembler MMX2)\n"
+"5 - select routine 4 (assembler SSE2)\n"
 "r - revert image\n"
 "\n"
 "q - quit\n"
@@ -460,7 +567,7 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 
 		case XK_r:
 		case XK_R:
-			memcpy( (void*)data, (void*)img, PIX_COUNT);
+			memcpy( (void*)img, (void*)data, PIX_COUNT);
 			Xscr_redraw();
 			break;
 
@@ -476,18 +583,32 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 			current = MMX;
 			break;
 
+		case XK_4:
+			current = MMX2;
+			break;
+
+		case XK_5:
+			current = SSE2;
+			break;
+
 		case XK_space:
 		case XK_b:
 		case XK_B:
 			switch (current) {
 				case C_lang:
-					blur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
+					blur_gray_img(img, img, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
 					break;
 				case x86:
-					x86blur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
+					x86blur_gray_img(img, img, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
 					break;
 				case MMX:
-					mmxblur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
+					mmxblur_gray_img(img, img, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
+					break;
+				case MMX2:
+					mmx2blur_gray_img(img, img, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
+					break;
+				case SSE2:
+					sse2blur_gray_img(img, img, IMG_WIDTH, IMG_HEIGHT, gray_border_color);
 					break;
 			}
 				     
@@ -500,7 +621,7 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 void usage() {
 	puts(
 "a. progname help\n"
-"b. progname test x86|mmx count\n"
+"b. progname test x86|mmx|mmx2 count\n"
 #ifdef USE_Xscr
 "c. progname view file_ppm_640x480\n"
 #endif
@@ -531,7 +652,7 @@ int main(int argc, char* argv[]) {
 	if (argc >= 4 && iskeyword("test", 1)) {
 		count = atoi(argv[3]) <= 0 ? 100 : atoi(argv[3]);
 		if (iskeyword("MMX", 2)) {
-			data = malloc(PIX_COUNT);
+			posix_memalign((void*)&data, 16, PIX_COUNT);
 			if (!data) die("No free memory");
 
 			printf("repeat count: %d\n", count);
@@ -543,7 +664,7 @@ int main(int argc, char* argv[]) {
 		}
 		else
 		if (iskeyword("MMX2", 2)) {
-			data = malloc(PIX_COUNT);
+			posix_memalign((void*)&data, 16, PIX_COUNT);
 			if (!data) die("No free memory");
 
 			printf("repeat count: %d\n", count);
@@ -554,8 +675,20 @@ int main(int argc, char* argv[]) {
 			return 0;
 		}
 		else
+		if (iskeyword("SSE2", 2)) {
+			posix_memalign((void*)&data, 16, PIX_COUNT);
+			if (!data) die("No free memory");
+
+			printf("repeat count: %d\n", count);
+			while (count--)
+				sse2blur_gray_img(data, data, IMG_WIDTH, IMG_HEIGHT, 0x00);
+
+			free(data);
+			return 0;
+		}
+		else
 		if (iskeyword("x86", 2)) {
-			data = malloc(PIX_COUNT);
+			posix_memalign((void*)&data, 16, PIX_COUNT);
 			if (!data) die("No free memory");
 			
 			printf("repeat count: %d\n", count);
@@ -587,7 +720,7 @@ int main(int argc, char* argv[]) {
 		if (width != IMG_WIDTH || height != IMG_HEIGHT)
 			die("Image %dx%d required", IMG_WIDTH, IMG_HEIGHT);
 
-		img = (uint8_t*)malloc(PIX_COUNT);
+		posix_memalign((void*)&img, 16, PIX_COUNT);
 		if (!img)
 			die("No free memory");
 		
@@ -601,7 +734,7 @@ int main(int argc, char* argv[]) {
 			IMG_HEIGHT,
 			DEPTH_gray,
 			False,
-			data,
+			img,
 			keyboard, NULL, NULL,
 			"Blur grayscale images demo"
 		);
