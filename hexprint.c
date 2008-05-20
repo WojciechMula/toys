@@ -6,7 +6,7 @@ uint8_t buffer[16*100];
 
 void c_print(uint8_t* buffer, int chunks16) {
 	static char HEXDIGITS[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-	static char print_buffer[33];
+	static char print_buffer[33] __attribute__((aligned(16)));
 	int i, n;
 	print_buffer[32] = '\0';
 	for (n=0; n < chunks16; n++) {
@@ -23,12 +23,12 @@ void c_print(uint8_t* buffer, int chunks16) {
 void sse3_print(uint8_t* buffer, int chunks16) {
 	static char HEXDIGITS[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 	static char MASK_4bit[16] = {0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf};
-	static char print_buffer[33];
+	static char print_buffer[33] __attribute__((aligned(16)));
 	int i, n;
 
 	print_buffer[32] = '\0';
-	asm volatile ("movdqu (%%eax), %%xmm7" : : "a" (&HEXDIGITS[0]));
-	asm volatile ("movdqu (%%eax), %%xmm6" : : "a" (&MASK_4bit[0]));
+	asm volatile ("movdqu (%%eax), %%xmm7" : : "a" (HEXDIGITS));
+	asm volatile ("movdqu (%%eax), %%xmm6" : : "a" (MASK_4bit));
 	for (n=0; n < chunks16; n++) {
 		asm volatile(
 			"movdqu	  (%%eax), %%xmm0	\n"
@@ -43,9 +43,8 @@ void sse3_print(uint8_t* buffer, int chunks16) {
 			"movdqa    %%xmm7, %%xmm3	\n"
 			"pshufb    %%xmm1, %%xmm0	\n"
 			"pshufb    %%xmm2, %%xmm3	\n"
-			"movdqu    %%xmm0,   (%%ebx)	\n"
-			"movdqu    %%xmm3, 16(%%ebx)	\n"
-			"sfence				\n"
+			"movdqa    %%xmm0,   (%%ebx)	\n"
+			"movdqa    %%xmm3, 16(%%ebx)	\n"
 			:
 			: "a" (&buffer[n*16]),
 			  "b" (print_buffer)
