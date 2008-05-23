@@ -1,5 +1,5 @@
 /*
-	Hex dump comparison, $Revision: 1.4 $
+	Hex dump comparison, $Revision: 1.5 $
 	
 	Four different approaches to dump hex:
 	* lookup[16]  (nibble-addressing)
@@ -13,13 +13,17 @@
 	
 	License: public domain
 	
-	initial release 23-05-2008, last update $Date: 2008-05-23 17:52:35 $
+	initial release 23-05-2008, last update $Date: 2008-05-23 19:17:27 $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 
+#ifdef ALIGN_BUFFER
+uint8_t buffer[16*100] __attribute__((aligned(16)));
+#else
 uint8_t buffer[16*100];
+#endif
 
 static char HEXDIGITS[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
@@ -104,7 +108,11 @@ void ssse3_print(uint8_t* buffer, int chunks16) {
 	asm volatile ("movdqu (%%eax), %%xmm6" : : "a" (MASK_4bit));
 	for (n=0; n < chunks16; n++) {
 		asm volatile(
+#if ALIGN_BUFFER
+			"movdqa	  (%%eax), %%xmm0	\n"
+#else
 			"movdqu	  (%%eax), %%xmm0	\n"
+#endif
 			"movdqa    %%xmm0, %%xmm1	\n"
 
 			"psrlw         $4, %%xmm1	\n"
