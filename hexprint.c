@@ -1,11 +1,11 @@
 /*
-	Hex dump comparision, $Revision: 1.3 $
+	Hex dump comparison, $Revision: 1.4 $
 	
 	Four different approaches to dump hex:
 	* lookup[16]  (nibble-addressing)
 	* lookup[256] (byte-addressing)
 	* 2 x lookup[256]
-	* using SSE3 instruction PSHUFB
+	* using SSSE3 instruction PSHUFB
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -13,7 +13,7 @@
 	
 	License: public domain
 	
-	initial release 23-05-2008, last update $Date: 2008-05-23 16:24:21 $
+	initial release 23-05-2008, last update $Date: 2008-05-23 17:52:35 $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -93,8 +93,8 @@ void c3_print(uint8_t* buffer, int chunks16) {
 }
 
 
-// ---- SSE3 --------------------------------------------------------------
-void sse3_print(uint8_t* buffer, int chunks16) {
+// ---- SSSE3 -------------------------------------------------------------
+void ssse3_print(uint8_t* buffer, int chunks16) {
 	static char MASK_4bit[16] = {0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf};
 	static char print_buffer[33] __attribute__((aligned(16)));
 	int i, n;
@@ -149,8 +149,8 @@ int main(int argc, char* argv[]) {
 		puts("std3:");
 		c3_print(buffer, 5);
 		puts("====");
-		puts("SSE3:");
-		sse3_print(buffer, 5);
+		puts("SSSE3:");
+		ssse3_print(buffer, 5);
 	}
 	else {
 		int n = 100000;
@@ -170,11 +170,11 @@ int main(int argc, char* argv[]) {
 				c3_print(buffer, 100);
 		}
 		else
-		if (strcasecmp(argv[1], "SSE3") == 0)
+		if (strcasecmp(argv[1], "SSSE3") == 0)
 			for (i=0; i < n; i++)
-				sse3_print(buffer, 100);
+				ssse3_print(buffer, 100);
 		else 
-			printf("%s [std|std2|sse3]\n", argv[0]);
+			printf("%s [std1|std2|std3|ssse3]\n", argv[0]);
 	}
 
 	return 0;
