@@ -1,5 +1,5 @@
 /*
-	Hex dump comparison, $Revision: 1.5 $
+	Hex dump comparison, $Revision: 1.6 $
 	
 	Four different approaches to dump hex:
 	* lookup[16]  (nibble-addressing)
@@ -11,9 +11,9 @@
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://www.mula.w.pl
 	
-	License: public domain
+	License: BSD
 	
-	initial release 23-05-2008, last update $Date: 2008-05-23 19:17:27 $
+	initial release 23-05-2008, last update $Date: 2008-05-24 23:04:21 $
 */
 #include <stdio.h>
 #include <stdlib.h>
