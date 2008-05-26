@@ -1,5 +1,5 @@
 /*
-	$Date: 2008-05-17 17:12:36 $, $Revision: 1.9 $
+	$Date: 2008-05-26 15:54:29 $, $Revision: 1.10 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -37,7 +37,7 @@ uint16_t SUM_TABLE[3*SUM_TABLE_SIZE]__attribute__((aligned (16)));
 uint8_t divide_lookup[255*9 + 1]; // sum \in [0..9*255]
 
 void initialize_divide_lookup() {
-	unsigned int j, i;
+	unsigned int i;
 	for (i=0; i < sizeof(divide_lookup); i++)
 		// divide_lookup[i] = i/9;
 		divide_lookup[i] = (i * (65536/9) + (65536/9)) >> 16;
@@ -434,7 +434,7 @@ void fun_name(													\
 	unsigned int height,										\
 	uint8_t border_color										\
 ) {																\
-	int x, y, i;												\
+	int y, i;												\
 	int offset = 2*SUM_TABLE_SIZE;								\
 																\
 	for (i=0; i < width; i++)									\
@@ -637,8 +637,11 @@ void usage() {
 }
 
 int main(int argc, char* argv[]) {
+
+#ifdef USE_Xscr
 	FILE* f;
 	int width, height, maxval, result;
+#endif
 	int count;
 
 #define iskeyword(string, index) (strcasecmp(argv[index], string) == 0)
@@ -749,6 +752,8 @@ int main(int argc, char* argv[]) {
 		usage();
 		return 1;
 	}
+
+	return 0;
 }
 
 /*
