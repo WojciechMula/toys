@@ -1,5 +1,5 @@
 /*
-	Hex dump comparison, $Revision: 1.6 $
+	Hex dump comparison, $Revision: 1.7 $
 	
 	Four different approaches to dump hex:
 	* lookup[16]  (nibble-addressing)
@@ -13,11 +13,13 @@
 	
 	License: BSD
 	
-	initial release 23-05-2008, last update $Date: 2008-05-24 23:04:21 $
+	initial release 23-05-2008, last update $Date: 2008-05-26 15:48:13 $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <time.h>
 
 #ifdef ALIGN_BUFFER
 uint8_t buffer[16*100] __attribute__((aligned(16)));
@@ -62,7 +64,7 @@ void c2_print(uint8_t* buffer, int chunks16) {
 		for (i=0; i < 16; i++)
 			print_buffer[i] = c2_hexdigits[buffer[n*16 + i]];
 
-		printf("%s\n", print_buffer);
+		printf("%s\n", (char*)print_buffer);
 	}
 }
 
@@ -92,7 +94,7 @@ void c3_print(uint8_t* buffer, int chunks16) {
 			print_buffer[i] = c3_hexdigits0[buffer[n*16 + 2*i + 0]] |
 					  c3_hexdigits1[buffer[n*16 + 2*i + 1]];
 
-		printf("%s\n", print_buffer);
+		printf("%s\n", (char*)print_buffer);
 	}
 }
 
@@ -101,7 +103,7 @@ void c3_print(uint8_t* buffer, int chunks16) {
 void ssse3_print(uint8_t* buffer, int chunks16) {
 	static char MASK_4bit[16] = {0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf};
 	static char print_buffer[33] __attribute__((aligned(16)));
-	int i, n;
+	int n;
 
 	print_buffer[32] = '\0';
 	asm volatile ("movdqu (%%eax), %%xmm7" : : "a" (HEXDIGITS));
