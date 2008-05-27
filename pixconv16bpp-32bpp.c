@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
 static uint32_t lookup8_lo[256] __attribute__((aligned(64)));
@@ -173,7 +174,6 @@ static uint8_t convert_SSE2_maskB[16] __attribute__((aligned(16)));
 
 void convert_SSE2() {
 	int x, y;
-	uint32_t addr;
 
 	// preload masks
 	asm volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
@@ -229,7 +229,6 @@ void convert_SSE2() {
 
 void convert_SSE2_2() {
 	int x, y;
-	uint32_t addr;
 
 	// preload masks
 	asm volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
