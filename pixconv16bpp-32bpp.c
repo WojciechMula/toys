@@ -7,7 +7,9 @@ static uint32_t lookup8_lo[256] __attribute__((aligned(64)));
 static uint32_t lookup8_hi[256] __attribute__((aligned(64)));
 static uint32_t lookup16[256*256] __attribute__((aligned(64)));
 
-#define WIDTH	(1024)
+#ifndef WIDTH
+#	define WIDTH	(1024)
+#endif
 #define HEIGHT	768
 
 static uint16_t image_16bpp[HEIGHT+1][WIDTH] __attribute__((aligned(16)));
@@ -55,6 +57,7 @@ void convert_lookup16() {
 }
 
 
+
 void convert_naive() {
 	int x, y;
 	uint32_t tmp, R, G, B;
@@ -69,6 +72,7 @@ void convert_naive() {
 			image_32bpp[y][x] = R | (G << 8) | (B << 16);
 		}
 }
+
 
 
 static uint8_t convert_MMX_maskR[8];
@@ -109,8 +113,13 @@ void convert_MMX() {
 				"punpckhbw %%mm1, %%mm4		\n"
 
 				// save 32bpp pixels
+#ifdef NONTEMPORAL
 				"movntq %%mm3,  (%%ebx)		\n"
 				"movntq %%mm4, 8(%%ebx)		\n"
+#else
+				"movq %%mm3,  (%%ebx)		\n"
+				"movq %%mm4, 8(%%ebx)		\n"
+#endif
 				: 
 				: "a" (&image_16bpp[y][x]),
 				  "b" (&image_32bpp[y][x])
@@ -130,22 +139,24 @@ void fill_image_16bpp(unsigned int SEED) {
 }
 
 
-static uint8_t convert_SSE2_maskR[16];
-static uint8_t convert_SSE2_maskG[16];
-static uint8_t convert_SSE2_maskB[16];
+static uint8_t convert_SSE2_maskR[16] __attribute__((aligned(16)));
+static uint8_t convert_SSE2_maskG[16] __attribute__((aligned(16)));
+static uint8_t convert_SSE2_maskB[16] __attribute__((aligned(16)));
 
 void convert_SSE2() {
 	int x, y;
 	uint32_t addr;
 
 	// preload masks
-	asm volatile ("movdqu (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
-	asm volatile ("movdqu (%%eax), %%xmm6" : : "a" (convert_SSE2_maskG));
-	asm volatile ("movdqu (%%eax), %%xmm7" : : "a" (convert_SSE2_maskR));
+	asm volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
+	asm volatile ("movdqa (%%eax), %%xmm6" : : "a" (convert_SSE2_maskG));
+	asm volatile ("movdqa (%%eax), %%xmm7" : : "a" (convert_SSE2_maskR));
 
 	// process image
+	int n = 0;
 	for (y=0; y < HEIGHT; y++) {
 		for (x=0; x < WIDTH; x+=8) {
+			n++;
 			asm volatile (
 				"movdqa (%%eax), %%xmm1		\n"	// |rrrrrggg|gggbbbbb|
 				"movdqa %%xmm1,  %%xmm2		\n"	// copy
@@ -166,10 +177,92 @@ void convert_SSE2() {
 				// construct 32bpp
 				"punpcklbw %%xmm1, %%xmm2	\n"	// |________|rrrrr___|gggggg__|bbbbb___|
 				"punpckhbw %%xmm1, %%xmm3	\n"
+			
 
 				// save 32bpp pixels
+#ifdef NONTEMPORAL
 				"movntdq %%xmm2,   (%%ebx)		\n"
 				"movntdq %%xmm3, 16(%%ebx)		\n"
+#else
+				"movdqa %%xmm2,   (%%ebx)		\n"
+				"movdqa %%xmm3, 16(%%ebx)		\n"
+#endif
+				: 
+				: "a" (&image_16bpp[y][x]),
+				  "b" (&image_32bpp[y][x])
+				: "memory"
+			);
+		}
+	}
+	
+	asm volatile ("sfence");
+}
+
+
+void convert_SSE2_2() {
+	int x, y;
+	uint32_t addr;
+
+	// preload masks
+	asm volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
+	asm volatile ("movdqa (%%eax), %%xmm6" : : "a" (convert_SSE2_maskG));
+	asm volatile ("movdqa (%%eax), %%xmm7" : : "a" (convert_SSE2_maskR));
+
+	// process image
+	int n = 0;
+	for (y=0; y < HEIGHT; y++) {
+		for (x=0; x < WIDTH; x+=16) {
+			n++;
+			asm volatile (
+				"movdqa   (%%eax), %%xmm1		\n"	// |rrrrrggg|gggbbbbb|
+				"movdqa 16(%%eax), %%xmm4		\n"	// |rrrrrggg|gggbbbbb|
+				"movdqa %%xmm1,  %%xmm2		\n"	// copy
+				"movdqa %%xmm1,  %%xmm3		\n"	// copy
+				"movdqa %%xmm4,  %%xmm5		\n"	// copy
+				"movdqa %%xmm4,  %%xmm6		\n"	// copy
+
+#if 1
+				// isolate components
+				"pand (convert_SSE2_maskB),  %%xmm1		\n"	// |________|___bbbbb|
+				"pand (convert_SSE2_maskG),  %%xmm2		\n"	// |_____ggg|ggg_____|
+				"pand (convert_SSE2_maskR),  %%xmm3		\n"	// |rrrrr___|________|
+
+				"pand (convert_SSE2_maskB),  %%xmm1		\n"	// |________|___bbbbb|
+				"pand (convert_SSE2_maskG),  %%xmm2		\n"	// |_____ggg|ggg_____|
+				"pand (convert_SSE2_maskR),  %%xmm3		\n"	// |rrrrr___|________|
+			
+				"psllw $3,     %%xmm1		\n"	// |________|bbbbb___|
+				"psllw $5,     %%xmm2		\n"	// |gggggg__|________|
+				"psrlw $8,     %%xmm3		\n"	// |________|rrrrr___|
+				"por  %%xmm2,  %%xmm1		\n"	// |gggggg__|bbbbb___|
+
+				"movdqa %%xmm3,  %%xmm2		\n"
+			
+				"psllw $3,     %%xmm4		\n"	// |________|bbbbb___|
+				"psllw $5,     %%xmm5		\n"	// |gggggg__|________|
+				"psrlw $8,     %%xmm6		\n"	// |________|rrrrr___|
+				"por  %%xmm4,  %%xmm5		\n"	// |gggggg__|bbbbb___|
+
+				"movdqa %%xmm5,  %%xmm4		\n"
+				
+				// construct 32bpp
+				"punpcklbw %%xmm1, %%xmm2	\n"	// |________|rrrrr___|gggggg__|bbbbb___|
+				"punpckhbw %%xmm1, %%xmm3	\n"
+				"punpcklbw %%xmm4, %%xmm5	\n"	// |________|rrrrr___|gggggg__|bbbbb___|
+				"punpckhbw %%xmm4, %%xmm6	\n"
+#endif
+				// save 32bpp pixels
+#ifdef NONTEMPORAL
+				"movntdq %%xmm2,   (%%ebx)		\n"
+				"movntdq %%xmm3, 16(%%ebx)		\n"
+				"movntdq %%xmm5, 32(%%ebx)		\n"
+				"movntdq %%xmm6, 48(%%ebx)		\n"
+#else
+				"movdqa %%xmm2,   (%%ebx)		\n"
+				"movdqa %%xmm3, 16(%%ebx)		\n"
+				"movdqa %%xmm5, 32(%%ebx)		\n"
+				"movdqa %%xmm6, 48(%%ebx)		\n"
+#endif
 				: 
 				: "a" (&image_16bpp[y][x]),
 				  "b" (&image_32bpp[y][x])
@@ -184,22 +277,31 @@ void convert_SSE2() {
 
 const int default_repeatcount = 100;
 
+#define OPT_COUNT 6
+
+static char* opts[OPT_COUNT] = {
+	/* 0 */ "lookup8",
+	/* 1 */ "lookup16",
+	/* 2 */ "naive",
+	/* 3 */ "MMX",
+	/* 4 */ "SSE2",
+	/* 5 */ "SSE22"
+};
+
 void help() {
-	printf(
-		"pixconv lookup8|lookup16|naive|mmx|sse2 [repeat count=%d]\n", default_repeatcount
-	);
+	int i;
+	printf("pixconf ");
+
+	printf("%s", opts[0]);
+	for (i=1; i < OPT_COUNT; i++)
+		printf("|%s", opts[i]);
+	
+	printf(" [repeat count=%d]\n", default_repeatcount);
 	exit(1);
 }
 
 
 int main(int argc, char* argv[]) {
-	static char* opts[5] = {
-		/* 0 */ "lookup8",
-		/* 1 */ "lookup16",
-		/* 2 */ "naive",
-		/* 3 */ "MMX",
-		/* 4 */ "SSE2",
-	};
 
 	int procedure;
 	int repeatcount;
@@ -207,14 +309,14 @@ int main(int argc, char* argv[]) {
 
 	switch (argc) {
 		case 2:
-			for (procedure=0; procedure < 5; procedure++)
+			for (procedure=0; procedure < OPT_COUNT; procedure++)
 				if (strcasecmp(argv[1], opts[procedure]) == 0)
 					break;
 
 			repeatcount = default_repeatcount;
 			break;
 		case 3:
-			for (procedure=0; procedure < 5; procedure++)
+			for (procedure=0; procedure < OPT_COUNT; procedure++)
 				if (strcasecmp(argv[1], opts[procedure]) == 0)
 					break;
 
@@ -273,6 +375,15 @@ int main(int argc, char* argv[]) {
 			t1 = clock();
 			while (repeatcount--)
 				convert_SSE2();
+			t2 = clock();
+
+			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			break;
+		case 5:
+			printf("running unrolled SSE2 %d times\n", repeatcount);
+			t1 = clock();
+			while (repeatcount--)
+				convert_SSE2_2();
 			t2 = clock();
 
 			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
