@@ -145,14 +145,11 @@ void convert_SSE2() {
 
 	// process image
 	for (y=0; y < HEIGHT; y++) {
-		asm volatile ("movdqa (%%eax), %%xmm4" : : "a" (&image_16bpp[y][0]));
-//		asm volatile ("prefetcht1 (%%eax)" : : "a" (&image_16bpp[y+1][0]));
 		for (x=0; x < WIDTH; x+=8) {
 			asm volatile (
-				"movdqa %%xmm4,  %%xmm1		\n"	// copy
-				"movdqa %%xmm4,  %%xmm2		\n"	// copy
-				"movdqa %%xmm4,  %%xmm3		\n"	// copy
-				"movdqa 16(%%eax), %%xmm4		\n"	// |rrrrrggg|gggbbbbb|
+				"movdqa (%%eax), %%xmm1		\n"	// |rrrrrggg|gggbbbbb|
+				"movdqa %%xmm1,  %%xmm2		\n"	// copy
+				"movdqa %%xmm1,  %%xmm3		\n"	// copy
 
 				// isolate components
 				"pand %%xmm5,  %%xmm1		\n"	// |________|___bbbbb|
