@@ -5,12 +5,17 @@
 
 static uint32_t lookup8_lo[256] __attribute__((aligned(64)));
 static uint32_t lookup8_hi[256] __attribute__((aligned(64)));
+static uint32_t lookup8_lo2[256] __attribute__((aligned(64)));
+static uint32_t lookup8_hi2[256] __attribute__((aligned(64)));
 static uint32_t lookup16[256*256] __attribute__((aligned(64)));
 
 #ifndef WIDTH
-#	define WIDTH	(1024)
+#	define WIDTH	1024
 #endif
-#define HEIGHT	768
+
+#ifndef HEIGHT
+#	define HEIGHT	768
+#endif
 
 static uint16_t image_16bpp[HEIGHT+1][WIDTH] __attribute__((aligned(16)));
 static uint32_t image_32bpp[HEIGHT+1][WIDTH] __attribute__((aligned(16)));
@@ -24,9 +29,12 @@ void prepare_lookups() {
 			  (x & 0x1f) << 3	// red
 			| (x & 0xe0) << 3;	// green[0:2]
 
-		lookup8_lo[x] =
+		lookup8_hi[x] =
 			  (x & 0x07) << (8+3)	// green[3:5]
 			| (x & 0xf8) << 16;	// blue
+		
+		lookup8_lo2[x] = lookup8_lo[x] << 16;
+		lookup8_hi2[x] = lookup8_hi[x] << 16;
 	}
 
 	for (x=0; x < 65536; x++) {
@@ -45,6 +53,22 @@ void convert_lookup8() {
 			image_32bpp[y][x] =
 				lookup8_lo[image_16bpp[y][x] & 0xff] |
 				lookup8_hi[image_16bpp[y][x] >> 8];
+	}
+}
+
+
+void convert_lookup8_2() {
+	uint8_t tmp;
+	int x, y;
+	for (y=0; y < HEIGHT; y++)
+		for (x=0; x < WIDTH; x+=2) {
+			tmp = (uint32_t)&image_16bpp[y][x];
+			image_32bpp[y][x] =
+				lookup8_lo[tmp & 0xff] |
+				lookup8_hi[(tmp >> 8) & 0xff];
+			image_32bpp[y][x+1] =
+				lookup8_lo2[(tmp >> 16) & 0xff] |
+				lookup8_hi2[(tmp >> 24) & 0xff];
 	}
 }
 
@@ -277,15 +301,16 @@ void convert_SSE2_2() {
 
 const int default_repeatcount = 100;
 
-#define OPT_COUNT 6
+#define OPT_COUNT 7
 
 static char* opts[OPT_COUNT] = {
 	/* 0 */ "lookup8",
-	/* 1 */ "lookup16",
-	/* 2 */ "naive",
-	/* 3 */ "MMX",
-	/* 4 */ "SSE2",
-	/* 5 */ "SSE22"
+	/* 1 */ "lookup82",
+	/* 2 */ "lookup16",
+	/* 3 */ "naive",
+	/* 4 */ "MMX",
+	/* 5 */ "SSE2",
+	/* 6 */ "SSE22"
 };
 
 void help() {
@@ -342,6 +367,15 @@ int main(int argc, char* argv[]) {
 			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
 			break;
 		case 1:
+			printf("running lookup8(2) %d times\n", repeatcount);
+			t1 = clock();
+			while (repeatcount--)
+				convert_lookup8_2();
+			t2 = clock();
+
+			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			break;
+		case 2:
 			printf("running lookup16 %d times\n", repeatcount);
 			t1 = clock();
 			while (repeatcount--)
@@ -350,7 +384,7 @@ int main(int argc, char* argv[]) {
 
 			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
 			break;
-		case 2:
+		case 3:
 			printf("running naive %d times\n", repeatcount);
 			t1 = clock();
 			while (repeatcount--)
@@ -359,7 +393,7 @@ int main(int argc, char* argv[]) {
 
 			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
 			break;
-		case 3:
+		case 4:
 			printf("running MMX %d times\n", repeatcount);
 			t1 = clock();
 			while (repeatcount--)
@@ -370,7 +404,7 @@ int main(int argc, char* argv[]) {
 
 			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
 			break;
-		case 4:
+		case 5:
 			printf("running SSE2 %d times\n", repeatcount);
 			t1 = clock();
 			while (repeatcount--)
@@ -379,7 +413,7 @@ int main(int argc, char* argv[]) {
 
 			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
 			break;
-		case 5:
+		case 6:
 			printf("running unrolled SSE2 %d times\n", repeatcount);
 			t1 = clock();
 			while (repeatcount--)
