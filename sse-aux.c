@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <time.h>
 
 #define packed_byte(x)   {x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}
@@ -9,14 +10,6 @@
 #define packed_double(f) {f, f}
 
 #define SIMD_ALIGN __attribute__((aligned(16)))
-
-
-#define DUMP_XMM(x)		\
-	"pushal\n"		\
-	"pushl $" ##x "\n"	\
-	"call dump_xmm\n"	\
-	"popl %%eax\n"		\
-	"popal\n"		\
 
 
 void print_xmm_float(int i) {
@@ -35,11 +28,11 @@ void print_xmm_float(int i) {
 }
 
 
-#define PRINT_XMM_FLOAT(n)
-	"pushal\n"
-	"pushl $" ##n "\n"
-	"call print_xmm_float\n"
-	"popl %%eax\n"
+#define PRINT_XMM_FLOAT(n)		\
+	"pushal\n"			\
+	"pushl $" ##n "\n"		\
+	"call print_xmm_float\n"	\
+	"popl %%eax\n"			\
 	"popal\n"
 
 
@@ -63,11 +56,11 @@ void print_xmm_hex(int i) {
 }
 
 
-#define PRINT_XMM_HEX(n)
-	"pushal\n"
-	"pushl $" ##n "\n"
-	"call print_xmm_hex\n"
-	"popl %%eax\n"
+#define PRINT_XMM_HEX(n)	\
+	"pushal\n"		\
+	"pushl $" ##n "\n"	\
+	"call print_xmm_hex\n"	\
+	"popl %%eax\n"		\
 	"popal\n"
 
 
@@ -98,9 +91,9 @@ void print_xmm_str(int i) {
 }
 
 
-#define PRINT_XMM_STR(n)
-	"pushal\n"
-	"pushl $" ##n "\n"
-	"call print_xmm_str\n"
-	"popl %%eax\n"
+#define PRINT_XMM_STR(n)	\
+	"pushal\n"		\
+	"pushl $" ##n "\n"	\
+	"call print_xmm_str\n"	\
+	"popl %%eax\n"		\
 	"popal\n"
