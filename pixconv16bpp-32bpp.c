@@ -11,6 +11,10 @@ static uint32_t lookup16[256*256] __attribute__((aligned(64)));
 
 #ifndef WIDTH
 #	define WIDTH	1024
+#else
+#	if WIDTH % 16 != 0
+#		error "WIDTH must be multiple of 16"
+#	endif
 #endif
 
 #ifndef HEIGHT
