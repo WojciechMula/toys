@@ -1,3 +1,27 @@
+/*
+	16bpp to 32bpp pixel conversion, $Revision: 1.8 $
+	
+	This simple program includes following procedures
+	1. naive      --- straightforward conversion that use and, or and shifts
+	                  1 pixel/iteration
+	2. lookup16   --- single, large lookup table, 1 pixel/iteration
+	3. lookup8    --- two, small lookup tables, 1 pixel/iteration
+	4. lookup8(2) --- optimized lookup8, 2 pixels/iteration
+	5. MMX        --- naive using MMX instructions, 4 pixels/iteration
+	5. SSE2       --- naive using SSE2 instructions, 8 pixels/iteration
+	5. SSE2(2)    --- unrolled SSE2, 16 pixels/iteration
+
+	Define NONTEMPORAL to use non-temporal strores in procedures
+	MMX, SSE2 and SSE2(2).
+	
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.mula.w.pl
+	
+	License: BSD
+	
+	initial release 20-05-2008, last update $Date: 2008-05-31 23:52:30 $
+*/
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -442,3 +466,5 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
+
+// eof
