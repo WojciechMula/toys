@@ -222,8 +222,10 @@ void convert_SSE2() {
 			);
 		}
 	}
-	
+
+#ifdef NONTEMPORAL
 	asm volatile ("sfence");
+#endif
 }
 
 
@@ -333,7 +335,10 @@ int main(int argc, char* argv[]) {
 
 	int procedure;
 	int repeatcount;
-	clock_t t1, t2;
+	struct timeval t1, t2;
+	long int sec1, sec2;
+
+#define timeval_sec(val) ((val).tv_sec * 1000000l + (val).tv_usec)
 
 	switch (argc) {
 		case 2:
@@ -362,69 +367,75 @@ int main(int argc, char* argv[]) {
 	switch (procedure) {
 		case 0:
 			printf("running lookup8 %d times\n", repeatcount);
-			t1 = clock();
+			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_lookup8();
-			t2 = clock();
+			gettimeofday(&t2, NULL);
 
-			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+		
 		case 1:
 			printf("running lookup8(2) %d times\n", repeatcount);
-			t1 = clock();
+			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_lookup8_2();
-			t2 = clock();
+			gettimeofday(&t2, NULL);
 
-			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+
 		case 2:
 			printf("running lookup16 %d times\n", repeatcount);
-			t1 = clock();
+			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_lookup16();
-			t2 = clock();
+			gettimeofday(&t2, NULL);
 
-			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+
 		case 3:
 			printf("running naive %d times\n", repeatcount);
-			t1 = clock();
+			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_naive();
-			t2 = clock();
+			gettimeofday(&t2, NULL);
 
-			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+
 		case 4:
 			printf("running MMX %d times\n", repeatcount);
-			t1 = clock();
+			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_MMX();
-			t2 = clock();
-
 			asm volatile ("emms");
+			gettimeofday(&t2, NULL);
 
-			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+
 		case 5:
 			printf("running SSE2 %d times\n", repeatcount);
-			t1 = clock();
+			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_SSE2();
-			t2 = clock();
+			gettimeofday(&t2, NULL);
 
-			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+
 		case 6:
 			printf("running unrolled SSE2 %d times\n", repeatcount);
-			t1 = clock();
+			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_SSE2_2();
-			t2 = clock();
+			gettimeofday(&t2, NULL);
 
-			printf("time = %0.7fs\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+
 		default:
 			help();
 	}
