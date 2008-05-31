@@ -1,5 +1,5 @@
 /*
-	$Date: 2008-05-26 15:54:29 $, $Revision: 1.10 $
+	$Date: 2008-05-31 00:04:00 $, $Revision: 1.11 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -621,7 +621,7 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 void usage() {
 	puts(
 "a. progname help\n"
-"b. progname test x86|mmx|mmx2 count\n"
+"b. progname test x86|mmx|mmx2|sse2 count\n"
 #ifdef USE_Xscr
 "c. progname view file_ppm_640x480\n"
 #endif
