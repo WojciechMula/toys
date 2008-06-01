@@ -1,17 +1,21 @@
 /*
-	short info, $Revision: 1.2 $
+	Lookup-based 32bpp pixels transformations, $Revision: 1.3 $
 	
-	maybe some detailed info
+	Four functions:
+	- naive 	--- strightforward C implementation
+	- x86		--- hand-coded assembler version of naive
+	- SSE2		--- SSE2 instructions used
+	- SSE4		--- SSE4.1 instructions used
+
+	Define RGBA to process RGBA pixels.  By default RGB pixels are processed.
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://www.mula.w.pl
 	
-	License: public domain
 	License: BSD
-	License: GPL
 	
-	initial release dd-mm-yyyy, last update $Date: 2008-06-01 21:03:28 $
+	initial release 25-05-2008, last update $Date: 2008-06-01 21:07:08 $
 */
 #include <stdio.h>
 #include <stdlib.h>
