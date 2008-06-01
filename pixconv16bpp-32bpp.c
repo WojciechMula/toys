@@ -1,15 +1,15 @@
 /*
-	16bpp to 32bpp pixel conversion, $Revision: 1.8 $
+	16bpp to 32bpp pixel conversion, $Revision: 1.9 $
 	
-	This simple program includes following procedures
-	1. naive      --- straightforward conversion that use and, or and shifts
-	                  1 pixel/iteration
-	2. lookup16   --- single, large lookup table, 1 pixel/iteration
-	3. lookup8    --- two, small lookup tables, 1 pixel/iteration
-	4. lookup8(2) --- optimized lookup8, 2 pixels/iteration
-	5. MMX        --- naive using MMX instructions, 4 pixels/iteration
-	5. SSE2       --- naive using SSE2 instructions, 8 pixels/iteration
-	5. SSE2(2)    --- unrolled SSE2, 16 pixels/iteration
+	This simple program includes following procedures:
+	* naive      --- straightforward conversion that use and, or and shifts
+	                 1 pixel/iteration
+	* lookup16   --- single, large lookup table, 1 pixel/iteration
+	* lookup8    --- two, small lookup tables, 1 pixel/iteration
+	* lookup8(2) --- optimized lookup8, 2 pixels/iteration
+	* MMX        --- naive using MMX instructions, 4 pixels/iteration
+	* SSE2       --- naive using SSE2 instructions, 8 pixels/iteration
+	* SSE2(2)    --- unrolled SSE2, 16 pixels/iteration
 
 	Define NONTEMPORAL to use non-temporal strores in procedures
 	MMX, SSE2 and SSE2(2).
@@ -20,7 +20,7 @@
 	
 	License: BSD
 	
-	initial release 20-05-2008, last update $Date: 2008-05-31 23:52:30 $
+	initial release 20-05-2008, last update $Date: 2008-06-01 21:15:50 $
 */
 #include <stdint.h>
 #include <stdlib.h>
