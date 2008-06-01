@@ -1,3 +1,18 @@
+/*
+	short info, $Revision: 1.2 $
+	
+	maybe some detailed info
+	
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.mula.w.pl
+	
+	License: public domain
+	License: BSD
+	License: GPL
+	
+	initial release dd-mm-yyyy, last update $Date: 2008-06-01 21:03:28 $
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -16,14 +31,20 @@ void convert(uint32_t* input, uint32_t* output, int n) {
 		R = input[i] & 0xff;
 		G = (input[i] >> 8)  & 0xff;
 		B = (input[i] >> 16) & 0xff;
+#ifdef RGBA
 		A = (input[i] >> 24) & 0xff;
+#endif
 
 		R = LUT_R[R];
 		G = LUT_G[G];
 		B = LUT_B[B];
+#ifdef RGBA
 		A = LUT_A[A];
-
 		output[i] = R | G | B | A;
+#else
+		output[i] = R | G | B;
+#endif
+
 	}
 }
 
@@ -39,13 +60,17 @@ void x86_convert(uint32_t* input, uint32_t* output, int n) {
 		"	movzbl    %%al, %%ebx		\n"
 		"	movzbl    %%ah, %%ecx		\n"
 		"	shrl       $16, %%eax		\n"
+#ifdef RGBA
 		"	movzbl    %%ah, %%edx		\n"
+#endif
 		"	movzbl    %%al, %%eax		\n"
 
 		"	movl   LUT_R(,%%ebx,4), %%ebx	\n"
 		"	orl    LUT_G(,%%ecx,4), %%ebx	\n"
-		"	orl    LUT_B(,%%edx,4), %%ebx	\n"
-		"	orl    LUT_A(,%%eax,4), %%ebx	\n"
+#ifdef RGBA
+		"	orl    LUT_A(,%%edx,4), %%ebx	\n"
+#endif
+		"	orl    LUT_B(,%%eax,4), %%ebx	\n"
 		"	movl   %%ebx, (%%edi)		\n"
 		"	addl      $4, %%edi		\n"
 
@@ -75,58 +100,74 @@ void sse2_convert(uint32_t* input, uint32_t* output, int n) {
 		"	movzbl    %%al, %%ebx		\n"
 		"	movzbl    %%ah, %%ecx		\n"
 		"	shrl       $16, %%eax		\n"
+#ifdef RGBA
 		"	movzbl    %%ah, %%edx		\n"
+#endif
 		"	movzbl    %%al, %%eax		\n"
 
 		"	pshufd $0b00111001, %%xmm0, %%xmm0	\n"
 			
 		"	movl   LUT_R(,%%ebx,4), %%ebx	\n"
 		"	orl    LUT_G(,%%ecx,4), %%ebx	\n"
-		"	orl    LUT_B(,%%edx,4), %%ebx	\n"
-		"	orl    LUT_A(,%%eax,4), %%ebx	\n"
+#ifdef RGBA
+		"	orl    LUT_A(,%%edx,4), %%ebx	\n"
+#endif
+		"	orl    LUT_B(,%%eax,4), %%ebx	\n"
 		"	movl   %%ebx, (%%edi)		\n"
 
 		"	movd	%%xmm0, %%eax		\n"
 		"	movzbl    %%al, %%ebx		\n"
 		"	movzbl    %%ah, %%ecx		\n"
 		"	shrl       $16, %%eax		\n"
+#ifdef RGBA
 		"	movzbl    %%ah, %%edx		\n"
+#endif
 		"	movzbl    %%al, %%eax		\n"
 
 		"	pshufd $0b00111001, %%xmm0, %%xmm0	\n"
 			
 		"	movl   LUT_R(,%%ebx,4), %%ebx	\n"
 		"	orl    LUT_G(,%%ecx,4), %%ebx	\n"
-		"	orl    LUT_B(,%%edx,4), %%ebx	\n"
-		"	orl    LUT_A(,%%eax,4), %%ebx	\n"
+#ifdef RGBA
+		"	orl    LUT_A(,%%edx,4), %%ebx	\n"
+#endif
+		"	orl    LUT_B(,%%eax,4), %%ebx	\n"
 		"	movl   %%ebx, (%%edi)		\n"
 
 		"	movd	%%xmm0, %%eax		\n"
 		"	movzbl    %%al, %%ebx		\n"
 		"	movzbl    %%ah, %%ecx		\n"
 		"	shrl       $16, %%eax		\n"
+#ifdef RGBA
 		"	movzbl    %%ah, %%edx		\n"
+#endif
 		"	movzbl    %%al, %%eax		\n"
 
 		"	pshufd $0b00111001, %%xmm0, %%xmm0	\n"
 			
 		"	movl   LUT_R(,%%ebx,4), %%ebx	\n"
 		"	orl    LUT_G(,%%ecx,4), %%ebx	\n"
-		"	orl    LUT_B(,%%edx,4), %%ebx	\n"
-		"	orl    LUT_A(,%%eax,4), %%ebx	\n"
+#ifdef RGBA
+		"	orl    LUT_A(,%%edx,4), %%ebx	\n"
+#endif
+		"	orl    LUT_B(,%%eax,4), %%ebx	\n"
 		"	movl   %%ebx, (%%edi)		\n"
 
 		"	movd	%%xmm0, %%eax		\n"
 		"	movzbl    %%al, %%ebx		\n"
 		"	movzbl    %%ah, %%ecx		\n"
 		"	shrl       $16, %%eax		\n"
+#ifdef RGBA
 		"	movzbl    %%ah, %%edx		\n"
+#endif
 		"	movzbl    %%al, %%eax		\n"
 
 		"	movl   LUT_R(,%%ebx,4), %%ebx	\n"
 		"	orl    LUT_G(,%%ecx,4), %%ebx	\n"
-		"	orl    LUT_B(,%%edx,4), %%ebx	\n"
-		"	orl    LUT_A(,%%eax,4), %%ebx	\n"
+#ifdef RGBA
+		"	orl    LUT_A(,%%edx,4), %%ebx	\n"
+#endif
+		"	orl    LUT_B(,%%eax,4), %%ebx	\n"
 		"	movl   %%ebx, (%%edi)		\n"
 		
 		"	addl   $16, %%edi		\n"
@@ -154,41 +195,57 @@ void sse4_convert(uint32_t* input, uint32_t* output, int n) {
 		"	pextrb $0, %%xmm0, %%eax	\n"
 		"	pextrb $1, %%xmm0, %%ebx	\n"
 		"	pextrb $2, %%xmm0, %%ecx	\n"
+#ifdef RGBA
 		"	pextrb $3, %%xmm0, %%edx	\n"
+#endif
 		"	movl   LUT_R(,%%eax,4), %%eax	\n"
 		"	orl    LUT_G(,%%ebx,4), %%eax	\n"
-		"	orl    LUT_B(,%%edx,4), %%eax	\n"
+		"	orl    LUT_B(,%%ecx,4), %%eax	\n"
+#ifdef RGBA
 		"	orl    LUT_A(,%%edx,4), %%eax	\n"
+#endif
 		"	pinsrd $0, %%eax, %%xmm1	\n"
 
 		"	pextrb $4, %%xmm0, %%eax	\n"
 		"	pextrb $5, %%xmm0, %%ebx	\n"
 		"	pextrb $6, %%xmm0, %%ecx	\n"
+#ifdef RGBA
 		"	pextrb $7, %%xmm0, %%edx	\n"
+#endif
 		"	movl   LUT_R(,%%eax,4), %%eax	\n"
 		"	orl    LUT_G(,%%ebx,4), %%eax	\n"
-		"	orl    LUT_B(,%%edx,4), %%eax	\n"
+		"	orl    LUT_B(,%%ecx,4), %%eax	\n"
+#ifdef RGBA
 		"	orl    LUT_A(,%%edx,4), %%eax	\n"
+#endif
 		"	pinsrd $1, %%eax, %%xmm1	\n"
 
 		"	pextrb $8, %%xmm0, %%eax	\n"
 		"	pextrb $9, %%xmm0, %%ebx	\n"
 		"	pextrb $10, %%xmm0, %%ecx	\n"
+#ifdef RGBA
 		"	pextrb $11, %%xmm0, %%edx	\n"
+#endif
 		"	movl   LUT_R(,%%eax,4), %%eax	\n"
 		"	orl    LUT_G(,%%ebx,4), %%eax	\n"
-		"	orl    LUT_B(,%%edx,4), %%eax	\n"
+		"	orl    LUT_B(,%%ecx,4), %%eax	\n"
+#ifdef RGBA
 		"	orl    LUT_A(,%%edx,4), %%eax	\n"
+#endif
 		"	pinsrd $2, %%eax, %%xmm1	\n"
 
 		"	pextrb $12, %%xmm0, %%eax	\n"
 		"	pextrb $13, %%xmm0, %%ebx	\n"
 		"	pextrb $14, %%xmm0, %%ecx	\n"
+#ifdef RGBA
 		"	pextrb $15, %%xmm0, %%edx	\n"
+#endif
 		"	movl   LUT_R(,%%eax,4), %%eax	\n"
 		"	orl    LUT_G(,%%ebx,4), %%eax	\n"
-		"	orl    LUT_B(,%%edx,4), %%eax	\n"
+		"	orl    LUT_B(,%%ecx,4), %%eax	\n"
+#ifdef RGBA
 		"	orl    LUT_A(,%%edx,4), %%eax	\n"
+#endif
 		"	pinsrd $3, %%eax, %%xmm1	\n"
 
 		"	movdqa %%xmm1, (%%edi)		\n"
@@ -274,3 +331,5 @@ int main(int argc, char* argv[]) {
 	free(output);
 	return 0;
 }
+
+// eof
