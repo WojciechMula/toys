@@ -1,5 +1,5 @@
 /*
-	Lookup-based 32bpp pixels transformations, $Revision: 1.4 $
+	Lookup-based 32bpp pixels transformations, $Revision: 1.5 $
 	
 	This simple program includes following procedures:
 	* naive 	--- strightforward C implementation
@@ -15,7 +15,7 @@
 	
 	License: BSD
 	
-	initial release 25-05-2008, last update $Date: 2008-06-01 21:15:41 $
+	initial release 25-05-2008, last update $Date: 2008-06-02 10:06:14 $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,11 +25,17 @@
 static uint32_t LUT_R[256] __attribute__((aligned(16)));
 static uint32_t LUT_G[256] __attribute__((aligned(16)));
 static uint32_t LUT_B[256] __attribute__((aligned(16)));
+#ifdef RGBA
 static uint32_t LUT_A[256] __attribute__((aligned(16)));
+#endif
 
 
 void convert(uint32_t* input, uint32_t* output, int n) {
+#ifdef RGBA
 	uint32_t R, G, B, A;
+#else
+	uint32_t R, G, B;
+#endif
 	int i;
 	for (i=0; i < n; i++) {
 		R = input[i] & 0xff;
