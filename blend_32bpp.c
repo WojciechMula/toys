@@ -1,3 +1,26 @@
+/*
+	Alpha blending of 32bpp images, $Revision: 1.3 $
+	
+	Program contains four procedures:
+
+	* x86    --- C implementation (blend_image_inplace)
+	             (1 pixel/iteration)
+	* SSSE3  --- SIMD reference implementation (ssse3_blend_image_inplace)
+	             (4 pixels/iteration)
+	* SSE4   --- instruction pmovzx used instead of punpckxbw (sse4_blend_image_inplace)
+	             (4 pixels/iteration)
+	* SSE4-2 --- unrolled SSE4 variant (sse4_blend_image_inplace_unrolled)
+	             (8 pixels/iteration)
+	
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.mula.w.pl
+	
+	License: BSD
+	
+	initial release 3-06-2008, last update $Date: 2008-06-03 20:08:09 $
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
