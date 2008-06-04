@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-07-04 22:14:57 $, $Revision: 1.5 $
+	$Date: 2008-06-04 12:45:02 $, $Revision: 1.6 $
 
 	Demo program use to test/profile asm routines that perform saturated
 	add of two 16bpp images.	Algorithms were described on my webpage (polish
@@ -25,6 +25,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <string.h>
+#include <strings.h>
 #include <errno.h>
 
 //#define USE_Xscr
@@ -68,7 +69,7 @@ void x86_saturated_add(uint16_t *A, uint16_t *B, int width, int height) {
 	b = (uint32_t*)B;
 	for (y=0; y < height; y++)
 		for (x=0; x < width/2; x++) {
-		asm(
+		__asm__ volatile(
 		"   mov %%eax, %%ecx                      \n\t"
 		"   mov %%ebx, %%edx                      \n\t"
 		"                                         \n\t"
@@ -124,7 +125,7 @@ void MMX_saturated_add(uint16_t *A, uint16_t *B, int width, int height) {
 	uint64_t *a;
 	uint64_t *b;
 
-	asm(
+	__asm__ volatile(
 	"   movq (%0), %%mm7                      \n\t"
 	"   movq (%1), %%mm6                      \n\t"
 	"   movq (%2), %%mm5                      \n\t"
@@ -137,7 +138,7 @@ void MMX_saturated_add(uint16_t *A, uint16_t *B, int width, int height) {
 	b = (uint64_t*)B;
 	for (y=0; y < height; y++)
 		for (x=0; x < width/4; x++) {
-		asm(
+		__asm__ volatile(
 		"   movq (%%eax), %%mm0                   \n\t"
 		"   movq (%%ebx), %%mm2                   \n\t"
 		"   movq %%mm0, %%mm1                     \n\t"
@@ -241,11 +242,7 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int s
 #endif
 
 int main(int argc, char* argv[]) {
-	int times, result;
-	int img_width, img_height, img_bits;
-	uint8_t *img;
-
-	FILE* file;
+	int times;
 
 	if (argc == 1) {
 		usage(stdout);
@@ -272,6 +269,11 @@ int main(int argc, char* argv[]) {
 	}
 
 #ifdef USE_Xscr
+	int result;
+	int img_width, img_height, img_bits;
+	uint8_t *img;
+
+	FILE* file;
 	// progname view mmx|x86 filename
 	if (strcasecmp(argv[1], "view") == 0 && argc == 4) {
 		if (strcasecmp(argv[2], "mmx") == 0) MMX = 1; else
