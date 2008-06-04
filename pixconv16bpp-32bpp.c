@@ -1,5 +1,5 @@
 /*
-	16bpp to 32bpp pixel conversion, $Revision: 1.9 $
+	16bpp to 32bpp pixel conversion, $Revision: 1.10 $
 	
 	This simple program includes following procedures:
 	* naive      --- straightforward conversion that use and, or and shifts
@@ -20,12 +20,14 @@
 	
 	License: BSD
 	
-	initial release 20-05-2008, last update $Date: 2008-06-01 21:15:50 $
+	initial release 20-05-2008, last update $Date: 2008-06-04 12:45:02 $
 */
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
+#include <sys/time.h>
 #include <time.h>
 
 static uint32_t lookup8_lo[256] __attribute__((aligned(64)));
@@ -136,14 +138,14 @@ void convert_MMX() {
 	int x, y;
 
 	// preload masks
-	asm volatile ("movq (%%eax), %%mm5" : : "a" (convert_MMX_maskB));
-	asm volatile ("movq (%%eax), %%mm6" : : "a" (convert_MMX_maskG));
-	asm volatile ("movq (%%eax), %%mm7" : : "a" (convert_MMX_maskR));
+	__asm__ volatile ("movq (%%eax), %%mm5" : : "a" (convert_MMX_maskB));
+	__asm__ volatile ("movq (%%eax), %%mm6" : : "a" (convert_MMX_maskG));
+	__asm__ volatile ("movq (%%eax), %%mm7" : : "a" (convert_MMX_maskR));
 
 	// process image
 	for (y=0; y < HEIGHT; y++)
 		for (x=0; x < WIDTH; x+=4) {
-			asm volatile (
+			__asm__ volatile (
 				"movq (%%eax), %%mm1		\n"	// |rrrrrggg|gggbbbbb|
 				"movq %%mm1,   %%mm2		\n"	// copy
 				"movq %%mm1,   %%mm3		\n"	// copy
@@ -200,16 +202,16 @@ void convert_SSE2() {
 	int x, y;
 
 	// preload masks
-	asm volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
-	asm volatile ("movdqa (%%eax), %%xmm6" : : "a" (convert_SSE2_maskG));
-	asm volatile ("movdqa (%%eax), %%xmm7" : : "a" (convert_SSE2_maskR));
+	__asm__ volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
+	__asm__ volatile ("movdqa (%%eax), %%xmm6" : : "a" (convert_SSE2_maskG));
+	__asm__ volatile ("movdqa (%%eax), %%xmm7" : : "a" (convert_SSE2_maskR));
 
 	// process image
 	int n = 0;
 	for (y=0; y < HEIGHT; y++) {
 		for (x=0; x < WIDTH; x+=8) {
 			n++;
-			asm volatile (
+			__asm__ volatile (
 				"movdqa (%%eax), %%xmm1		\n"	// |rrrrrggg|gggbbbbb|
 				"movdqa %%xmm1,  %%xmm2		\n"	// copy
 				"movdqa %%xmm1,  %%xmm3		\n"	// copy
@@ -248,7 +250,7 @@ void convert_SSE2() {
 	}
 
 #ifdef NONTEMPORAL
-	asm volatile ("sfence");
+	__asm__ volatile ("sfence");
 #endif
 }
 
@@ -257,16 +259,16 @@ void convert_SSE2_2() {
 	int x, y;
 
 	// preload masks
-	asm volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
-	asm volatile ("movdqa (%%eax), %%xmm6" : : "a" (convert_SSE2_maskG));
-	asm volatile ("movdqa (%%eax), %%xmm7" : : "a" (convert_SSE2_maskR));
+	__asm__ volatile ("movdqa (%%eax), %%xmm5" : : "a" (convert_SSE2_maskB));
+	__asm__ volatile ("movdqa (%%eax), %%xmm6" : : "a" (convert_SSE2_maskG));
+	__asm__ volatile ("movdqa (%%eax), %%xmm7" : : "a" (convert_SSE2_maskR));
 
 	// process image
 	int n = 0;
 	for (y=0; y < HEIGHT; y++) {
 		for (x=0; x < WIDTH; x+=16) {
 			n++;
-			asm volatile (
+			__asm__ volatile (
 				"movdqa   (%%eax), %%xmm1		\n"	// |rrrrrggg|gggbbbbb|
 				"movdqa 16(%%eax), %%xmm4		\n"	// |rrrrrggg|gggbbbbb|
 				"movdqa %%xmm1,  %%xmm2		\n"	// copy
@@ -324,7 +326,7 @@ void convert_SSE2_2() {
 		}
 	}
 	
-	asm volatile ("sfence");
+	__asm__ volatile ("sfence");
 }
 
 
@@ -360,7 +362,6 @@ int main(int argc, char* argv[]) {
 	int procedure;
 	int repeatcount;
 	struct timeval t1, t2;
-	long int sec1, sec2;
 
 #define timeval_sec(val) ((val).tv_sec * 1000000l + (val).tv_usec)
 
@@ -434,7 +435,7 @@ int main(int argc, char* argv[]) {
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_MMX();
-			asm volatile ("emms");
+			__asm__ volatile ("emms");
 			gettimeofday(&t2, NULL);
 
 			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
