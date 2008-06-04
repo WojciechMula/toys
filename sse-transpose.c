@@ -1,5 +1,5 @@
 /*
-	Transpose 4x4 matrix (in-place) using SSE instructions, $Revision: 1.2 $
+	Transpose 4x4 matrix (in-place) using SSE instructions, $Revision: 1.3 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,14 +7,14 @@
 	
 	License: public domain
 	
-	initial release 10.03.2002, last update $Date: 2007-09-13 18:56:21 $
+	initial release 10.03.2002, last update $Date: 2008-06-04 12:45:02 $
 */
 
-#include "sse-aux.inc"
+#include "sse-aux.c"
 
 // start-snippet
 void sse_transpose(float mat[4*4]) {
-asm(
+__asm__ volatile (
                                 //         0  1  2  3 <- index
    "movups 0x00(%0), %%xmm0 \n" // xmm0 := a0 a1 a2 a3
    "movups 0x10(%0), %%xmm1 \n" // xmm1 := b0 b1 b2 b3
@@ -50,19 +50,20 @@ asm(
 
 
 int main() {
-	srand(time(NULL));
+	initfrand();
+
 	float mat[4*4];
 	int i=0;
 	for (i=0; i < 4*4; i++)
 		mat[i] = i;
 
 	printf("M = \n");
-	for (i=0; i < 4; i++) print_vect(&mat[i*4]);
+	for (i=0; i < 4; i++) print_vec_float(&mat[i*4]);
 
 	sse_transpose(mat);
 
 	printf("M^T = \n");
-	for (i=0; i < 4; i++) print_vect(&mat[i*4]);
+	for (i=0; i < 4; i++) print_vec_float(&mat[i*4]);
 
 	return 0;
 }

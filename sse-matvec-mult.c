@@ -1,6 +1,6 @@
 /*
 	Multiply matrix 4x4 by vector 4x1 using SSE instructions,
-	$Revision: 1.2 $
+	$Revision: 1.3 $
 
 	[a0, a1, a2, a3]   [x]   [a0*x + a1*y + a*z + a3]
 	[b0, b1, b2, b3]   [y]   [b0*x + b1*y + b*z + b3]
@@ -14,14 +14,14 @@
 
 	License: public domain
 
-	initial release 10.03.2007, last update $Date: 2007-09-15 12:59:33 $
+	initial release 10.03.2007, last update $Date: 2008-06-04 12:45:02 $
 */
 
-#include "sse-aux.inc"
+#include "sse-aux.c"
 
 // start-snippet
 void sse_matvec_mult(float mat[4*4], float vec[4], float result[4]) {
-asm(
+__asm__ volatile (
    // load vector
    "movups (%1), %%xmm4                    \n" // xmm4 := [x, y, w, z] = V
 
@@ -87,9 +87,9 @@ int main() {
 	matvec_mult(mat, vec, res1);
 
 	for (i=0; i<4; i++) err[i] = 100.0 * (1.0 - res1[i]/res2[i]);
-	printf("    ref = ");  print_vect(res1);
-	printf("    SSE = ");  print_vect(res2);
-	printf("err [%%] = "); print_vect(err);
+	printf("    ref = ");  print_vec_float(res1);
+	printf("    SSE = ");  print_vec_float(res2);
+	printf("err [%%] = "); print_vec_float(err);
 	return 0;
 }
 

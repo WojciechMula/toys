@@ -1,5 +1,5 @@
 /*
-	Calculate cross product using SSE instructions, $Revision: 1.2 $
+	Calculate cross product using SSE instructions, $Revision: 1.3 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,14 +7,14 @@
 	
 	License: public domain
 	
-	initial release 11.03.2002, last update $Date: 2007-09-13 18:55:38 $
+	initial release 11.03.2002, last update $Date: 2008-06-04 12:45:02 $
 */
 
-#include "sse-aux.inc"
+#include "sse-aux.c"
 
 // start-snippet
 void sse_cross_prod(float v1[4], float v2[4], float result[4]) {
-asm(
+__asm__ volatile (
     // load vectors                                 index -> 0   1   2   3
     "movups (%0), %%xmm0                    \n" // xmm0 := | a | b | c | . |
     "movups (%1), %%xmm1                    \n" // xmm1 := | x | y | z | . |
@@ -78,9 +78,9 @@ int main() {
 		err[i] = 100.0 * (1.0 - res1[i]/res2[i]);
 	err[3] = 0.0;
 	
-	printf("    ref = ");  print_vect(res1);
-	printf("    SSE = ");  print_vect(res2);
-	printf("err [%%] = "); print_vect(err);
+	printf("    ref = ");  print_vec_float(res1);
+	printf("    SSE = ");  print_vec_float(res2);
+	printf("err [%%] = "); print_vec_float(err);
 	return 0;
 }
 

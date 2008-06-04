@@ -1,5 +1,5 @@
 /*
-	Calculating 4 dot products using SSE instructions, $Revision: 1.3 $
+	Calculating 4 dot products using SSE instructions, $Revision: 1.4 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,14 +7,14 @@
 	
 	License: public domain
 	
-	initial release 11.02.2002, last update $Date: 2007-09-15 14:03:26 $
+	initial release 11.02.2002, last update $Date: 2008-06-04 12:45:02 $
 */
 
-#include "sse-aux.inc"
+#include "sse-aux.c"
 
 // start-snippet
 void sse_dot4(float* v1x4, float* v2x4, float* results) {
-asm(
+__asm__ volatile (
    // load 4 vectors from v1
    "movups    (%0), %%xmm0                 \n"
    "movups  16(%0), %%xmm1                 \n"
@@ -87,11 +87,11 @@ int main() {
 	sse_dot4(v1, v2, results2);
 	dot4(v1, v2, results1);
 
-	printf("    ref = "); print_vect(results1);
-	printf("    SSE = "); print_vect(results2);
+	printf("    ref = "); print_vec_float(results1);
+	printf("    SSE = "); print_vec_float(results2);
 	for (i=0; i<4; i++)
 		err[i] = 100.0 * (1.0 - results1[i]/results2[i]);
-	printf("err [%%] = "); print_vect(err);
+	printf("err [%%] = "); print_vec_float(err);
 	return 0;
 }
 

@@ -1,5 +1,5 @@
 /*
-	Matrix 4x4 multiplication using SSE instructions, $Revision: 1.2 $
+	Matrix 4x4 multiplication using SSE instructions, $Revision: 1.3 $
 	
 	[Aa0 Aa1 Aa2 Aa3]  [Ba0 Ba1 Ba2 Ba3]   [Aa0*Ba0 + Aa1*Bb0 + Aa2*Bc0 + Aa3*Bd0, ..., ..., ...]
 	[Ab0 Ab1 Ab2 Ab3]  [Bb0 Bb1 Bb2 Bb3] = [Ab0*Ba0 + Ab1*Bb0 + Ab2*Bc0 + Ab3*Bd0, ..., ..., ...]
@@ -12,15 +12,15 @@
 	
 	License: public domain
 	
-	initial release 15.09.2007, last update $Date: 2007-09-15 21:51:25 $
+	initial release 15.09.2007, last update $Date: 2008-06-04 12:45:02 $
 */
 
 #include <math.h>
-#include "sse-aux.inc"
+#include "sse-aux.c"
 
 // start-snippet
 void sse_matmat_mult(float mat1[4*4], float mat2[4*4], float mat3[4*4]) {
-asm(
+__asm__ volatile (
     // load all rows from M2, i.e. Ba, Bb, Bc an Bd
     "movups 0x00(%1), %%xmm4                \n" // xmm4 := Ba
     "movups 0x10(%1), %%xmm5                \n" // xmm5 := Bb
@@ -92,14 +92,14 @@ int main(int argc, char* argv[]) {
 	matmat_mult(mat1, mat2, res1);
 	
 	printf("ref = \n");
-	for (i=0; i<4; i++) print_vect(&res1[4*i]);
+	for (i=0; i<4; i++) print_vec_float(&res1[4*i]);
 	
 	printf("SSE = \n");
-	for (i=0; i<4; i++) print_vect(&res2[4*i]);
+	for (i=0; i<4; i++) print_vec_float(&res2[4*i]);
 
 	printf("err [%%] = \n");
 	for (i=0; i<16; i++) err[i] = 100.0 * (1.0 - res1[i]/res2[i]);
-	for (i=0; i<4; i++) print_vect(&err[4*i]);
+	for (i=0; i<4; i++) print_vec_float(&err[4*i]);
 
 	return 0;
 }

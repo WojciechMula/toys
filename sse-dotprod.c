@@ -1,5 +1,5 @@
 /*
-	Calculating dot product using SSE instructions, $Revision: 1.3 $
+	Calculating dot product using SSE instructions, $Revision: 1.4 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,14 +7,14 @@
 	
 	License: public domain
 	
-	initial release 13.03.2002, last update $Date: 2007-09-13 19:10:48 $
+	initial release 13.03.2002, last update $Date: 2008-06-04 12:45:02 $
 */
 
-#include "sse-aux.inc"
+#include "sse-aux.c"
 
 // start-snippet
 void sse_dot(float vec1[4], float vec2[4], float* result) {
-asm(
+__asm__ volatile (
    "movups (%0), %%xmm0                    \n" // load vec1: |w1|z1|y1|x1|
    "movups (%1), %%xmm1                    \n" // load vec2: |w2|z2|y2|x2|
    "                                       \n"
@@ -31,7 +31,7 @@ asm(
 // end-snippet
 
 
-float dot(float v1[4], float v2[4], float* result) {
+void dot(float v1[4], float v2[4], float* result) {
 	int i;
 	*result = 0.0;
 	for (i=0; i < 4; i++)
