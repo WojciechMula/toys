@@ -1,5 +1,5 @@
 /*
-	$Date: 2008-05-31 00:04:00 $, $Revision: 1.11 $
+	$Date: 2008-06-04 12:20:07 $, $Revision: 1.12 $
 	
 	Blur grayscale demo, including MMX implementation.
 
@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <strings.h>
 
 #define SUM_TABLE_SIZE		(1024*16)
 #define MAX_GRAY_WIDTH		SUM_TABLE_SIZE
@@ -101,7 +102,7 @@ x86blur_gray_calc_sums(
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
-	asm (
+	__asm__ volatile (
 	    // eax = border_color
 	"   pushl %%eax                           \n\t"
 	"   xorl %%ebx, %%ebx                     \n\t"
@@ -138,7 +139,7 @@ x86blur_gray_calc_sums(
 
 void //inlinefun
 x86blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
-	asm volatile (
+	__asm__ volatile (
 	"0:                                       \n\t"
 	"   xorl %%eax, %%eax                     \n\t"
 	"   movw    (%%esi), %%ax                 \n\t" // ax  = SUM_TABLE[i]
@@ -172,7 +173,7 @@ void mmxblur_gray_calc_sums(
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
-	asm(
+	__asm__ volatile(
 	"   pxor %%mm7, %%mm7                     \n\t"
 	"0:                                       \n\t"
 	"   movq 0(%%esi), %%mm0                  \n\t"
@@ -229,7 +230,7 @@ void mmx2blur_gray_calc_sums(
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
-	asm(
+	__asm__ volatile(
 	"   pxor %%mm7, %%mm7                     \n\t"
 	"   movq 0(%%esi), %%mm6                  \n\t"
 	"0:                                       \n\t"
@@ -294,7 +295,7 @@ void mmx2blur_gray_calc_sums(
 
 void mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	static uint16_t mul_const[4] = {65536/9, 65536/9, 65536/9, 65536/9};
-	asm(
+	__asm__ volatile(
 	"  movq (%%eax), %%mm7                    \n\t"
 	"0:                                       \n\t"
 	"  movq     (%%esi), %%mm0                \n\t"
@@ -335,7 +336,7 @@ void sse2blur_gray_calc_sums(
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
-	asm(
+	__asm__ volatile(
 	"   pxor %%xmm7, %%xmm7                   \n\t"
 	"   movdqu 0(%%esi), %%xmm6               \n\t"
 	"0:                                       \n\t"
@@ -392,7 +393,7 @@ void sse2blur_gray_calc_sums(
 
 void sse2blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	static uint16_t mul_const[8] = {65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9};
-	asm(
+	__asm__ volatile(
 	"  movdqu (%%eax), %%xmm7                 \n\t"
 	"0:                                       \n\t"
 	"  movdqa   (%%esi), %%xmm0               \n\t"
