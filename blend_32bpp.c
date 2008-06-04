@@ -1,5 +1,5 @@
 /*
-	Alpha blending of 32bpp images, $Revision: 1.3 $
+	Alpha blending of 32bpp images, $Revision: 1.4 $
 	
 	Program contains four procedures:
 
@@ -18,7 +18,7 @@
 	
 	License: BSD
 	
-	initial release 3-06-2008, last update $Date: 2008-06-03 20:08:09 $
+	initial release 3-06-2008, last update $Date: 2008-06-04 12:12:54 $
 */
 
 #include <stdlib.h>
@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <string.h>
+#include <strings.h>
 
 #define SIMD_ALIGN __attribute__((aligned(16)))
 
@@ -71,7 +72,7 @@ void blend_image_inplace(uint32_t* background, uint32_t* foreground, int count) 
 
 
 void ssse3_blend_image_inplace(uint32_t* background, uint32_t* foreground, int count) {
-	asm volatile (
+	__asm__ volatile (
 		"movdqa populate_alpha, %%xmm7	\n"
 		"pxor   %%xmm6, %%xmm6		\n"	// xmm6 = packed_byte(0x00)
 
@@ -132,7 +133,7 @@ void ssse3_blend_image_inplace(uint32_t* background, uint32_t* foreground, int c
 
 
 void sse4_blend_image_inplace(uint32_t* background, uint32_t* foreground, int count) {
-	asm volatile (
+	__asm__ volatile (
 		"movdqa populate_alpha, %%xmm7	\n"
 
 		"0:				\n"
@@ -173,7 +174,7 @@ void sse4_blend_image_inplace(uint32_t* background, uint32_t* foreground, int co
 
 
 void sse4_blend_image_inplace_unrolled(uint32_t* background, uint32_t* foreground, int count) {
-	asm volatile (
+	__asm__ volatile (
 		"0:				\n"
 
 		"movdqa (%%esi), %%xmm0		\n"	// 4 foreground pixels
