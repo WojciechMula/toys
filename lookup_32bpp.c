@@ -1,5 +1,5 @@
 /*
-	Lookup-based 32bpp pixels transformations, $Revision: 1.5 $
+	Lookup-based 32bpp pixels transformations, $Revision: 1.6 $
 	
 	This simple program includes following procedures:
 	* naive 	--- strightforward C implementation
@@ -15,12 +15,13 @@
 	
 	License: BSD
 	
-	initial release 25-05-2008, last update $Date: 2008-06-02 10:06:14 $
+	initial release 25-05-2008, last update $Date: 2008-06-04 12:45:02 $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <strings.h>
 
 static uint32_t LUT_R[256] __attribute__((aligned(16)));
 static uint32_t LUT_G[256] __attribute__((aligned(16)));
@@ -60,7 +61,7 @@ void convert(uint32_t* input, uint32_t* output, int n) {
 
 
 void x86_convert(uint32_t* input, uint32_t* output, int n) {
-	asm volatile(
+	__asm__ volatile(
 		"	pushl %%ebp			\n"
 		"	movl  %%ecx, %%ebp		\n"
 		"0:					\n"
@@ -99,7 +100,7 @@ void x86_convert(uint32_t* input, uint32_t* output, int n) {
 
 
 void sse2_convert(uint32_t* input, uint32_t* output, int n) {
-	asm volatile(
+	__asm__ volatile(
 		"	pushl %%ebp			\n"
 		"	movl  %%ecx, %%ebp		\n"
 		"0:					\n"
@@ -195,7 +196,7 @@ void sse2_convert(uint32_t* input, uint32_t* output, int n) {
 
 
 void sse4_convert(uint32_t* input, uint32_t* output, int n) {
-	asm volatile(
+	__asm__ volatile(
 		"	pushl %%ebp			\n"
 		"	movl  %%ecx, %%ebp		\n"
 		"0:					\n"
