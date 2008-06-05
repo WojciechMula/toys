@@ -14,11 +14,6 @@ uint8_t alpha;
 int function = 0;
 
 
-#define SIMD_ALIGN __attribute__((aligned(16)))
-#define packed_word(x)   {x, x, x, x, x, x, x, x}
-
-uint16_t alpha_pos[8] SIMD_ALIGN = packed_word(0x00ff);
-
 uint32_t getTime(void) {
 	static struct timeval T;
 	gettimeofday(&T, NULL);
@@ -30,15 +25,16 @@ void SSSE3_blend() {
 	int n = width * height * 4;
 
 	__asm__ volatile (
+		"	pxor   %%xmm0, %%xmm0		\n"
 		"	movd    %%edx, %%xmm6		\n"
-		"	pshufb alpha_pos, %%xmm6	\n"
-
 		"	xorl      $-1, %%edx		\n"
 		"	movd    %%edx, %%xmm7		\n"
-		"	pshufb alpha_pos, %%xmm7	\n"
+
+		"	pshufb %%xmm0, %%xmm6		\n"
+		"	pshufb %%xmm0, %%xmm7		\n"
 		"					\n"
-		"	pxor   %%xmm5,%%xmm5		\n"
-		"					\n"
+		"	psllw      $8, %%xmm6		\n"
+		"	psllw      $8, %%xmm7		\n"
 		"0:					\n"
 		"	movdqa (%%eax), %%xmm0		\n"
 		"	movdqa (%%ebx), %%xmm2		\n"
@@ -171,7 +167,6 @@ void keyboard(
 	switch (c) {
 		case XK_space:
 			function = (function + 1) % 2;
-			//Xscr_redraw();
 			break;
 
 		case XK_q:
