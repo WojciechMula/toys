@@ -222,17 +222,6 @@ void motion(
 	}
 }
 
-void buttons(
-	int x, int y, Time t,
-	unsigned int button, 
-	KeyOrButtonState s,
-	unsigned int kb_mask
-) {
-	printf("state=%s, button=%d\n",
-	        s==Pressed ? "Pressed" : "Released",
-	        button
-	);
-}
 
 void keyboard(
 	int x, int y, Time t,
@@ -245,6 +234,8 @@ void keyboard(
 		return;
 
 	switch (c) {
+		case XK_Tab:
+		case XK_Return:
 		case XK_space:
 			function = (function + 1) % 3;
 			break;
@@ -358,6 +349,7 @@ void view(const char* file1, const char* file2) {
 	ppm_load_32bpp(f, &width, &height, &maxval, &imgB, 1);
 	if (err < 0)
 		die("Can't read %s: %s", file2, PPM_errormsg[-err]);
+	else
 	if (((uint32_t)imgB) & 0x0f != 0x00)
 		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
@@ -370,8 +362,8 @@ void view(const char* file1, const char* file2) {
 	// run mainloop
 	err = Xscr_mainloop(
 		width, height, DEPTH_32bpp, False, data, 
-		keyboard, motion, buttons,
-		"Xscr demo"
+		keyboard, motion, NULL,
+		"Image mixing demo - Wojciech Mula, wojciech_mula@poczta.onet.pl"
 	);
 
 	// check exit status
