@@ -1,6 +1,11 @@
+#ifndef _XOPEN_SOURCE
+#	define _XOPEN_SOURCE 600
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <stdarg.h>
 #include <sys/time.h>
 #include <time.h>
@@ -20,6 +25,7 @@ uint32_t getTime(void) {
 	gettimeofday(&T, NULL);
 	return (T.tv_sec * 1000000) + T.tv_usec;
 }
+
 
 void SSSE3_blend() __attribute__((noinline));
 void SSSE3_blend() {
@@ -338,22 +344,24 @@ void view(const char* file1, const char* file2) {
 	f = fopen(file1, "rb");
 	if (f == NULL)
 		die("Can't open %s", file1);
-	
-
 	err = ppm_load_32bpp(f, &width, &height, &maxval, &imgA, 1);
 	if (err < 0)
 		die("Can't read %s: %s", file1, PPM_errormsg[-err]);
-
+	else
+	if (((uint32_t)imgA) & 0x0f != 0x00)
+		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
+
 	f = fopen(file2, "rb");
 	if (f == NULL)
 		die("Can't open %s", file2);
 	ppm_load_32bpp(f, &width, &height, &maxval, &imgB, 1);
 	if (err < 0)
 		die("Can't read %s: %s", file2, PPM_errormsg[-err]);
+	if (((uint32_t)imgB) & 0x0f != 0x00)
+		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
 
-	printf("%d %d %d\n", data, width, height);
 	if (posix_memalign((void*)&data, 16, width*height*4))
 		die("No free memory");
 
@@ -378,10 +386,6 @@ void view(const char* file1, const char* file2) {
 
 
 int main(int argc, char* argv[]) {
-	int result;
-	FILE* f;
-	int maxval;
-
 	int action = -1;
 	int function;
 	int repeat_count;
