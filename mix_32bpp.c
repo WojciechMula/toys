@@ -199,7 +199,7 @@ void blend() {
 }
 
 
-#define OPT_COUNT 4
+#define OPT_COUNT 3
 
 static char* function_name[OPT_COUNT] = {
 	"x86", "SSSE3", "SSE4"
@@ -211,6 +211,10 @@ static char* function_name_abbr[OPT_COUNT] = {
 };
 
 
+static struct {
+	uint32_t sum;
+	int32_t n;
+} frequency[OPT_COUNT];
 
 
 void motion(
@@ -237,11 +241,16 @@ void motion(
 				printf("%s", function_name[function]);
 				SSE4_blend();
 				break;
+			default:
+				return;
 		}
 		t2 = getTime();
-		printf(" = %dus %d\n", t2-t1, function);
+		printf(" = %d us\n", t2-t1);
 		Xscr_redraw();
 		old_alpha = alpha;
+
+		frequency[function].n   += 1;
+		frequency[function].sum += (t2 - t1);
 	}
 }
 
@@ -260,7 +269,7 @@ void keyboard(
 		case XK_Tab:
 		case XK_Return:
 		case XK_space:
-			function = (function + 1) % 4;
+			function = (function + 1) % OPT_COUNT;
 			break;
 
 		case XK_1:
@@ -361,7 +370,7 @@ void view(const char* file1, const char* file2) {
 	if (err < 0)
 		die("Can't read %s: %s", file1, PPM_errormsg[-err]);
 	else
-	if (((uint32_t)imgA) & 0x0f != 0x00)
+	if ((((uint32_t)imgA) & 0x0f) != 0x00)
 		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
 
@@ -372,7 +381,7 @@ void view(const char* file1, const char* file2) {
 	if (err < 0)
 		die("Can't read %s: %s", file2, PPM_errormsg[-err]);
 	else
-	if (((uint32_t)imgB) & 0x0f != 0x00)
+	if ((((uint32_t)imgB) & 0x0f) != 0x00)
 		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
 
@@ -380,6 +389,12 @@ void view(const char* file1, const char* file2) {
 		die("No free memory");
 
 	memcpy(data, imgA, width*height*4);
+
+	int i;
+	for (i=0; i < OPT_COUNT; i++) {
+		frequency[i].n = 0;
+		frequency[i].sum = 0;
+	}
 
 	// run mainloop
 	err = Xscr_mainloop(
@@ -391,6 +406,19 @@ void view(const char* file1, const char* file2) {
 	// check exit status
 	if (err < 0) {
 		printf("Xscr error: %s\n", Xscr_errormsg[-err]);
+	}
+	else {
+		for (i=0; i < OPT_COUNT; i++) {
+			printf("function %-6s called %5d time(s) ",
+				function_name[i], frequency[i].n
+			);
+			if (frequency[i].n > 0)
+				printf("average time %d us\n",
+					frequency[i].sum / frequency[i].n
+				);
+			else
+				putchar('\n');
+		}
 	}
 
 	free(imgA);
