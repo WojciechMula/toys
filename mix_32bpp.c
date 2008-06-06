@@ -68,7 +68,11 @@ void SSSE3_blend() {
 		"	addl $16, %%eax			\n"
 		"	addl $16, %%ebx			\n"
 		"					\n"
+#ifdef NONTEMPORAL_STORES
+		"	movntdq %%xmm0, (%%edi)		\n"
+#else
 		"	movdqa %%xmm0, (%%edi)		\n"
+#endif
 		"	addl $16, %%edi			\n"
 		"					\n"
 		"	subl  $1, %%ecx			\n"
@@ -106,8 +110,8 @@ void SSE4_blend() {
 		"0:					\n"
 		"	movdqa (%%eax), %%xmm0		\n"
 		"	movdqa (%%ebx), %%xmm2		\n"
-		"	movdqa 16(%%eax), %%xmm3		\n"
-		"	movdqa 16(%%ebx), %%xmm5		\n"
+		"	movdqa 16(%%eax), %%xmm3	\n"
+		"	movdqa 16(%%ebx), %%xmm5	\n"
 		"	movdqa  %%xmm0, %%xmm1		\n"
 		"	movdqa  %%xmm3, %%xmm4		\n"
 		"					\n"
@@ -131,8 +135,13 @@ void SSE4_blend() {
 		"	addl $32, %%eax			\n"
 		"	addl $32, %%ebx			\n"
 		"					\n"
+#ifdef NONTEMPORAL_STORES
+		"	movntdq %%xmm0, (%%edi)	\n"
+		"	movntdq %%xmm3, 16(%%edi)	\n"
+#else
 		"	movdqa %%xmm0, (%%edi)		\n"
-		"	movdqa %%xmm3, 16(%%edi)		\n"
+		"	movdqa %%xmm3, 16(%%edi)	\n"
+#endif
 		"	addl $32, %%edi			\n"
 		"					\n"
 		"	subl  $1, %%ecx			\n"
@@ -190,6 +199,20 @@ void blend() {
 }
 
 
+#define OPT_COUNT 4
+
+static char* function_name[OPT_COUNT] = {
+	"x86", "SSSE3", "SSE4"
+};
+
+
+static char* function_name_abbr[OPT_COUNT] = {
+	"x86", "SSSE3", "SSE4"
+};
+
+
+
+
 void motion(
 	int x, int y, Time t,
 	unsigned int kb_mask
@@ -203,20 +226,20 @@ void motion(
 		t1 = getTime();
 		switch (function) {
 			case 0:
-				printf("C impl");
+				printf("%s", function_name[function]);
 				blend();
 				break;
 			case 1:
-				printf(" SSSE3");
+				printf("%s", function_name[function]);
 				SSSE3_blend();
 				break;
 			case 2:
-				printf(" SSE4");
+				printf("%s", function_name[function]);
 				SSE4_blend();
 				break;
 		}
 		t2 = getTime();
-		printf(" = %dus\n", t2-t1);
+		printf(" = %dus %d\n", t2-t1, function);
 		Xscr_redraw();
 		old_alpha = alpha;
 	}
@@ -237,7 +260,19 @@ void keyboard(
 		case XK_Tab:
 		case XK_Return:
 		case XK_space:
-			function = (function + 1) % 3;
+			function = (function + 1) % 4;
+			break;
+
+		case XK_1:
+			function = 0;
+			break;
+
+		case XK_2:
+			function = 1;
+			break;
+
+		case XK_3:
+			function = 2;
 			break;
 
 		case XK_q:
@@ -246,19 +281,6 @@ void keyboard(
 			break;
 	}
 }
-
-
-#define OPT_COUNT 3
-
-
-static char* function_name[OPT_COUNT] = {
-	"C implementation", "SSSE3", "SSE4"
-};
-
-
-static char* function_name_abbr[OPT_COUNT] = {
-	"x86", "SSSE3", "SSE4"
-};
 
 
 void help(char* progname) {
