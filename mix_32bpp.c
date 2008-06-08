@@ -27,9 +27,9 @@ uint32_t getTime(void) {
 }
 
 
-void SSSE3_blend() __attribute__((noinline));
 void SSSE3_blend() {
 	int n = width * height * 4;
+	int dummy __attribute__((unused));
 
 	__asm__ volatile (
 #ifndef GCC_FIXED_BUG
@@ -81,7 +81,11 @@ void SSSE3_blend() {
 		"	popal				\n"
 #endif
 		"					\n"
-		: /* no output */
+		: "=a" (dummy), 
+		  "=b" (dummy),
+		  "=D" (dummy),
+		  "=c" (dummy),
+		  "=d" (dummy)
 		: "a" (imgA),
 		  "b" (imgB),
 		  "D" (data),
@@ -94,11 +98,9 @@ void SSSE3_blend() {
 void SSE4_blend() __attribute__((noinline));
 void SSE4_blend() {
 	int n = width * height * 4;
+	int dummy __attribute__((unused));
 
 	__asm__ volatile (
-#ifndef GCC_FIXED_BUG
-		"	pushal				\n"
-#endif
 		"	pxor   %%xmm0, %%xmm0		\n"
 
 		"	movd    %%edx, %%xmm6		\n"
@@ -146,10 +148,11 @@ void SSE4_blend() {
 		"					\n"
 		"	subl  $1, %%ecx			\n"
 		"	jnz   0b			\n"
-#ifndef GCC_FIXED_BUG
-		"	popal				\n"
-#endif
-		: /* no output */
+		: "=a" (dummy),
+		  "=b" (dummy),
+		  "=D" (dummy),
+		  "=c" (dummy),
+		  "=d" (dummy)
 		: "a" (imgA),
 		  "b" (imgB),
 		  "D" (data),
@@ -358,15 +361,18 @@ void measure(int function, int repeat_count) {
 	printf("time = %d us\n", t2 - t1);
 }
 
+#define HERE printf("here %d", __COUNTER__);
 
 void view(const char* file1, const char* file2) {
 	FILE *f;
 	int err;
 
+	int w1, h1, w2, h2;
+
 	f = fopen(file1, "rb");
 	if (f == NULL)
 		die("Can't open %s", file1);
-	err = ppm_load_32bpp(f, &width, &height, &maxval, &imgA, 1);
+	err = ppm_load_32bpp(f, &w1, &h1, &maxval, &imgA, 32);
 	if (err < 0)
 		die("Can't read %s: %s", file1, PPM_errormsg[-err]);
 	else
@@ -377,13 +383,33 @@ void view(const char* file1, const char* file2) {
 	f = fopen(file2, "rb");
 	if (f == NULL)
 		die("Can't open %s", file2);
-	ppm_load_32bpp(f, &width, &height, &maxval, &imgB, 1);
+	ppm_load_32bpp(f, &w2, &h2, &maxval, &imgB, 32);
 	if (err < 0)
 		die("Can't read %s: %s", file2, PPM_errormsg[-err]);
 	else
 	if ((((uint32_t)imgB) & 0x0f) != 0x00)
 		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
+
+
+	printf("imgA = %d(%d) x %d, imgB = %d(%d) x %d\n",
+		w1,
+		ppm_bytes_per_line(w1, 4, 32),
+		h1,
+		w2,
+		ppm_bytes_per_line(w2, 4, 32),
+		h2
+	);
+
+	
+	if (ppm_bytes_per_line(w1, 4, 32) != ppm_bytes_per_line(w2, 4, 32)) {
+		die("Images should have similar width.");
+	}
+
+	width  = ppm_bytes_per_line(w1, 4, 16)/4;
+	height = h1 < h2 ? h1 : h2;
+
+	printf("%d x %d\n", width, height);
 
 	if (posix_memalign((void*)&data, 16, width*height*4))
 		die("No free memory");
