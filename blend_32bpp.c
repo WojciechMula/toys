@@ -1,5 +1,5 @@
 /*
-	Alpha blending of 32bpp images, $Revision: 1.5 $
+	Alpha blending of 32bpp images, $Revision: 1.6 $
 	
 	Program contains four procedures:
 
@@ -11,14 +11,18 @@
 	             (4 pixels/iteration)
 	* SSE4-2 --- unrolled SSE4 variant (sse4_blend_image_inplace_unrolled)
 	             (8 pixels/iteration)
-	
+
+	compilation:
+	$ gcc -O3 -Wall -pedantic -std=c99 blend_32bpp.c
+
+
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://www.mula.w.pl
 	
 	License: BSD
 	
-	initial release 3-06-2008, last update $Date: 2008-06-08 18:51:13 $
+	initial release 3-06-2008, last update $Date: 2008-06-08 18:56:13 $
 */
 
 #include <stdlib.h>
