@@ -1,20 +1,20 @@
 /*
-	$Date: 2008-06-04 12:45:02 $, $Revision: 1.6 $
+	$Date: 2008-06-08 23:00:44 $, $Revision: 1.7 $
 
 	Demo program use to test/profile asm routines that perform saturated
 	add of two 16bpp images.	Algorithms were described on my webpage (polish
-	text) http://www.mula.w.pl/artices/saturared_add.html.
+	text) http://www.republika.pl/wmula/artices/saturared_add.html.
 
 	Additional files are required if compiled with option -DUSE_Xscr:
 	* load_ppm.c, load_ppm.h (PPM files loader)
-	  http://www.mula.w.pl/snippets/index.html
+	  http://www.republika.pl/wmula/snippets/index.html
 
 	* Xscr.c, Xscr.h ([simple] direct-screen abstraction for X Window)
-	  http://www.mula.w.pl/proj/index.html
+	  http://www.republika.pl/wmula/proj/index.html
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 
 	License: public domain
 */
