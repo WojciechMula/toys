@@ -1,5 +1,5 @@
 /*
-	Blur grayscale demo, including MMX implementation. $Revision: 1.13 $
+	Blur grayscale demo, including MMX implementation. $Revision: 1.14 $
 
 	Algorithm used here is described on my website (polish only).
 	
@@ -12,16 +12,16 @@
 
 	Define USE_Xscr symbol to compile interactive version.
 	Xscr and load_ppm [tiny] libraries are available on my website,
-	look at http://www.mula.w.pl/snippets/ and http://www.mula.w.pl/proj/.
+	look at http://www.republika.pl/wmula/snippets/ and http://www.republika.pl/wmula/proj/.
 
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 	
 	License: BSD
 	
-	initial release 14-07-2007, last update $Date: 2008-06-08 19:20:46 $
+	initial release 14-07-2007, last update $Date: 2008-06-08 23:00:44 $
 */
 
 #ifndef _XOPEN_SOURCE
