@@ -1,13 +1,13 @@
 /*
-	Transpose 4x4 matrix (in-place) using SSE instructions, $Revision: 1.3 $
+	Transpose 4x4 matrix (in-place) using SSE instructions, $Revision: 1.4 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 	
 	License: public domain
 	
-	initial release 10.03.2002, last update $Date: 2008-06-04 12:45:02 $
+	initial release 10.03.2002, last update $Date: 2008-06-08 23:00:44 $
 */
 
 #include "sse-aux.c"

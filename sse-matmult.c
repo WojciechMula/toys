@@ -1,5 +1,5 @@
 /*
-	Matrix 4x4 multiplication using SSE instructions, $Revision: 1.3 $
+	Matrix 4x4 multiplication using SSE instructions, $Revision: 1.4 $
 	
 	[Aa0 Aa1 Aa2 Aa3]  [Ba0 Ba1 Ba2 Ba3]   [Aa0*Ba0 + Aa1*Bb0 + Aa2*Bc0 + Aa3*Bd0, ..., ..., ...]
 	[Ab0 Ab1 Ab2 Ab3]  [Bb0 Bb1 Bb2 Bb3] = [Ab0*Ba0 + Ab1*Bb0 + Ab2*Bc0 + Ab3*Bd0, ..., ..., ...]
@@ -8,11 +8,11 @@
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 	
 	License: public domain
 	
-	initial release 15.09.2007, last update $Date: 2008-06-04 12:45:02 $
+	initial release 15.09.2007, last update $Date: 2008-06-08 23:00:44 $
 */
 
 #include <math.h>

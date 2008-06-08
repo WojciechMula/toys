@@ -1,6 +1,6 @@
 /*
 	Multiply vector 1x4 by matrix 4x4 using SSE instructions
-	$Revision: 1.3 $
+	$Revision: 1.4 $
 	
 		       [a0, a1, a2, a3]   [x*a0 + y*b0 + z*c0 + w*d0]
 		       [b0, b1, b2, b3]   [x*a1 + y*b1 + z*c1 + w*d1]
@@ -10,11 +10,11 @@
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 	
 	License: public domain
 	
-	initial release 12.03.2002, last update $Date: 2008-06-04 12:45:02 $
+	initial release 12.03.2002, last update $Date: 2008-06-08 23:00:44 $
 */
 
 

@@ -13,14 +13,14 @@
     
     Author: Wojciech Mula
     e-mail: wojciech_mula@poczta.onet.pl
-    www:    http://www.mula.w.pl
+    www:    http://www.republika.pl/wmula/
     
     License: public domain
 
     Compile:
         gcc -c {maybe other flags} sse4-string-instr.S
 
-    $Date: 2007-09-14 11:53:13 $, $Revision: 1.11 $
+    $Date: 2008-06-08 23:00:44 $, $Revision: 1.12 $
 */
 
 

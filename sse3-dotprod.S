@@ -1,15 +1,15 @@
 /*
-	Calculate 4 x dot product using SSE3 instructions, $Revision: 1.1 $
+	Calculate 4 x dot product using SSE3 instructions, $Revision: 1.2 $
 	
 	New SSE3 instruction HADDPS is used.
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 	
 	License: public domain
 	
-	initial release 14.09.2007, last update $Date: 2007-09-14 11:53:31 $
+	initial release 14.09.2007, last update $Date: 2008-06-08 23:00:44 $
 */
 
 # start-snippet1

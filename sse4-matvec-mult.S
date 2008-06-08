@@ -1,6 +1,6 @@
 /*
 	Mutiplication of matrix 4x4 and vector 4x1 using
-	SSE4 instructions, $Revision: 1.2 $
+	SSE4 instructions, $Revision: 1.3 $
 	
 	[a0 a1 a2 a3]   [X0]
 	[b0 b1 b2 b3]   [X1]
@@ -10,11 +10,11 @@
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 	
 	License: public domain
 	
-	initial release 13-00-2007, last update $Date: 2007-09-13 21:06:06 $
+	initial release 13-00-2007, last update $Date: 2008-06-08 23:00:44 $
 */
 
 # start-snippet
