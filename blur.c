@@ -1,7 +1,5 @@
 /*
-	$Date: 2008-06-04 12:20:07 $, $Revision: 1.12 $
-	
-	Blur grayscale demo, including MMX implementation.
+	Blur grayscale demo, including MMX implementation. $Revision: 1.13 $
 
 	Algorithm used here is described on my website (polish only).
 	
@@ -21,8 +19,14 @@
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://www.mula.w.pl
 	
-	License: public domain
+	License: BSD
+	
+	initial release 14-07-2007, last update $Date: 2008-06-08 19:20:46 $
 */
+
+#ifndef _XOPEN_SOURCE
+#	define _XOPEN_SOURCE 600
+#endif
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -95,13 +99,15 @@ blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 
 // x86 implementation
 
-void //inlinefun
+void inlinefun
 x86blur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile (
 	    // eax = border_color
 	"   pushl %%eax                           \n\t"
@@ -131,22 +137,24 @@ x86blur_gray_calc_sums(
 	"                                         \n\t"
 	"   movw %%ax, (%%edi)                    \n\t"
 	
-	: /* no ouput */
+	: "=S" (dummy), "=D" (dummy), "=d" (dummy), "=a" (dummy)
 	: "S" (src_img), "D" (sum_tbl), "d" (width-1), "a" (border_color)
 	: "%ebx", "%ecx", "memory"
 	);
 }
 
-void //inlinefun
+void inlinefun
 x86blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile (
 	"0:                                       \n\t"
 	"   xorl %%eax, %%eax                     \n\t"
-	"   movw    (%%esi), %%ax                 \n\t" // ax  = SUM_TABLE[i]
-	"   addw %c0(%%esi), %%ax                 \n\t" // ax += SUM_TABLE[i + SUM_TABLE_SIZE]
-	"   addw %c1(%%esi), %%ax                 \n\t"	// ax += SUM_TABLE[i + 2*SUM_TABLE_SIZE]
+	"   movw         (%%esi), %%ax            \n\t" // ax  = SUM_TABLE[i]
+	"   addw %c[ofs1](%%esi), %%ax            \n\t" // ax += SUM_TABLE[i + SUM_TABLE_SIZE]
+	"   addw %c[ofs2](%%esi), %%ax            \n\t"	// ax += SUM_TABLE[i + 2*SUM_TABLE_SIZE]
 	
-	"   movb %c2(%%eax), %%al                 \n\t" // bl = divide_lookup[ax]
+	"   movb %c[dtbl](%%eax), %%al            \n\t" // bl = divide_lookup[ax]
 	"   movb %%al, (%%edi)                    \n\t" // dst_img <- bl
 	"                                         \n\t"
 	"   addl $2, %%esi                        \n\t"
@@ -155,10 +163,10 @@ x86blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	"   decl %%edx                            \n\t"
 	"   jnz 0b                                \n\t"
 	"                                         \n\t"
-	: /* no output */
-	: "e" (2*SUM_TABLE_SIZE), // SUM_TABLE + SUM_TABLE_SIZE
-	  "e" (4*SUM_TABLE_SIZE), // SUM_TABLE + 2*SUM_TABLE_SIZE
-	  "e" (divide_lookup),    // divtable address
+	: "=S" (dummy), "=D" (dummy), "=d" (dummy)
+	: [ofs1] "e" (2*SUM_TABLE_SIZE), // SUM_TABLE + SUM_TABLE_SIZE
+	  [ofs2] "e" (4*SUM_TABLE_SIZE), // SUM_TABLE + 2*SUM_TABLE_SIZE
+	  [dtbl] "e" (divide_lookup),    // divtable address
 	  "S" (SUM_TABLE), "D" (dst_img), "d" (width)
 	: "%eax", "memory"
 	);
@@ -167,12 +175,15 @@ x86blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 
 // MMX implementation
 
-void mmxblur_gray_calc_sums(
+void inlinefun
+mmxblur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile(
 	"   pxor %%mm7, %%mm7                     \n\t"
 	"0:                                       \n\t"
@@ -207,7 +218,7 @@ void mmxblur_gray_calc_sums(
 	"   subl $1, %%ecx                        \n\t"
 	"   jnz  0b                               \n\t"
 	"                                         \n\t"
-	: /* no ouput */
+	: "=S" (dummy), "=D" (dummy), "=c" (dummy)
 	: "S" (src_img), "D" (sum_tbl+1), "c" (width/8)
 	: "memory"
 	);
@@ -224,12 +235,15 @@ void mmxblur_gray_calc_sums(
 
 // MMX[2] implementation
 
-void mmx2blur_gray_calc_sums(
+void inlinefun
+mmx2blur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile(
 	"   pxor %%mm7, %%mm7                     \n\t"
 	"   movq 0(%%esi), %%mm6                  \n\t"
@@ -277,7 +291,7 @@ void mmx2blur_gray_calc_sums(
 	"   subl $1, %%ecx                        \n\t"
 	"   jnz  0b                               \n\t"
 	"                                         \n\t"
-	: /* no ouput */
+	: "=S" (dummy), "=D" (dummy), "=c" (dummy)
 	: "S" (src_img), "D" (sum_tbl), "c" (width/8)
 	: "memory"
 	);
@@ -293,18 +307,21 @@ void mmx2blur_gray_calc_sums(
 }
 
 
-void mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
+void inlinefun
+mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
+	uint32_t dummy __attribute__((unused));
 	static uint16_t mul_const[4] = {65536/9, 65536/9, 65536/9, 65536/9};
-	__asm__ volatile(
+
+	__asm__ volatile (
 	"  movq (%%eax), %%mm7                    \n\t"
 	"0:                                       \n\t"
-	"  movq     (%%esi), %%mm0                \n\t"
-	"  paddw %c0(%%esi), %%mm0                \n\t"
-	"  paddw %c1(%%esi), %%mm0                \n\t"
+	"  movq          (%%esi), %%mm0           \n\t"
+	"  paddw %c[ofs1](%%esi), %%mm0           \n\t"
+	"  paddw %c[ofs2](%%esi), %%mm0           \n\t"
 	"                                         \n\t"
-	"  movq      8(%%esi), %%mm1              \n\t"
-	"  paddw %c0+8(%%esi), %%mm1              \n\t"
-	"  paddw %c1+8(%%esi), %%mm1              \n\t"
+	"  movq           8(%%esi), %%mm1         \n\t"
+	"  paddw %c[ofs1]+8(%%esi), %%mm1         \n\t"
+	"  paddw %c[ofs2]+8(%%esi), %%mm1         \n\t"
 	"                                         \n\t"
 	"  pmulhw %%mm7, %%mm0                    \n\t"
 	"  pmulhw %%mm7, %%mm1                    \n\t"
@@ -317,9 +334,9 @@ void mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	"  dec %%ecx                              \n\t"
 	"  jnz 0b                                 \n\t"
 	"                                         \n\t"
-	: /* no output */
-	: "e" (2*SUM_TABLE_SIZE), // SUM_TABLE + SUM_TABLE_SIZE
-	  "e" (4*SUM_TABLE_SIZE), // SUM_TABLE + 2*SUM_TABLE_SIZE
+	: "=S" (dummy), "=D" (dummy), "=c" (dummy)
+	: [ofs1] "e" (2*SUM_TABLE_SIZE), // SUM_TABLE + SUM_TABLE_SIZE
+	  [ofs2] "e" (4*SUM_TABLE_SIZE), // SUM_TABLE + 2*SUM_TABLE_SIZE
 	  "S" (SUM_TABLE),
 	  "D" (dst_img),
 	  "a" (mul_const),
@@ -330,12 +347,15 @@ void mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 
 // SSE2 implementation
 
-void sse2blur_gray_calc_sums(
+void inlinefun
+sse2blur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile(
 	"   pxor %%xmm7, %%xmm7                   \n\t"
 	"   movdqu 0(%%esi), %%xmm6               \n\t"
@@ -375,7 +395,7 @@ void sse2blur_gray_calc_sums(
 	"   subl $1, %%ecx                        \n\t"
 	"   jnz  0b                               \n\t"
 	"                                         \n\t"
-	: /* no ouput */
+	: "=S" (dummy), "=D" (dummy), "=c" (dummy)
 	: "S" (src_img), "D" (sum_tbl), "c" (width/16)
 	: "memory"
 	);
@@ -391,18 +411,21 @@ void sse2blur_gray_calc_sums(
 }
 
 
-void sse2blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
+void inlinefun
+sse2blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
+	uint32_t dummy __attribute__((unused));
 	static uint16_t mul_const[8] = {65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9};
+
 	__asm__ volatile(
 	"  movdqu (%%eax), %%xmm7                 \n\t"
 	"0:                                       \n\t"
-	"  movdqa   (%%esi), %%xmm0               \n\t"
-	"  paddw  %c0(%%esi), %%xmm0              \n\t"
-	"  paddw  %c1(%%esi), %%xmm0              \n\t"
+	"  movdqa         (%%esi), %%xmm0         \n\t"
+	"  paddw  %c[ofs1](%%esi), %%xmm0         \n\t"
+	"  paddw  %c[ofs2](%%esi), %%xmm0         \n\t"
 	"                                         \n\t"
-	"  movdqa     16(%%esi), %%xmm1           \n\t"
-	"  paddw %c0+16(%%esi), %%xmm1            \n\t"
-	"  paddw %c1+16(%%esi), %%xmm1            \n\t"
+	"  movdqa         16(%%esi), %%xmm1       \n\t"
+	"  paddw %c[ofs2]+16(%%esi), %%xmm1       \n\t"
+	"  paddw %c[ofs2]+16(%%esi), %%xmm1       \n\t"
 	"                                         \n\t"
 	"  pmulhw %%xmm7, %%xmm0                  \n\t"
 	"  pmulhw %%xmm7, %%xmm1                  \n\t"
@@ -415,9 +438,9 @@ void sse2blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	"  dec %%ecx                              \n\t"
 	"  jnz 0b                                 \n\t"
 	"                                         \n\t"
-	: /* no output */
-	: "e" (2*SUM_TABLE_SIZE), // SUM_TABLE + SUM_TABLE_SIZE
-	  "e" (4*SUM_TABLE_SIZE), // SUM_TABLE + 2*SUM_TABLE_SIZE
+	: "=S" (dummy), "=D" (dummy), "=c" (dummy)
+	: [ofs1] "e" (2*SUM_TABLE_SIZE), // SUM_TABLE + SUM_TABLE_SIZE
+	  [ofs2] "e" (4*SUM_TABLE_SIZE), // SUM_TABLE + 2*SUM_TABLE_SIZE
 	  "S" (SUM_TABLE),
 	  "D" (dst_img),
 	  "a" (mul_const),
