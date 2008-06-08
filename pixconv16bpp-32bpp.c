@@ -1,5 +1,5 @@
 /*
-	16bpp to 32bpp pixel conversion, $Revision: 1.10 $
+	16bpp to 32bpp pixel conversion, $Revision: 1.11 $
 	
 	This simple program includes following procedures:
 	* naive      --- straightforward conversion that use and, or and shifts
@@ -11,16 +11,16 @@
 	* SSE2       --- naive using SSE2 instructions, 8 pixels/iteration
 	* SSE2(2)    --- unrolled SSE2, 16 pixels/iteration
 
-	Define NONTEMPORAL to use non-temporal strores in procedures
+	Define NONTEMPORAL to use non-temporal stores in procedures
 	MMX, SSE2 and SSE2(2).
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula
 	
 	License: BSD
 	
-	initial release 20-05-2008, last update $Date: 2008-06-04 12:45:02 $
+	initial release 20-05-2008, last update $Date: 2008-06-08 22:59:38 $
 */
 #include <stdint.h>
 #include <stdlib.h>
@@ -391,7 +391,7 @@ int main(int argc, char* argv[]) {
 
 	switch (procedure) {
 		case 0:
-			printf("running lookup8 %d times\n", repeatcount);
+			printf("running lookup8 %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_lookup8();
@@ -401,7 +401,7 @@ int main(int argc, char* argv[]) {
 			break;
 		
 		case 1:
-			printf("running lookup8(2) %d times\n", repeatcount);
+			printf("running lookup8(2) %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_lookup8_2();
@@ -411,7 +411,7 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case 2:
-			printf("running lookup16 %d times\n", repeatcount);
+			printf("running lookup16 %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_lookup16();
@@ -421,7 +421,7 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case 3:
-			printf("running naive %d times\n", repeatcount);
+			printf("running naive %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_naive();
@@ -431,7 +431,7 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case 4:
-			printf("running MMX %d times\n", repeatcount);
+			printf("running MMX %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_MMX();
@@ -442,7 +442,7 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case 5:
-			printf("running SSE2 %d times\n", repeatcount);
+			printf("running SSE2 %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_SSE2();
@@ -452,7 +452,7 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case 6:
-			printf("running unrolled SSE2 %d times\n", repeatcount);
+			printf("running unrolled SSE2 %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
 			while (repeatcount--)
 				convert_SSE2_2();
