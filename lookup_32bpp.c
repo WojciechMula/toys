@@ -1,5 +1,5 @@
 /*
-	Lookup-based 32bpp pixels transformations, $Revision: 1.6 $
+	Lookup-based 32bpp pixels transformations, $Revision: 1.7 $
 	
 	This simple program includes following procedures:
 	* naive 	--- strightforward C implementation
@@ -11,11 +11,11 @@
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl
+	www:    http://www.republika.pl/wmula/
 	
 	License: BSD
 	
-	initial release 25-05-2008, last update $Date: 2008-06-04 12:45:02 $
+	initial release 25-05-2008, last update $Date: 2008-06-08 23:00:44 $
 */
 #include <stdio.h>
 #include <stdlib.h>
