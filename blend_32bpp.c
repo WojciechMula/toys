@@ -1,5 +1,5 @@
 /*
-	Alpha blending of 32bpp images, $Revision: 1.4 $
+	Alpha blending of 32bpp images, $Revision: 1.5 $
 	
 	Program contains four procedures:
 
@@ -18,7 +18,7 @@
 	
 	License: BSD
 	
-	initial release 3-06-2008, last update $Date: 2008-06-04 12:12:54 $
+	initial release 3-06-2008, last update $Date: 2008-06-08 18:51:13 $
 */
 
 #include <stdlib.h>
@@ -29,6 +29,7 @@
 #include <strings.h>
 
 #define SIMD_ALIGN __attribute__((aligned(16)))
+#define NO_INLINE __attribute__((noinline))
 
 uint8_t populate_alpha[16] SIMD_ALIGN = {
 	// 0 1 2 3 4 5 6 7 8 9 a b c d e f
@@ -72,6 +73,8 @@ void blend_image_inplace(uint32_t* background, uint32_t* foreground, int count) 
 
 
 void ssse3_blend_image_inplace(uint32_t* background, uint32_t* foreground, int count) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile (
 		"movdqa populate_alpha, %%xmm7	\n"
 		"pxor   %%xmm6, %%xmm6		\n"	// xmm6 = packed_byte(0x00)
@@ -122,7 +125,9 @@ void ssse3_blend_image_inplace(uint32_t* background, uint32_t* foreground, int c
 		"jnz   0b			\n"
 
 
-		: /* no output */
+		: "=D" (dummy),
+		  "=S" (dummy),
+		  "=c" (dummy)
 		: "D" (background),
 		  "S" (foreground),
 		  "c" (count/4)
@@ -133,6 +138,8 @@ void ssse3_blend_image_inplace(uint32_t* background, uint32_t* foreground, int c
 
 
 void sse4_blend_image_inplace(uint32_t* background, uint32_t* foreground, int count) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile (
 		"movdqa populate_alpha, %%xmm7	\n"
 
@@ -163,7 +170,9 @@ void sse4_blend_image_inplace(uint32_t* background, uint32_t* foreground, int co
 		"jnz   0b			\n"
 
 
-		: /* no output */
+		: "=D" (dummy),
+		  "=S" (dummy),
+		  "=c" (dummy)
 		: "D" (background),
 		  "S" (foreground),
 		  "c" (count/4)
@@ -174,6 +183,8 @@ void sse4_blend_image_inplace(uint32_t* background, uint32_t* foreground, int co
 
 
 void sse4_blend_image_inplace_unrolled(uint32_t* background, uint32_t* foreground, int count) {
+	uint32_t dummy __attribute__((unused));
+
 	__asm__ volatile (
 		"0:				\n"
 
@@ -214,7 +225,9 @@ void sse4_blend_image_inplace_unrolled(uint32_t* background, uint32_t* foregroun
 		"jnz   0b			\n"
 
 
-		: /* no output */
+		: "=D" (dummy),
+		  "=S" (dummy),
+		  "=c" (dummy)
 		: "D" (background),
 		  "S" (foreground),
 		  "c" (count/8)
