@@ -1,5 +1,5 @@
 /*
-	Double precision floating point rounding, $Revision: 1.1 $
+	Double precision floating point rounding, $Revision: 1.2 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,7 +7,7 @@
 
 	License: BSD
 	
-	initial release 15-06-2008, last update $Date: 2008-06-15 17:57:10 $
+	initial release 15-06-2008, last update $Date: 2008-06-15 18:09:30 $
 
 	----------------------------------------------------------------------
 	
@@ -171,19 +171,19 @@ int main(int argc, char* argv[]) {
 			break;
 		
 		case 1:
-			printf("FPU FRNDINT , iterations = %d, size = %d\n", iterations, SIZE);
+			printf("FPU FRNDINT, iterations = %d, size = %d\n", iterations, SIZE);
 			while (iterations--)
 				round_FPU1();
 			break;
 		
 		case 2:
-			printf("FPU FISTP/FILD , iterations = %d, size = %d\n", iterations, SIZE);
+			printf("FPU FISTP/FILD, iterations = %d, size = %d\n", iterations, SIZE);
 			while (iterations--)
 				round_FPU2();
 			break;
 		
 		case 3:
-			printf("simple method (C impl.) , iterations = %d, size = %d\n", iterations, SIZE);
+			printf("simple method (C impl.), iterations = %d, size = %d\n", iterations, SIZE);
 			while (iterations--)
 				round_C();
 			break;
