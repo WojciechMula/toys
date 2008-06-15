@@ -1,5 +1,5 @@
 /*
-	Convering floating point numbers to int, $Revision: 1.1 $
+	Convering floating point numbers to int, $Revision: 1.2 $
 	
 	Comparison of FPU based method and simple method that
 	require one addition and bitwise AND -- method is limited
@@ -14,12 +14,12 @@
 
 	Compilation:
 
-		gcc -Wall -pednatic -std=c99 -O3 float2int.c
+		gcc -Wall -pedantic -std=c99 -O3 float2int.c
 
 	Run program without arguments, to read usage info.
 
 	
-	initial release 14-06-2008, last update $Date: 2008-06-15 17:27:37 $
+	initial release 14-06-2008, last update $Date: 2008-06-15 17:57:29 $
 */
 
 #include <stdlib.h>
