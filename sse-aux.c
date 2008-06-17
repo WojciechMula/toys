@@ -12,7 +12,7 @@
 #define SIMD_ALIGN __attribute__((aligned(16)))
 
 
-void initfrand() {
+static void initfrand() {
 	srand(time(NULL));
 }
 
@@ -107,13 +107,13 @@ static void print_vec_uint32_hex(uint32_t v[4]) {
 
 
 //=== print float vectors =================================================
-void print_vec_float(float v[4]) {
+static void print_vec_float(float v[4]) {
 	printf("{%12.6f, %12.6f, %12.6f, %12.6f}\n", v[0], v[1], v[2], v[3]);
 }
 
 
 //=== load XMM register ==================================================
-void load_xmm(int i, void* v) {
+static void load_xmm(int i, void* v) {
 	switch (i) {
 		case 0: __asm__ volatile("movups %%xmm0, (%0)":: "r" (v)); break;
 		case 1: __asm__ volatile("movups %%xmm1, (%0)":: "r" (v)); break;
@@ -128,14 +128,14 @@ void load_xmm(int i, void* v) {
 
 
 //=== print XMM registers ================================================
-void print_xmm_float(int i) {
+static void print_xmm_float(int i) {
 	static float v[4];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = {%12.4f, %12.4f, %12.4f, %12.4f}\n", i, v[0], v[1], v[2], v[3]);
 }
 
 
-void print_xmm_uint8(int i) {
+static void print_xmm_uint8(int i) {
 	static uint8_t v[16];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -143,7 +143,7 @@ void print_xmm_uint8(int i) {
 }
 
 
-void print_xmm_int8(int i) {
+static void print_xmm_int8(int i) {
 	static int8_t v[16];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -151,7 +151,7 @@ void print_xmm_int8(int i) {
 }
 
 
-void print_xmm_uint8_hex(int i) {
+static void print_xmm_uint8_hex(int i) {
 	static uint8_t v[16];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -159,7 +159,7 @@ void print_xmm_uint8_hex(int i) {
 }
 
 
-void print_xmm_uint16(int i) {
+static void print_xmm_uint16(int i) {
 	static uint16_t v[8];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -167,7 +167,7 @@ void print_xmm_uint16(int i) {
 }
 
 
-void print_xmm_int16(int i) {
+static void print_xmm_int16(int i) {
 	static int16_t v[8];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -175,7 +175,7 @@ void print_xmm_int16(int i) {
 }
 
 
-void print_xmm_uint16_hex(int i) {
+static void print_xmm_uint16_hex(int i) {
 	static uint16_t v[8];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -183,7 +183,7 @@ void print_xmm_uint16_hex(int i) {
 }
 
 
-void print_xmm_uint32(int i) {
+static void print_xmm_uint32(int i) {
 	static uint32_t v[4];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -191,7 +191,7 @@ void print_xmm_uint32(int i) {
 }
 
 
-void print_xmm_int32(int i) {
+static void print_xmm_int32(int i) {
 	static int32_t v[4];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -199,7 +199,7 @@ void print_xmm_int32(int i) {
 }
 
 
-void print_xmm_uint32_hex(int i) {
+static void print_xmm_uint32_hex(int i) {
 	static uint32_t v[4];
 	load_xmm(i, (void*)v);
 	printf("xmm%d = ", i);
@@ -217,7 +217,7 @@ void print_xmm_uint32_hex(int i) {
 	"popal\n"
 
 
-void print_xmm_hex(int i) {
+static void print_xmm_hex(int i) {
 	int k;
 	static uint8_t v[16];
 	switch (i) {
@@ -245,7 +245,7 @@ void print_xmm_hex(int i) {
 	"popal\n"
 
 
-void print_xmm_str(int i) {
+static void print_xmm_str(int i) {
 	int k;
 	static uint8_t v[16];
 	switch (i) {
