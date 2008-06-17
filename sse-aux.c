@@ -1,3 +1,9 @@
+// by Wojciech Mu³a, public domain
+// $Date: 2008-06-17 22:43:21 $, $Revision: 1.7 $
+
+#ifndef SSE_AUX_code_included__
+#define SSE_AUX_code_included__
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -278,3 +284,5 @@ static void print_xmm_str(int i) {
 	"call print_xmm_str\n"	\
 	"popl %%eax\n"		\
 	"popal\n"
+
+#endif
