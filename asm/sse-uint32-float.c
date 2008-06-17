@@ -11,6 +11,7 @@ uint32_t MASK_0_30[4] SIMD_ALIGN = packed_dword(0x7fffffff);
 uint32_t MASK_31[4]   SIMD_ALIGN = packed_dword(0x80000000);
 
 
+// snippet-start
 void convert_uint32_float(uint32_t in[4], float out[4]) {
 	__asm__ volatile (
 	"movdqu   (%%eax), %%xmm0  \n"
@@ -32,8 +33,10 @@ void convert_uint32_float(uint32_t in[4], float out[4]) {
 	  "b" (out)
 	);
 }
+// snippet-end
 
 
+//========================================================================
 int main(int argc, char* argv[]) {
 	uint32_t v_in[4];
 	float    v_out[4];
@@ -57,3 +60,4 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
+// eof
