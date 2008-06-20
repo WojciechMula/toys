@@ -6,14 +6,35 @@
 #include <strings.h>
 #include <unistd.h>
 
+#ifndef THREAD_NUM
+#	define THREAD_NUM 8
+#endif
+
+pthread_mutex_t	mutex;
+pthread_cond_t  cond;
+pthread_t threads[THREAD_NUM];	// protected by mutex
+
 #ifndef WIDTH
 #	define WIDTH (1024*4)
 #endif
 #ifndef HEIGHT
 #	define HEIGHT (1024*4)
 #endif
+#ifndef SIZE
+#	define SIZE 256
+#endif
 
-#define T 8
+
+#if WIDTH % SIZE != 0
+#	error "WIDTH must be multiply of SIZE"
+#endif
+#if HEIGHT % SIZE != 0
+#	error "HEIGHT must be multiply of SIZE"
+#endif
+
+#define JOBS_COUNT ((WIDTH)/SIZE * (HEIGHT)/SIZE)
+
+
 uint8_t Image[HEIGHT][WIDTH];
 
 typedef struct {
@@ -26,11 +47,6 @@ typedef struct {
 } Job;
 
 
-pthread_mutex_t	mutex;
-pthread_cond_t  cond;
-pthread_t threads[T];	// protected by mutex
-
-
 void* thread(void* sec) {
 	Job *job;
 	double dRe, dIm;
@@ -38,7 +54,11 @@ void* thread(void* sec) {
 	int x, y, i;
 
 	job = (Job*)sec;
-//	printf("begin thread %u [%f,%f]-[%f,%f]\n", pthread_self(), job->Re1, job->Im1, job->Re2, job->Im2);
+
+#ifdef DEBUG
+	printf("begin thread %u [%f,%f]-[%f,%f]\n",
+		pthread_self(), job->Re1, job->Im1, job->Re2, job->Im2);
+#endif
 #if 1
 
 	dRe = (job->Re2 - job->Re1)/job->width;
@@ -64,7 +84,7 @@ void* thread(void* sec) {
 			}
 
 			// we are sure, that writes from different threads
-			// do not overlap
+			// do not overlap -- no synchronization needed
 			Image[job->yo + y][job->xo + x] = (job->maxiters - i);
 			Cre += dRe;
 		}
@@ -73,26 +93,27 @@ void* thread(void* sec) {
 	}
 
 #endif
-//	printf("end thread %u\n", pthread_self());
+
+#ifdef DEBUG
+	printf("end thread %u\n", pthread_self());
+#endif
 
 	pthread_mutex_lock(&mutex);
-	threads[job->id] = 0;		// free entry
+	threads[job->id] = 0;		// mark associated entry as free
 	pthread_cond_broadcast(&cond);	// resume main thread
 	pthread_mutex_unlock(&mutex);
 
-	pthread_detach(pthread_self());
+	pthread_detach(pthread_self());	// free thread resources
 	pthread_exit(0);
 }
 
 
 int main() {
-#define SIZE 64
-#define JOBS_COUNT ((WIDTH)/SIZE * (HEIGHT)/SIZE)
 	Job jobs[JOBS_COUNT];
 
 	memset(Image, 127, sizeof(Image));
 
-	int x, y, i, j, k;
+	int x, y, i, j;
 	int status;
 	FILE* f;
 
@@ -126,8 +147,8 @@ int main() {
 		}
 	}
 
-	// initlize threads list
-	for (i=0; i < T; i++)
+	// initialize threads list
+	for (i=0; i < THREAD_NUM; i++)
 		threads[i] = 0;
 
 	// initialize mutex & condition var
@@ -135,23 +156,30 @@ int main() {
 	pthread_cond_init(&cond, NULL);
 
 
-#if 1
 	// issue jobs
+	
+	printf("image dimensions %d x %d\n", WIDTH, HEIGHT);
+	printf("image splitted into %d pieces size %d x %d\n",
+		JOBS_COUNT, /*SUBIMG_*/SIZE, /*SUBIMG_*/SIZE);
+	printf("up to %d thread(s) will be run\n", THREAD_NUM);
+
 	j = 0;
 	while (j < JOBS_COUNT) {
 		pthread_mutex_lock(&mutex);
-		for (i=0; i < T; i++) {
-			if (threads[i] != 0 || j == JOBS_COUNT)
+		for (i=0; i < THREAD_NUM; i++) {
+			if ((threads[i] != 0) || (j == JOBS_COUNT))
 				continue;
 
 			jobs[j].id = i;
 			status = pthread_create(&threads[i], NULL, thread, (void*)&jobs[j]);
 			if (status != 0) {
-				printf("ERROR: can't create thread for job %d of %d: %s\n", j, JOBS_COUNT, strerror(status));
+				printf("ERROR: can't create thread for job %d/%d: %s\n",
+					j, JOBS_COUNT, strerror(status));
 			}
 			else {
-//				pthread_detach(threads[i]);
-				printf("job %d/%d issued\n", j+1, JOBS_COUNT);
+#ifdef DEBUG
+				printf("job %d/%d commited\n", j+1, JOBS_COUNT);
+#endif
 				j++;
 			}
 		}
@@ -160,17 +188,18 @@ int main() {
 		pthread_mutex_unlock(&mutex);
 	}
 	
-#endif
 
 	// save image
-	f = fopen("out.pgm", "wb");
+	f = fopen("mandelbrot.pgm", "wb");
 	if (f != NULL) {
 		fprintf(f, "P5\n%d %d 255\n", (int)WIDTH, (int)HEIGHT);
 		fwrite(Image, sizeof(Image), 1, f);
 		fclose(f);
+		return 0;
 	}
 	else {
-		puts("can't open file for write");
+		puts("ERROR: Can't open file for writing!");
+		return 1;
 	}
 
 }
