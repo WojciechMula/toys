@@ -162,6 +162,7 @@ int main() {
 	
 #endif
 
+	// save image
 	f = fopen("out.pgm", "wb");
 	if (f != NULL) {
 		fprintf(f, "P5\n%d %d 255\n", (int)WIDTH, (int)HEIGHT);
