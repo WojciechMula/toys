@@ -1,5 +1,5 @@
 /*
-	$Date: 2007-06-20 18:25:15 $, $Revision: 1.5 $
+	$Date: 2008-06-21 18:28:37 $, $Revision: 1.6 $
 	
 	Grab tty as image (PNM)
 
@@ -11,7 +11,7 @@
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.mula.w.pl/
+	www:    http://www.republika.pl/wmula//
 */
 
 #include <stdlib.h>
@@ -76,7 +76,7 @@ void usage() {
 		"\n"
 		"You need permissions to read /dev/vcsa[console-num] device.\n"
 		"\n"
-		"Author: Wojciech Mu³a, http://www.mula.w.pl/\n",
+		"Author: Wojciech Mu³a, http://www.republika.pl/wmula//\n",
 		
 		stderr
 	);
