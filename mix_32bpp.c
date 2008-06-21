@@ -1,3 +1,43 @@
+/*
+	Image crossfading --- SSE implementation, $Revision: 1.10 $
+
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.republika.pl/wmula/
+
+	License: BSD
+
+	initial release 5-06-2008, last update $Date: 2008-06-21 22:15:11 $
+
+	----------------------------------------------------------------------
+
+	Comparison of three crossfading procedures:
+	1. x86    --- naive C implementation
+	2. sse4   --- SSE implementation
+	3. sse4-2 --- SSE4 implementation, that use new instruction PMADDUBSW 
+
+	Compilation:
+
+		gcc -O3 -Wall -pedantic -std=c99 mix_32bpp.c -o mix
+	
+	Compilation for X11
+		
+		Xscr and load_ppm are tiny libraries:
+		* http://republika.pl/wmula/proj/Xscr/Xscr.c
+		* http://republika.pl/wmula/proj/Xscr/Xscr.h
+		* http://republika.pl/wmula/snippets/load_ppm.c
+		* http://republika.pl/wmula/snippets/load_ppm.h
+		
+		gcc -c -O3 -lX11 Xscr.c
+		gcc -c -O3 -DPPM_ALIGN_MALLOC=16 load_ppm.c
+		gcc -O3 -lX11 -std=c99 -DUSE_Xscr mix_32bpp.c Xscr.o load_ppm.o -o mix
+
+	Usage:
+
+		run program without argument to read help
+
+*/
+
 #ifndef _XOPEN_SOURCE
 #	define _XOPEN_SOURCE 600
 #endif
@@ -16,6 +56,8 @@
 #include "load_ppm.h"
 #endif
 
+
+//=== global variables ===================================================
 int width, height, maxval;
 uint8_t *imgA, *imgB, *data;
 uint8_t alpha;
@@ -23,6 +65,20 @@ uint8_t alpha;
 int function = 0;
 
 
+#define OPT_COUNT 3
+
+static char* function_name[OPT_COUNT] = {
+	"x86", "SSE4", "SSE4-2"
+};
+
+
+static char* function_name_abbr[OPT_COUNT] = {
+	"x86", "SSE4", "SSE4-2"
+};
+
+
+
+//=== common functions ===================================================
 uint32_t getTime(void) {
 	static struct timeval T;
 	gettimeofday(&T, NULL);
@@ -44,6 +100,7 @@ void die(const char* fmt, ...) {
 
 
 
+//=== crossfading implementations ========================================
 void SSE4_blend() {
 	int n = width * height * 4;
 	int dummy __attribute__((unused));
@@ -211,19 +268,7 @@ void blend() {
 }
 
 
-#define OPT_COUNT 3
-
-static char* function_name[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2"
-};
-
-
-static char* function_name_abbr[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2"
-};
-
-
-
+//=== X11 procedures =====================================================
 #ifdef USE_Xscr
 static struct {
 	uint32_t sum;
@@ -397,23 +442,7 @@ void view(const char* file1, const char* file2) {
 #endif
 
 
-void help(char* progname) {
-	int i;
-
-	printf("1. %s measure %s", progname, function_name_abbr[0]);
-
-	for (i=1; i < OPT_COUNT; i++)
-		printf("|%s", function_name_abbr[i]);
-	
-	printf(" repeat-count\n");
-#ifdef USE_Xscr
-	printf("2. %s view file1.ppm file2.ppm\n", progname);
-#endif
-
-	exit(1);
-}
-
-
+//=== test procedure =====================================================
 void measure(int function, int repeat_count) {
 	uint32_t t1, t2;
 	int n = repeat_count;
@@ -451,6 +480,24 @@ void measure(int function, int repeat_count) {
 	}
 
 	printf("time = %d us\n", t2 - t1);
+}
+
+
+//=== main program =======================================================
+void help(char* progname) {
+	int i;
+
+	printf("1. %s measure %s", progname, function_name_abbr[0]);
+
+	for (i=1; i < OPT_COUNT; i++)
+		printf("|%s", function_name_abbr[i]);
+	
+	printf(" repeat-count\n");
+#ifdef USE_Xscr
+	printf("2. %s view file1.ppm file2.ppm\n", progname);
+#endif
+
+	exit(1);
 }
 
 
@@ -522,3 +569,5 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
+
+// eof
