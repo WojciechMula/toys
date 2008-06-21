@@ -5,6 +5,7 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+#include <sched.h>
 
 #ifndef THREAD_NUM
 #	define THREAD_NUM 8
@@ -13,6 +14,8 @@
 pthread_mutex_t	mutex;
 pthread_cond_t  cond;
 pthread_t threads[THREAD_NUM];	// protected by mutex
+
+int thread_count = 0;
 
 #ifndef WIDTH
 #	define WIDTH (1024*4)
@@ -56,8 +59,9 @@ void* thread(void* sec) {
 	job = (Job*)sec;
 
 #ifdef DEBUG
-	printf("begin thread %u [%f,%f]-[%f,%f]\n",
-		pthread_self(), job->Re1, job->Im1, job->Re2, job->Im2);
+	printf("thread #%u -> CPU#%d\n", pthread_self(), sched_getcpu());
+//	printf("begin thread %u [%f,%f]-[%f,%f]\n",
+//		pthread_self(), job->Re1, job->Im1, job->Re2, job->Im2);
 #endif
 #if 1
 
@@ -95,11 +99,12 @@ void* thread(void* sec) {
 #endif
 
 #ifdef DEBUG
-	printf("end thread %u\n", pthread_self());
+	printf("thread %u finished\n", pthread_self());
 #endif
 
 	pthread_mutex_lock(&mutex);
 	threads[job->id] = 0;		// mark associated entry as free
+	thread_count -= 1;
 	pthread_cond_broadcast(&cond);	// resume main thread
 	pthread_mutex_unlock(&mutex);
 
@@ -113,7 +118,7 @@ int main() {
 
 	memset(Image, 127, sizeof(Image));
 
-	int x, y, i, j;
+	int x, y, i, j, k;
 	int status;
 	FILE* f;
 
@@ -141,7 +146,7 @@ int main() {
 			jobs[i].width  = SIZE;
 			jobs[i].height = SIZE;
 			jobs[i].maxiters = 255;
-			jobs[i].threshold = 20.0;
+			jobs[i].threshold = 100.0;
 
 			i += 1;
 		}
@@ -164,30 +169,53 @@ int main() {
 	printf("up to %d thread(s) will be run\n", THREAD_NUM);
 
 	j = 0;
-	while (j < JOBS_COUNT) {
+	k = 0;
+	while (k < THREAD_NUM) {
 		pthread_mutex_lock(&mutex);
-		for (i=0; i < THREAD_NUM; i++) {
-			if ((threads[i] != 0) || (j == JOBS_COUNT))
-				continue;
+		if (j < JOBS_COUNT) {
+			for (i=0; i < THREAD_NUM; i++) {
+				if (threads[i] != 0 || j == JOBS_COUNT)
+					continue;
 
-			jobs[j].id = i;
-			status = pthread_create(&threads[i], NULL, thread, (void*)&jobs[j]);
-			if (status != 0) {
-				printf("ERROR: can't create thread for job %d/%d: %s\n",
-					j, JOBS_COUNT, strerror(status));
-			}
-			else {
+				jobs[j].id = i;
+				status = pthread_create(&threads[i], NULL, thread, (void*)&jobs[j]);
+				if (status != 0) {
+					printf("ERROR: can't create thread for job %d/%d: %s\n",
+						j, JOBS_COUNT, strerror(status));
+				}
+				else {
 #ifdef DEBUG
-				printf("job %d/%d commited\n", j+1, JOBS_COUNT);
+					printf("job %d/%d commited\n", j+1, JOBS_COUNT);
 #endif
-				j++;
+					j++;
+					thread_count += 1;
+				}
 			}
+		}
+		else {
+			k = 0;
+			for (i=0; i < THREAD_NUM; i++)
+				if (threads[i] == 0)
+					k += 1;
+		}
+
+		if (k < THREAD_NUM)
+			pthread_cond_wait(&cond, &mutex);
+		pthread_mutex_unlock(&mutex);
+	}
+
+
+	while (1) {
+		pthread_mutex_lock(&mutex);
+		printf("thread_count = %d\n", thread_count);
+		if (thread_count == 0) {
+			pthread_mutex_unlock(&mutex);
+			break;
 		}
 		
 		pthread_cond_wait(&cond, &mutex);
 		pthread_mutex_unlock(&mutex);
 	}
-	
 
 	// save image
 	f = fopen("mandelbrot.pgm", "wb");
