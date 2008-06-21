@@ -7,11 +7,14 @@
 #include <string.h>
 #include <strings.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <sys/time.h>
 #include <time.h>
 
+#ifdef USE_Xscr
 #include "Xscr.h"
 #include "load_ppm.h"
+#endif
 
 int width, height, maxval;
 uint8_t *imgA, *imgB, *data;
@@ -27,14 +30,25 @@ uint32_t getTime(void) {
 }
 
 
-void SSSE3_blend() {
+
+void die(const char* fmt, ...) {
+	va_list ap;
+
+	va_start(ap, fmt);
+	vprintf(fmt, ap);
+	putchar('\n');
+	va_end(ap);
+
+	exit(2);
+}
+
+
+
+void SSE4_blend() {
 	int n = width * height * 4;
 	int dummy __attribute__((unused));
 
 	__asm__ volatile (
-#ifndef GCC_FIXED_BUG
-		"	pushal				\n"
-#endif
 		"	pxor   %%xmm0, %%xmm0		\n"
 		"	movd    %%edx, %%xmm6		\n"
 		"	xorl      $-1, %%edx		\n"
@@ -77,10 +91,6 @@ void SSSE3_blend() {
 		"					\n"
 		"	subl  $1, %%ecx			\n"
 		"	jnz   0b			\n"
-#ifndef GCC_FIXED_BUG
-		"	popal				\n"
-#endif
-		"					\n"
 		: "=a" (dummy), 
 		  "=b" (dummy),
 		  "=D" (dummy),
@@ -95,8 +105,7 @@ void SSSE3_blend() {
 }
 
 
-void SSE4_blend() __attribute__((noinline));
-void SSE4_blend() {
+void SSE42_blend() {
 	int n = width * height * 4;
 	int dummy __attribute__((unused));
 
@@ -205,15 +214,17 @@ void blend() {
 #define OPT_COUNT 3
 
 static char* function_name[OPT_COUNT] = {
-	"x86", "SSSE3", "SSE4"
+	"x86", "SSE4", "SSE4-2"
 };
 
 
 static char* function_name_abbr[OPT_COUNT] = {
-	"x86", "SSSE3", "SSE4"
+	"x86", "SSE4", "SSE4-2"
 };
 
 
+
+#ifdef USE_Xscr
 static struct {
 	uint32_t sum;
 	int32_t n;
@@ -238,11 +249,11 @@ void motion(
 				break;
 			case 1:
 				printf("%s", function_name[function]);
-				SSSE3_blend();
+				SSE4_blend();
 				break;
 			case 2:
 				printf("%s", function_name[function]);
-				SSE4_blend();
+				SSE42_blend();
 				break;
 			default:
 				return;
@@ -294,74 +305,6 @@ void keyboard(
 	}
 }
 
-
-void help(char* progname) {
-	int i;
-
-	printf("1. %s view file1.ppm file2.ppm\n", progname);
-	printf("2. %s measure %s", progname, function_name_abbr[0]);
-
-	for (i=1; i < OPT_COUNT; i++)
-		printf("|%s", function_name_abbr[i]);
-	
-	printf(" repeat-count\n");
-
-	exit(1);
-}
-
-
-void die(const char* fmt, ...) {
-	va_list ap;
-
-	va_start(ap, fmt);
-	vprintf(fmt, ap);
-	putchar('\n');
-	va_end(ap);
-
-	exit(2);
-}
-
-
-void measure(int function, int repeat_count) {
-	uint32_t t1, t2;
-	int n = repeat_count;
-	
-	printf(
-		"function %s, called %d times; image %d x %d\n",
-		function_name[function],
-		repeat_count,
-		width, height
-	);
-
-	switch (function) {
-		case 0:
-			t1 = getTime();
-			while (n--)
-				blend();
-			t2 = getTime();
-			break;
-		
-		case 1:
-			t1 = getTime();
-			while (n--)
-				SSSE3_blend();
-			t2 = getTime();
-			break;
-		
-		case 2:
-			t1 = getTime();
-			while (n--)
-				SSE4_blend();
-			t2 = getTime();
-			break;
-		default:
-			return;
-	}
-
-	printf("time = %d us\n", t2 - t1);
-}
-
-#define HERE printf("here %d", __COUNTER__);
 
 void view(const char* file1, const char* file2) {
 	FILE *f;
@@ -451,6 +394,64 @@ void view(const char* file1, const char* file2) {
 	free(imgB);
 	free(data);
 }
+#endif
+
+
+void help(char* progname) {
+	int i;
+
+	printf("1. %s measure %s", progname, function_name_abbr[0]);
+
+	for (i=1; i < OPT_COUNT; i++)
+		printf("|%s", function_name_abbr[i]);
+	
+	printf(" repeat-count\n");
+#ifdef USE_Xscr
+	printf("2. %s view file1.ppm file2.ppm\n", progname);
+#endif
+
+	exit(1);
+}
+
+
+void measure(int function, int repeat_count) {
+	uint32_t t1, t2;
+	int n = repeat_count;
+	
+	printf(
+		"function %s, called %d times; image %d x %d\n",
+		function_name[function],
+		repeat_count,
+		width, height
+	);
+
+	switch (function) {
+		case 0:
+			t1 = getTime();
+			while (n--)
+				blend();
+			t2 = getTime();
+			break;
+		
+		case 1:
+			t1 = getTime();
+			while (n--)
+				SSE4_blend();
+			t2 = getTime();
+			break;
+		
+		case 2:
+			t1 = getTime();
+			while (n--)
+				SSE42_blend();
+			t2 = getTime();
+			break;
+		default:
+			return;
+	}
+
+	printf("time = %d us\n", t2 - t1);
+}
 
 
 int main(int argc, char* argv[]) {
@@ -504,6 +505,7 @@ int main(int argc, char* argv[]) {
 		else
 			return 0;
 	}
+#ifdef USE_Xscr
 	else
 	if (strcasecmp(argv[1], "view") == 0) {
 		action = 0;
@@ -512,6 +514,7 @@ int main(int argc, char* argv[]) {
 		else
 			view(argv[2], argv[3]);
 	}
+#endif
 	else
 		help(argv[0]);
 
