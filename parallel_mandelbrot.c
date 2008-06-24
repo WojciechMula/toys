@@ -146,7 +146,7 @@ int main() {
 			jobs[i].width  = SIZE;
 			jobs[i].height = SIZE;
 			jobs[i].maxiters = 255;
-			jobs[i].threshold = 100.0;
+			jobs[i].threshold = 20.0;
 
 			i += 1;
 		}
