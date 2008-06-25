@@ -1,3 +1,39 @@
+/*
+	Multithread Mandelbrot set generator, $Revision: 1.6 $
+
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.republika.pl/wmula/
+
+	License: BSD
+
+	initial release 20-06-2008, last update $Date: 2008-06-25 17:15:53 $
+
+	----------------------------------------------------------------------
+
+	Program splits image into N independent pices and create threads
+	that do calculations.  Program don't use full producer-consument scheme ---
+	all pieces parameters are precalculated and then issued to execute.
+	Condition variables are used to synchronization.
+
+	With reasonable number of pieces speedup on 2 CPU machine
+	is around 1.90 -- 1.95.
+
+	Compilation:
+
+		gcc -lpthread -O3 parallel_mandelbrot.c -o your_favorite_name
+
+	Usage:
+
+		Program do not accept any argument, however following parameters
+		can be set during compile time via following definitions:
+		- WIDTH		- number, width of output image
+		- HEIGHT	- number, height of output image
+		- SIZE		- number, size of piece
+		- THREAD_NUM	- number, max. number of threads
+		- DEBUG		- be verbose
+
+*/
 #include <pthread.h>
 #include <errno.h>
 #include <stdint.h>
@@ -14,8 +50,7 @@
 pthread_mutex_t	mutex;
 pthread_cond_t  cond;
 pthread_t threads[THREAD_NUM];	// protected by mutex
-
-int thread_count = 0;
+int thread_count = 0;		// protected by mutex (for debugging purposes)
 
 #ifndef WIDTH
 #	define WIDTH (1024*4)
@@ -205,6 +240,7 @@ int main() {
 	}
 
 
+	// only for debugging purposes
 	while (1) {
 		pthread_mutex_lock(&mutex);
 		printf("thread_count = %d\n", thread_count);
@@ -217,7 +253,7 @@ int main() {
 		pthread_mutex_unlock(&mutex);
 	}
 
-	// save image
+	// save image (PGM)
 	f = fopen("mandelbrot.pgm", "wb");
 	if (f != NULL) {
 		fprintf(f, "P5\n%d %d 255\n", (int)WIDTH, (int)HEIGHT);
@@ -231,3 +267,6 @@ int main() {
 	}
 
 }
+
+// eof
+
