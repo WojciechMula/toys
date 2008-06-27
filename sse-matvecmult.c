@@ -1,6 +1,37 @@
+/*
+	Multiplication of matrix 4x4 by vector 4x1 --- FPU, SSE3 and SSE4 procedures
+	$Revision: 1.2 $
+
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://www.republika.pl/wmula/
+
+	License: BSD
+
+	initial release 24-06-2008, last update $Date: 2008-06-27 22:18:08 $
+
+	----------------------------------------------------------------------
+
+	Measure speed of different procedures: using FPU instruction, SSE3 (HADDPS)
+	and SSE4.1 (DPPS).  Because DPPS has long latency (11 cycles) single
+	multiplication is slower then SSE3 procedure.
+
+	Compilation:
+
+		gcc -O3 -Wall -pedantic -std=c99 sse-matvecmul.c
+
+		you will need sse-aux.c file:
+		http://republika.pl/wmula/snippets/asm/sse-aux.c
+
+	Usage:
+
+		run program without argument to read help
+
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <strings.h>
 
 #include "sse-aux.c"
 
@@ -26,7 +57,7 @@ void matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[4]) {
 //========================================================================
 #ifdef DATA_ALIGNED
 void sse3_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[4]) {
-	asm volatile (
+	__asm__ volatile (
 		"movaps   (%0), %%xmm0			\n"
 		"movaps %%xmm0, %%xmm1			\n"
 		"movaps %%xmm0, %%xmm2			\n"
@@ -34,7 +65,7 @@ void sse3_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 		: /* no output */
 		: "r" (in_vector)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"mulps  0x00(%0), %%xmm0		\n"
 		"mulps  0x10(%0), %%xmm1		\n"
 		"mulps  0x20(%0), %%xmm2		\n"
@@ -48,7 +79,7 @@ void sse3_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 		: /* no output */
 		: "r" (in_matrix)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"movaps %%xmm0, (%0)"
 		: /* no output */
 		: "r" (out_vector)
@@ -56,12 +87,12 @@ void sse3_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 }
 #else
 void sse3_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[4]) {
-	asm volatile (
+	__asm__ volatile (
 		"movups (%0), %%xmm7"
 		: /* no output */
 		: "r" (in_vector)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"movups 0x00(%0), %%xmm0		\n"
 		"movups 0x10(%0), %%xmm1		\n"
 		"movups 0x20(%0), %%xmm2		\n"
@@ -80,7 +111,7 @@ void sse3_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 		: /* no output */
 		: "r" (in_matrix)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"movups %%xmm0, (%0)"
 		: /* no output */
 		: "r" (out_vector)
@@ -92,7 +123,7 @@ void sse3_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 //========================================================================
 #ifdef DATA_ALIGNED
 void sse4_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[4]) {
-	asm volatile (
+	__asm__ volatile (
 		"movaps   (%0), %%xmm0			\n"
 		"movaps %%xmm0, %%xmm1			\n"
 		"movaps %%xmm0, %%xmm2			\n"
@@ -100,7 +131,7 @@ void sse4_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 		: /* no output */
 		: "r" (in_vector)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"dpps   $0xf1, 0x00(%0), %%xmm0		\n"
 		"dpps   $0xf2, 0x10(%0), %%xmm1		\n"
 		"dpps   $0xf4, 0x20(%0), %%xmm2		\n"
@@ -112,7 +143,7 @@ void sse4_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 		: /* no output */
 		: "r" (in_matrix)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"movaps %%xmm0, (%0)"
 		:
 		: "r" (out_vector)
@@ -120,12 +151,12 @@ void sse4_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 }
 #else
 void sse4_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[4]) {
-	asm volatile (
+	__asm__ volatile (
 		"movups (%0), %%xmm7"
 		:
 		: "r" (in_vector)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"movups 0x00(%0), %%xmm0		\n"
 		"movups 0x10(%0), %%xmm1		\n"
 		"movups 0x20(%0), %%xmm2		\n"
@@ -143,7 +174,7 @@ void sse4_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 		: /* no output */
 		: "r" (in_matrix)
 	);
-	asm volatile (
+	__asm__ volatile (
 		"movups %%xmm0, (%0)"
 		:
 		: "r" (out_vector)
@@ -153,6 +184,12 @@ void sse4_matvecmul(float in_matrix[4][4], float in_vector[4], float out_vector[
 
 
 //========================================================================
+void help(char* progname) {
+	printf("%s compare|fpu|sse3|sse4 iter-count\n", progname);
+	exit(EXIT_FAILURE);
+}
+
+
 int main(int argc, char* argv[]) {
 	int i, j;
 
@@ -176,6 +213,9 @@ int main(int argc, char* argv[]) {
 			function = TestSSE4;
 	}
 
+	if (function == None)
+		help(argv[0]);
+
 	if (argc > 2)
 		iterations = atoi(argv[2]);
 
@@ -194,6 +234,8 @@ int main(int argc, char* argv[]) {
 		printf("iterations = %d\n", iterations);
 
 	switch (function) {
+		case None:
+			break;
 		case Compare:
 			puts("Input matrix");
 			for (i=0; i < 4; i++)
@@ -244,3 +286,4 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
+// eof
