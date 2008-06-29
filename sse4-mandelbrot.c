@@ -1,5 +1,5 @@
 /*
-	Mandelbrot fractal generator --- SSE4.1 implementation, $Revision: 1.1 $
+	Mandelbrot fractal generator --- SSE2 & SSE4.1 implementation, $Revision: 1.2 $
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,20 +7,26 @@
 
 	License: BSD
 
-	initial release 28-06-2008, last update $Date: 2008-06-29 14:04:29 $
+	initial release 28-06-2008, last update $Date: 2008-06-29 14:30:16 $
 
 	----------------------------------------------------------------------
 
-	SSE procedure calculates 4 pixels in parallel; it uses PTEST instruction
-	to break loop when lengths of all 4 complex numbers are greater then some
-	threshold.
+	SSE procedure calculates 4 pixels in parallel. SSE4.1 procedure uses
+	PTEST instruction to break loop when lengths of all 4 complex numbers
+	are greater then some threshold.  SSE2 version uses PMOVMSKB and x86
+	TEST.
 
 	Average speedup over FPU procedure is around 4.5 times.
+	Measured on Core2 Duo E8200 @ 2.66GHz.
 
 
-	Compilation:
+	Compilation SSE4.1 version:
 
 		gcc -O3 -Wall -pedantic -std=c99 sse4-mandelbrot.c -o your_favorite_name
+	
+	Compilation SSE2 version:
+
+		gcc -O3 -Wall -pedantic -stc=c99 -DSSE2 sse-mandelbrot.c -o your_favorite_name
 
 	Usage:
 
@@ -192,9 +198,16 @@ void SSE_mandelbrot(
 			"mulps    %%xmm4, %%xmm4	\n"	// xmm4 = Tim^2
 			"addps    %%xmm5, %%xmm4	\n"	// xmm4 = Tre^2 + Tim^2
 
+#ifdef SSE2
+			"cmpleps  %%xmm7, %%xmm4	\n"	// xmm4 < threshold
+			"pmovmskb %%xmm4, %%edx 	\n"	// all greater?
+			"test      %%edx, %%edx		\n"
+			"jz	  3f			\n"	// break
+#else // SSE4.1
 			"cmpleps  %%xmm7, %%xmm4	\n"	// xmm4 < threshold
 			"ptest    %%xmm4, %%xmm4	\n"	// all greater?
 			"jz	  3f			\n"	// break
+#endif
 
 			"psubd    %%xmm4, %%xmm6	\n"	// at least on less:
 								// advance itercount
@@ -212,6 +225,9 @@ void SSE_mandelbrot(
 			:
 			: "c" (maxiters),
 			  "a" (ptr)
+#ifdef SSE2
+			: "edx"
+#endif
 			);
 
 			// advance Cre vector
@@ -237,7 +253,11 @@ uint8_t image[WIDTH][HEIGHT];
 void help(char* progname) {
 	printf("%s FPU|SSE [Remin Immin Remax Immax [threshold] [maxiters]]", progname);
 	puts("FPU - select FPU procedure");
-	puts("SSE - select SSE procedure");
+#ifdef SSE2
+	puts("SSE - select SSE2 procedure");
+#else
+	puts("SSE - select SSE4.1 procedure");
+#endif
 	puts("Remin Immin Remax Immax - define area of calculations; default -2.0 -2.0 +2.0 +2.0");
 	puts("threshold - define max radius, greater then 0; default 20.0");
 	puts("maxiters  - define max number of iterations; default 255");
@@ -247,7 +267,7 @@ void help(char* progname) {
 
 
 int main(int argc, char* argv[]) {
-	FILE* f;
+	FILE* f = NULL;
 
 	uint32_t t1, t2;
 
@@ -320,7 +340,6 @@ int main(int argc, char* argv[]) {
 	// run selected function
 	switch (function) {
 		case None:
-			f = NULL;
 			break;
 
 		case FPUprocedure:
@@ -341,7 +360,11 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case SSEprocedure:
-			printf("SSE ");
+#ifdef SSE2
+			printf("SSE2 ");
+#else //SSE4.1
+			printf("SSE4.1 ");
+#endif
 			fflush(stdout);
 			t1 = get_time();
 			SSE_mandelbrot(
