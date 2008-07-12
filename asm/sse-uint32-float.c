@@ -1,3 +1,5 @@
+// by Wojciech Mu³a, http://republika.pl/wmula
+// $Date: 2008-07-12 13:23:51 $ $Revision: 1.3 $
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -6,12 +8,12 @@
 #include "sse-aux.c"
 
 //========================================================================
+// snippet-start
 float    CONST[4]     SIMD_ALIGN = packed_float((float)((uint32_t)(1 << 31))); /* 2^31 */
 uint32_t MASK_0_30[4] SIMD_ALIGN = packed_dword(0x7fffffff);
 uint32_t MASK_31[4]   SIMD_ALIGN = packed_dword(0x80000000);
 
 
-// snippet-start
 void convert_uint32_float(uint32_t in[4], float out[4]) {
 	__asm__ volatile (
 	"movdqu   (%%eax), %%xmm0  \n"
@@ -20,8 +22,7 @@ void convert_uint32_float(uint32_t in[4], float out[4]) {
 	"pand   MASK_0_30, %%xmm0  \n" // xmm0 - mask MSB bit - never less then zero in U2
 	"cvtdq2ps  %%xmm0, %%xmm0  \n" // convert this value to float
 
-	"pand     MASK_31, %%xmm1  \n" // xmm1 - left MSB bit of dword
-	"paddusw   %%xmm1, %%xmm1  \n" // populate MSB in higher word (enough to mask CONST)
+	"psrad        $32, %%xmm1  \n" // populate MSB in higher word (enough to mask CONST)
 	"pand       CONST, %%xmm1  \n" // xmm1 = MSB set ? float(2^31) : float(0)
 
 	"addps     %%xmm1, %%xmm0  \n" // add 2^31 if MSB set
