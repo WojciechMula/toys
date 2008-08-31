@@ -1,5 +1,5 @@
 /*
-	SSE4.1 insertion sort, $Revision: 1.1 $
+	SSE4.1 insertion sort, $Revision: 1.2 $
 	
 	Using instruction PHMINPOSUW as key part
 	of insertion sort.  Weird.
@@ -10,14 +10,14 @@
 	
 	License: BSD
 	
-	initial release 31-08-2008, last update $Date: 2008-08-31 16:06:56 $
+	initial release 31-08-2008, last update $Date: 2008-08-31 16:33:28 $
 */
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 
 /*** SSE4.1 *************************************************************/
-// start-snippet
+// snippet-start
 typedef uint16_t table[8];
 
 table max[8] = {
@@ -56,7 +56,7 @@ void sse4_sort(table T) {
 	: "ecx", "edx"
 	);
 }
-// end-snippet
+// snippet-end
 
 /*** standard sort ******************************************************/
 int cmp_uint16_t(uint16_t* x, uint16_t* y) {
