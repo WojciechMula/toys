@@ -1,5 +1,5 @@
 /*
-	Mandelbrot fractal generator --- SSE2 & SSE4.1 implementation, $Revision: 1.2 $
+	Mandelbrot fractal generator --- SSE2 & SSE4.1 implementation, $Revision: 1.3 $
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,7 +7,7 @@
 
 	License: BSD
 
-	initial release 28-06-2008, last update $Date: 2008-06-29 14:30:16 $
+	initial release 28-06-2008, last update $Date: 2008-12-22 20:15:08 $
 
 	----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@
 	
 	Compilation SSE2 version:
 
-		gcc -O3 -Wall -pedantic -stc=c99 -DSSE2 sse-mandelbrot.c -o your_favorite_name
+		gcc -O3 -Wall -pedantic -std=c99 -DSSE2 sse-mandelbrot.c -o your_favorite_name
 
 	Usage:
 
@@ -112,12 +112,12 @@ void FPU_mandelbrot(
 //=== SSE4 implementation ================================================
 #define SIMD_ALIGN __attribute__((aligned(16)))
 
-
-float SSE_Cre[4]		SIMD_ALIGN;
-float SSE_Cim[4]		SIMD_ALIGN;
-float SSE_threshold[4]		SIMD_ALIGN;
-float SSE_4dRe[4]		SIMD_ALIGN;
-float SSE_dIm[4]		SIMD_ALIGN;
+// XXX: volatile = gcc 3.4.4 temp. hack
+volatile float SSE_Cre[4]		SIMD_ALIGN;
+volatile float SSE_Cim[4]		SIMD_ALIGN;
+volatile float SSE_threshold[4]		SIMD_ALIGN;
+volatile float SSE_4dRe[4]		SIMD_ALIGN;
+volatile float SSE_dIm[4]		SIMD_ALIGN;
 
 
 void SSE_mandelbrot(
@@ -145,7 +145,11 @@ void SSE_mandelbrot(
 	SSE_threshold[1] = threshold;
 	SSE_threshold[2] = threshold;
 	SSE_threshold[3] = threshold;
+#ifdef WINDOWS
+	__asm__ volatile ("movups _SSE_threshold, %xmm7");
+#else
 	__asm__ volatile ("movups SSE_threshold, %xmm7");
+#endif
 	
 	
 	// 2. Cim (xmm1)
@@ -153,7 +157,11 @@ void SSE_mandelbrot(
 	SSE_Cim[1] = Im_min;
 	SSE_Cim[2] = Im_min;
 	SSE_Cim[3] = Im_min;
+#ifdef WINDOWS
+	__asm__ volatile ("movups _SSE_Cim, %xmm1");
+#else
 	__asm__ volatile ("movups SSE_Cim, %xmm1");
+#endif
 
 	// 3. Re advance every x iteration (memory)
 	SSE_4dRe[0] = SSE_4dRe[1] = SSE_4dRe[2] = SSE_4dRe[3] = 4*dRe;
@@ -170,7 +178,11 @@ void SSE_mandelbrot(
 		SSE_Cre[1] = Re_min + dRe;
 		SSE_Cre[2] = Re_min + 2*dRe;
 		SSE_Cre[3] = Re_min + 3*dRe;
+#ifdef WINDOWS
+		__asm__ volatile ("movups _SSE_Cre, %xmm0");
+#else
 		__asm__ volatile ("movups SSE_Cre, %xmm0");
+#endif
 
 		for (x=0; x < width; x+=4) {
 			__asm__ volatile (
@@ -231,14 +243,22 @@ void SSE_mandelbrot(
 			);
 
 			// advance Cre vector
+#ifdef WINDOWS
+			__asm__ volatile ("addps _SSE_4dRe, %xmm0");
+#else
 			__asm__ volatile ("addps SSE_4dRe, %xmm0");
+#endif
 
 			// advance data ptr
 			ptr += 4;
 		}
 
 		// advance Cim vector
+#ifdef WINDOWS
+		__asm__ volatile ("addps _SSE_dIm, %xmm1");
+#else
 		__asm__ volatile ("addps SSE_dIm, %xmm1");
+#endif
 	}
 }
 
