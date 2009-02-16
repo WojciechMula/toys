@@ -1,13 +1,13 @@
 /*
-	Double precision floating point rounding, $Revision: 1.2 $
+	Double precision floating point rounding, $Revision: 1.3 $
 	
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.republika.pl/wmula/news2008.html#log15-06-2008
+	www:    http://wm.ite.pl/articles/fptricks.html
 
 	License: BSD
 	
-	initial release 15-06-2008, last update $Date: 2008-06-15 18:09:30 $
+	initial release 15-06-2008, last update $Date: 2009-02-16 21:57:30 $
 
 	----------------------------------------------------------------------
 	

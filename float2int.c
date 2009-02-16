@@ -1,5 +1,5 @@
 /*
-	Convering floating point numbers to int, $Revision: 1.2 $
+	Convering floating point numbers to int, $Revision: 1.3 $
 	
 	Comparison of FPU based method and simple method that
 	require one addition and bitwise AND -- method is limited
@@ -7,7 +7,7 @@
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.republika.pl/wmula/news2008.html#log15-06-2008
+	www:    http://wm.ite.pl/articles/fptricks.html
 	
 	License: BSD
 
@@ -19,7 +19,7 @@
 	Run program without arguments, to read usage info.
 
 	
-	initial release 14-06-2008, last update $Date: 2008-06-15 17:57:29 $
+	initial release 14-06-2008, last update $Date: 2009-02-16 21:57:29 $
 */
 
 #include <stdlib.h>
