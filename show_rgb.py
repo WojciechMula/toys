@@ -1,9 +1,21 @@
+# -*- coding: iso-8859-2 -*-
+#
+# PyGTK application with own CellRenderers: one drawing an arbitrary shape and rendering a text.
+# 
+# Author: Wojciech Mu³a
+# e-mail: wojciech_mula@poczta.onet.pl
+# www:    http://wm.ite.pl/
+#
+# License: public domain
+
+
 import gtk
 import gobject
 
 class CellColorRenderer(gtk.GenericCellRenderer):
+	"Draw filled rectangle with color from three components: red, green and blue"
 
-	red   = gobject.property(type=int, default=0)
+	red   = gobject.property(type=int, default=0)	# GObject properties
 	green = gobject.property(type=int, default=0)
 	blue  = gobject.property(type=int, default=0)
 
@@ -27,15 +39,11 @@ class CellColorRenderer(gtk.GenericCellRenderer):
 		self.gc.set_rgb_fg_color(gtk.gdk.Color())
 		window.draw_rectangle(self.gc, False, cell_area[0], cell_area[1], cell_area[2], cell_area[3]);
 
-	def on_activate(self, event, widget, path, background_area, cell_area, flags):
-		pass
-
-	def on_start_editing(self, event, widget, path, background_area, cell_area, flags):
-		pass
-
 
 class CellHexColorRenderer(gtk.CellRendererText):
-	red   = gobject.property(type=int, default=0)
+	"Display HTML color description in form #rrggbb from three components"
+
+	red   = gobject.property(type=int, default=0) # GObject properties
 	green = gobject.property(type=int, default=0)
 	blue  = gobject.property(type=int, default=0)
 
@@ -43,6 +51,7 @@ class CellHexColorRenderer(gtk.CellRendererText):
 		gtk.CellRendererText.__init__(self)
 
 	def do_render(self, *args):
+		# set text property with text
 		self.set_property('text', "#%02x%02x%02x" % (self.red, self.green, self.blue))
 		gtk.CellRendererText.do_render(self, *args)
 
@@ -109,17 +118,17 @@ class MainWindow(object):
 		gui.tree.set_model(ls)
 
 		# five columns
-		# 1 - color: composition of three components!
+		# 1 - color: composition of three components
 		renderer = CellColorRenderer()
 		column = gtk.TreeViewColumn('Preview', renderer, red=0, green=1, blue=2)
 		gui.tree.append_column(column)
 		
-		# 2 - hex view: rendered from three components!
+		# 2 - hex view: rendered from three components
 		renderer = CellHexColorRenderer()
 		column = gtk.TreeViewColumn('Hex', renderer, red=0, green=1, blue=2)
 		gui.tree.append_column(column)
 
-		# 3,4,5,6 - default view, as text
+		# 3,4,5,6 - default view of ListStore columns, as text
 		for i, name in enumerate(['Red', 'Green', 'Blue', 'Color name']):
 			renderer = gtk.CellRendererText()
 			column = gtk.TreeViewColumn(name, renderer, text=i)
