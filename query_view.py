@@ -85,30 +85,75 @@ class GridView(gtk.DrawingArea):
 			y += self.h
 
 
+class Header(gtk.Fixed):
+	def __init__(self):
+		gtk.Fixed.__init__(self)
+		self.columns = []
+		self.height = 24
+
+	def do_layout(self):
+		y = 0
+		x = 0
+		for label in self.columns:
+			w, _ = label.get_size_request()
+			self.move(label, x, y)
+			x += w
+			
+
+	def add_column(self, title, width):
+		l = gtk.Button(title)
+		l.set_size_request(width, self.height)
+		self.columns.append(l)
+		self.put(l, 0, 0)
+
+	def set_size(self, index, width):
+		self.columns[index].set_size_request(width, self.height)
+
+
 if __name__ == '__main__':
-	d = gtk.Dialog()
+
+	H = Header()
 	
-	c = sqlite.connect('pylocate/test')
+	c = sqlite.connect('test')
 	r = c.execute("SELECT * FROM files")
 	columns = []
 	for item in r.description:
+		renderer = gtk.CellRendererText()
 		columns.append(
-			(150, gtk.CellRendererText())
+			(150, renderer)
 		)
+
+		H.add_column(item[0], 150)
 	
+	H.do_layout()
 	r.close()
 	
 #	l = List(1000000)
 	l = SQLiteQueryList(c, 'files', fetch_count=64)
 	v = GridView(columns, l)
 
+	vbox = gtk.VBox()
+	vbox.pack_start(H)
+	vbox.pack_start(v)
+
 	sw = gtk.ScrolledWindow()
 	sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
 	sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 	sw.set_size_request(640,300)
-	sw.add_with_viewport(v)
+	sw.add_with_viewport(vbox)
 
+
+	def print_cell_renderer(*args):
+		for w, r in columns:
+			print r.get_size(v)
+
+	b1 = gtk.Button("")
+	b1.connect("clicked", print_cell_renderer)
+	
+	d = gtk.Dialog()
+	#d.vbox.pack_start(H)
 	d.vbox.pack_start(sw)
+	d.vbox.pack_start(b1)
 	d.show_all()
 
 	# run	
