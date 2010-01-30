@@ -1,4 +1,5 @@
 import gtk
+import gobject
 
 class List(object):
 	def __init__(self, count):
@@ -26,6 +27,7 @@ class SQLiteQueryList(List):
 			SQLquery += " WHERE " + where
 
 		count = db.execute("SELECT COUNT(*) FROM %s" % tablename).fetchone()[0]
+		count = 100
 		self.cursor = db.execute(SQLquery)
 		self.fetch_count = fetch_count
 
@@ -61,14 +63,15 @@ class GridView(gtk.DrawingArea):
 		self.height = len(data)*self.h
 		self.width  = None
 
+		self.top_pix	= 0
+		self.left_pix	= 0
+
 		self.do_layout()
 
-		self.connect("expose_event", self.on_expose)
 		self.gc = None
 
 	def do_layout(self):
 		self.width = sum(item[0] for item in columns)
-		self.set_size_request(self.width, self.height)
 
 	def set_width(self, column, newwidth):
 		item = self.columns[column]
@@ -76,15 +79,19 @@ class GridView(gtk.DrawingArea):
 			print "here"
 			self.columns[column] = (newwidth, item[1])
 			self.queue_draw()
-		
-	def on_expose(self, window, event):
-		a = event.area
-		f = a[1]/self.h
-		k = a[3]/self.h
-		print "expose", a, f, k
-		y = f*self.h
-		for i in xrange(f, f+k+1):
-			x = 0
+
+	def set_h_scroll(self, x):
+		self.left_pix = x
+		self.queue_draw()
+	
+	def set_v_scroll(self, y):
+		self.top_pix = y
+		self.queue_draw()
+
+	def draw_area(self, row_start, row_end):
+		y = - (self.top_pix % self.h)
+		for i in xrange(row_start, row_end+1):
+			x = -self.left_pix
 			for j, (w, renderer) in enumerate(self.columns):
 				r = gtk.gdk.Rectangle(x, y, w, self.h)
 				background_area = r
@@ -103,11 +110,20 @@ class GridView(gtk.DrawingArea):
 
 			y += self.h
 
+	def do_expose_event(self, event):
+		t = self.top_pix / self.h
+		b = (self.top_pix + self.allocation.height) / self.h
+		print t, b, b-t+1
+		self.draw_area(t, b)
+
 		if self.gc is None:
 			gc = self.get_style().bg_gc[gtk.STATE_NORMAL]
 			self.gc = gtk.gdk.GC(self.window)
 			self.gc.copy(gc)
-			self.gc.set_rgb_fg_color(gtk.gdk.Color(255*256,0,255*256))
+			self.gc.set_rgb_fg_color(gtk.gdk.Color(0xffff, 0xffff, 0xffff))
+
+
+gobject.type_register(GridView)
 
 
 class Header(gtk.Fixed):
@@ -115,7 +131,7 @@ class Header(gtk.Fixed):
 		gtk.Fixed.__init__(self)
 		self.grid_view = grid_view
 		self.columns = []
-		self.height = 24
+		self.height = 24*2
 		self.highlight = [None, 0, None]
 		self.dragging = False
 		self.drag_dist = 10
@@ -124,14 +140,18 @@ class Header(gtk.Fixed):
 
 		self.drag_cursor = gtk.gdk.Cursor(gtk.gdk.SB_H_DOUBLE_ARROW)
 
-
-	def do_layout(self):
+	def do_layout(self, scroll=0):
 		y = 0
 		x = 0
 		for label in self.columns:
 			w, _ = label.get_size_request()
-			self.move(label, x, y)
+			self.move(label, x + scroll, y)
 			x += w
+
+		self.set_size_request(x, self.height)
+
+	def set_scroll(self, x):
+		self.do_layout(-x)
 	
 	def set_column_width(self, index, width):
 		self.columns[index].set_size_request(width, self.height)
@@ -144,11 +164,7 @@ class Header(gtk.Fixed):
 		if column_index < 0:
 			return 0
 
-
-		s = sum(column.allocation.width for column in self.columns[:column_index])
-		print column_index, s
-
-		return s
+		return sum(column.allocation.width for column in self.columns[:column_index])
 
 	def add_column(self, title, width):
 		e = gtk.Button(title)
@@ -260,6 +276,53 @@ class Header(gtk.Fixed):
 		window.draw_line(self.gc, x, 0, x, y)
 		self.last_x = x
 
+class HeaderView(gtk.VBox):
+	__gsignals__ = dict(set_scroll_adjustments=
+                        (gobject.SIGNAL_RUN_LAST, None,
+                         (gtk.Adjustment, gtk.Adjustment)))
+
+	def __init__(self, header, gridview):
+		gtk.VBox.__init__(self)
+		self.header = header
+		self.gridview = gridview
+		self.hadjustment = None
+		self.vadjustment = None
+
+		vbox = self
+
+		vbox.pack_start(header, expand=False)
+		vbox.pack_start(gridview, expand=True)
+
+	def h_value_changed(self, adjustment):
+		print "h=", adjustment.value
+		s = int(adjustment.value)
+		self.header.set_scroll(s)
+		self.gridview.set_h_scroll(s)
+		pass
+	
+	def v_value_changed(self, adjustment):
+		print "v=", adjustment.value
+		s = int(adjustment.value)
+		self.gridview.set_v_scroll(s)
+		pass
+
+	def do_size_allocate(self, allocation):
+		gtk.VBox.do_size_allocate(self, allocation)
+		self.hadjustment.page_size = allocation.width
+		self.vadjustment.page_size = self.gridview.allocation.height
+
+	def do_set_scroll_adjustments(self, hadjustment, vadjustment):
+		self.hadjustment = hadjustment
+		self.vadjustment = vadjustment
+
+		hadjustment.set_all(0, 0, self.gridview.width, 1, 10, self.allocation.width)
+		vadjustment.set_all(0, 0, self.gridview.height, 1, 10, self.allocation.height)
+		
+		hadjustment.connect("value-changed", self.h_value_changed)
+		vadjustment.connect("value-changed", self.v_value_changed)
+
+
+HeaderView.set_set_scroll_adjustments_signal('set-scroll-adjustments')
 
 if __name__ == '__main__':
 
@@ -284,29 +347,26 @@ if __name__ == '__main__':
 	v = GridView(columns, l)
 	H.grid_view = v
 
+	HV = HeaderView(H, v)
+
 	sw = gtk.ScrolledWindow()
 	sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
 	sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-	sw.set_size_request(640,300)
-	sw.add_with_viewport(v)
+	sw.set_size_request(840, 400)
+
+	sw.add(HV)
 	
-	sw2 = gtk.ScrolledWindow()
-	sw2.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-	sw2.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-	sw2.set_size_request(640,300)
-	sw2.add_with_viewport(H)
-
-
 	def print_cell_renderer(*args):
 		for w, r in columns:
 			print r.get_size(v)
+
+		print H.allocation
 
 	b1 = gtk.Button("")
 	b1.connect("clicked", print_cell_renderer)
 	
 	d = gtk.Dialog()
-	d.vbox.pack_start(sw2, expand=False, fill=False)
-	d.vbox.pack_start(sw)
+	d.vbox.pack_start(sw, expand=True, fill=True)
 	d.vbox.pack_start(b1, expand=False, fill=False)
 	d.show_all()
 
