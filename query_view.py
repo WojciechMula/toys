@@ -1,4 +1,5 @@
 import gtk
+import gtk.gdk as gdk
 import gobject
 
 class List(object):
@@ -126,55 +127,60 @@ class GridView(gtk.DrawingArea):
 gobject.type_register(GridView)
 
 
-class Header(gtk.Fixed):
+class Header(gtk.Container):
 	def __init__(self, grid_view = None):
-		gtk.Fixed.__init__(self)
+		gtk.Container.__init__(self)
 		self.grid_view = grid_view
 		self.columns = []
-		self.height = 24*2
+		self.height = 45
 		self.highlight = [None, 0, None]
 		self.dragging = False
 		self.drag_dist = 10
 		self.last_x = None
 		self.gc = None
+		self._changed = False
+		self.total_width = 0
 
 		self.drag_cursor = gtk.gdk.Cursor(gtk.gdk.SB_H_DOUBLE_ARROW)
 
-	def do_layout(self, scroll=0):
+	def _do_layout(self, scroll=0):
 		y = 0
-		x = 0
-		for label in self.columns:
-			w, _ = label.get_size_request()
-			self.move(label, x + scroll, y)
+		x = scroll
+		h = self.height
+		for w, button in self.columns:
+			R = gdk.Rectangle(x, y, w, h)
+			button.size_allocate(R)
 			x += w
 
-		self.set_size_request(x, self.height)
+		self.total_width = x
 
 	def set_scroll(self, x):
-		self.do_layout(-x)
+#		self.window.move_resize(-x, 0, self.total_width, self.height)
+		self._do_layout(-x)
 	
 	def set_column_width(self, index, width):
 		self.columns[index].set_size_request(width, self.height)
 
 	def get_right_edge(self, column_index):
-		return self.get_left_edge(column_index) + self.columns[column_index].allocation[2]
+		return self.get_left_edge(column_index) + self.columns[column_index][0]
 
 	def get_left_edge(self, column_index):
 		"returns x positon of left column"
 		if column_index < 0:
 			return 0
 
-		return sum(column.allocation.width for column in self.columns[:column_index])
+		return sum(width for width, _ in self.columns[:column_index])
 
 	def add_column(self, title, width):
-		e = gtk.Button(title)
-		e.set_size_request(width, self.height)
-		e.index = len(self.columns)
-		self.columns.append(e)
-		self.put(e, 0, 0)
+		b = gtk.Button(title)
+		b.size_request()
+		b.set_parent(self)
+		b.index = len(self.columns)
+		self.columns.append((width, b))
+		self._changed = True
 		
-		e.add_events(gtk.gdk.POINTER_MOTION_MASK)
-		e.connect("event", self.event)
+		b.add_events(gtk.gdk.POINTER_MOTION_MASK)
+		b.connect("event", self.event)
 
 	def __column_edge(self, widget, event):
 		if event.x <= self.drag_dist:
@@ -209,7 +215,7 @@ class Header(gtk.Fixed):
 				button = self.highlight[0]
 				x = int(event.x)
 				button.set_size_request(x, self.height)
-				self.do_layout()
+				self._do_layout()
 				try:
 					self.on_dragging(self.highlight[0], self.highlight[2] + x)
 				finally:
@@ -243,7 +249,6 @@ class Header(gtk.Fixed):
 
 	def on_dragging(self, button, x):
 		self.draw_line(x)
-		selg
 		pass
 	
 	def on_end_drag(self, button, x):
@@ -275,6 +280,62 @@ class Header(gtk.Fixed):
 
 		window.draw_line(self.gc, x, 0, x, y)
 		self.last_x = x
+
+
+	def do_realize(self):
+		# The do_realize method is responsible for creating GDK (windowing system)
+		# resources. In this example we will create a new gdk.Window which we
+		# then draw on
+		
+		# First set an internal flag telling that we're realized
+		self.set_flags(gtk.REALIZED)
+		
+		# Create a new gdk.Window which we can draw on.
+		# Also say that we want to receive exposure events by setting
+		# the event_mask
+		self.window = gdk.Window(
+			self.get_parent_window(),
+			width=self.allocation.width,
+			height=self.allocation.height,
+			window_type=gdk.WINDOW_CHILD,
+			wclass=gdk.INPUT_OUTPUT,
+			event_mask=self.get_events() | gdk.EXPOSURE_MASK | gdk.BUTTON_PRESS_MASK)
+		
+		# Associate the gdk.Window with ourselves, Gtk+ needs a reference
+		# between the widget and the gdk window
+		self.window.set_user_data(self)
+		
+		# Attach the style to the gdk.Window, a style contains colors and
+		# GC contextes used for drawing
+		self.style.attach(self.window)
+		
+		# The default color of the background should be what
+		# the style (theme engine) tells us.
+		self.style.set_background(self.window, gtk.STATE_NORMAL)
+		self.window.move_resize(*self.allocation)
+
+	def do_size_allocate(self, allocation):
+		print "####allocation", allocation
+		self.allocation = allocation
+		if self.flags() & gtk.REALIZED:
+			self.window.move_resize(*allocation)
+
+		self._do_layout()
+	
+	def do_size_request(self, requisition):
+		if self._changed:
+			print "####request", requisition.width, requisition.height
+			requisition.width = self.get_right_edge(-1)
+			requisition.height = self.height
+			self._changed = False
+
+	def do_forall(self, internal, callback, data):
+		#print internal, callback, data
+		for w, button in self.columns:
+			callback(button, data)		
+
+
+gobject.type_register(Header)
 
 class HeaderView(gtk.VBox):
 	__gsignals__ = dict(set_scroll_adjustments=
@@ -331,15 +392,14 @@ if __name__ == '__main__':
 	c = sqlite.connect('test')
 	r = c.execute("SELECT * FROM files")
 	columns = []
-	for item in r.description:
+	for i, item in enumerate(r.description):
 		renderer = gtk.CellRendererText()
-		columns.append(
-			(150, renderer)
-		)
+		w = 150
+		columns.append((w, renderer))
 
-		H.add_column(item[0], 150)
+		H.add_column(item[0], w)
 	
-	H.do_layout()
+	#H.do_layout()
 	r.close()
 	
 #	l = List(1000000)
