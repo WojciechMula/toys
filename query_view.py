@@ -53,9 +53,12 @@ class SQLiteQueryList(List):
 		return self.get_row(row)[col]
 
 
-class GridView(gtk.DrawingArea):
+class DrawGrid(gtk.DrawingArea):
 	def __init__(self, columns, data):
 		gtk.DrawingArea.__init__(self)
+
+		self.__draw_hlines	= False
+		self.__draw_vlines	= False
 
 		self.columns = columns
 		self.data   = data
@@ -71,6 +74,12 @@ class GridView(gtk.DrawingArea):
 
 		self.gc = None
 
+	def set_enable_grid_lines(self, val):
+		pass
+		
+	def get_enable_grid_lines(self):
+		return self.__enable
+
 	def do_layout(self):
 		self.width = sum(item[0] for item in columns)
 
@@ -82,8 +91,9 @@ class GridView(gtk.DrawingArea):
 			self.queue_draw()
 
 	def set_h_scroll(self, x):
-		self.left_pix = x
-		self.queue_draw()
+		if self.left_pix != x:
+			self.left_pix = x
+			self.queue_draw()
 	
 	def set_v_scroll(self, y):
 		self.top_pix = y
@@ -111,20 +121,38 @@ class GridView(gtk.DrawingArea):
 
 			y += self.h
 
+	def draw_grid(self):
+		wnd = self.window
+		y   = - (self.top_pix % self.h)
+		w   = self.allocation.width
+		h   = self.allocation.height
+		while y <= w:
+			wnd.draw_line(self.gc, 0, y, w, y)
+			y += self.h
+
+		x = -self.left_pix
+		for width, renderer in self.columns:
+			wnd.draw_line(self.gc, x, 0, x, h)
+			x += width
+
+	def do_realize(self):
+		gtk.DrawingArea.do_realize(self)
+		gc = self.get_style().bg_gc[gtk.STATE_NORMAL]
+
+		
+		self.gc = gtk.gdk.GC(self.window)
+		self.gc.copy(gc)
+		self.gc.set_rgb_fg_color(gtk.gdk.Color(0xffff, 0xffff, 0xffff))
+
 	def do_expose_event(self, event):
 		t = self.top_pix / self.h
 		b = (self.top_pix + self.allocation.height) / self.h
 		print t, b, b-t+1
+		self.draw_grid()
 		self.draw_area(t, b)
 
-		if self.gc is None:
-			gc = self.get_style().bg_gc[gtk.STATE_NORMAL]
-			self.gc = gtk.gdk.GC(self.window)
-			self.gc.copy(gc)
-			self.gc.set_rgb_fg_color(gtk.gdk.Color(0xffff, 0xffff, 0xffff))
 
-
-gobject.type_register(GridView)
+gobject.type_register(DrawGrid)
 
 
 class Header(gtk.Container):
@@ -133,19 +161,20 @@ class Header(gtk.Container):
 		self.grid_view = grid_view
 		self.columns = []
 		self.height = 45
-		self.highlight = [None, 0, None]
+		self.highlight = [None, 0, None, 0]
 		self.dragging = False
 		self.drag_dist = 10
 		self.last_x = None
 		self.gc = None
 		self._changed = False
 		self.total_width = 0
+		self.x_scroll	= 0
 
 		self.drag_cursor = gtk.gdk.Cursor(gtk.gdk.SB_H_DOUBLE_ARROW)
 
-	def _do_layout(self, scroll=0):
+	def _do_layout(self):
 		y = 0
-		x = scroll
+		x = - self.x_scroll
 		h = self.height
 		for w, button in self.columns:
 			R = gdk.Rectangle(x, y, w, h)
@@ -155,11 +184,12 @@ class Header(gtk.Container):
 		self.total_width = x
 
 	def set_scroll(self, x):
-#		self.window.move_resize(-x, 0, self.total_width, self.height)
-		self._do_layout(-x)
+		if x != self.x_scroll:
+			self.x_scroll = x
+			self._do_layout()
 	
 	def set_column_width(self, index, width):
-		self.columns[index].set_size_request(width, self.height)
+		self.columns[index] = (width, self.columns[index][1])
 
 	def get_right_edge(self, column_index):
 		return self.get_left_edge(column_index) + self.columns[column_index][0]
@@ -222,13 +252,21 @@ class Header(gtk.Container):
 					return True
 			elif event.type == gtk.gdk.BUTTON_RELEASE:
 				try:
-					self.on_end_drag(self.highlight[0], None)
+					self.on_end_drag(self.highlight[0], True)
 				finally:
 					self.dragging = False
 					return True
 
 			elif event.type == gtk.gdk.ENTER_NOTIFY or event.type == gtk.gdk.LEAVE_NOTIFY:
 				return True
+
+			elif event.type == gdk.KEY_PRESS:
+				try:
+					if event.keyval == gtk.keysyms.Escape:
+						self.dragging = False
+						self.on_end_drag(self.highlight[0], False)
+				finally:
+					return True
 		else:
 			if event.type == gtk.gdk.MOTION_NOTIFY:
 				e = self.__column_edge(button, event)
@@ -236,6 +274,7 @@ class Header(gtk.Container):
 			elif event.type == gtk.gdk.BUTTON_PRESS and event.button == 1:
 				if self.highlight[1] == +1:
 					self.highlight[2] = self.get_left_edge(button.index)
+					self.highlight[3] = self.columns[button.index][0]
 					self.dragging = True
 					try:
 						self.on_start_drag(self.highlight[0], self.highlight[2] + int(event.x))
@@ -248,15 +287,24 @@ class Header(gtk.Container):
 		pass
 
 	def on_dragging(self, button, x):
-		self.draw_line(x)
-		pass
-	
-	def on_end_drag(self, button, x):
 		try:
-			self.grid_view.set_width(button.index, button.allocation.width)
+			self.draw_line(x)
+			self.set_column_width(button.index, x - button.allocation.x)
+			self._do_layout()
 		except:
 			import traceback
 			traceback.print_exc()
+	
+	def on_end_drag(self, button, accepted):
+		if accepted:
+			try:
+				self.grid_view.set_width(button.index, button.allocation.width)
+			except:
+				import traceback
+				traceback.print_exc()
+		else:
+			self.set_column_width(button.index, self.highlight[3])
+			self._do_layout()
 		
 		self.draw_line(-100)
 		self.last_x = None
@@ -404,7 +452,7 @@ if __name__ == '__main__':
 	
 #	l = List(1000000)
 	l = SQLiteQueryList(c, 'files', fetch_count=64)
-	v = GridView(columns, l)
+	v = DrawGrid(columns, l)
 	H.grid_view = v
 
 	HV = HeaderView(H, v)
