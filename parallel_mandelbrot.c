@@ -16,12 +16,11 @@
 	all pieces parameters are precalculated and then issued to execute.
 	Condition variables are used to synchronization.
 
-	With reasonable number of pieces speedup on 2 CPU machine
-	is around 1.90 -- 1.95.
+	With reasonable number of pieces speedup on 2 CPU machine is 2 (well, 1.99).
 
 	Compilation:
 
-		gcc -lpthread -O3 parallel_mandelbrot.c -o your_favorite_name
+		gcc -std=c99 -Wall -pedantic -lpthread -O3 parallel_mandelbrot.c -o your_favorite_name
 
 	Usage:
 
@@ -42,15 +41,17 @@
 #include <strings.h>
 #include <unistd.h>
 #include <sched.h>
+#include <sys/time.h>
+#include <time.h>
+#include <stdint.h>
+
 
 #ifndef THREAD_NUM
 #	define THREAD_NUM 8
 #endif
 
 pthread_mutex_t	mutex;
-pthread_cond_t  cond;
-pthread_t threads[THREAD_NUM];	// protected by mutex
-int thread_count = 0;		// protected by mutex (for debugging purposes)
+pthread_t threads[THREAD_NUM];
 
 #ifndef WIDTH
 #	define WIDTH (1024*4)
@@ -84,6 +85,9 @@ typedef struct {
 	int maxiters;
 } Job;
 
+Job jobs[JOBS_COUNT];	// protected by mutex
+int free_job_idx = 0;	// protected by mutex
+
 
 void* thread(void* sec) {
 	Job *job;
@@ -91,69 +95,82 @@ void* thread(void* sec) {
 	double Cre, Cim, Xre, Xim, Tre, Tim;
 	int x, y, i;
 
-	job = (Job*)sec;
+	int processed = 0;	// number of pieces already processed
 
 #ifdef DEBUG
-	printf("thread #%u -> CPU#%d\n", pthread_self(), sched_getcpu());
-//	printf("begin thread %u [%f,%f]-[%f,%f]\n",
-//		pthread_self(), job->Re1, job->Im1, job->Re2, job->Im2);
+	printf("starting thread #%u\n", pthread_self());
 #endif
-#if 1
 
-	dRe = (job->Re2 - job->Re1)/job->width;
-	dIm = (job->Im2 - job->Im1)/job->height;
+	while (1) {	
+		// get free job, or return if none left
+		pthread_mutex_lock(&mutex);
+		if (free_job_idx == JOBS_COUNT) {
+			pthread_mutex_unlock(&mutex);
+			break;
+		}
+		else {
+			job = &jobs[free_job_idx];
+			free_job_idx += 1;
+		}
+		pthread_mutex_unlock(&mutex);
+		processed += 1;
 
+#ifdef DEBUG
+		printf("thread #%u: processing next part...\n");
+#endif
 
-	Cim = job->Im1;
+		// process piece
+		dRe = (job->Re2 - job->Re1)/job->width;
+		dIm = (job->Im2 - job->Im1)/job->height;
 
-	for (y=0; y < job->height; y++) {
-		Cre = job->Re1;
-		for (x=0; x < job->width; x++) {
-			Xre = 0.0;
-			Xim = 0.0;
-			for (i=0; i < job->maxiters; i++) {
-				Tre = Xre*Xre - Xim*Xim + Cre;
-				Tim = 2*Xre*Xim + Cim;
+		Cim = job->Im1;
 
-				if (Tre*Tre + Tim*Tim > job->threshold)
-					break;
+		for (y=0; y < job->height; y++) {
+			Cre = job->Re1;
+			for (x=0; x < job->width; x++) {
+				Xre = 0.0;
+				Xim = 0.0;
+				for (i=0; i < job->maxiters; i++) {
+					Tre = Xre*Xre - Xim*Xim + Cre;
+					Tim = 2*Xre*Xim + Cim;
 
-				Xre = Tre;
-				Xim = Tim;
+					if (Tre*Tre + Tim*Tim > job->threshold)
+						break;
+
+					Xre = Tre;
+					Xim = Tim;
+				}
+
+				// we are sure, that writes from different threads
+				// do not overlap -- no synchronization needed
+				Image[job->yo + y][job->xo + x] = (job->maxiters - i);
+				Cre += dRe;
 			}
 
-			// we are sure, that writes from different threads
-			// do not overlap -- no synchronization needed
-			Image[job->yo + y][job->xo + x] = (job->maxiters - i);
-			Cre += dRe;
+			Cim += dIm;
 		}
-
-		Cim += dIm;
-	}
-
-#endif
+	} // while
 
 #ifdef DEBUG
-	printf("thread %u finished\n", pthread_self());
+	printf("thread %u finished; num of pieces proceseed: %d\n", pthread_self(), processed);
 #endif
 
-	pthread_mutex_lock(&mutex);
-	threads[job->id] = 0;		// mark associated entry as free
-	thread_count -= 1;
-	pthread_cond_broadcast(&cond);	// resume main thread
-	pthread_mutex_unlock(&mutex);
+	return (void*)(processed);
+}
 
-	pthread_detach(pthread_self());	// free thread resources
-	pthread_exit(0);
+
+uint32_t get_time(void) {
+	struct timeval T;
+	gettimeofday(&T, NULL);
+	return (T.tv_sec * 1000000) + T.tv_usec;
 }
 
 
 int main() {
-	Job jobs[JOBS_COUNT];
 
 	memset(Image, 127, sizeof(Image));
 
-	int x, y, i, j, k;
+	int x, y, i;
 	int status;
 	FILE* f;
 
@@ -162,6 +179,8 @@ int main() {
 	double Im_min = -1.0;
 	double Im_max =  1.0;
 	double ti1, ti2, tr1, tr2;
+
+	uint32_t time1, time2;
 
 	// prepare jobs
 	i = 0;
@@ -186,72 +205,38 @@ int main() {
 			i += 1;
 		}
 	}
-
-	// initialize threads list
-	for (i=0; i < THREAD_NUM; i++)
-		threads[i] = 0;
-
-	// initialize mutex & condition var
-	pthread_mutex_init(&mutex, NULL);
-	pthread_cond_init(&cond, NULL);
-
-
-	// issue jobs
 	
+	// initialize mutex
+	pthread_mutex_init(&mutex, NULL);
+	
+	
+	//
 	printf("image dimensions %d x %d\n", WIDTH, HEIGHT);
 	printf("image splitted into %d pieces size %d x %d\n",
 		JOBS_COUNT, /*SUBIMG_*/SIZE, /*SUBIMG_*/SIZE);
-	printf("up to %d thread(s) will be run\n", THREAD_NUM);
+	printf("%d thread(s) will be run\n", THREAD_NUM);
 
-	j = 0;
-	k = 0;
-	while (k < THREAD_NUM) {
-		pthread_mutex_lock(&mutex);
-		if (j < JOBS_COUNT) {
-			for (i=0; i < THREAD_NUM; i++) {
-				if (threads[i] != 0 || j == JOBS_COUNT)
-					continue;
+	time1 = get_time();
 
-				jobs[j].id = i;
-				status = pthread_create(&threads[i], NULL, thread, (void*)&jobs[j]);
-				if (status != 0) {
-					printf("ERROR: can't create thread for job %d/%d: %s\n",
-						j, JOBS_COUNT, strerror(status));
-				}
-				else {
+	// run threads
+	for (i=0; i < THREAD_NUM; i++) {
+		threads[i] = 0;
+		status = pthread_create(&threads[i], NULL, thread, NULL);
 #ifdef DEBUG
-					printf("job %d/%d commited\n", j+1, JOBS_COUNT);
+		if (status == 0)
+			printf("thread %d/%d created\n", i+1, THREAD_NUM);
+		else
+			printf("ERROR: can't create thread: %s\n", strerror(status));
 #endif
-					j++;
-					thread_count += 1;
-				}
-			}
-		}
-		else {
-			k = 0;
-			for (i=0; i < THREAD_NUM; i++)
-				if (threads[i] == 0)
-					k += 1;
-		}
-
-		if (k < THREAD_NUM)
-			pthread_cond_wait(&cond, &mutex);
-		pthread_mutex_unlock(&mutex);
 	}
 
+	// wait for completion
+	for (i=0; i < THREAD_NUM; i++)
+		pthread_join(threads[i], NULL);
 
-	// only for debugging purposes
-	while (1) {
-		pthread_mutex_lock(&mutex);
-		printf("thread_count = %d\n", thread_count);
-		if (thread_count == 0) {
-			pthread_mutex_unlock(&mutex);
-			break;
-		}
-		
-		pthread_cond_wait(&cond, &mutex);
-		pthread_mutex_unlock(&mutex);
-	}
+	time2 = get_time();
+	printf("all thread finished after %0.3fs, saving image\n", (time2-time1)/1000000.0);
+
 
 	// save image (PGM)
 	f = fopen("mandelbrot.pgm", "wb");
