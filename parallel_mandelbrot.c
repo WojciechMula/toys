@@ -1,5 +1,5 @@
 /*
-	Multithread Mandelbrot set generator, $Revision: 1.6 $
+	Multithread Mandelbrot set generator, $Revision$
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
@@ -7,7 +7,7 @@
 
 	License: BSD
 
-	initial release 20-06-2008, last update $Date: 2008-06-25 17:15:53 $
+	initial release 20-06-2008, last update $Date$
 
 	----------------------------------------------------------------------
 
