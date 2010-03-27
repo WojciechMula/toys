@@ -16,26 +16,36 @@ import gtk
 class PythonListModel(gtk.GenericTreeModel):
 	"TreeModel that encapsulates any python sequence of other seqences of same size"
 
-	def __init__(self, list):
-		assert len(list) > 0, "Sequece must not be empty"
+	def __init__(self, L, types=None):
+		"""
+		L - list of rows
+		types -  list of types of row, for example [int, str, bool, int]
+		         if types is None, then this list is derived from first
+				 row of sequence
+		"""
+		self.L = L
+		if types is None:
+			if len(L) == 0:
+				raise ValueError("If arg. types is None, then sequece must not be empty")
+
+			row = L[0]
+			if isinstance(row, (list, tuple)):
+				self.__types = tuple(type(item) for item in row)
+			else:
+				self.__types = (type(row),)
+		else:
+			self.__types = tuple(types)
 		
 		gtk.GenericTreeModel.__init__(self)
-		self.L = list
 	
 	def on_get_flags(self):
 		return gtk.TREE_MODEL_LIST_ONLY | gtk.TREE_MODEL_ITERS_PERSIST
 
 	def on_get_n_columns(self):
-		if type(self.L[0]) in [list, tuple]:
-			return len(self.L[0])
-		else:
-			return 1
+		return len(self.__types)
 
 	def on_get_column_type(self, index):
-		if type(self.L[0]) in [list, tuple]:
-			return type(self.L[0][index])
-		else:
-			return type(self.L[0])
+		return self.__types[index]
 
 	def on_get_iter(self, path):
 		return path[0]
