@@ -1,3 +1,32 @@
+/*
+	Speedup reversing table of bytes
+
+	Author: Wojciech Mu³a
+	e-mail: wojciech_mula@poczta.onet.pl
+	www:    http://wm.ite.pl/
+
+	License: BSD
+
+	initial release 1-05-2010
+
+	$Id$
+
+	----------------------------------------------------------------------
+
+	Program contains several procedures that reverse table content
+	inplace. Procedures use specific x86 instructions to speedup
+	algorithm - the key part of algorithm is reversing bytes in
+	register with help BSWAP or PSHUFB or few SSE2 instructions.
+
+	Compilation:
+
+		do not use any compiler optimizations
+
+	Usage:
+
+		run program without argument to read help
+
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
