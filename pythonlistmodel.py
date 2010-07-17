@@ -5,7 +5,7 @@
 # 
 # Author: Wojciech Mu³a
 # e-mail: wojciech_mula@poczta.onet.pl
-# www:    http://wm.ite.pl/
+# www:    http://0x80.pl/
 #
 # Initial release: 2010-01-24
 #
