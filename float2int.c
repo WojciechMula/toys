@@ -7,7 +7,7 @@
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://wm.ite.pl/articles/fptricks.html
+	www:    http://0x80.pl/articles/fptricks.html
 	
 	License: BSD
 
