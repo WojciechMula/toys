@@ -3,7 +3,7 @@
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.republika.pl/wmula/
+	www:    http://0x80.pl
 
 	License: BSD
 
