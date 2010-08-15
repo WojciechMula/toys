@@ -4,7 +4,7 @@
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.republika.pl/wmula/
+	www:    http://0x80.pl/
 
 	License: BSD
 
@@ -21,7 +21,7 @@
 		gcc -O3 -Wall -pedantic -std=c99 sse-matvecmul.c
 
 		you will need sse-aux.c file:
-		http://republika.pl/wmula/snippets/asm/sse-aux.c
+		http://0x80.pl/snippets/asm/sse-aux.c
 
 	Usage:
 
