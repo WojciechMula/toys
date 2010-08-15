@@ -12,12 +12,12 @@
 
 	Define USE_Xscr symbol to compile interactive version.
 	Xscr and load_ppm [tiny] libraries are available on my website,
-	look at http://www.republika.pl/wmula/snippets/ and http://www.republika.pl/wmula/proj/.
+	look at http://0x80.pl/snippets/ and http://0x80.pl/proj/.
 
 
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
-	www:    http://www.republika.pl/wmula/
+	www:    http://0x80.pl/
 	
 	License: BSD
 	
