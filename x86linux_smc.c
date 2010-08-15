@@ -1,6 +1,6 @@
 // Self modyfing code under x86 Linux
 //
-// by Wojciech Mu³a, http://www.republika.pl/wmula
+// by Wojciech Mu³a, http://0x80.pl
 // $Date: 2008-07-13 20:52:42 $, $Revision: 1.1 $
 
 #include <stdlib.h>
