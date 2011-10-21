@@ -1,4 +1,4 @@
-// by Wojciech Mu≥a, http://0x80.pl
+// by Wojciech Mu≈Ça, http://0x80.pl
 // $Date: 2008-07-12 13:23:51 $ $Revision: 1.3 $
 #include <stdlib.h>
 #include <stdio.h>
