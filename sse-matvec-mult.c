@@ -8,7 +8,7 @@
 	[c0, c1, c2, c3]   [z]   [c0*x + c1*y + c*z + c3]
 	[d0, d1, d2, d3]   [w]   [d0*x + d1*y + d*z + d3]
 
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 

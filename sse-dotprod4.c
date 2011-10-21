@@ -1,7 +1,7 @@
 /*
 	Calculating 4 dot products using SSE instructions, $Revision: 1.5 $
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl
 	

@@ -6,7 +6,7 @@
 	[Ac0 Ac1 Ac2 Ac3]  [Bc0 Bc1 Bc2 Bc3]   [..., ..., ..., ...]
 	[Ad0 Ad1 Ad2 Ad3]  [Bd0 Bd1 Bd2 Bd3]   [..., ..., ..., ...]
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 	

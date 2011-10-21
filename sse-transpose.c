@@ -1,7 +1,7 @@
 /*
 	Transpose 4x4 matrix (in-place) using SSE instructions, $Revision: 1.4 $
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 	
