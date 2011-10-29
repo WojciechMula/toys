@@ -8,7 +8,7 @@
 	[c0 c1 c2 c3]   [X2]
 	[d0 d1 d2 d3]   [X3]
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 	

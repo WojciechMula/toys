@@ -3,7 +3,7 @@
 	
 	New SSE3 instruction HADDPS is used.
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 	
