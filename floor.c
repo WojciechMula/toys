@@ -1,5 +1,5 @@
 /*
- * Wojciech Mu≥a, 20.11.2002
+ * Wojciech Mu≈Ça, 20.11.2002
  */
 
 typedef unsigned int dword;

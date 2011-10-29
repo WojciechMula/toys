@@ -1,7 +1,7 @@
 /*
 	Double precision floating point rounding, $Revision: 1.3 $
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/articles/fptricks.html
 

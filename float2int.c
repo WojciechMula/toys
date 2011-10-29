@@ -5,7 +5,7 @@
 	require one addition and bitwise AND -- method is limited
 	to positive numbers not greater then 2^52.
 
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/articles/fptricks.html
 	

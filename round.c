@@ -1,5 +1,5 @@
 /*
- * Wojciech Mu≥a, 22.11.2002
+ * Wojciech Mu≈Ça, 22.11.2002
  */
 
 float myround(float x)
