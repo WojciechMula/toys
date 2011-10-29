@@ -15,7 +15,7 @@
 	look at http://0x80.pl/snippets/ and http://0x80.pl/proj/.
 
 
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 	
