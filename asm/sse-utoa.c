@@ -113,6 +113,31 @@ uint32_t mul_10000[4] SIMD_ALIGN = packed_dword(10000);
 
 uint8_t  to_ascii[16] SIMD_ALIGN = packed_byte('0');
 
+// utoa32_sse_2 specific
+uint32_t mul_10000trick[4] SIMD_ALIGN = packed_dword(65536 - 10000);
+
+uint16_t	div_consts[8] SIMD_ALIGN = {
+				8389,	// div 10^3, shift = 23 + 2
+				5243,	// div 10^2, shift = 19 + 2
+			   13108,	// div 10^1, shift = 17 + 2
+			  0x8000,	// 
+				8389,
+				5243,
+			   13108,
+			  0x8000
+};
+
+uint16_t	shift_consts[8] SIMD_ALIGN = {
+				1 << (16 - (23 + 2 - 16)),
+				1 << (16 - (19 + 2 - 16)),
+				1 << (16 - 1 - 2),
+				1 << (15),
+				1 << (16 - (23 + 2 - 16)),
+				1 << (16 - (19 + 2 - 16)),
+				1 << (16 - 1 - 2),
+				1 << (15)
+};
+
 //---- output buffer for SSE procedures --------------------------------
 static char utoa_buffer[32] SIMD_ALIGN;
 
@@ -187,6 +212,70 @@ char* utoa32_sse(uint32_t x) {
 
 		// 5) save
 		"movdqa		%%xmm2, utoa_buffer				\n"
+		: "=a" (offset)
+		: "a" (x)
+	);
+
+	return &utoa_buffer[offset];
+}
+
+
+char* utoa32_sse_2(uint32_t x) {
+	uint32_t offset = 0;
+
+	__asm__ __volatile__ (
+		// 1) x divmod 10^4
+		"movd		%%eax, %%xmm1					\n"
+
+		// xmm0 = eax div 10000
+		"movdqa		div_10000, %%xmm0				\n"
+		"pmuludq	%%xmm1, %%xmm0					\n"
+		"psrlq		$45, %%xmm0						\n"
+
+		// xmm3 = (eax div 10000) * 10000
+		"movdqa		mul_10000trick, %%xmm3			\n"
+		"pmuludq	%%xmm3, %%xmm0					\n"
+
+		// xmm1 = eax mod 10000
+		// xmm0 = [ eax div 10000 | eax mod 10000 | ... ]
+		"paddd		%%xmm1, %%xmm0					\n"
+		"psllq		$2, %%xmm0						\n" // v[i] *= 4
+
+		// [   abcd  |  abcd    |  abcd     |   abcd | ... ]
+		"punpcklwd	%%xmm0, %%xmm0					\n"
+		"punpckldq	%%xmm0, %%xmm0					\n"
+
+		// [ a * 2^(7 + 2) | ab * 2^(3 + 2) | abc * 2^(1 + 2) |  abcd * 2^(0 + 2) | ... ] + garbages at lower bits!
+		"pmulhuw	div_consts, %%xmm0				\n"
+
+		"movdqa		mul_10, %%xmm7				\n"
+
+		// xmm0 = [     a |     ab |    abc |  abcd | ... ] -- variable shift right
+		"pmulhuw	shift_consts, %%xmm0			\n"
+		// xmm7 = [    a0 |    ab0 |   abc0 |     0 | ... ] -- v[i] *= 10
+		"pmullw		%%xmm0, %%xmm7					\n"
+		// xmm7 = [     0 |     a0 |    ab0 |  abc0 | ... ]
+		"psllq		$16, %%xmm7						\n"
+		// xmm0 = [     a |      b |      c |     d | ... ]
+		"psubw		%%xmm7, %%xmm0					\n"
+
+		// pack word => bytes
+		"pxor		%%xmm2, %%xmm2					\n"
+		"packuswb	%%xmm0, %%xmm2					\n"
+
+		// 4) conversion to ASCII and skip leading zeros
+		"movdqa		to_ascii, %%xmm7				\n"
+		"paddb		%%xmm7, %%xmm2					\n"
+		// xmm2 - result
+		"pcmpeqb	%%xmm2, %%xmm7					\n"
+		"pmovmskb	%%xmm7, %%eax					\n"
+		"not		%%eax							\n"
+		"orl		$0x8000, %%eax					\n"
+		"bsf		%%eax, %%eax					\n"
+		// eax = position of first non-zero digit
+
+		// 5) save
+		"L1:movdqa		%%xmm2, utoa_buffer			\n"
 		: "=a" (offset)
 		: "a" (x)
 	);
@@ -275,10 +364,11 @@ void usage() {
 	puts("usage: progname function min [max [count]]");
 	puts("");
 	puts("where function is:");
-	puts("* c32 - C function (32-bit conversion)");
-	puts("* c64 - C function (64-bit conversion)");
-	puts("* sse32 - SSE function (32-bit conversion)");
-	puts("* sse64 - SSE function (64-bit conversion)");
+	puts("* c32     - C function (32-bit conversion)");
+	puts("* c64     - C function (64-bit conversion)");
+	puts("* sse32   - SSE function (32-bit conversion)");
+	puts("* sse32_2 - SSE function (32-bit conversion, other approach)");
+	puts("* sse64   - SSE function (64-bit conversion)");
 	puts("");
 	puts("If min & max is given, then selected function");
 	puts("does coversion of numbers from this range and");
@@ -292,6 +382,7 @@ void usage() {
 	exit(1);
 }
 
+
 int main(int argc, char* argv[]) {
 	uint32_t min32, max32, i32;
 	uint64_t min64, max64, i64;
@@ -300,6 +391,7 @@ int main(int argc, char* argv[]) {
 		naive_32,
 		naive_64,
 		sse_32,
+		sse_32_2,
 		sse_64
 	};
 	int function = unknown;
@@ -316,13 +408,15 @@ int main(int argc, char* argv[]) {
 		function = naive_64;
 	else if (keyword("sse32"))
 		function = sse_32;
+	else if (keyword("sse32_2"))
+		function = sse_32_2;
 	else if (keyword("sse64"))
 		function = sse_64;
 	else
 		usage();
 #undef keyword
 
-	if (function == naive_32 || function == sse_32) {
+	if (function == naive_32 || function == sse_32 || function == sse_32_2) {
 		if (argc == 3)
 			min32 = max32 = atoi(argv[2]);
 		else {
@@ -388,6 +482,21 @@ int main(int argc, char* argv[]) {
 			else
 				for (i32 = min32; i32 <= max32; i32++)
 					printf("%u = %s\n", i32, utoa32_sse(i32));
+			break;
+
+		case sse_32_2:
+			if (count > 0) {
+				while (count--)
+					for (i32 = min32; i32 <= max32; i32 += 4) {
+						tmp = utoa32_sse_2(i32 + 0);
+						tmp = utoa32_sse_2(i32 + 1);
+						tmp = utoa32_sse_2(i32 + 2);
+						tmp = utoa32_sse_2(i32 + 3);
+					}
+			}
+			else
+				for (i32 = min32; i32 <= max32; i32++)
+					printf("%u = %s\n", i32, utoa32_sse_2(i32));
 			break;
 
 		case sse_64:
