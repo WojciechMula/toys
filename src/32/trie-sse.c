@@ -1,4 +1,9 @@
+#define _POSIX_C_SOURCE 200112
+
 #include "trie.h"
+#include <string.h>
+#include <stdlib.h>
+
 
 #define SIMD_ALIGN 16
 #define ALIGNED_SIZE(size) (SIMD_ALIGN*(((size) + SIMD_ALIGN - 1)/SIMD_ALIGN))
@@ -19,7 +24,7 @@ TrieNode* trie_next(TrieNode* node, const char letter) {
     }
 
     int dummy;
-    asm __volatile__ (
+    __asm__ __volatile__ (
         "movzbl %%al, %%eax                 \n"
         "imul   $0x01010101, %%eax, %%eax   \n"
         "movd   %%eax, %%xmm0               \n"
@@ -30,7 +35,7 @@ TrieNode* trie_next(TrieNode* node, const char letter) {
 
     size_t i, j;
     for (i = 0; i < n; i+=16) {
-        asm __volatile__ (
+        __asm__ __volatile__ (
             "movdqa (%%eax), %%xmm1         \n"
             "pcmpeqb %%xmm0, %%xmm1         \n"
             "pmovmskb %%xmm1, %%eax         \n"

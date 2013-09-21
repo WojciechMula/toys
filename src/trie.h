@@ -8,7 +8,7 @@
 #define true  1
 #define bool  int
 
-typedef struct TrieNode PTrieNode;
+typedef struct TrieNode* PTrieNode;
 typedef struct TrieNode {
     char        eow;         // end of word
     size_t      n;           // elements in buffer

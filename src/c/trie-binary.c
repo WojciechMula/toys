@@ -1,6 +1,6 @@
 #include "trie.h"
 
-static void sort_chars(TrieNode* node);
+static void sort_chars(PTrieNode node);
 
 TrieNode* trie_next(TrieNode* node, const char letter) {
     int a = 0;
