@@ -27,18 +27,33 @@ int load_dictionary(TrieNode* root, FILE* file) {
     return k;
 }
 
-char** load_words(FILE* file, size_t wordscount) {
-    char buffer[256];
-    char** list = (char**)malloc(wordscount * sizeof(char*));
+typedef struct {
+	char** list;
+	size_t count;
+} strings_t;
 
-    for (size_t i = 0; i < wordscount; i++) {
+
+void load_words(FILE* file, strings_t* words) {
+    char buffer[256];
+	size_t allocated = 128;
+	int r=0;
+	
+	words->list = (char**)malloc(allocated * sizeof(char*));
+	words->count = 0;
+
+	while (not feof(file)) {
         fgets(buffer, sizeof(buffer), file);
         int n = strlen(buffer);
-        
-        list[i] = strndup(buffer, n-1);
-    }
+ 
+        words->list[words->count] = strndup(buffer, n-1);
 
-    return list;
+		words->count += 1;
+		if (words->count >= allocated) {
+			allocated += allocated/2;
+			words->list = (char**)realloc(words->list, allocated * sizeof(char*));
+			r += 1;
+		}
+    }
 }
 
 unsigned gettime() {
@@ -50,51 +65,53 @@ unsigned gettime() {
 //---------------------------------------------------------------------------
 
 void usage() {
-    puts("program dictionary-file word-test-file number-of-words iterations-count");
+    puts("program dictionary-file word-test-file iterations-count");
 }
 
 int main(int argc, char* argv[])
 {
-    char**      words;
-    int         wordscount;
     TrieNode*   root;
     int         iterations;
+	strings_t   words;
 
-    if (argc != 5) {
+    if (argc != 4) {
         usage();
         return EXIT_FAILURE;
     }
 
-    puts("loading dictionary...");
+    printf("loading dictionary... ");
+	fflush(stdout);
     {
         root = trie_new_node();
         assert(root != NULL);
         FILE* f = fopen(argv[1], "rt");
         assert(f != NULL);
-        load_dictionary(root, f);
+		const int n = load_dictionary(root, f);
+        printf("%d words loaded\n", n);
         fclose(f);
     }
 
-    puts("loading test words");
+    printf("loading test words... ");
+	fflush(stdout);
     {
         FILE *f = fopen(argv[2], "rt");
         assert(f != NULL);
-        wordscount = atoi(argv[3]);
-        assert(wordscount > 0);
-        words = load_words(f, wordscount);
+        load_words(f, &words);
+		printf("%d words loaded\n", words.count);
+        fclose(f);
     }
 
     
     puts("benchmarking...");
-        iterations = atoi(argv[4]);
+        iterations = atoi(argv[3]);
         assert(iterations > 0);
 
         unsigned t1 = gettime();
         int count = 0;
         for (int j = 0; j < iterations; j++) {
             count = 0;
-            for (int i=0; i < wordscount; i++) {
-                count += (int)trie_lookup(root, words[i]);
+            for (int i=0; i < words.count; i++) {
+                count += (int)trie_lookup(root, words.list[i]);
             }
         }
         unsigned t2 = gettime();
