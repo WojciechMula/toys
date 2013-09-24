@@ -1,8 +1,8 @@
-GCC=gcc -I. -std=c99 -pedantic -O2
+GCC=gcc -I. -std=c99 -pedantic -Wall -O3 -march=i686 -msse2
 RM=rm
 
 COMMON=trie.h trie.c test.c
-PROG=bin/linear bin/linear-unrolled bin/binary bin/sse
+PROG=bin/linear bin/linear-unrolled bin/linear-mtf bin/binary bin/sse
 
 .SUFFIXES:
 	# disable default rules
@@ -14,6 +14,9 @@ bin/linear: $(COMMON) c/trie-linear.c
 
 bin/linear-unrolled: $(COMMON) c/trie-linear-unrolled.c
 	$(GCC) c/trie-linear-unrolled.c trie.c test.c -o bin/linear-unrolled
+
+bin/linear-mtf: $(COMMON) c/trie-linear-mtf.c
+	$(GCC) c/trie-linear-mtf.c trie.c test.c -o bin/linear-mtf
 
 bin/binary: $(COMMON) c/trie-binary.c
 	$(GCC) c/trie-binary.c trie.c test.c -o bin/binary

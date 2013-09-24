@@ -1,8 +1,10 @@
+#define _POSIX_C_SOURCE 201109
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include <iso646.h>
+#include <string.h>
 #include <sys/time.h>
 #include "trie.h"
 
