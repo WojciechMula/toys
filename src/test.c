@@ -129,6 +129,7 @@ int main(int argc, char* argv[])
         printf("... time = %d ms, matched words = %d\n", t2 - t1, count);
 
 	free_strings(&words);
+	trie_destroy(root);
 
     return EXIT_SUCCESS;
 }

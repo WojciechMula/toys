@@ -29,6 +29,7 @@ typedef struct trie_statistics_t {
 TrieNode* trie_new_node();
 int trie_add_word(TrieNode* root, const char* word, const size_t n);
 bool trie_lookup(TrieNode* root, char* word);
+void trie_destroy(TrieNode* root);
 int trie_statistics(TrieNode* root, trie_statistics_t* stats);
 
 // implementation defined

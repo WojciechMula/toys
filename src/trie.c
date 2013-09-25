@@ -51,6 +51,20 @@ bool trie_lookup(TrieNode* root, char* word) {
 }
 
 
+void trie_destroy(TrieNode* node) {
+	for (size_t i=0; i < node->n; i++) {
+		trie_destroy(node->next[i]);
+	}
+
+	if (node->n > 0) {
+		free(node->next);
+		free(node->chars);
+	}
+
+	free(node);
+}
+
+
 static void trie_statistics_init(trie_statistics_t* stats) {
 	stats->node_count = 0;
 	stats->word_count = 0;
