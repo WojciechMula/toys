@@ -55,6 +55,17 @@ void load_words(FILE* file, strings_t* words) {
     }
 }
 
+
+void free_strings(strings_t *strings) {
+	for (size_t i=0; i < strings->count; i++) {
+		free(strings->list[i]);
+	}
+
+	free(strings->list);
+	strings->list = NULL;
+	strings->count = 0;
+}
+
 unsigned gettime() {
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
@@ -116,6 +127,8 @@ int main(int argc, char* argv[])
         unsigned t2 = gettime();
 
         printf("... time = %d ms, matched words = %d\n", t2 - t1, count);
+
+	free_strings(&words);
 
     return EXIT_SUCCESS;
 }
