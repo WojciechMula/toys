@@ -19,8 +19,7 @@ int load_dictionary(TrieNode* root, FILE* file) {
         n = strlen(buffer);
         
         if (n > 1) {
-            trie_add_word(root, buffer, n-1);
-            k++;
+            k += trie_add_word(root, buffer, n-1);
         }
     }
 
