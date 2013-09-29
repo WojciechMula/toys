@@ -11,18 +11,6 @@
 TrieNode* trie_next(TrieNode* node, const char letter) {
     const int n = node->n;
 
-    if (n == 0) {
-        return NULL;
-    }
-
-    if (n == 1) {
-        if (node->chars[0] == letter) {
-            return node->next[0];
-        } else {
-            return NULL;
-        }
-    }
-
     int dummy;
     __asm__ __volatile__ (
         "movzbl %%al, %%eax                 \n"

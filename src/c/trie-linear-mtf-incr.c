@@ -7,16 +7,17 @@ TrieNode* trie_next(TrieNode* node, const char letter) {
 				return node->next[0];
 			}
 
-			char	  c0 = node->chars[0];
-			TrieNode* n0 = node->next[0];
+			const int prev = i-1;
+			char	  c0 = node->chars[prev];
+			TrieNode* n0 = node->next[prev];
 
-			node->chars[0] = letter;
-			node->next[0]  = node->next[i];
+			node->chars[prev] = letter;
+			node->next[prev]  = node->next[i];
 
 			node->chars[i] = c0;
 			node->next[i]  = n0;
 
-			return node->next[0];
+			return node->next[prev];
 		}
 	}
 

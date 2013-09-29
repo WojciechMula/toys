@@ -25,6 +25,7 @@ int load_dictionary(TrieNode* root, FILE* file) {
 
     return k;
 }
+//---------------------------------------------------------------------------
 
 typedef struct {
 	char** list;
@@ -54,6 +55,7 @@ void load_words(FILE* file, strings_t* words) {
 		}
     }
 }
+//---------------------------------------------------------------------------
 
 
 void free_strings(strings_t *strings) {
@@ -65,6 +67,8 @@ void free_strings(strings_t *strings) {
 	strings->list = NULL;
 	strings->count = 0;
 }
+//---------------------------------------------------------------------------
+
 
 unsigned gettime() {
 	struct timeval tv;
