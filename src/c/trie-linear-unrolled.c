@@ -1,3 +1,15 @@
+/************************************************************************
+
+	Trie speedup - trie_next: linear search with minimized memory reads
+
+	author: Wojciech Muła
+	e-mail: wojciech_mula@poczta.onet.pl
+	last update: 2013-09-30
+
+	license: simplifed BSD
+
+************************************************************************/
+
 #include "trie.h"
 
 #define ROUND_UP(size) (4*(((size) + 3)/4))

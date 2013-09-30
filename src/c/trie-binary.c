@@ -1,3 +1,15 @@
+/************************************************************************
+
+	Trie speedup - trie_next: binary search
+
+	author: Wojciech Muła
+	e-mail: wojciech_mula@poczta.onet.pl
+	last update: 2013-09-30
+
+	license: simplifed BSD
+
+************************************************************************/
+
 #include "trie.h"
 
 static void sort_chars(PTrieNode node);

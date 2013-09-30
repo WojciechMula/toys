@@ -1,3 +1,15 @@
+/************************************************************************
+
+	Trie speedup - trie_next: SSE implementation
+
+	author: Wojciech Muła
+	e-mail: wojciech_mula@poczta.onet.pl
+	last update: 2013-09-30
+
+	license: simplifed BSD
+
+************************************************************************/
+
 #define _POSIX_C_SOURCE 200112
 
 #include "trie.h"

@@ -1,3 +1,15 @@
+/************************************************************************
+
+	Trie speedup - base test program
+
+	author: Wojciech Muła
+	e-mail: wojciech_mula@poczta.onet.pl
+	last update: 2013-09-30
+
+	license: simplifed BSD
+
+************************************************************************/
+
 #define _POSIX_C_SOURCE 201109
 #include <stdio.h>
 #include <stdlib.h>
