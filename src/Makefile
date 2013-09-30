@@ -9,6 +9,9 @@ PROG=bin/linear bin/linear-unrolled bin/linear-mtf bin/binary bin/sse bin/linear
 
 all: $(PROG)
 
+histogram: histogram.c trie.h trie.c c/trie-linear.c
+	$(GCC) histogram.c trie.c c/trie-linear.c -o histogram
+
 bin/linear: $(COMMON) c/trie-linear.c
 	$(GCC) c/trie-linear.c trie.c test.c -o bin/linear
 
@@ -31,5 +34,5 @@ test: $(PROG)
 	sh testall.sh
 
 clean:
-	$(RM) -f *.o c/*.o 32/*.o
+	$(RM) -f *.o c/*.o 32/*.o histogram
 	$(RM) -f $(PROG)

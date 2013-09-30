@@ -2,7 +2,7 @@
 
 DICTIONARY=dictionary.txt
 INPUT=input-words.txt
-COUNT=10
+COUNT=100
 
 for f in bin/*
 do
