@@ -1,5 +1,8 @@
 /*
-	Blur grayscale demo, including MMX implementation. $Revision: 1.14 $
+	What is it?
+	------------------------------------------------------------------------
+
+	Blur grayscale demo, including MMX implementation.
 
 	Algorithm used here is described on my website (polish only).
 	
@@ -10,9 +13,27 @@
 	some pixels fetched in previous iterations and partial
 	sums calculated already.
 
-	Define USE_Xscr symbol to compile interactive version.
-	Xscr and load_ppm [tiny] libraries are available on my website,
-	look at http://0x80.pl/snippets/ and http://0x80.pl/proj/.
+	Compilation
+	------------------------------------------------------------------------
+
+	simple test program:
+
+	$ gcc -O2 saturated_add.c -o program
+
+
+	X11 view program
+
+	$ gcc -IXscr -Iloadppm -DUSE_Xscr saturated_add.c Xscr/Xscr.c loadppm/load_ppm.c -lX11 -o program
+
+	Additional libraries are available at github:
+	* https://github.com/WojciechMula/Xscr
+	* https://github.com/WojciechMula/loadppm
+
+
+	Usage
+	------------------------------------------------------------------------
+
+	Run program without arguments to read help.
 
 
 	Author: Wojciech Muła
@@ -21,7 +42,9 @@
 	
 	License: BSD
 	
-	initial release 14-07-2007, last update $Date: 2008-06-08 23:00:44 $
+	initial release: 2007-07-14
+	         update: 2008-06-08
+	         update: 2013-10-06 - fixed MMX2
 */
 
 #ifndef _XOPEN_SOURCE
@@ -292,7 +315,7 @@ mmx2blur_gray_calc_sums(
 	"   jnz  0b                               \n\t"
 	"                                         \n\t"
 	: "=S" (dummy), "=D" (dummy), "=c" (dummy)
-	: "S" (src_img), "D" (sum_tbl), "c" (width/8)
+	: "S" (src_img), "D" (sum_tbl+1), "c" (width/8)
 	: "memory"
 	);
 
