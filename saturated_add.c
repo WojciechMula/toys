@@ -1,21 +1,41 @@
 /*
-	$Date: 2008-06-08 23:00:44 $, $Revision: 1.7 $
+	What is it?
+	------------------------------------------------------------------------
 
 	Demo program use to test/profile asm routines that perform saturated
 	add of two 16bpp images.	Algorithms were described on my webpage (polish
-	text) http://0x80.pl/artices/saturared_add.html.
+	text) http://0x80.pl/artices/saturated_add.html.
 
-	Additional files are required if compiled with option -DUSE_Xscr:
-	* load_ppm.c, load_ppm.h (PPM files loader)
-	  http://0x80.pl/snippets/index.html
+	Compilation
+	------------------------------------------------------------------------
 
-	* Xscr.c, Xscr.h ([simple] direct-screen abstraction for X Window)
-	  http://0x80.pl/proj/index.html
+	simple test program:
 
-	Author: Wojciech Mu�a
+	$ gcc -O2 saturated_add.c -o program
+
+
+	X11 view program
+
+	$ gcc -IXscr -Iloadppm -DUSE_Xscr saturated_add.c Xscr/Xscr.c loadppm/load_ppm.c -lX11 -o program
+
+	Additional libraries are available at github:
+	* https://github.com/WojciechMula/Xscr
+	* https://github.com/WojciechMula/loadppm
+
+
+	Usage
+	------------------------------------------------------------------------
+
+	Run program without arguments to read help.
+
+
+	------------------------------------------------------------------------
+
+	Author: Wojciech Muła
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 
+	created: 2008-06-08
 	License: public domain
 */
 
@@ -28,7 +48,6 @@
 #include <strings.h>
 #include <errno.h>
 
-//#define USE_Xscr
 #ifdef USE_Xscr
 #  include "load_ppm.h"
 #  include "Xscr.h"
@@ -38,7 +57,7 @@ void usage(FILE* file) {
 	const char* usage =
 
 "Saturated add of 16bpp images\n"
-"Author: Wojciech Mula, wojciech_mula@poczta.onet.pl\n"
+"Author: Wojciech Muła, wojciech_mula@poczta.onet.pl\n"
 "\n"
 "a. progname help\n"
 "b. progname test mmx|x86 times\n"
@@ -302,7 +321,7 @@ int main(int argc, char* argv[]) {
 		memcpy( (void*)&image3[0][0], (void*)img, SIZEX*SIZEY*2);
 		free(img);
 
-	
+
 		puts(short_help);
 		result = Xscr_mainloop(
 			SIZEX, SIZEY, DEPTH_16bpp, False, (uint8_t*)&image1[0][0],
