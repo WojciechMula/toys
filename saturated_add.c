@@ -59,21 +59,21 @@ void usage(FILE* file) {
 "Saturated add of 16bpp images\n"
 "Author: Wojciech Muła, wojciech_mula@poczta.onet.pl\n"
 "\n"
-"a. progname help\n"
-"b. progname test mmx|x86 times\n"
-#ifdef USE_Xscr
-"c. progname view mmx|x86 filename.ppm\n"
-#endif
+"Usage:\n"
 "\n"
-"b. Run procedure x86 or MMX optimized that perform saturated\n"
+"progname test mmx|x86 times\n"
+"\n"
+"   Run procedure x86 or MMX optimized that perform saturated\n"
 "   addition as many times as user want. Useful for profiling.\n"
 #ifdef USE_Xscr
 "\n"
-"c. Perform saturated addition on given PPM (RGB, 640x480, 24bpp).\n"
+"progname view mmx|x86 filename.ppm\n"
+"\n"
+"   Perform saturated addition on given PPM (RGB, 640x480, 24bpp).\n"
 "   Image is displayed in X-Window, user controls program through\n"
 "   commands entered in console.\n"
 #endif
-; // <- ";"
+;
 
 	fputs(usage, file);
 }
@@ -267,11 +267,6 @@ int main(int argc, char* argv[]) {
 		usage(stdout);
 		exit(EXIT_FAILURE);
 	}
-	// progname help
-	if (strcasecmp(argv[1], "help") == 0) {
-		usage(stdout);
-		exit(EXIT_SUCCESS);
-	}
 	// progname test mmx|x86 times
 	if (strcasecmp(argv[1], "test") == 0 && argc == 4) {
 		times = atoi(argv[3]) > 0 ? atoi(argv[3]) : 1000;
@@ -330,7 +325,7 @@ int main(int argc, char* argv[]) {
 		);
 
 		if (result < 0) {
-			printf("Xscr error: %s\n", Xscr_errormsg[-result]);
+			printf("Xscr error: %s\n", Xscr_error_str(result));
 			return 1;
 		}
 		else
