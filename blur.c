@@ -667,16 +667,17 @@ void keyboard(int x, int y, Time t, KeySym c, KeyOrButtonState s, unsigned int k
 
 void usage() {
 	puts(
-"a. progname help\n"
-"b. progname test x86|mmx|mmx2|sse2 count\n"
-#ifdef USE_Xscr
-"c. progname view file_ppm_640x480\n"
-#endif
+"Usage:\n"
 "\n"
-"a. Print this help.\n"
-"b. Run x86 or mmx routine count times\n"
+"progname test x86|mmx|mmx2|sse2 count\n"
+"\n"
+"   Run x86 or mmx routine count times\n"
+"\n"
 #ifdef USE_Xscr
-"c. Display in X Window given file and blur using\n"
+"\n"
+"progname view file_ppm_640x480\n"
+"\n"
+"   Display in X Window given file and blur using\n"
 "   selected routine.  See help message printed\n"
 "   on console for details.\n"
 #endif
@@ -693,11 +694,6 @@ int main(int argc, char* argv[]) {
 
 #define iskeyword(string, index) (strcasecmp(argv[index], string) == 0)
 
-	// progname help
-	if (argc >= 2 && iskeyword("help", 1)) {
-		usage();
-		return 0;
-	}
 	// progname test x86|mmx|mmx2 count
 	if (argc >= 4 && iskeyword("test", 1)) {
 		count = atoi(argv[3]) <= 0 ? 100 : atoi(argv[3]);
@@ -789,7 +785,7 @@ int main(int argc, char* argv[]) {
 			"Blur grayscale images demo"
 		);
 		if (result < 0)
-			die("Xscr error: %s\n", Xscr_errormsg[-result]);
+			die("Xscr error: %s\n", Xscr_error_str(result));
 		else
 			return 0;
 	}
