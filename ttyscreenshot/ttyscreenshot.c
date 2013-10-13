@@ -1,6 +1,4 @@
 /*
-	$Date: 2008-06-21 18:28:37 $, $Revision: 1.6 $
-	
 	Grab tty as image (PNM)
 
 	License: public domain
@@ -12,6 +10,11 @@
 	Author: Wojciech Mu³a
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl
+
+	Changelog:
+
+		2013-10-13: some cleanups
+		2008-06-21: initial relase
 */
 
 #include <stdlib.h>
@@ -30,16 +33,21 @@
 #include <sys/kd.h>
 
 extern int errno;
+typedef void (*save_fun)(uint8_t char_code, uint8_t font_row, uint8_t fore, uint8_t back);
 
 /* aux functions */
 uint8_t swapbits(uint8_t b);
-void expandbits(uint8_t b, uint8_t fore, uint8_t back);
+void save_8bit_width(uint8_t char_code, uint8_t font_row, uint8_t fore, uint8_t back);
+void save_9bit_width(uint8_t char_code, uint8_t font_row, uint8_t fore, uint8_t back);
 void die(char*);
 void ordie(char*);
 
 
+#define CHAR_COUNT  256
+#define CHAR_HEIGHT 32
+
 /* font data */
-uint8_t font[256][32];
+uint8_t font[CHAR_COUNT][CHAR_HEIGHT];
 
 /* palette data */
 uint8_t palette[16][3] = {
@@ -89,6 +97,7 @@ int main(int argv, char* argc[]) {
 	int fd;
 	struct consolefontdesc dsc;
 	char path[PATH_MAX];
+	save_fun save;
 	
 	int  char_width, console_num;	/* program arguments */
 	uint8_t lines, columns;			/* dimensions of console */
@@ -116,8 +125,8 @@ int main(int argv, char* argc[]) {
 	snprintf(path, PATH_MAX, "/dev/tty%d", console_num);
 	fd = open(path, O_RDWR); ordie("open(tty)");
 
-	dsc.charcount	= 256;
-	dsc.charheight	= 16;
+	dsc.charcount	= CHAR_COUNT;
+	dsc.charheight	= CHAR_HEIGHT;
 	dsc.chardata	= (void*)font;
 	ioctl(fd, GIO_FONTX, &dsc); ordie("ioctl(GIO_FONTX)");
 
@@ -142,57 +151,36 @@ int main(int argv, char* argc[]) {
 	if (char_row == NULL)
 		die("malloc failed");
 	
-	printf("P6\n%d %d\n255\n", columns*char_width, lines*16);
-
 	lseek(fd, 4, SEEK_SET);
 
+	/* 6. Save image */
 	if (char_width == 8)
-		for (line=0; line < lines; line++) {
-
-			/* load whole character row */
-			read(fd, char_row, columns*2);
-			for (col=1; col < columns*2; col+=2) 
-				char_row[col] = swapbits(char_row[col]);
-
-			/* process each line of font data */
-			for (y=0; y < 16; y++) {
-				for (col=0; col < columns*2; col+=2) {
-					c    = char_row[col];   /* get charcode */
-					attr = char_row[col+1]; /* get attribute */
-
-					fore = attr & 0x0f; /* from attribute extract foreground color */
-					back = attr >> 4;   /* and background color */
-					expandbits(font[c][y], fore, back);
-				}
-			}
-		}
+		save = save_8bit_width;
 	else
-		for (line=0; line < lines; line++) {
-			read(fd, char_row, columns*2);
-			for (col=1; col < columns*2; col+=2) 
-				char_row[col] = swapbits(char_row[col]);
+		save = save_9bit_width;
 
-			for (y=0; y < 16; y++) {
-				for (col=0; col < columns*2; col+=2) {
-					c = char_row[col];
-					attr = char_row[col+1];
-					
-					fore = attr & 0x0f;
-					back = attr >> 4;
-					
-					expandbits(font[c][y], fore, back);
-				
-					/* repeat last column of some characters */
-					if (c >= 0xbf && c <= 0xdf && (font[c][y] & 0x01))
-						fwrite(&palette[fore][0], 3, 1, stdout);
-					else
-						fwrite(&palette[back][0], 3, 1, stdout);
-				}
+
+	printf("P6\n%d %d\n255\n", columns*char_width, lines*16);
+	for (line=0; line < lines; line++) {
+		/* load whole character row */
+		read(fd, char_row, columns*2);
+
+		/* process each line of font data */
+		for (y=0; y < 16; y++) {
+			for (col=0; col < columns*2; col+=2) {
+				c    = char_row[col];   /* get charcode */
+				attr = swapbits(char_row[col+1]); /* get attribute - order of bits have to be fixed */
+
+				fore = attr & 0x0f; /* from attribute extract foreground color */
+				back = attr >> 4;   /* and background color */
+				save(c, font[c][y], fore, back);
 			}
 		}
+	}
 
 	free(char_row);
 	close(fd);
+
 	return 0;
 }
 
@@ -204,15 +192,25 @@ uint8_t swapbits(uint8_t b) {
 }
 
 
-void expandbits(uint8_t b, uint8_t fore, uint8_t back) {
-	uint8_t mask = 0x80;
-	while (mask) {
-		if (b & mask)
+void save_8bit_width(uint8_t char_code, uint8_t font_row, uint8_t fore, uint8_t back) {
+	uint8_t mask;
+	for (mask = 0x80; mask != 0; mask >>= 1) {
+		if (font_row & mask)
 			fwrite(&palette[fore][0], 3, 1, stdout);
 		else
 			fwrite(&palette[back][0], 3, 1, stdout);
-		mask >>= 1;
 	}
+}
+
+
+void save_9bit_width(uint8_t char_code, uint8_t font_row, uint8_t fore, uint8_t back) {
+	save_8bit_width(char_code, font_row, fore, back);
+
+	/* repeat last column of some characters */
+	if (char_code >= 0xbf && char_code <= 0xdf && (font_row & 0x01))
+		fwrite(&palette[fore][0], 3, 1, stdout);
+	else
+		fwrite(&palette[back][0], 3, 1, stdout);
 }
 
 
