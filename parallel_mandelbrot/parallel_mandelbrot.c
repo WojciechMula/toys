@@ -24,7 +24,7 @@
 
 	Usage:
 
-		Program do not accept any argument, however following parameters
+		Program do not accept any arguments, however following parameters
 		can be set during compile time via following definitions:
 		- WIDTH		- number, width of output image
 		- HEIGHT	- number, height of output image
@@ -89,13 +89,20 @@ Job jobs[JOBS_COUNT];	// protected by mutex
 int free_job_idx = 0;	// protected by mutex
 
 
+typedef union processed_t {
+    int   processed;
+    void* thread_result;
+} processed_t;
+
+
 void* thread(void* sec) {
 	Job *job;
 	double dRe, dIm;
 	double Cre, Cim, Xre, Xim, Tre, Tim;
 	int x, y, i;
 
-	int processed = 0;	// number of pieces already processed
+	processed_t result;
+    result.processed = 0;	// number of pieces already processed
 
 #ifdef DEBUG
 	printf("starting thread #%u\n", pthread_self());
@@ -113,7 +120,7 @@ void* thread(void* sec) {
 			free_job_idx += 1;
 		}
 		pthread_mutex_unlock(&mutex);
-		processed += 1;
+		result.processed += 1;
 
 #ifdef DEBUG
 		printf("thread #%u: processing next part...\n");
@@ -155,7 +162,7 @@ void* thread(void* sec) {
 	printf("thread %u finished; num of pieces proceseed: %d\n", pthread_self(), processed);
 #endif
 
-	return (void*)(processed);
+	return result.thread_result;
 }
 
 
@@ -171,7 +178,6 @@ int main() {
 	memset(Image, 127, sizeof(Image));
 
 	int x, y, i;
-	int status;
 	FILE* f;
 
 	double Re_min = -2.0;
@@ -221,12 +227,14 @@ int main() {
 	// run threads
 	for (i=0; i < THREAD_NUM; i++) {
 		threads[i] = 0;
-		status = pthread_create(&threads[i], NULL, thread, NULL);
 #ifdef DEBUG
+		int status = pthread_create(&threads[i], NULL, thread, NULL);
 		if (status == 0)
 			printf("thread %d/%d created\n", i+1, THREAD_NUM);
 		else
 			printf("ERROR: can't create thread: %s\n", strerror(status));
+#else
+		pthread_create(&threads[i], NULL, thread, NULL);
 #endif
 	}
 
@@ -235,7 +243,7 @@ int main() {
 		pthread_join(threads[i], NULL);
 
 	time2 = get_time();
-	printf("all thread finished after %0.3fs, saving image\n", (time2-time1)/1000000.0);
+	printf("all threads finished after %0.3fs, saving image\n", (time2-time1)/1000000.0);
 
 
 	// save image (PGM)
