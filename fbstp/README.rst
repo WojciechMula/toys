@@ -2,9 +2,7 @@
               Test programs for FBSTP instructions
 ========================================================================
 
-See `article`__.
-
-http://0x80.pl/notesen.html#note-2013-5
+Details: http://0x80.pl/notesen.html#note-2013-5
 
 
 Conversion
