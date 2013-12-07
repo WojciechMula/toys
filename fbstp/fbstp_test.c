@@ -8,7 +8,7 @@ void print_buffer();
 
 int main(int argc, char* argv[]) {
 	double x;
-	int i, j;
+	int i;
 
 	for (i=1; i < argc; i++) {
 		x = atof(argv[i]);
@@ -28,9 +28,7 @@ uint8_t buffer[11];
 
 void fill_buffer(const double x) {
 	__asm__ (
-		"pusha\n"
 		"fbstp (%%eax)\n"
-		"popa\n"
 		:
 		: "f" (x), "a" (buffer)
 		: "memory"

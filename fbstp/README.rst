@@ -1,0 +1,50 @@
+========================================================================
+              Test programs for FBSTP instructions
+========================================================================
+
+See `article`__.
+
+http://0x80.pl/notesen.html#note-2013-5
+
+
+Conversion
+------------------------------------------------------------------------
+
+Compilation::
+
+	$ gcc -O2 -Wall fbstp_test.c -o test
+
+Sample output::
+
+	$ ./test 0 12 5671245 -143433 334535 4543985349054 999999999999999999999
+	printf => 0.000000
+	FBSTP  => 0
+	printf => 12.000000
+	FBSTP  => 12
+	printf => 5671245.000000
+	FBSTP  => 5671245
+	printf => -143433.000000
+	FBSTP  => -143433
+	printf => 334535.000000
+	FBSTP  => 334535
+	printf => 4543985349054.000000
+	FBSTP  => 4543985349054
+	printf => 10000000000000000000000.000000
+	FBSTP  => NaN/overflow
+
+
+Speed
+------------------------------------------------------------------------
+
+Compilation::
+
+	$ gcc -O2 -Wall fbstp_speed.c -o speed
+
+Sample output (Pentium M)::
+
+	$ ./speed 
+	fbstp...
+	... 2.285 s
+	simple itoa...
+	... 0.589 s
+
