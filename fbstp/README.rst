@@ -38,7 +38,11 @@ Compilation::
 
 	$ gcc -O2 -Wall fbstp_speed.c -o speed
 
-Sample output (Pentium M)::
+
+Results - Pentium M
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
 
 	$ ./speed 
 	fbstp...
@@ -46,3 +50,14 @@ Sample output (Pentium M)::
 	simple itoa...
 	... 0.589 s
 
+
+Results - Core i7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+	$ ./speed 
+	FBSTP...
+	... 2.165 s
+	simple itoa...
+	... 0.419 s
