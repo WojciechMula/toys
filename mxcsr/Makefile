@@ -2,7 +2,7 @@
 .PHONY: clean all
 
 CC=gcc
-CCFLAGS=-std=c99
+CCFLAGS=-std=c99 -Wall -pedantic
 ALL=test_flush_to_zero test_invalid_operation test_denormal test_divide_by_zero
 
 all: $(ALL)
