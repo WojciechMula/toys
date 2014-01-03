@@ -68,5 +68,9 @@ void print_mxcsr(FILE* f, const uint32_t mxcsr) {
 
 }
 
+void dump_mxcsr() {
+	print_mxcsr(stdout, get_mxcsr());
+}
+
 #undef flagset
 #undef condstr

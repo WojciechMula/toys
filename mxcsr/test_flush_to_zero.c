@@ -20,7 +20,7 @@ void mulps_without_flush_to_zero() {
 	uint32_t mxcsr;
 	uint32_t t1, t2;
 
-	printf("multiply small values with masked precisions... ");
+	printf("multiply small values with masked precision... ");
 	fflush(stdout);
 
 	t1 = get_time();
