@@ -3,10 +3,10 @@
 #include <float.h>
 #include "mxcsr.c"
 
-void divps_tiny_by_large_value();
+void mulps_tiny_by_large_value();
 
 int main() {
-	divps_tiny_by_large_value();
+	mulps_tiny_by_large_value();
 
 	dump_mxcsr();
 }
@@ -17,7 +17,7 @@ int main() {
 float tiny_value[4]    = packed_float(FLT_MIN);
 float large_divisor[4] = packed_float(0.5);
 
-void divps_tiny_by_large_value() {
+void mulps_tiny_by_large_value() {
 	__asm__ __volatile__(
 		"movups tiny_value,    %%xmm0\n"
 		"movups	large_divisor, %%xmm1\n"
