@@ -21,30 +21,18 @@
 
 size_t strstr32(const char* s, size_t n, const char* neddle) {
 	// 1. calculate first and last indexes
-	const size_t k = strlen(neddle);
-	size_t last_pos = k - 1;
-	
-	while (last_pos > 0) {
-		if (neddle[0] != neddle[last_pos])
-			break;
-
-		last_pos -= 1;
-	}
-
-	if (last_pos == 0) {
-		// neddle contains single char
-		// we could use some specalized matcher here...
-	}
-
-	// 2. sequence scan
 	// instead of comparision single first & last characters
 	// we compare 4 bytes at once [on 64-bit machines we can use 8 bytes]
+	const size_t k = strlen(neddle);
+	const size_t last_pos = k - 1;
+	
 	const uint32_t first = 0x01010101 * static_cast<uint8_t>(neddle[0]);
 	const uint32_t last  = 0x01010101 * static_cast<uint8_t>(neddle[last_pos]);
 
 	uint32_t* block_first = reinterpret_cast<uint32_t*>(const_cast<char*>(s));
 	uint32_t* block_last  = reinterpret_cast<uint32_t*>(const_cast<char*>(s + last_pos));
 
+	// 2. sequence scan
 	for (auto i=0u; i < n - k; i+=4, block_first++, block_last++) {
 		// 0 bytes in t1 indicate matching chars
 		const uint32_t t1 = (*block_first ^ first) | (*block_last ^ last);
@@ -52,6 +40,7 @@ size_t strstr32(const char* s, size_t n, const char* neddle) {
 
 		if (t2) {
 			uint32_t mask = 0x80;
+
 			for (auto j=0u; j < 4; j++) {
 				const char* substr = reinterpret_cast<char*>(block_first) + j + 1;
 				if ((t2 & mask) && memcmp(substr, neddle + 1, k - 1) == 0) {

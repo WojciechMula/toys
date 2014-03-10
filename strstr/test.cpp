@@ -54,7 +54,7 @@ struct measure_result_t {
 	}
 
 	double speedup(const measure_result_t& other) const {
-		if (time < other.time)
+		if (time <= other.time)
 			return other.time/time;
 		else
 			return -time/other.time;
@@ -63,10 +63,12 @@ struct measure_result_t {
 	void print_speedup(const measure_result_t& other) const {
 		const auto s = speedup(other);
 
-		if (s > 0)
+		if (s > 0.0)
 			printf("faster %0.3f than %s", s, other.name.c_str());
-		else
+		else if (s < 0.0)
 			printf("slower %0.3f than %s", s, other.name.c_str());
+		else
+			printf("as fast as %s", other.name.c_str());
 	}
 };
 
