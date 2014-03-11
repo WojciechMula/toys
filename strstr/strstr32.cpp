@@ -34,16 +34,16 @@ size_t strstr32(const char* s, size_t n, const char* neddle) {
 
 	// 2. sequence scan
 	for (auto i=0u; i < n - k; i+=4, block_first++, block_last++) {
-		// 0 bytes in t1 indicate matching chars
-		const uint32_t t1 = (*block_first ^ first) | (*block_last ^ last);
-		const uint32_t t2 = (t1 - 0x01010101u) & ((~t1) & 0x80808080u);
+		// 0 bytes in eq indicate matching chars
+		const uint32_t eq = (*block_first ^ first) | (*block_last ^ last);
+		const uint32_t zeros = (eq - 0x01010101u) & ((~eq) & 0x80808080u);
 
-		if (t2) {
+		if (zeros) {
 			uint32_t mask = 0x80;
 
 			for (auto j=0u; j < 4; j++) {
 				const char* substr = reinterpret_cast<char*>(block_first) + j + 1;
-				if ((t2 & mask) && memcmp(substr, neddle + 1, k - 1) == 0) {
+				if ((zeros & mask) && memcmp(substr, neddle + 1, k - 1) == 0) {
 					return i + j;
 				}
 

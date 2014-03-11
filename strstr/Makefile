@@ -15,5 +15,8 @@ test: test.cpp strstr*.cpp
 demo: test i386.txt words
 	./test i386.txt `cat words` > demo
 
+analyze: demo
+	python analyze.py
+
 clean:
 	rm -f test
