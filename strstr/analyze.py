@@ -27,7 +27,7 @@ def update(dict, field):
 			return classes[6]
 
 	value = float(field)
-	
+
 	name = classify(value)
 	dict[name] = dict.get(name, 0) + 1;
 
@@ -40,22 +40,29 @@ def load(filename):
 		fields = lines.split()
 		if fields[0] != 'custom:':
 			continue
-		
+
 		update(cpp, fields[5])
 		update(c,   fields[9])
+
 
 	return cpp, c
 
 
 def print_summary(dict, width = 50):
 	n = max(map(len, classes))
-	s = sum(dict.values())
+	total = sum(dict.values())
+
+	def print_class(cls):
+		if cls in dict:
+			count = dict[cls]
+			perc  = count/float(total)
+			bar  = '=' * max(1, int(perc * width))
+			print '%*s: %5d  (%5.2f%%) %s' % (n, cls, total, 100.0 * perc, bar)
+		else:
+			print '%*s: N/A' % (n, cls)
 
 	for cls in classes:
-		k    = dict[cls]
-		perc = k/float(s)
-		bar  = '=' * max(1, int(perc * width))
-		print '%*s: %5d  (%5.2f%%) %s' % (n, cls, k, 100.0 * perc, bar)
+		print_class(cls);
 
 
 if __name__ == '__main__':
