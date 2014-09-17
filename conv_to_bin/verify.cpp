@@ -21,6 +21,7 @@ void verify() {
         const uint64_t naive = convert_to_bin::naive(i);
         const uint64_t swar  = convert_to_bin::swar(i);
         const uint64_t simd  = convert_to_bin::simd(i);
+        const uint64_t pdep  = convert_to_bin::pdep(i);
 
         if (naive != swar) {
             std::printf("failed SWAR for %d: %016llx != %016llx\n", i, naive, swar);
@@ -29,6 +30,11 @@ void verify() {
 
         if (naive != simd) {
             std::printf("failed SIMD for %d: %016llx != %016llx\n", i, naive, simd);
+            return;
+        }
+
+        if (naive != pdep) {
+            std::printf("failed PDEP for %d: %016llx != %016llx\n", i, naive, pdep);
             return;
         }
 	}

@@ -12,6 +12,7 @@
 #include <cstring>
 #include <assert.h>
 #include <string>
+#include <vector>
 
 #include <sys/time.h>
 
@@ -82,18 +83,22 @@ measure_item_t measure(F function, int iterations, const std::string& name) {
 void measure() {
     const int  n  = 10000000;
 
-    const auto m1 = measure(convert_to_bin::naive,  n, "naive");
-    const auto m2 = measure(convert_to_bin::lookup, n, "lookup");
-    const auto m3 = measure(convert_to_bin::swar,   n, "SWAR");
-    const auto m4 = measure(convert_to_bin::simd,   n, "SIMD");
+    std::vector<measure_item_t> results;
 
-	std::puts("");
-	std::puts("results:");
+    results.push_back(measure(convert_to_bin::naive,  n, "naive"));
+    results.push_back(measure(convert_to_bin::lookup, n, "lookup"));
+    results.push_back(measure(convert_to_bin::swar,   n, "SWAR"));
+    results.push_back(measure(convert_to_bin::simd,   n, "SIMD"));
+#if defined(HAVE_PDEP_INSTRUCTION)
+    results.push_back(measure(convert_to_bin::pdep,   n, "PDEP"));
+#endif
 
-    m1.print();
-    m2.print(m1);
-    m3.print(m1);
-    m4.print(m1);
+    std::puts("");
+    std::puts("results");
+
+    for (const auto& m: results) {
+        m.print(results.front());
+    }
 }
 
 

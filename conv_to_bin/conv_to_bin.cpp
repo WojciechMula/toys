@@ -45,6 +45,7 @@ uint64_t naive(uint8_t v) {
 
 // --- lookup -------------------------------------------------------------
 
+
 static uint64_t lookup_table[256];
 
 uint64_t lookup(uint8_t v) {
@@ -58,7 +59,9 @@ void prepare_lookup() {
     }
 }
 
+
 // --- SWAR version -------------------------------------------------------
+
 
 uint64_t swar(uint8_t v) {
 
@@ -70,9 +73,8 @@ uint64_t swar(uint8_t v) {
 	return 0x3030303030303030 + r4;  // ord('0') == 0x30
 }
 
+
 // --- SIMD version -------------------------------------------------------
-
-
 
 
 uint64_t simd(uint8_t v) {
@@ -103,6 +105,77 @@ uint64_t simd(uint8_t v) {
 
 	return result;
 }
+
+
+// --- PDEP version -------------------------------------------------------
+
+
+namespace CPU {
+
+#ifdef HAVE_PDEP_INSTRUCTION
+uint64_t pdep(uint64_t src1, uint64_t src2) {
+    uint64_t result;
+
+    __asm__ __volatile__(
+        "pdep %1, %2, %0"
+        : "r" (result)
+        : "r" (src1)
+        , "r" (src2)
+    );
+
+    return result;
+}
+#else
+uint64_t pdep(uint64_t src1, uint64_t src2) {
+    uint64_t result = 0;
+
+    int k = 0;
+    for (int i=0; i < 64; i++) {
+        const uint64_t mask = (1llu << i);
+
+
+        if (src1 & mask) {
+            if (src2 & (1llu << k)) {
+                result |= mask;
+            }
+            k += 1;
+        }
+    }
+
+    return result;
+}
+#endif
+
+
+uint64_t bswap(uint64_t qword) {
+    union {
+        uint64_t qword;
+        uint8_t  bytes[8];
+    } result;
+
+    result.qword = qword;
+
+    for (int i=0; i < 4; i++) {
+        const uint8_t t = result.bytes[i];
+
+        result.bytes[i] = result.bytes[7 - i];
+        result.bytes[7 - i] = t;
+    }
+
+    return result.qword;
+}
+
+
+} // namespace CPU
+
+
+uint64_t pdep(uint8_t v) {
+
+    const uint64_t expanded = CPU::pdep(0x0101010101010101, v);
+
+	return 0x3030303030303030 + expanded;
+}
+
 
 } // namespace conv_to_bin
 
