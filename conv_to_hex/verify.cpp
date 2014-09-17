@@ -36,6 +36,7 @@ void verify_expand() {
     for (uint32_t x = 0; x <= 0xffff; x++) {
         assert(nibble_expand_naive(x) == nibble_expand_mul(x));
         assert(nibble_expand_naive(x) == nibble_expand_simd(x));
+        assert(nibble_expand_naive(x) == nibble_expand_pdep(x));
     }
 }
 

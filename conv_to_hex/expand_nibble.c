@@ -73,7 +73,7 @@ uint32_t nibble_expand_mul(uint32_t x) {
     - 2 bit-and
 */
 
-#define SIMD_ALIGN __attribute__((aligned(16)))                                                     
+#define SIMD_ALIGN __attribute__((aligned(16)))
 #define packed_byte(x)   {x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}
 
 uint8_t LSB_mask[16] SIMD_ALIGN = packed_byte(0x0f);
@@ -82,7 +82,7 @@ uint32_t nibble_expand_simd(uint32_t x) {
     assert(x <= 0xffff);
 
     uint32_t result;
-    
+
     __asm__ __volatile__ (
         "movd    %%eax,     %%xmm0              \n"
         "movdqa  %%xmm0,    %%xmm1              \n"
@@ -105,5 +105,47 @@ uint32_t nibble_expand_simd(uint32_t x) {
     );
 
     return result;
+}
+
+
+// --- PDEP version -------------------------------------------------------
+
+#ifdef HAVE_PDEP_INSTRUCTION
+uint32_t pdep(uint32_t src1, uint32_t src2) {
+    uint32_t result;
+
+    __asm__ __volatile__(
+        "pdep %1, %2, %0"
+        : "r" (result)
+        : "r" (src1)
+        , "r" (src2)
+    );
+
+    return result;
+}
+#else
+uint32_t pdep(uint32_t src1, uint32_t src2) {
+    uint32_t result = 0;
+
+    int k = 0;
+    for (int i=0; i < 32; i++) {
+        const uint32_t mask = (1u << i);
+
+        if (src1 & mask) {
+            if (src2 & (1u << k)) {
+                result |= mask;
+            }
+            k += 1;
+        }
+    }
+
+    return result;
+}
+#endif
+
+uint32_t nibble_expand_pdep(uint32_t x) {
+    assert(x <= 0xffff);
+
+    return pdep(0x0f0f0f0f, x);
 }
 

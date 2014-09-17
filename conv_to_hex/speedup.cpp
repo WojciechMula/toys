@@ -93,6 +93,12 @@ void measure() {
     results.push_back(measure(nibble_expand_simd, nibbles_to_hex_swar,  n, "simd/swar"));
     results.push_back(measure(nibble_expand_simd, nibbles_to_hex_simd,  n, "simd/simd"));
 
+#ifdef HAVE_PDEP_INSTRUCTION
+    results.push_back(measure(nibble_expand_pdep, nibbles_to_hex_naive, n, "simd/naive"));
+    results.push_back(measure(nibble_expand_pdep, nibbles_to_hex_swar,  n, "simd/swar"));
+    results.push_back(measure(nibble_expand_pdep, nibbles_to_hex_simd,  n, "simd/simd"));
+#endif
+
 	std::puts("");
 	std::puts("results:");
 

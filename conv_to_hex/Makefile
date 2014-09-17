@@ -10,7 +10,7 @@ verify: verify.cpp conv_to_hex.c expand_nibble.c
 	$(CC) $(FLAGS) $@.cpp -o $@
 
 speedup: speedup.cpp conv_to_hex.c expand_nibble.c
-	$(CC) $(FLAGS) $@.cpp -o $@
+	$(CC) $(FLAGS) -DNDEBUG $@.cpp -o $@
 
 clean:
 	rm -rf verify speedup

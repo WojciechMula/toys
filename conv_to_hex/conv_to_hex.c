@@ -35,7 +35,7 @@ uint32_t nibbles_to_hex_swar(uint32_t nibbles) {
 
 // --- SIMD version -------------------------------------------------------
 
-#define SIMD_ALIGN __attribute__((aligned(16)))                                                     
+#define SIMD_ALIGN __attribute__((aligned(16)))
 #define packed_byte(x)   {x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}
 
 
@@ -87,7 +87,7 @@ uint8_t nibble_to_hex_naive(uint8_t b) {
 
 uint32_t nibbles_to_hex_naive(uint32_t nibbles) {
 	assert((nibbles & 0xf0f0f0f0) == 0);
-	
+
 	union {
 		uint32_t dword;
 		uint8_t  byte[4];
@@ -101,4 +101,3 @@ uint32_t nibbles_to_hex_naive(uint32_t nibbles) {
 
 	return result.dword;
 }
-
