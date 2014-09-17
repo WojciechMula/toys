@@ -56,8 +56,6 @@ private:
 };
 
 
-
-
 template <typename F>
 measure_item_t measure(F function, int iterations, const std::string& name) {
     std::printf("measure %s... ", name.c_str());

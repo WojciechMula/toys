@@ -4,11 +4,6 @@
 	Author  : Wojciech Muła
 	Date    : 2014-09-14
 	License : BSD
-
-	Compilation:
-
-	$ gcc -Wall -Wextra -std=c99 conv_to_hex.c -o your_fav_name
-
 */
 
 
@@ -72,6 +67,7 @@ uint32_t nibbles_to_hex_simd(uint32_t nibbles) {
 		: /* no output */
 		: "a" (nibbles),
 		  "b" (&result)
+        : "memory"
 	);
 
 	return result;
@@ -106,35 +102,3 @@ uint32_t nibbles_to_hex_naive(uint32_t nibbles) {
 	return result.dword;
 }
 
-
-void verify() {
-	union {
-		uint32_t dword;
-		uint8_t  byte[4];
-	} input;
-
-	for (int a=0; a < 16; a++) {
-
-		input.byte[0] = a;
-		for (int b=0; b < 16; b++) {
-
-			input.byte[1] = b;
-			for (int c=0; c < 16; c++) {
-
-				input.byte[2] = c;
-				for (int d=0; d < 16; d++) {
-
-					input.byte[3] = d;
-
-					assert(nibbles_to_hex_naive(input.dword) == nibbles_to_hex_swar(input.dword));
-					assert(nibbles_to_hex_naive(input.dword) == nibbles_to_hex_simd(input.dword));
-				}
-			}
-		}
-	}
-}
-
-
-int main() {
-	verify();
-}

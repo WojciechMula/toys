@@ -5,10 +5,6 @@
     Date    : 2014-09-15
     License : BSD
 
-    Compilation:
-
-    $ gcc -Wall -Wextra -std=c99 prepare_nibble.c -o your_fav_name
-
 */
 
 
@@ -111,15 +107,3 @@ uint32_t nibble_expand_simd(uint32_t x) {
     return result;
 }
 
-
-void verify() {
-    for (uint32_t x = 0; x <= 0xffff; x++) {
-        assert(nibble_expand_naive(x) == nibble_expand_mul(x));
-        assert(nibble_expand_naive(x) == nibble_expand_simd(x));
-    }
-}
-
-
-int main() {
-    verify();
-}
