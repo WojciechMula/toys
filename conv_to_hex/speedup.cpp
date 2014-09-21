@@ -109,6 +109,22 @@ void print_results(const results_t& results) {
 }
 
 
+void csv_results(FILE* f, const results_t& results) {
+
+    fprintf(f, "\"expand\",\"convert\",\"time [s]\",\"speedup\"\n");
+
+    const auto& ref = results[0];
+    for (const auto& m: results) {
+        fprintf(f, "\"%s\",\"%s\",%.4f,%0.2f\n",
+            m.expand_name.c_str(),
+            m.convert_name.c_str(),
+            m.get_time(),
+            m.get_speedup(ref)
+        );
+    }
+}
+
+
 // ------------------------------------------------------------------------
 
 
@@ -135,8 +151,8 @@ measure_item_t measure(F1 expand, F2 convert, int iterations, const std::string&
 }
 
 
-void measure() {
-    const int n  = 10000000;
+results_t measure() {
+    const int n  = 100000;
 
     results_t res;
 
@@ -158,10 +174,7 @@ void measure() {
     res.push_back(measure(nibble_expand_pdep, nibbles_to_hex_simd,  n, "simd", "simd"));
 #endif
 
-	std::puts("");
-
-    print_results(res);
-
+    return res;
 }
 
 
@@ -170,6 +183,15 @@ void measure() {
 
 int main() {
 
-    measure();
+    const auto res = measure();
+
+	std::puts("");
+    print_results(res);
+
+    FILE* f = fopen("results.csv", "wb");
+    if (f) {
+        csv_results(f, res);
+        fclose(f);
+    }
 }
 
