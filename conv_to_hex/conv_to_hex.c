@@ -7,11 +7,6 @@
 */
 
 
-#include <assert.h>
-#include <stdint.h>
-#include <stdio.h>
-
-
 // --- SWAR version -------------------------------------------------------
 
 

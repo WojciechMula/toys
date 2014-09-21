@@ -12,40 +12,44 @@
 #include <sys/time.h>
 
 
+#include "common.c"
 #include "conv_to_hex.c"
 #include "expand_nibble.c"
 
 
 class measure_item_t {
-    const std::string name;
-    uint32_t t1, t2;
+    uint32_t t1;
+    uint32_t t2;
 
 public:
-    measure_item_t(const std::string& name) : name(name) {}
+    const std::string expand_name;
+    const std::string convert_name;
 
 public:
-    void print() const {
-        std::printf("%20s: %10.4fs\n", name.c_str(), get_time());
-    }
+    measure_item_t(const std::string& expand_name, const std::string& convert_name)
+        : expand_name(expand_name)
+        , convert_name(convert_name)
+        {}
 
-    void print(const measure_item_t& other) const {
-        std::printf("%20s: %10.4fs (speedup: %0.2f)\n", name.c_str(), get_time(), other.get_time()/get_time());
-    }
-
+public:
 	double get_time() const {
 		return (t2 - t1)/1000000.0;
 	}
 
+    double get_speedup(const measure_item_t& other) const {
+        return other.get_time()/get_time();
+    }
+
 	void start() {
-		t1 = get_time();
+		t1 = get_current_time();
 	}
 
 	void stop() {
-		t2 = get_time();
+		t2 = get_current_time();
 	}
 
 private:
-	uint32_t get_time(void) {
+	uint32_t get_current_time(void) {
 		static struct timeval T;
 		gettimeofday(&T, NULL);
 		return (T.tv_sec * 1000000) + T.tv_usec;
@@ -53,12 +57,67 @@ private:
 };
 
 
+typedef std::vector<measure_item_t> results_t;
+
+
+// ------------------------------------------------------------------------
+
+void print_results(const results_t& results) {
+
+    auto bar = [](int n, char c) {
+        while (n-- > 0) {
+            putchar(c);
+        }
+
+        putchar('\n');
+    };
+
+    const int terminal_width = 79;
+
+    const int expand  = 10;
+    const int convert = 10;
+    const int time    = 10;
+    const int speedup = 10;
+
+    printf("| %*s | %*s | %*s | %*s |\n",
+        -expand,  "expand",
+        -convert, "convert",
+        time,     "time [s]",
+        speedup,  "speedup");
+
+
+    bar(terminal_width, '-');
+
+    const auto& ref = results[0];
+    double max_speedup = 0;
+    for (const auto& m: results) {
+        max_speedup = std::max(max_speedup, m.get_speedup(ref));
+    }
+
+    for (const auto& m: results) {
+        const int n = printf("| %*s | %*s | %*.4f | %*.2f | ",
+            expand,  m.expand_name.c_str(),
+            convert, m.convert_name.c_str(),
+            time,    m.get_time(),
+            speedup, m.get_speedup(ref)
+        );
+
+        const double f = m.get_speedup(ref)/max_speedup;
+        const int k = f * (terminal_width - n);
+        bar(k, '#');
+    }
+}
+
+
+// ------------------------------------------------------------------------
+
+
 template <typename F1, typename F2>
-measure_item_t measure(F1 expand, F2 convert, int iterations, const std::string& name) {
-    std::printf("measure %s... ", name.c_str());
+measure_item_t measure(F1 expand, F2 convert, int iterations, const std::string& expand_name, const std::string& convert_name) {
+    std::printf("measure expand=%s, convert=%s... ", expand_name.c_str(), convert_name.c_str());
     std::fflush(stdout);
 
-	measure_item_t m(name);
+	measure_item_t m(expand_name, convert_name);
 
 	m.start();
 
@@ -77,34 +136,32 @@ measure_item_t measure(F1 expand, F2 convert, int iterations, const std::string&
 
 
 void measure() {
-    const int  n  = 10000000;
+    const int n  = 10000000;
 
-    std::vector<measure_item_t> results;
+    results_t res;
 
-    results.push_back(measure(nibble_expand_naive, nibbles_to_hex_naive, n, "naive/naive"));
-    results.push_back(measure(nibble_expand_naive, nibbles_to_hex_swar,  n, "naive/swar"));
-    results.push_back(measure(nibble_expand_naive, nibbles_to_hex_simd,  n, "naive/simd"));
+    res.push_back(measure(nibble_expand_naive, nibbles_to_hex_naive, n, "naive", "naive"));
+    res.push_back(measure(nibble_expand_naive, nibbles_to_hex_swar,  n, "naive", "swar"));
+    res.push_back(measure(nibble_expand_naive, nibbles_to_hex_simd,  n, "naive", "simd"));
 
-    results.push_back(measure(nibble_expand_mul, nibbles_to_hex_naive, n, "mul/naive"));
-    results.push_back(measure(nibble_expand_mul, nibbles_to_hex_swar,  n, "mul/swar"));
-    results.push_back(measure(nibble_expand_mul, nibbles_to_hex_simd,  n, "mul/simd"));
+    res.push_back(measure(nibble_expand_mul, nibbles_to_hex_naive, n, "mul", "naive"));
+    res.push_back(measure(nibble_expand_mul, nibbles_to_hex_swar,  n, "mul", "swar"));
+    res.push_back(measure(nibble_expand_mul, nibbles_to_hex_simd,  n, "mul", "simd"));
 
-    results.push_back(measure(nibble_expand_simd, nibbles_to_hex_naive, n, "simd/naive"));
-    results.push_back(measure(nibble_expand_simd, nibbles_to_hex_swar,  n, "simd/swar"));
-    results.push_back(measure(nibble_expand_simd, nibbles_to_hex_simd,  n, "simd/simd"));
+    res.push_back(measure(nibble_expand_simd, nibbles_to_hex_naive, n, "simd", "naive"));
+    res.push_back(measure(nibble_expand_simd, nibbles_to_hex_swar,  n, "simd", "swar"));
+    res.push_back(measure(nibble_expand_simd, nibbles_to_hex_simd,  n, "simd", "simd"));
 
 #ifdef HAVE_PDEP_INSTRUCTION
-    results.push_back(measure(nibble_expand_pdep, nibbles_to_hex_naive, n, "simd/naive"));
-    results.push_back(measure(nibble_expand_pdep, nibbles_to_hex_swar,  n, "simd/swar"));
-    results.push_back(measure(nibble_expand_pdep, nibbles_to_hex_simd,  n, "simd/simd"));
+    res.push_back(measure(nibble_expand_pdep, nibbles_to_hex_naive, n, "simd", "naive"));
+    res.push_back(measure(nibble_expand_pdep, nibbles_to_hex_swar,  n, "simd", "swar"));
+    res.push_back(measure(nibble_expand_pdep, nibbles_to_hex_simd,  n, "simd", "simd"));
 #endif
 
 	std::puts("");
-	std::puts("results:");
 
-    for (const auto& m: results) {
-        m.print(*results.begin());
-    }
+    print_results(res);
+
 }
 
 
