@@ -12,7 +12,6 @@
 #include <cstring>
 #include <assert.h>
 
-
 #define SIMD_ALIGN __attribute__((aligned(16)))
 #define packed_byte(x)   {x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}
 
@@ -77,34 +76,72 @@ uint64_t swar(uint8_t v) {
 // --- SIMD version -------------------------------------------------------
 
 
+#ifdef ARCH_64BIT
 uint64_t simd(uint8_t v) {
 
     uint64_t result;
 
 	__asm__ __volatile__ (
 		// 1. populate byte
-		"movd       %%eax,  %%xmm0    \n"
+		"movd       %1,  %%xmm0    \n"
 		"punpcklbw  %%xmm0, %%xmm0    \n"
 
 		// 2. mask bits
-		"pand       bit_mask, %%xmm0  \n"
-		"pcmpeqb    bit_mask, %%xmm0  \n"
+		"pand       %2, %%xmm0  \n"
+		"pcmpeqb    %2, %%xmm0  \n"
 
 		// 3. convert to ASCII
-		"movdqa     ascii, %%xmm1     \n"
+		"movdqa     %3, %%xmm1     \n"
 		"psubb      %%xmm0, %%xmm1    \n"
 
 		// save result
-		"movq       %%xmm1, (%%ebx)   \n"
+		"movq       %%xmm1, %0   \n"
 
-		: /* no output */
-		: "a" (0x01010101 * v),
-		  "b" (&result)
+		: "=r" (result)
+
+		: "r" (0x01010101 * v)
+        , "m" (bit_mask)
+        , "m" (ascii)
+
         : "memory"
 	);
 
 	return result;
 }
+#else
+uint64_t simd(uint8_t v) {
+
+    uint64_t result;
+
+	__asm__ __volatile__ (
+		// 1. populate byte
+		"movd       %0,  %%xmm0    \n"
+		"punpcklbw  %%xmm0, %%xmm0    \n"
+
+		// 2. mask bits
+		"pand       %1, %%xmm0  \n"
+		"pcmpeqb    %1, %%xmm0  \n"
+
+		// 3. convert to ASCII
+		"movdqa     %2, %%xmm1     \n"
+		"psubb      %%xmm0, %%xmm1    \n"
+
+		// save result
+		"movq       %%xmm1, (%3)   \n"
+
+		: /* no output */
+
+		: "r" (0x01010101 * v)
+        , "m" (bit_mask)
+        , "m" (ascii)
+        , "r" (&result)
+
+        : "memory"
+	);
+
+	return result;
+}
+#endif
 
 
 // --- PDEP version -------------------------------------------------------
@@ -118,7 +155,7 @@ uint64_t pdep(uint64_t src1, uint64_t src2) {
 
     __asm__ __volatile__(
         "pdep %1, %2, %0"
-        : "r" (result)
+        : "=r" (result)
         : "r" (src1)
         , "r" (src2)
     );

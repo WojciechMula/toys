@@ -2,7 +2,9 @@
 .PHONY: clean all
 
 CC=g++
-FLAGS=-std=c++11 -Wall -Wextra
+DEFINES=
+DEFINES=-DARCH_64BIT -DHAVE_PDEP_INSTRUCTION
+FLAGS=-std=c++11 -Wall -Wextra $(DEFINES)
 
 all: verify speedup
 
