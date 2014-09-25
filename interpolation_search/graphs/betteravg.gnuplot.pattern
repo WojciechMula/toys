@@ -1,0 +1,11 @@
+set terminal png medium size 800,600
+
+set output "betteravg.png"
+
+set title "when interpolation search is better than binary search"
+set xrange [0:1]
+set xlabel "x"
+set ylabel "y"
+set key outside 
+
+plot __PLOT__
