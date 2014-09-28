@@ -15,6 +15,36 @@ uint32_t nibble_expand_naive(uint32_t x) {
     const uint32_t n3 = (x >> 12) & 0x0f;
 
     return n3 | (n2 << 8) | (n1 << 16) | (n0 << 24);
+
+    /*
+        This function is compiled to (GCC 4.8.2):
+
+            83 e0 0f                and    $0xf,%eax
+            c1 e9 0c                shr    $0xc,%ecx
+            83 e1 0f                and    $0xf,%ecx
+            c1 e0 18                shl    $0x18,%eax
+            09 c8                   or     %ecx,%eax
+            89 d1                   mov    %edx,%ecx
+            81 e1 00 0f 00 00       and    $0xf00,%ecx
+            c1 e2 0c                shl    $0xc,%edx
+            09 c8                   or     %ecx,%eax
+            81 e2 00 00 0f 00       and    $0xf0000,%edx
+            09 d0                   or     %edx,%eax
+
+        Looks like nibble_expand_naive_handcrafted.
+    */
+}
+
+
+uint32_t nibble_expand_naive_handcrafted(uint32_t x) {
+    assert(x <= 0xffff);
+
+    const uint32_t n0 = (x & 0x000f) << 24;
+    const uint32_t n1 = (x & 0x00f0) << 12;
+    const uint32_t n2 = (x & 0x0f00);
+    const uint32_t n3 = (x & 0xf000) >> 12;
+
+    return n3 | n2 | n1 | n0;
 }
 
 

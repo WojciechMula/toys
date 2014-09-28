@@ -74,10 +74,10 @@ void print_results(const results_t& results) {
 
     const int terminal_width = 79;
 
-    const int expand  = 10;
-    const int convert = 10;
-    const int time    = 10;
-    const int speedup = 10;
+    const int expand  = 11;
+    const int convert = 7;
+    const int time    = 8;
+    const int speedup = 7;
 
     printf("| %*s | %*s | %*s | %*s |\n",
         -expand,  "expand",
@@ -152,13 +152,17 @@ measure_item_t measure(F1 expand, F2 convert, int iterations, const std::string&
 
 
 results_t measure() {
-    const int n  = 100000;
+    const int n  = 10000000;
 
     results_t res;
 
     res.push_back(measure(nibble_expand_naive, nibbles_to_hex_naive, n, "naive", "naive"));
     res.push_back(measure(nibble_expand_naive, nibbles_to_hex_swar,  n, "naive", "swar"));
     res.push_back(measure(nibble_expand_naive, nibbles_to_hex_simd,  n, "naive", "simd"));
+
+    res.push_back(measure(nibble_expand_naive_handcrafted, nibbles_to_hex_naive, n, "handcrafted", "naive"));
+    res.push_back(measure(nibble_expand_naive_handcrafted, nibbles_to_hex_swar,  n, "handcrafted", "swar"));
+    res.push_back(measure(nibble_expand_naive_handcrafted, nibbles_to_hex_simd,  n, "handcrafted", "simd"));
 
     res.push_back(measure(nibble_expand_mul, nibbles_to_hex_naive, n, "mul", "naive"));
     res.push_back(measure(nibble_expand_mul, nibbles_to_hex_swar,  n, "mul", "swar"));

@@ -43,14 +43,16 @@ void verify_conv_to_hex() {
 
 void verify_expand() {
     for (uint32_t x = 0; x <= 0xffff; x++) {
-        const uint32_t naive = nibble_expand_naive(x);
-        const uint32_t mul   = nibble_expand_mul(x);
-        const uint32_t simd  = nibble_expand_simd(x);
-        const uint32_t pdep  = nibble_expand_pdep(x);
+        const uint32_t naive        = nibble_expand_naive(x);
+        const uint32_t handcrafted  = nibble_expand_naive_handcrafted(x);
+        const uint32_t mul          = nibble_expand_mul(x);
+        const uint32_t simd         = nibble_expand_simd(x);
+        const uint32_t pdep         = nibble_expand_pdep(x);
 
         assert((naive & 0xf0f0f0f0) == 0);
 
         assert(naive == mul);
+        assert(naive == handcrafted);
         assert(naive == simd);
         assert(naive == pdep);
     }
