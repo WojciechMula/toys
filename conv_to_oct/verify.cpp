@@ -14,6 +14,7 @@
 #include "common.c"
 #include "conv.swar.c"
 #include "conv.pdep.c"
+#include "conv.sse2.c"
 
 
 void verify_correcteness() {
@@ -40,9 +41,15 @@ void verify() {
         const uint32_t naive = to_oct_naive(i);
         const uint32_t mul   = to_oct_mul(i);
         const uint32_t pdep  = to_oct_pdep(i);
+        const uint64_t sse2  = to_oct_sse2(i | (i << 12));
+
+        const uint32_t sse2_lo = (uint32_t)sse2;
+        const uint32_t sse2_hi = (uint32_t)(sse2 >> 32);
 
         assert(naive == mul);
         assert(naive == pdep);
+        assert(naive == sse2_lo);
+        assert(naive == sse2_hi);
     }
 }
 

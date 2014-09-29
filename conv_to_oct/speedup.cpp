@@ -15,6 +15,7 @@
 #include "common.c"
 #include "conv.swar.c"
 #include "conv.pdep.c"
+#include "conv.sse2.c"
 
 
 class measure_item_t {
@@ -152,6 +153,7 @@ results_t measure() {
 
     res.push_back(measure(to_oct_naive, n, "naive"));
     res.push_back(measure(to_oct_mul,   n, "mul"));
+    res.push_back(measure(to_oct_sse2,  n, "SSE2"));
 #ifdef HAVE_PDEP_INSTRUCTION
     res.push_back(measure(to_oct_pdep,  n, "pdep"));
 #endif
