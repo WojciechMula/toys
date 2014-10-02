@@ -4,14 +4,17 @@ CC=g++
 FLAGS=-std=c++11 -Wall -Wextra -pedantic
 DEPS=conv.swar.c conv.pdep.c conv.sse2.c common.c
 
-all: verify speedup
+all: verify speedup speedup_pdep
 
 verify: verify.cpp $(DEPS)
 	$(CC) $(FLAGS) verify.cpp -o $@
 
 speedup: speedup.cpp $(DEPS)
-	$(CC) $(FLAGS) speedup.cpp -o $@
+	$(CC) $(FLAGS) -DNDEBUG speedup.cpp -o $@
+
+speedup_pdep: speedup.cpp $(DEPS)
+	$(CC) $(FLAGS) -DNDEBUG -DHAVE_PDEP_INSTRUCTION speedup.cpp -o $@
 
 clean:
-	rm -f verify speedup
+	rm -f verify speedup speedup_pdep
 

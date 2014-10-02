@@ -1,3 +1,4 @@
 verify
 speedup
+speedup_pdep
 *.csv

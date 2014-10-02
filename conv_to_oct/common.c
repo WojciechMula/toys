@@ -25,14 +25,14 @@ uint32_t bswap(uint32_t x) {
 
 
 #ifdef HAVE_PDEP_INSTRUCTION
-uint32_t pdep(uint32_t src1, uint32_t src2) {
+uint32_t pdep(uint32_t src, uint32_t mask) {
     uint32_t result;
 
     __asm__ __volatile__(
-        "pdep %1, %2, %0"
-        : "r" (result)
-        : "r" (src1)
-        , "r" (src2)
+        "pdep %2, %1, %0"
+        : "=r" (result)
+        : "r" (src)
+        , "r" (mask)
     );
 
     return result;
