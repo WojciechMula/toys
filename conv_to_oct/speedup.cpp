@@ -16,6 +16,8 @@
 #include "conv.swar.c"
 #include "conv.pdep.c"
 #include "conv.sse2.c"
+#include "conv.single-lookup.c"
+#include "conv.two-lookups.c"
 
 
 class measure_item_t {
@@ -134,7 +136,7 @@ measure_item_t measure(F convert, int iterations, const std::string& name) {
 
     uint16_t word = 0;
     while (iterations-- > 0) {
-        convert(word);
+        convert(word & 0x0fff);
 		word += 33;
     }
 
@@ -151,12 +153,17 @@ results_t measure() {
 
     results_t res;
 
+    prepare_single_lookup();
+
     res.push_back(measure(to_oct_naive, n, "naive"));
     res.push_back(measure(to_oct_mul,   n, "mul"));
     res.push_back(measure(to_oct_sse2,  n, "SSE2"));
 #ifdef HAVE_PDEP_INSTRUCTION
     res.push_back(measure(to_oct_pdep,  n, "pdep"));
 #endif
+
+    res.push_back(measure(to_oct_single_lookup, n, "1 LUT"));
+    res.push_back(measure(to_oct_two_lookups,   n, "2 LUTs"));
 
     return res;
 }

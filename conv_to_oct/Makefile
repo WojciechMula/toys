@@ -2,7 +2,7 @@
 
 CC=g++
 FLAGS=-std=c++11 -Wall -Wextra -pedantic
-DEPS=conv.swar.c conv.pdep.c conv.sse2.c common.c
+DEPS=conv.swar.c conv.pdep.c conv.sse2.c conv.single-lookup.c conv.two-lookups.c common.c
 
 all: verify speedup speedup_pdep
 

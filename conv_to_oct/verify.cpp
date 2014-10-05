@@ -15,6 +15,8 @@
 #include "conv.swar.c"
 #include "conv.pdep.c"
 #include "conv.sse2.c"
+#include "conv.single-lookup.c"
+#include "conv.two-lookups.c"
 
 
 void verify_correcteness() {
@@ -37,11 +39,17 @@ void verify_correcteness() {
 
 
 void verify() {
-    for (uint32_t i=0; i <= 0xfff; i++) {
+
+    prepare_single_lookup();
+    prepare_two_lookups();
+
+    for (uint32_t i=0; i <= 0x0fff; i++) {
         const uint32_t naive = to_oct_naive(i);
         const uint32_t mul   = to_oct_mul(i);
         const uint32_t pdep  = to_oct_pdep(i);
         const uint64_t sse2  = to_oct_sse2(i | (i << 12));
+        const uint32_t LUT1  = to_oct_single_lookup(i);
+        const uint32_t LUT2  = to_oct_two_lookups(i);
 
         const uint32_t sse2_lo = (uint32_t)sse2;
         const uint32_t sse2_hi = (uint32_t)(sse2 >> 32);
@@ -50,6 +58,8 @@ void verify() {
         assert(naive == pdep);
         assert(naive == sse2_lo);
         assert(naive == sse2_hi);
+        assert(naive == LUT1);
+        assert(naive == LUT2);
     }
 }
 
