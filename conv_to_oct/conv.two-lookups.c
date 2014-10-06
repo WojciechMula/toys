@@ -14,7 +14,8 @@ void prepare_two_lookups() {
 
 
 uint32_t to_oct_two_lookups(uint16_t x) {
-
+    
+    __asm__ __volatile("nop");
     const uint32_t expanded = lookup_nibble0_1[x & 0xff] | lookup_nibble2[(x >> 8) & 0xf];
 
     return expanded + packed32('0');

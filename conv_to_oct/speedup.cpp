@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <sys/time.h>
+#include <cstdio>
 
 
 #include "common.c"
@@ -154,6 +155,7 @@ results_t measure() {
     results_t res;
 
     prepare_single_lookup();
+    prepare_two_lookups();
 
     res.push_back(measure(to_oct_naive, n, "naive"));
     res.push_back(measure(to_oct_mul,   n, "mul"));
