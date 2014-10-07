@@ -42,15 +42,15 @@ uint64_t to_oct_sse2(uint32_t x) {
         // 3. mask bits
         // |000000000000aaa0|000000000bbb0000|000000ccc0000000|000ddd0000000000| .. same for E-H
         //        a                  b               c                 d
-        "pand %2, %%xmm0                \n" // sse2_mask
+        "pand %2, %%xmm0         \n"
 
         // 4. shift:
         //    a << 15, b << 12, c << 9, d << 6
-        "pmulhuw %3, %%xmm0             \n" // sse2_mul
+        "pmulhuw %3, %%xmm0       \n"
 
         // 5. pack and convert to ASCII
         "packuswb %%xmm0, %%xmm0        \n"
-        "paddb %4, %%xmm0               \n" // sse2_ascii
+        "paddb %4, %%xmm0       \n"
 
         "movq %%xmm0, %0                \n"
         : "=m" (result)

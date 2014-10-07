@@ -12,13 +12,7 @@
 #include <sys/time.h>
 #include <cstdio>
 
-
-#include "common.c"
-#include "conv.swar.c"
-#include "conv.pdep.c"
-#include "conv.sse2.c"
-#include "conv.single-lookup.c"
-#include "conv.two-lookups.c"
+#include "conv.h"
 
 
 class measure_item_t {
@@ -150,12 +144,11 @@ measure_item_t measure(F convert, int iterations, const std::string& name) {
 
 
 results_t measure() {
-    const int n  = 10000000;
+    const int n  = 100000000;
 
     results_t res;
 
     prepare_single_lookup();
-    prepare_two_lookups();
 
     res.push_back(measure(to_oct_naive, n, "naive"));
     res.push_back(measure(to_oct_mul,   n, "mul"));
