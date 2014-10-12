@@ -11,7 +11,7 @@
 /*
     Convert 4 hex digits [0-9a-fA-F] to number
 */
-uint32_t parse(char* str) {
+uint32_t parse_pext(char* str) {
 
     assert(strlen(str) >= 4);
 

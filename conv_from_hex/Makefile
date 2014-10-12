@@ -2,10 +2,11 @@
 
 CC=g++
 FLAGS=-Wall -Wextra -pedantic -std=c++11
+DEPS=common.c pext.c parse.*.c
 
 all: verify
 
-verify: verify.cpp pext.c parse_hex_string.c
+verify: verify.cpp $(DEPS)
 	$(CC) $(FLAGS) -O2 verify.cpp -o $@
 
 clean:
