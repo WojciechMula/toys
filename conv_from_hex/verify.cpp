@@ -1,7 +1,22 @@
 #include <cstdio>
 
+#include "common.c"
+#include "parse.naive.c"
 #include "parse.pext.c"
 #include "parse.sse2.c"
+
+void verify_naive() {
+    char buf[5];
+
+    for (uint32_t i=0; i <= 0xffff; i++) {
+        sprintf(buf, "%04x", i);
+        assert(parse_naive(buf) == i);
+
+        sprintf(buf, "%04X", i);
+        assert(parse_naive(buf) == i);
+    }
+}
+
 
 void verify_pext() {
     char buf[5];
@@ -54,6 +69,11 @@ void verify_sse_32chars() {
 
 
 void verify() {
+
+    printf("naive..."); fflush(stdout);
+        verify_pext();
+    puts(" ok");
+
     printf("PEXT..."); fflush(stdout);
         verify_pext();
     puts(" ok");
