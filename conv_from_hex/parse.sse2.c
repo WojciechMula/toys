@@ -51,6 +51,53 @@ uint64_t parse_sse_16chars(char* s) {
 }
 
 
+uint64_t parse_sse_16chars_reverse_result(char* s) {
+
+    union {
+        uint64_t qword;
+        uint32_t dword[2];
+    } result;
+
+    __asm__ __volatile__(
+        "movdqu   (%1),   %%xmm0  \n"
+        "movdqa   %%xmm0, %%xmm1  \n"
+
+        // 1. convert from ASCII to nibbles
+        "pcmpgtb  %2,     %%xmm1  \n"
+        "pand     %4,     %%xmm1  \n"
+
+        "psubb    %3,     %%xmm0  \n"
+        "psubb    %%xmm1, %%xmm0  \n"
+
+        // 2. merge nibbles
+        "movdqa   %%xmm0, %%xmm1  \n"
+        "psllw    $12,     %%xmm1  \n"
+
+        "por      %%xmm1, %%xmm0  \n"
+        "psrlw    $8,     %%xmm0  \n"
+        "packuswb %%xmm0, %%xmm0  \n"
+
+        // 3. store result
+        "movq     %%xmm0, %0      \n"
+        : "=m" (result.qword)
+        : "r" (s)
+        , "m" (first_letter)  // %2
+        , "m" (correction_09) // %3
+        , "m" (correction_af) // %4
+
+    );
+
+    result.dword[0] = bswap(result.dword[0]);
+    result.dword[1] = bswap(result.dword[1]);
+
+    uint32_t tmp = result.dword[0];
+    result.dword[0] = result.dword[1];
+    result.dword[1] = tmp;
+    
+    return result.qword;
+}
+
+
 struct uint128_t {
     uint64_t qword[2];
 };

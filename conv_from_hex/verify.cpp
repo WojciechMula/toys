@@ -33,7 +33,8 @@ void verify_pext() {
 
 void verify_sse_16chars() {
     char buf[17];
-    uint64_t result;
+    uint64_t result1;
+    uint64_t result2;
 
     for (int shift=0; shift < (64 - 16); shift++) {
         putchar('.'); fflush(stdout);
@@ -42,8 +43,11 @@ void verify_sse_16chars() {
             const uint64_t input = i << shift;
 
             sprintf(buf, "%016llx", input);
-            result = parse_sse_16chars(buf);
-            assert(result == input);
+            result1 = parse_sse_16chars(buf);
+            result2 = parse_sse_16chars_reverse_result(buf);
+
+            assert(result1 == input);
+            assert(result2 == input);
         }
     }
 }
