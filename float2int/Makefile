@@ -2,7 +2,7 @@
 .PHONY: clean all
 
 CC=gcc
-CCFLAGS=-std=c99 -O2
+CCFLAGS=-std=c99 -O3 -Wall -pedantic
 
 all: demo verify
 
