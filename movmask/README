@@ -1,0 +1,3 @@
+Scalar version of SSE move mask instruction
+
+See article http://0x80.pl/articles/scalar-sse-movmask.html
