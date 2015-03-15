@@ -5,12 +5,15 @@
 Details: http://0x80.pl/notesen.html#note-2013-5
 
 
-Conversion
+Compilation
 ------------------------------------------------------------------------
 
-Compilation::
+::
+	$ make
 
-	$ gcc -O2 -Wall fbstp_test.c -o test
+
+Conversion
+------------------------------------------------------------------------
 
 Sample output::
 
@@ -34,11 +37,6 @@ Sample output::
 Speed
 ------------------------------------------------------------------------
 
-Compilation::
-
-	$ gcc -O2 -Wall fbstp_speed.c -o speed
-
-
 Results - Pentium M
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -49,6 +47,17 @@ Results - Pentium M
 	... 2.285 s
 	simple itoa...
 	... 0.589 s
+
+
+Results - Core i5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+	$ ./speed.exe
+	FBSTP...
+	... 1.682 s
+	simple itoa...
+	... 0.223 s
 
 
 Results - Core i7

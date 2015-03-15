@@ -11,7 +11,7 @@ void invoke_fbstp(const double x);
 void simple_itoa(int x);
 uint32_t get_time(void);
 
-int main(int argc, char* argv[]) {
+int main() {
 	int i;
 	uint32_t t1, t2;
 
