@@ -13,7 +13,12 @@ typedef size_t (strstr_fun)(const char* s, size_t size, const char* neddle);
 
 #include "strstr-libc.cpp"
 #include "strstr-stdstring.cpp"
-#include "strstr32.cpp"
+
+#ifdef TEST64
+#	include "strstr64.cpp"
+#else
+#	include "strstr32.cpp"
+#endif
 
 struct environment_t {
 	std::string data;
@@ -64,11 +69,11 @@ struct measure_result_t {
 		const auto s = speedup(other);
 
 		if (s > 0.0)
-			printf("faster %0.3f than %s", s, other.name.c_str());
+			printf("faster %0.3f", s);
 		else if (s < 0.0)
-			printf("slower %0.3f than %s", s, other.name.c_str());
+			printf("slower %0.3f", s);
 		else
-			printf("as fast as %s", other.name.c_str());
+			printf("same speed");
 	}
 };
 
@@ -79,11 +84,19 @@ uint32_t get_time(void) {
 }
 
 
+const int iterations = 10;
+
+
 measure_result_t measure(const std::string& name, strstr_fun fun, environment_t& env) {
 	measure_result_t res;
 
 	auto t1  = get_time();
-	res.result = fun(env.data.c_str(), env.data.size(), env.neddle.c_str());
+
+	int i = iterations;
+	while (i--) {
+		res.result = fun(env.data.c_str(), env.data.size(), env.neddle.c_str());
+	}
+
 	auto t2  = get_time();
 
 	res.name = name;
@@ -97,7 +110,11 @@ measure_result_t measure(const std::string& name, environment_t& env) {
 	measure_result_t res;
 
 	auto t1  = get_time();
-	res.result = strstr_stdstring(env.data, env.neddle);
+
+	int i = iterations;
+	while (i--) {
+		res.result = strstr_stdstring(env.data, env.neddle);
+	}
 	auto t2  = get_time();
 
 	res.name = name;
@@ -109,6 +126,14 @@ measure_result_t measure(const std::string& name, environment_t& env) {
 void usage(const char* progname) {
 	printf("%s filename pattern1 [patterns...]\n", progname);
 }
+
+
+void print_comparision(const measure_result_t& m1, const measure_result_t& m2) {
+	printf("%s/%s: ", m1.name.c_str(), m2.name.c_str());
+	m1.print_speedup(m2);
+	putchar('\n');
+}
+
 
 int main(int argc, char* argv[]) {
 	if (argc == 1) {
@@ -126,21 +151,22 @@ int main(int argc, char* argv[]) {
 
 	for (auto i = 2; i < argc; i++) {
 		env.set_neddle(argv[i]);
-		printf("searching for '%s' in %d bytes...\n", env.neddle.c_str(), env.data.size());
+		printf("searching for '%s' in %lu bytes...\n", env.neddle.c_str(), env.data.size());
 
-		auto m1 = measure("libc",   strstr_libc, env);
-		auto m2 = measure("c++",    env);
-		auto m3 = measure("custom", strstr32, env);
+		auto libc   = measure("libc",   strstr_libc, env);
+		auto cpp    = measure("c++",    env);
+#ifdef TEST64
+		auto custom = measure("custom (64-bit)", strstr64, env);
+#else
+		auto custom = measure("custom (32-bit)", strstr32, env);
+#endif
 
-		m1.println();
-		m2.println();
-		m3.print();
-		putchar(' ');
-		m3.print_speedup(m2);
-		putchar(' ');
-		m3.print_speedup(m1);
-		
-		putchar('\n');
+		libc.println();
+		cpp.println();
+		custom.println();
+
+		print_comparision(custom, libc);
+		print_comparision(custom, cpp);
 	}
 
 	return EXIT_SUCCESS;

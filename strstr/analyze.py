@@ -6,7 +6,7 @@ classes = [
 	'3.00 - 3.99 faster',
 	'4.00 - 4.99 faster',
 	'5.00 - 5.99 faster',
-	'6.00 - ...  faster',
+	'6.00 - 6.99 faster',
 ]
 
 def update(dict, field):
@@ -26,23 +26,30 @@ def update(dict, field):
 		if 6.0 <= value:
 			return classes[6]
 
-	value = float(field)
+	if field == 'speed':
+		value = 1.0
+	elif field == 'inf':
+		value = 1e6; # close enough :)
+	else:
+		value = float(field)
 
 	name = classify(value)
 	dict[name] = dict.get(name, 0) + 1;
 
 
-def load(filename):
+def load(file):
 	cpp = {}
 	c   = {}
 
-	for lines in open(filename):
+	for lines in file:
 		fields = lines.split()
-		if fields[0] != 'custom:':
-			continue
 
-		update(cpp, fields[5])
-		update(c,   fields[9])
+		if fields[1].endswith('libc:'):
+			update(c,   fields[-1])
+
+		if fields[1].endswith('c++:'):
+			update(cpp, fields[-1])
+
 
 
 	return cpp, c
@@ -57,7 +64,7 @@ def print_summary(dict, width = 50):
 			count = dict[cls]
 			perc  = count/float(total)
 			bar  = '=' * max(1, int(perc * width))
-			print '%*s: %5d  (%5.2f%%) %s' % (n, cls, total, 100.0 * perc, bar)
+			print '%*s: %5d  (%5.2f%%) %s' % (n, cls, count, 100.0 * perc, bar)
 		else:
 			print '%*s: N/A' % (n, cls)
 
@@ -66,7 +73,8 @@ def print_summary(dict, width = 50):
 
 
 if __name__ == '__main__':
-	cpp, c = load('demo');
+	import sys
+	cpp, c = load(sys.stdin);
 
 	print
 
