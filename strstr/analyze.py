@@ -6,7 +6,7 @@ classes = [
 	'3.00 - 3.99 faster',
 	'4.00 - 4.99 faster',
 	'5.00 - 5.99 faster',
-	'6.00 - 6.99 faster',
+	'6.00 - ...  faster',
 ]
 
 def update(dict, field):
