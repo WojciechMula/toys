@@ -62,12 +62,13 @@ void mulps_in_loop() {
 	uint32_t dummy;
 
 	__asm__ __volatile__(
-		"movups 	min_floats, %%xmm0\n"
+		"movups 	%2, %%xmm0\n" // min_floats
 		"1:\n"
 		"movaps 	%%xmm0, %%xmm1\n"
 		"mulps 		%%xmm1, %%xmm1\n"
 		"loop 		1b\n"
 		: "=c" (dummy)
 		: "c"  (iterations)
+		, "m"  (min_floats)
 	);
 }

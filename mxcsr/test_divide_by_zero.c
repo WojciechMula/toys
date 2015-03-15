@@ -20,11 +20,12 @@ float one[4]  = packed_float(1);
 void divps_by_zero() {
 
 	__asm__ __volatile__(
-		"movups zero,   %%xmm0\n"
-		"movups	one,    %%xmm1\n"
+		"movups %0,     %%xmm0\n" // zero
+		"movups	%1,     %%xmm1\n" // one
 		"divps  %%xmm0, %%xmm1\n"
 		:
-		:
+		: "m" (zero)
+		, "m" (one)
 		:
 	);
 }

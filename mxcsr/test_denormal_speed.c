@@ -54,15 +54,18 @@ void test_loop() {
 	uint32_t dummy;
 	__asm__ __volatile__(
 		"1:\n"
-		"movups tiny_value,    %%xmm0\n"
-		"movups	large_divisor, %%xmm1\n"
+		"movups %2, %%xmm0\n" // tiny_value
+		"movups	%3, %%xmm1\n" // large_divisor
 		"pxor   %%xmm2, %%xmm2\n"
 		"mulps  %%xmm1, %%xmm0\n" // FLT_MIN * 0.5 => denormalized number
 		"addps	%%xmm2, %%xmm0\n" // denormalized + 0.0 => denormal exception
 		"loop 1b\n"
-		"movups %%xmm0, final_value\n"
+		"movups %%xmm0, %4\n" // final_value
 		: "=c" (dummy)
 		: "c" (iterations)
-		:
+		, "m" (tiny_value)
+		, "m" (large_divisor)
+		, "m" (final_value)
+		
 	);
 }
