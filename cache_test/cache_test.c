@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
 	printf("took %0.2fs\n", (double)(tb2 - tb1)/CLOCKS_PER_SEC);
 
 	if (tb2 - tb1 != 0) {
-		printf("slower %0.3f timems\n", (double)(tb2 - tb1)/(ta2 - ta1));
+		printf("slower %0.3f times\n", (double)(tb2 - tb1)/(ta2 - ta1));
 	}
 
 

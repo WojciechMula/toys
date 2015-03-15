@@ -1,0 +1,23 @@
+Program shows how cache affects on speed.
+Simply type make to build.
+
+
+First program allocates memory and read all
+values table sequentially.  Then indices to
+the table are shuffled and again all values
+are read, but in random order.
+
+
+Below is a sample session from my computer:
+
+$ ./test 10000000
+sequential scan... took 0.05s
+shuffling indexes...
+random scan... took 0.27s
+slower 5.660 times
+
+$ ./test 100000000
+sequential scan... took 0.44s
+shuffling indexes...
+random scan... took 3.57s
+slower 8.193 times
