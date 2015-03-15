@@ -70,6 +70,20 @@ int run(Object& m, const std::size_t count, const std::size_t tries) {
 }
 
 
+void usage() {
+    std::puts("usage: program [options]");
+    std::puts("");
+    std::puts("Options");
+    std::puts("    --simple   measure time of simple linked list");
+    std::puts("    --array4   measure time of linked arrays of size 4");
+    std::puts("    --array8   measure time of linked arrays of size 8");
+    std::puts("    --simd4    like --array4 but searched by SIMD code");
+    std::puts("    --simd8    like --array8 but searched by SIMD code");
+    std::puts("    --all      measure time of all structures");
+    std::puts("    --help/-h  show this help");
+}
+
+
 int main(int argc, char* argv[]) {
 
     arglist args(argc, argv);
@@ -79,6 +93,11 @@ int main(int argc, char* argv[]) {
     const auto tries = 5;
 
     volatile int total = 0;
+
+    if ((args.size() < 1) || args("--help") || args("-h")) {
+        usage();
+        return 0;
+    }
 
     if (args("--all") || args("--simple")) {
         typedef simple_list<int> list_type;

@@ -3,7 +3,7 @@
 ========================================================================
 
 This program compares searching time in linked lists, to build the
-program simply type ``make``, then ``./demo``.
+program simply type ``make``, then ``./demo --all``.
 
 A list stores key (``uint32_t``) and associated value (``int`` in
 the tests).  Basically two data structures are examined:
@@ -22,7 +22,14 @@ Linked arrays seems to be better, because (1) requires less dereferences,
 Results
 ------------------------------------------------------------------------
 
-Following numbers were printed on my old Pentium M @ 1.5GHz::
+Changing a data structure gives some speedup, but using SSE instructions
+makes searching really fast.
+
+
+Pentium M @ 1.5GHz
+~~~~~~~~~~~~~~~~~~
+
+::
 
     list                          :      0.780s, speedup  1.00
     array list (4)                :      0.703s, speedup  1.11
@@ -30,6 +37,15 @@ Following numbers were printed on my old Pentium M @ 1.5GHz::
     SIMD array list (4)           :      0.365s, speedup  2.14
     SIMD array list (8)           :      0.258s, speedup  3.03
 
-Changing a data structure gives some speedup, but using SSE instructions
-makes searching really fast.
+
+Core i5 @ 2.5GHz
+~~~~~~~~~~~~~~~~
+
+::
+
+    list                          :      0.504s, speedup  1.00
+    array list (4)                :      0.197s, speedup  2.56
+    array list (8)                :      0.231s, speedup  2.18
+    SIMD array list (4)           :      0.198s, speedup  2.55
+    SIMD array list (8)           :      0.105s, speedup  4.80
 

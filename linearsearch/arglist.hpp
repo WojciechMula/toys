@@ -21,6 +21,10 @@ public:
 
         return false;
     }
+
+    int size() const {
+        return argc - 1;
+    }
 };
 
 #endif
