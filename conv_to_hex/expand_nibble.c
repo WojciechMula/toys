@@ -99,7 +99,7 @@ uint32_t nibble_expand_simd(uint32_t x) {
         "movdqa  %%xmm0,    %%xmm1    \n"
 
         // 1. isolate even nibbles
-        "movdqa  LSB_mask,  %%xmm2    \n"
+        "movdqa  %2,  %%xmm2          \n"
         "pand    %%xmm2,    %%xmm0    \n"
 
         // 2. isolate odd nibbles
@@ -113,7 +113,8 @@ uint32_t nibble_expand_simd(uint32_t x) {
         "movd    %%xmm0, %0           \n"
         "bswap   %0                   \n"
         : "=r" (result)
-        :  "0" (x)
+        :  "0" (x),
+           "m" (LSB_mask) // 2
     );
 
     return result;

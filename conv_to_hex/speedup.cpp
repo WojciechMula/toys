@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <cstdio>
 #include <vector>
 #include <sys/time.h>
 

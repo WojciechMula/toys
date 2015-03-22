@@ -47,21 +47,24 @@ uint32_t nibbles_to_hex_simd(uint32_t nibbles) {
 		"movdqa     %%xmm0, %%xmm1    	\n"
 
 		// 2. convert to ASCII values 0..9
-		"paddb      ascii0, %%xmm1  	\n"
+		"paddb      %2, %%xmm1  	    \n"
 
 		// 3. make mask
-		"pcmpgtb    nine, %%xmm0  		\n"
+		"pcmpgtb    %3, %%xmm0  		\n"
 
 		// 3. produce result
-		"pand       correction, %%xmm0 	\n"
+		"pand       %4, %%xmm0 	        \n"
 		"paddb      %%xmm0, %%xmm1		\n"
 
 		// store
-		"movd       %%xmm1, (%%ebx)     \n"
+		"movd       %%xmm1, %1          \n"
 
 		: /* no output */
 		: "a" (nibbles),
-		  "b" (&result)
+		  "m" (result),
+          "m" (ascii0),     // 2
+          "m" (nine),       // 3
+          "m" (correction)  // 4
         : "memory"
 	);
 
