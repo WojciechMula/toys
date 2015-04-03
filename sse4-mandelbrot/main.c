@@ -13,7 +13,7 @@
 
 	SSE procedure calculates 4 pixels in parallel. SSE4.1 procedure uses
 	PTEST instruction to break loop when lengths of all 4 complex numbers
-	are greater then some threshold.  SSE2 version uses PMOVMSKB and x86
+	are greater than some threshold.  SSE2 version uses PMOVMSKB and x86
 	TEST.
 
 	Average speedup over FPU procedure is around 4.5 times.
@@ -36,10 +36,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <strings.h>
 #include <sys/time.h>
-#include <time.h>
 #include <stdarg.h>
+
+#if !defined(VERSION32BIT) && !defined(VERSION64BIT)
+#   error "Define either VERSION32BIT or VERSION64BIT"
+#endif
+
+#if defined(VERSION32BIT) && defined(VERSION64BIT)
+#   error "Define either VERSION32BIT or VERSION64BIT"
+#endif
 
 //=== helper functions ===================================================
 uint32_t get_time(void) {
@@ -62,7 +70,11 @@ void die(const char* fmt, ...) {
 
 
 #include "fpu-proc.c"
-#include "sse4-proc-32-bit.c"
+#if defined(VERSION32BIT)
+#   include "sse4-proc-32-bit.c"
+#elif defined(VERSION64BIT)
+#   include "sse4-proc-64-bit.c"
+#endif
 
 
 //=== main program =======================================================
@@ -73,16 +85,35 @@ uint8_t image[WIDTH][HEIGHT];
 
 
 void help(char* progname) {
-	printf("%s FPU|SSE [Remin Immin Remax Immax [threshold] [maxiters]]", progname);
-	puts("FPU - select FPU procedure");
-#ifdef SSE2
-	puts("SSE - select SSE2 procedure");
+
+#if defined(VERSION32BIT)
+    puts("SSE fractal generator (handcrafted 32-bit version)");
 #else
-	puts("SSE - select SSE4.1 procedure");
+    puts("SSE fractal generator (compiled 64-bit version)");
 #endif
+    puts("");
+
+	printf("%s FPU|SSE [Remin Immin Remax Immax [threshold] [maxiters]] [--dry-run]\n", progname);
+    puts("");
+	puts("FPU - select FPU procedure");
+#if defined(VERSION32BIT)
+    #ifdef SSE2
+        puts("SSE - select SSE2 procedure");
+    #else
+        puts("SSE - select SSE4.1 procedure");
+    #endif
+#else
+    puts("SSE - select SSE procedure");
+#endif
+    puts("Parameters:");
+    puts("");
 	puts("Remin Immin Remax Immax - define area of calculations; default -2.0 -2.0 +2.0 +2.0");
-	puts("threshold - define max radius, greater then 0; default 20.0");
+	puts("threshold - define max radius, greater than 0; default 20.0");
 	puts("maxiters  - define max number of iterations; default 255");
+    puts("");
+    puts("Options:");
+    puts("");
+    puts("--dry-run - do not save any file");
 	exit(EXIT_FAILURE);
 }
 
@@ -104,8 +135,9 @@ int main(int argc, char* argv[]) {
 
 	// parse command line
 	char *err;
-	if (argc == 1)
+	if (argc == 1) {
 		help(argv[0]);
+    }
 	
 
 	// 1. function name
@@ -138,7 +170,7 @@ int main(int argc, char* argv[]) {
 		threshold = strtod(argv[6], &err);
 		if (*err != '\0') die("Invalid threshold value");
 		if (threshold <= 0)
-			die("threshold must be greater then 0");
+			die("threshold must be greater than 0");
 	}
 
 	// 4. optional maxiters values
@@ -146,8 +178,18 @@ int main(int argc, char* argv[]) {
 		maxiters = strtol(argv[7], &err, 10);
 		if (*err != '\0') die("Invalid maxiters value");
 		if (maxiters <= 0)
-			die("maxiters must be greater then 0");
+			die("maxiters must be greater than 0");
 	}
+
+
+    // check for options
+    char dry_run = 0;
+    for (int i=1; i < argc; i++) {
+        if (strcmp(argv[i], "--dry-run") == 0) {
+            dry_run = 1;
+            break;
+        }
+    }
 
 
 	// print summary
@@ -178,14 +220,21 @@ int main(int argc, char* argv[]) {
 			t2 = get_time();
 			printf("%d us\n", t2-t1);
 		
-			f = fopen("fpu.pgm", "wb");
+            if (!dry_run) {
+			    f = fopen("fpu.pgm", "wb");
+            }
 			break;
 
 		case SSEprocedure:
-#ifdef SSE2
-			printf("SSE2 ");
-#else //SSE4.1
-			printf("SSE4.1 ");
+
+#if defined(VERSION32BIT)
+    #ifdef SSE2
+                printf("SSE2 ");
+    #else //SSE4.1
+                printf("SSE4.1 ");
+    #endif
+#else
+            printf("SSE ");
 #endif
 			fflush(stdout);
 			t1 = get_time();
@@ -199,7 +248,9 @@ int main(int argc, char* argv[]) {
 			t2 = get_time();
 			printf("%d us\n", t2-t1);
 		
-			f = fopen("sse.pgm", "wb");
+            if (!dry_run) {
+			    f = fopen("sse.pgm", "wb");
+            }
 			break;
 	}
 
