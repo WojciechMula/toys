@@ -9,29 +9,25 @@ are greater then some threshold.  SSE2 version uses ``PMOVMSKB`` and x86
 
 Average speedup over FPU procedure is around 4.5 times --- see below
 
-
-Compilation SSE4.1 version::
-
-	gcc -O3 -Wall -pedantic -mfpmath=387 -std=c99 sse4-mandelbrot.c -o your_favorite_name
-
-Compilation SSE2 version::
-
-	gcc -O3 -Wall -pedantic -mfpmath=387 -std=c99 -DSSE2 sse-mandelbrot.c -o your_favorite_name
-
-Flag ``mfpmath=387`` is very important, because I mixed floating points
-calculations with asm statements.
-
-
-Results
+Compilation
 ------------------------------------------------------------------------
 
+Simply type ``make``. Following programs will be compiled:
+
+* ``fractal32sse2``    --- 32-bit SSE2 procedure + scalar version using default GCC
+  settings (probably scalar SSE instructions)
+* ``fractal32sse4``    --- 32-bit SSE4.1 procedure + scalar version as above
+* ``fractal64sse4``    --- 64-bit SSE4.1 procedure + scalar version as above
+* ``fractal32sse2fpu`` --- 32-bit SSE2 procedure + scalar version using FPU
+* ``fractal32sse4fpu`` --- 32-bit SSE2 procedure + scalar version using FPU
+* ``fractal64sse4fpu`` --- 64-bit SSE4.1 procedure + scalar version using FPU
+
+
+Results for 32-bit versions
+------------------------------------------------------------------------
 
 "FPU" procedure uses FPU instructions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Compilation::
-
-	gcc -O3 -mfpmath=387 -std=c99 sse4-mandelbrot.c
 
 +----------------------------------+----------------+-------------+-------------+
 | CPU                              | FPU [us]       | SSE4.1 [us] | speedup [%] |
@@ -47,13 +43,32 @@ Compilation::
 "FPU" procedure uses scalar SSE instructions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Compilation::
-
-	gcc -O3 -mfpmath=sse2 -std=c99 sse4-mandelbrot.c
-
-
 +----------------------------------+----------------+-------------+-------------+
 | CPU                              | FPU [us]       | SSE4.1 [us] | speedup [%] |
 +==================================+================+=============+=============+
 | Core i7-3612QM CPU @ 2.10GHz     | 488984         | 152459      | 320         |
++----------------------------------+----------------+-------------+-------------+
+
+
+Results for 64-bit versions
+------------------------------------------------------------------------
+
+
+"FPU" procedure uses FPU instructions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
++----------------------------------+----------------+-------------+-------------+
+| CPU                              | FPU [us]       | SSE4.1 [us] | speedup [%] |
++==================================+================+=============+=============+
+| Core i5 M540 CPU @ 2.35GHz       | 904228         | 143635      | 630         |
++----------------------------------+----------------+-------------+-------------+
+
+
+"FPU" procedure uses scalar SSE instructions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
++----------------------------------+----------------+-------------+-------------+
+| CPU                              | FPU [us]       | SSE4.1 [us] | speedup [%] |
++==================================+================+=============+=============+
+| Core i5 M540 CPU @ 2.35GHz       | 542305         | 142498      | 380         |
 +----------------------------------+----------------+-------------+-------------+
