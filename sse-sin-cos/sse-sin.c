@@ -11,8 +11,8 @@ double coef9[2] ALIGNED = packed_double(1.0/362880);
 void sin_sse(const double arg1, const double arg2, double* sin_x1, double* sin_x2) {
 
 	__asm__ volatile (
-		"movlpd %0, %%xmm7			\n"
-		"movhpd %1, %%xmm7			\n" // xmm7 = [arg2, arg1]
+		"movlpd %0, %%xmm7			    \n"
+		"movhpd %1, %%xmm7			    \n" // xmm7 = [arg2, arg1]
 		"movapd %%xmm7, %%xmm6			\n" 
 
 		"movapd %%xmm7, %%xmm0			\n"
@@ -40,8 +40,8 @@ void sin_sse(const double arg1, const double arg2, double* sin_x1, double* sin_x
 		"movhpd %%xmm7, %2				\n"
 		"movlpd %%xmm7, %3				\n"
 		: /* no output */
-		: "g" (arg1),
-		  "g" (arg2),
+		: "m" (arg1),
+		  "m" (arg2),
 		  "m" (*sin_x1),
 		  "m" (*sin_x2)
 		: /* nothing is modified */

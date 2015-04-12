@@ -3,15 +3,15 @@
 
 CC=gcc
 CCFLAGS=-std=c99 -O2 -lm -Wall
+ALL=test_speed test_accuracy
 
-all: test_speed test_accuracy
+all: $(ALL)
 
 test_speed: test_speed.c taylor.c sse-sin.c
-	$(CC) $(CCFLAGS) test_speed.c -o test_speed
+	$(CC) $(CCFLAGS) $< -o $@
 
 test_accuracy: test_accuracy.c sse-sin.c
-	$(CC) $(CCFLAGS) test_accuracy.c -o test_accuracy
+	$(CC) $(CCFLAGS) $< -o $@
 
 clean:
-	rm -rf test_speed
-	rm -rf test_accuracy
+	rm -f $(ALL)
