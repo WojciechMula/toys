@@ -7,7 +7,7 @@ DEPS=common.c pext.c parse.*.c
 all: verify
 
 verify: verify.cpp $(DEPS)
-	$(CC) $(FLAGS) -O2 verify.cpp -o $@
+	$(CC) $(FLAGS) -O2 $< -o $@
 
 clean:
 	rm -f verify

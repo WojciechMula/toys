@@ -6,7 +6,7 @@ FLAGS=-std=c99
 all: demo show
 
 demo: kill-strstr.c
-	$(CC) $(FLAGS) $^ -o $@
+	$(CC) $(FLAGS) $< -o $@
 
 show: demo
 	sh demo.sh

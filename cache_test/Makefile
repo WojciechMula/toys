@@ -2,7 +2,7 @@
 .PHONY: clean
 
 test: cache_test.c
-	gcc -Wall cache_test.c -o $@
+	gcc -Wall $< -o $@
 
 clean:
-	rm -rf test
+	rm -f test

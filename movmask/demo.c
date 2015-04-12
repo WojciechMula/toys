@@ -19,7 +19,8 @@ uint32_t generate(int x) {
 }
 
 int main() {
-	for (int mask=0; mask < 16; mask++) {
+	for (unsigned mask=0; mask < 16; mask++) {
+
 		const uint32_t input  = generate(mask);
 		assert((input & 0x7f7f7f7f) == 0);
 

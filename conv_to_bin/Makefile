@@ -6,13 +6,16 @@ DEFINES=
 DEFINES=-DARCH_64BIT -DHAVE_PDEP_INSTRUCTION
 FLAGS=-std=c++11 -Wall -Wextra $(DEFINES)
 
-all: verify speedup
+ALL: verify speedup
+
+
+all: $(ALL)
 
 verify: verify.cpp conv_to_bin.cpp
-	$(CC) $(FLAGS) $@.cpp -o $@
+	$(CC) $(FLAGS) $< -o $@
 
 speedup: speedup.cpp conv_to_bin.cpp
-	$(CC) $(FLAGS) -O2 -DNDEBUG $@.cpp -o $@
+	$(CC) $(FLAGS) -O2 -DNDEBUG $< -o $@
 
 clean:
-	rm -rf verify speedup
+	rm -f $(ALL)

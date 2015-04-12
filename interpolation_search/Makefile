@@ -3,17 +3,18 @@
 CC=g++
 FLAGS=-std=c++11 -Wall -Wextra -pedantic
 DEPS=search.cpp common.cpp
+ALL=demo speed speed-sse speed.png avgcmp.png betteravg.png
 
-all: demo speed speed-sse speed.png avgcmp.png betteravg.png
+all: $(ALL)
 
 demo: demo.cpp $(DEPS)
-	$(CC) $(FLAGS) demo.cpp -o $@
+	$(CC) $(FLAGS) $< -o $@
 
 speed: speed.cpp $(DEPS)
-	$(CC) $(FLAGS) -O2 -DNDEBUG speed.cpp -o $@
+	$(CC) $(FLAGS) -O2 -DNDEBUG $< -o $@
 
 speed-sse: speed.cpp $(DEPS)
-	$(CC) $(FLAGS) -O2 -msse -mfpmath=sse -ffast-math -DNDEBUG speed.cpp -o $@
+	$(CC) $(FLAGS) -O2 -msse -mfpmath=sse -ffast-math -DNDEBUG $< -o $@
 
 avgcmp.results: demo graphs/demoresults2text.py
 	./demo 10000 | python graphs/demoresults2text.py > avgcmp.results
@@ -32,4 +33,4 @@ betteravg.png: avgcmp.results graphs/betteravg.gnuplot.pattern graphs/betteravg.
 	gnuplot betteravg.gnuplot
 
 clean:
-	rm -f demo speed speed-sse *.results *.png betteravg.gnuplot
+	rm -f $(ALL) *.results *.png betteravg.gnuplot

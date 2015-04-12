@@ -1,0 +1,4 @@
+test_denormal_speed
+test_divide_by_zero
+test_flush_to_zero
+test_invalid_operation

@@ -3,14 +3,15 @@
 
 CC=gcc
 CCFLAGS=-std=c99 -O2
+ALL=demo print_double
 
-all: demo print_double
+all: $(ALL)
 
 demo: demo.c floor.c ieee_double.h
-	$(CC) $(CCFLAGS) demo.c -o demo
+	$(CC) $(CCFLAGS) $< -o $@
 
 print_double: print_double.c ieee_double.h
-	$(CC) $(CCFLAGS) -lm print_double.c -o print_double
+	$(CC) $(CCFLAGS) -lm $< -o $@
 
 clean:
-	rm -rf demo print_double
+	rm -f $(ALL)

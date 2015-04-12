@@ -1,15 +1,17 @@
 .SUFFIXES:
 .PHONY: clean
 
-CC=gcc -std=c99 -Wall -Wextra -pedantic -O2
+CC=gcc
+FLAGS=-std=c99 -Wall -Wextra -pedantic -O2
+ALL=test speed
 
-all: test speed
+all: $(ALL)
 
 test: fbstp_test.c
-	$(CC) fbstp_test.c -o $@
+	$(CC) $(FLAGS) $< -o $@
 
 speed: fbstp_speed.c
-	$(CC) fbstp_speed.c -o $@
+	$(CC) $(FLAGS) $< -o $@
 
 clean:
-	rm -rf test speed > /dev/null
+	rm -f $(ALL)

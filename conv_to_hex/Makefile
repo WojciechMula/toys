@@ -6,14 +6,15 @@ DEFINES=-DHAVE_BSWAP_INSTRUCTION
 FLAGS=-O2 -std=c++11 -Wall -Wextra $(DEFINES)
 
 DEPS=conv_to_hex.c expand_nibble.c common.c
+ALL=verify speedup
 
-all: verify speedup
+all: $(ALL)
 
 verify: verify.cpp $(DEPS)
-	$(CC) $(FLAGS) $@.cpp -o $@
+	$(CC) $(FLAGS) $< -o $@
 
 speedup: speedup.cpp $(DEPS)
-	$(CC) $(FLAGS) -DNDEBUG $@.cpp -o $@
+	$(CC) $(FLAGS) -DNDEBUG $< -o $@
 
 clean:
-	rm -rf verify speedup
+	rm -f $(ALL)

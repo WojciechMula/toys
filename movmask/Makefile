@@ -1,8 +1,8 @@
 CC=gcc
-FLAGS=-std=c99
+FLAGS=-Wall -Wextra -pedantic -std=c99
 
 demo: demo.c movmask.c
-	$(CC) $(FLAGS) demo.c -o demo
+	$(CC) $(FLAGS) $< -o $@
 
 clean:
 	rm -f demo
