@@ -2,19 +2,19 @@
 .PHONY: clean all
 
 CC=g++
-DEFINES=
-DEFINES=-DARCH_64BIT -DHAVE_PDEP_INSTRUCTION
+DEFINES=-DARCH_64BIT
 FLAGS=-std=c++11 -Wall -Wextra $(DEFINES)
+DEPS=conv_to_bin.cpp config.h
 
 ALL: verify speedup
 
 
 all: $(ALL)
 
-verify: verify.cpp conv_to_bin.cpp
+verify: verify.cpp $(DEPS)
 	$(CC) $(FLAGS) $< -o $@
 
-speedup: speedup.cpp conv_to_bin.cpp
+speedup: speedup.cpp $(DEPS)
 	$(CC) $(FLAGS) -O2 -DNDEBUG $< -o $@
 
 clean:

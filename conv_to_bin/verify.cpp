@@ -13,6 +13,7 @@
 #include <assert.h>
 
 
+#include "config.h"
 #include "conv_to_bin.cpp"
 
 
