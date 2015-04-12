@@ -14,25 +14,35 @@ uint32_t get_time(void);
 int main() {
 	int i;
 	uint32_t t1, t2;
+    double fbstp_time, naive_time;
 
 	const int max = 10000000;
 
-	puts("FBSTP...");
+	printf("FBSTP [");
+    fflush(stdout);
 	t1 = get_time();
 	for (i=1; i < max; i++) {
 		invoke_fbstp(i);
 	}
 	t2 = get_time();
-	printf("... %0.3f s\n", (t2 - t1)/1000000.0);
+    fbstp_time = (t2 - t1)/1000000.0;
+	printf("%0.3f]", fbstp_time);
+    fflush(stdout);
 
-	puts("simple itoa...");
+	printf(" simple itoa [");
+    fflush(stdout);
 	t1 = get_time();
 	for (i=1; i < max; i++) {
 		simple_itoa(i);
 	}
 	t2 = get_time();
-	printf("... %0.3f s\n", (t2 - t1)/1000000.0);
+    naive_time = (t2 - t1)/1000000.0;
+	printf("%0.3f]\n", naive_time);
+    fflush(stdout);
 
+    puts("");
+
+    printf("FBST is %.2f slower than simple itoa\n", fbstp_time / naive_time);
 
 	return 0;
 }
