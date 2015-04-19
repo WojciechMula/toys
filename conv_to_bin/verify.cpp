@@ -21,11 +21,17 @@ void verify() {
 	for (int i=0; i < 256; i++) {
         const uint64_t naive = convert_to_bin::naive(i);
         const uint64_t swar  = convert_to_bin::swar(i);
+        const uint64_t swar2 = convert_to_bin::swar2(i);
         const uint64_t simd  = convert_to_bin::simd(i);
         const uint64_t pdep  = convert_to_bin::pdep(i);
 
         if (naive != swar) {
             std::printf("failed SWAR for %d: %016llx != %016llx\n", i, naive, swar);
+            return;
+        }
+
+        if (naive != swar2) {
+            std::printf("failed SWAR2 for %d: %016llx != %016llx\n", i, naive, swar2);
             return;
         }
 

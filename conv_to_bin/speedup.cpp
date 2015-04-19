@@ -68,27 +68,29 @@ measure_item_t measure(F function, int iterations, const std::string& name) {
 	m.start();
 
     uint8_t byte = 0;
+    uint64_t value = 0;
     while (iterations-- > 0) {
-        function(byte);
+        value ^= function(byte);
 		byte += 33;
     }
 
     m.stop();
 
-    std::printf("ok\n");
+    std::printf("ok\n", value);
 
     return m;
 }
 
 
 void measure() {
-    const int  n  = 10000000;
+    const int  n  = 200000000;
 
     std::vector<measure_item_t> results;
 
     results.push_back(measure(convert_to_bin::naive,  n, "naive"));
     results.push_back(measure(convert_to_bin::lookup, n, "lookup"));
     results.push_back(measure(convert_to_bin::swar,   n, "SWAR"));
+    results.push_back(measure(convert_to_bin::swar2,  n, "SWAR2"));
     results.push_back(measure(convert_to_bin::simd,   n, "SIMD"));
 #if defined(HAVE_PDEP_INSTRUCTION)
     results.push_back(measure(convert_to_bin::pdep,   n, "PDEP"));

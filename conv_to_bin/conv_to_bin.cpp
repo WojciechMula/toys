@@ -2,7 +2,7 @@
 	Convert to binary representation - conversion procedures
 
 	Author  : Wojciech Muła
-	Date    : 2014-09-11
+	Date    : 2014-09-11, 2015-04-18
 	License : BSD
 */
 
@@ -70,6 +70,22 @@ uint64_t swar(uint8_t v) {
 	const uint64_t r4 = (r3 >> 7) & 0x0101010101010101;
 
 	return 0x3030303030303030 + r4;  // ord('0') == 0x30
+}
+
+
+// --- SWAR version 2 -----------------------------------------------------
+
+
+uint64_t swar2(uint8_t v) {
+
+    const uint32_t mul = 1 + (1 << (8 - 1)) + (1 << (16 - 2)) + (1 << (24 - 3));
+    const uint32_t r1 = (v & 0xf) * mul;
+    const uint32_t r2 = (v >> 4) * mul;
+
+    const uint64_t r3 = r1 | (uint64_t(r2) << 32); 
+    const uint64_t r4 = r3 & 0x0101010101010101;
+
+    return 0x3030303030303030 + r4;
 }
 
 
