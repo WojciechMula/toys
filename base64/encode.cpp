@@ -27,10 +27,10 @@
     r += 4;
 
 #define CONSTRUCT_DWORD_FROM_1_LOOKUP \
-    const uint32_t w =  uint32_t(lookup32[a]) \
-                     | (uint32_t(lookup32[b]) << 8) \
-                     | (uint32_t(lookup32[c]) << 16) \
-                     | (uint32_t(lookup32[d]) << 24);
+    const uint32_t w =  uint32_t(lookup8[a]) \
+                     | (uint32_t(lookup8[b]) << 8) \
+                     | (uint32_t(lookup8[c]) << 16) \
+                     | (uint32_t(lookup8[d]) << 24);
 
 #define CONSTRUCT_DWORD_FROM_4_LOOKUPS \
     const uint32_t w = uint32_t(lookup32_0[a]) \
