@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "float2string.h"
+#include "cmdline.cpp"
 #include "gettime.cpp"
 
 
@@ -11,7 +12,7 @@ class Tester final {
     const uint32_t min_exponent = 1;
     const uint32_t max_exponent = 190;
 
-    const uint32_t mantissa_step = max_mantissa / 10000;
+    const uint32_t mantissa_step = max_mantissa / 100000;
 
     char buffer[fp::tostring<float>::min_buffer_size + 10];
 
@@ -49,34 +50,45 @@ public:
 };
 
 
-int main() {
+int main(int argc, char* argv[]) {
 
-    bool t = 1;
-    bool c = 1;
+    CommandLine cmd(argc, argv);
+    Tester test;
+
+    const bool test_stdlib = cmd.empty() || cmd.has("stdlib");
+    const bool test_custom = cmd.empty() || cmd.has("custom");
 
     double sprintf_time;
     double custom_time;
 
-    Tester test;
+    if (test_stdlib) {
 
-    if (t) {
+        printf("sprintf... ");
+        fflush(stdout);
+
         const auto t1 = get_time();
         test.stdlib();
         const auto t2 = get_time();
 
         sprintf_time = (t2 - t1)/1000000.0;
-        printf("sprintf time = %0.3fs\n", sprintf_time);
+        printf("%0.3fs\n", sprintf_time);
     }
 
-    if (c) {
+    if (test_custom) {
+
+        printf("custom... ");
+        fflush(stdout);
+
         const auto t1 = get_time();
         test.converter();
         const auto t2 = get_time();
 
         custom_time = (t2 - t1)/1000000.0;
-        printf("custom time = %0.3fs\n", custom_time);
-        if (t) {
-            printf("speedup = %0.1f\n", sprintf_time/custom_time);
+        printf("%0.3fs", custom_time);
+        if (test_stdlib) {
+            printf(" speedup: %0.1f", sprintf_time/custom_time);
         }
+
+        putchar('\n');
     }
 }

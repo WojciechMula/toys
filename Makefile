@@ -12,11 +12,11 @@ run: demo
 speedup: speed
 	./speed
 
-demo: demo.cpp float2string.h
-	$(CC) $(FLAGS) $^ -o $@
+demo: demo.cpp float2string.h cmdline.cpp
+	$(CC) $(FLAGS) demo.cpp -o $@
 
-speed: speed.cpp float2string.h gettime.cpp
-	$(CC) $(FLAGS) speed.cpp -o $@
+speed: speed.cpp float2string.h gettime.cpp cmdline.cpp
+	$(CC) $(FLAGS) -O3 speed.cpp -o $@
 
 clean:
 	rm -f $(ALL)

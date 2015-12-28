@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <vector>
 #include "float2string.h"
+#include "cmdline.cpp"
 
 
 void test_wide_range() {
@@ -58,46 +59,22 @@ void test_predefined() {
 }
 
 
-class CommandLine final {
-
-    int argc;
-    char** argv;
-public:
-    CommandLine(int argc, char* argv[])
-        : argc(argc)
-        , argv(argv) {}
-
-public:
-    bool has(const char* opt) const {
-        for (int i=1; i < argc; i++) {
-            if (strcmp(opt, argv[i]) == 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-};
-
 int main(int argc, char* argv[]) {
 
     CommandLine cmd(argc, argv);
-    bool printed = false;
+
+    if (cmd.empty()) {
+        puts("usage: program all|selected");
+        return 1;
+    }
 
     if (cmd.has("all")) {
         test_wide_range();
-        printed = true;
     }
     
     if (cmd.has("selected")) {
         test_predefined();
-        printed = true;
     }
 
-    if (!printed) {
-        puts("usage: program all|selected");
-        return 1;
-    } else {
-        return 0;
-    }
+    return 0;
 }
