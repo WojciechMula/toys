@@ -163,6 +163,12 @@ public:
         }
     }
 
+    bool can_convert() const {
+        const auto cls = std::fpclassify(p.value);
+
+        return (cls == FP_NORMAL) && (can_convert_integer() && can_convert_fraction());
+    }
+
 private:
 
     bool can_convert_integer() const {
@@ -171,7 +177,7 @@ private:
 
         if (exp > 0) {
             // shift left, check if won't exceed 64 bits
-            return exp < 64;
+            return exp < 64-23;
         }
 
         return true;
@@ -196,6 +202,9 @@ private:
             }
 
             integer = mantissa >> (-exp);
+        } else {
+            // exp == 0
+            integer = mantissa;
         }
 
         // naive conversion
