@@ -1,4 +1,5 @@
 .SUFFIXES:
+.PHONY: default
 
 CC=g++
 FLAGS=-Wall -Wextra -std=c++11
@@ -6,11 +7,7 @@ FLAGS=-std=c++11
 
 ALL=demo speed
 
-run: demo
-	./demo selected
-
-speedup: speed
-	./speed
+all: demo speed
 
 demo: demo.cpp float2string.h cmdline.cpp
 	$(CC) $(FLAGS) demo.cpp -o $@
