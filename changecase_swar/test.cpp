@@ -8,45 +8,58 @@
 #include "tolower.cpp"
 #include "fnv32.cpp"
 
+class CommandLine;
+
 class Application final {
 
-    bool test_scalar;
-    bool test_swar;
+    const CommandLine& cmd;
 
 public:
-    Application(int argc, char** argv);
+    class Terminate {};
+
+public:
+    Application(const CommandLine& cmd);
 
     void run();
 
 private:
     char* load_file(const char* path, size_t size);
+    void usage();
+};
+
+
+class CommandLine final {
+
+    int argc;
+    char** argv;
+
+public:
+    CommandLine(int argc, char** argv);
+
+    unsigned count() const;
+
+    const char* get(int index) const;
+    bool has(const char* cmd) const;
 };
 
 
 int main(int argc, char* argv[]) {
- 
-    Application app(argc, argv);
-    app.run();
+
+    try {
+        CommandLine cmd(argc, argv);
+        Application app(cmd);
+        app.run();
+
+    } catch (Application::Terminate&) {
+        return 1;
+    }
 
     return 0;
 }
 
 
-Application::Application(int argc, char** argv)
-    : test_scalar(false)
-    , test_swar(false) {
-
-    for (int i=1; i < argc; i++) {
-        if (strcmp(argv[i], "scalar") == 0) {
-            test_scalar = true;
-        } else if (strcmp(argv[i], "swar") == 0) {
-            test_swar = true;
-        } else if (strcmp(argv[i], "all") == 0) {
-            test_scalar = true;
-            test_swar = true;
-        }
-    }
-}
+Application::Application(const CommandLine& cmd)
+    : cmd(cmd) {}
 
 
 char* Application::load_file(const char* path, size_t size) {
@@ -56,7 +69,10 @@ char* Application::load_file(const char* path, size_t size) {
     printf("loading file %s... ",  path); std::fflush(stdout);
 
     FILE* f = fopen(path, "rb");
-    assert(f != nullptr);
+    if (f == nullptr) {
+        printf("cannot load the file");
+        throw Terminate();
+    }
 
     const size_t readed = fread(buf, 1, size, f);
     fclose(f);
@@ -78,15 +94,20 @@ char* Application::load_file(const char* path, size_t size) {
 
 void Application::run() {
 
+    const bool test_scalar = cmd.has("scalar") || cmd.has("both");
+    const bool test_swar   = cmd.has("swar") || cmd.has("both");
+
+    if (cmd.count() != 2 || (test_scalar == false && test_swar == false)) {
+        usage();
+
+        throw Terminate();
+    }
+
     const size_t MiB   = 1024*1024;
     const size_t count = 100;
     const size_t size  = count*MiB;
 
-    if (!(test_scalar || test_swar)) {
-        return;
-    }
-
-    char* buf = load_file("data", size);
+    char* buf = load_file(cmd.get(0), size);
     double ts = 0.0;
 
     if (test_scalar) {
@@ -122,3 +143,46 @@ void Application::run() {
 }
 
 
+void Application::usage() {
+    puts("usage:");
+    puts("");
+    puts("test FILE option");
+    puts("");
+    puts("options:");
+    puts("- scalar - test the scalar code");
+    puts("- swar   - test the SWAR code");
+    puts("- both   - test both implementations");
+}
+
+
+CommandLine::CommandLine(int argc, char** argv)
+    : argc(argc)
+    , argv(argv) {}
+
+
+unsigned CommandLine::count() const {
+
+    return argc - 1;
+}
+
+
+const char* CommandLine::get(int index) const {
+
+    if (index < 0 || index >= argc - 1) {
+        return nullptr;
+    }
+
+    return argv[index + 1];
+}
+
+
+bool CommandLine::has(const char* value) const {
+
+    for (int i=1; i < argc; i++) {
+        if (strcmp(value, argv[i]) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
