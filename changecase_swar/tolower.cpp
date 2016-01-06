@@ -36,10 +36,10 @@ namespace swar {
         // Note: MSBs are used here as boolean flags
 
         const uint64_t A = chars + packed_byte(128 - 'A');        // MSB[i] is set if chars[i] is greater or equal than 'A'
-        const uint64_t Z = chars + packed_byte(128 - 'Z' - 1);    // MSB[i] is set if chars[i] is greater than 'Z'
+        const uint64_t Z = chars + packed_byte(128 - 'Z' - 1);    // MSB[i] is set if chars[i] is greater than 'Z' - 1
 
-        // Now relation 'A' <= chars[i] <= 'Z' is repesented as A & ~Z.
-        // However, it's not possible that MSB_A[i] is true and MSB_B[i] is false.
+        // Now relation 'A' <= chars[i] <= 'Z' is represented as A & ~Z.
+        // However, it's not possible that MSB_A[i] is false and MSB_B[i] is true.
         // Thanks to that expression could be simplified to A ^ Z
 
         return (A ^ Z) & packed_byte(0x80);
