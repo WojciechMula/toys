@@ -6,11 +6,12 @@
 
 const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-bool test_reference() {
+template<typename LOOKUP_FN>
+bool test_scalar(LOOKUP_FN fn) {
 
     for (unsigned i=0; i < 64; i++) {
         
-        const auto ref = reference::lookup(i);
+        const auto ref = fn(i);
         if (ref != lookup[i]) {
 
             printf("failed at %d (%d != %d)\n", i, ref, lookup[i]);
@@ -22,7 +23,8 @@ bool test_reference() {
 }
 
 
-bool test_sse() {
+template<typename LOOKUP_FN>
+bool test_sse(LOOKUP_FN fn) {
 
     uint8_t input[16];
     uint8_t output[16];
@@ -38,7 +40,7 @@ bool test_sse() {
             input[byte] = i;
 
             __m128i in  = _mm_loadu_si128(reinterpret_cast<const __m128i*>(input));
-            __m128i out = base64::sse::lookup(in);
+            __m128i out = fn(in);
 
             _mm_storeu_si128(reinterpret_cast<__m128i*>(output), out);
             
@@ -65,17 +67,33 @@ bool test_sse() {
 
 int test() {
 
-    printf("reference branchless implementation... ");
+    printf("reference branchless (naive)... ");
     fflush(stdout);
-    if (test_reference()) {
+    if (test_scalar(reference::lookup_naive)) {
         puts("OK");
     } else {
         return 1;
     }
 
-    printf("SIMD implementation... ");
+    printf("reference branchless (optimized)... ");
     fflush(stdout);
-    if (test_sse()) {
+    if (test_scalar(reference::lookup_version1)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
+    printf("SSE implementation of naive algorithm... ");
+    fflush(stdout);
+    if (test_sse(base64::sse::lookup_naive)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
+    printf("SSE implementation of optimized algorithm... ");
+    fflush(stdout);
+    if (test_sse(base64::sse::lookup_version1)) {
         puts("OK");
     } else {
         return 1;

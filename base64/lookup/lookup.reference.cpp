@@ -66,7 +66,7 @@ namespace reference {
         // 2. resolve chars '+' and '/'
         uint8_t ord_62_or_63 = '+';
         ord_62_or_63 += cmp(i == 63) & 4;
-        ord_62_or_63 &= ~le_61;
+        ord_62_or_63  = andnot(le_61, ord_62_or_63);
 
         // 3. merge ranges
         return range | ord_62_or_63;
