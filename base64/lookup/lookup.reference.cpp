@@ -19,7 +19,7 @@ namespace reference {
         - add           : 1
         - total         = 17
     */
-    char lookup(uint8_t i) {
+    char lookup_naive(uint8_t i) {
 
         const uint8_t less_26 = cmp(i < 26);
         const uint8_t less_52 = cmp(i < 52);
@@ -45,21 +45,18 @@ namespace reference {
         - adnnot        : 1
         - or            : 1
         - add           : 4
-        - total         = 
+        - total         = 10
     */
-    char lookup_version2(uint8_t i) {
+    char lookup_version1(uint8_t i) {
 
         uint8_t range;
 
         // 1. resolve ranges A-Z, a-z and 0-9
         const uint8_t shift_AZ = 'A';
         const uint8_t shift_az = 'a' - 26;
-        //const uint8_t shift_09 = '0' - 52;
 
         range = shift_AZ;
         range += cmp(i >= 26) & (shift_az - shift_AZ);
-        // ('0' - 52) - ('a' - 26) = -75
-        // range += cmp(i >= 52) & (shift_09 - shift_az);
         range -= cmp(i >= 52) & 75;
         range += i;
 
@@ -76,7 +73,7 @@ namespace reference {
     }
 
 
-    char lookup_ver1(uint8_t i) {
+    char lookup_version1_base(uint8_t i) {
 
         uint8_t range;
 

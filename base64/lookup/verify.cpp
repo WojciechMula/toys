@@ -38,7 +38,7 @@ bool test_sse() {
             input[byte] = i;
 
             __m128i in  = _mm_loadu_si128(reinterpret_cast<const __m128i*>(input));
-            __m128i out = sse::lookup(in);
+            __m128i out = base64::sse::lookup(in);
 
             _mm_storeu_si128(reinterpret_cast<__m128i*>(output), out);
             
