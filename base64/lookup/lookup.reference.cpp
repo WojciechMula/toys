@@ -42,10 +42,35 @@ namespace reference {
         Number of operations:
         - comparison    : 4
         - and           : 4
+        - adnnot        : 0
+        - or            : 0
+        - add           : 5
+        - total         = 13
+    */
+    char lookup_version2(uint8_t i) {
+
+        uint8_t range;
+
+        range = 'A';
+        range += cmp(i >= 26) & 6;
+        range -= cmp(i >= 52) & 75;
+        range += cmp(i == 62) & 241;
+        range -= cmp(i == 63) & 12;
+
+        range += i;
+
+        // 3. merge ranges
+        return range;
+    }
+
+    /*
+        Number of operations:
+        - comparison    : 4
+        - and           : 4
         - adnnot        : 1
         - or            : 1
         - add           : 4
-        - total         = 10
+        - total         = 14
     */
     char lookup_version1(uint8_t i) {
 
@@ -60,13 +85,13 @@ namespace reference {
         range -= cmp(i >= 52) & 75;
         range += i;
 
-        const uint8_t le_61 = cmp(i <= 61);
-        range &= le_61;
+        const uint8_t less_61 = cmp(i <= 61);
+        range &= less_61;
 
         // 2. resolve chars '+' and '/'
         uint8_t ord_62_or_63 = '+';
         ord_62_or_63 += cmp(i == 63) & 4;
-        ord_62_or_63  = andnot(le_61, ord_62_or_63);
+        ord_62_or_63  = andnot(less_61, ord_62_or_63);
 
         // 3. merge ranges
         return range | ord_62_or_63;
@@ -89,8 +114,8 @@ namespace reference {
         range -= cmp(i >= 52) & 75;
         range += i;
 
-        const uint8_t le_61 = cmp(i <= 61);
-        range &= le_61;
+        const uint8_t less_61 = cmp(i <= 61);
+        range &= less_61;
 
         // 2. resolve chars '+' and '/'
         const uint8_t ord_62 = cmp(i == 62) & '+';

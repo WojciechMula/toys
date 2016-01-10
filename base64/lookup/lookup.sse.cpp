@@ -7,7 +7,7 @@ namespace base64 {
 
     namespace sse {
 
-    #define packed_byte(x) _mm_set1_epi8(x)
+    #define packed_byte(x) _mm_set1_epi8(char(x))
 
         __m128i lookup_naive(const __m128i input) {
 
@@ -56,6 +56,26 @@ namespace base64 {
             ord_62_or_63 = _mm_andnot_si128(le_61, ord_62_or_63);
 
             result = _mm_or_si128(result, ord_62_or_63);
+
+            return result;
+        }
+
+
+        __m128i lookup_version2(const __m128i input) {
+
+            __m128i result = packed_byte(65);
+
+            const __m128i ge_26 = _mm_cmpgt_epi8(input, packed_byte(25));
+            const __m128i ge_52 = _mm_cmpgt_epi8(input, packed_byte(51));
+            const __m128i eq_62 = _mm_cmpeq_epi8(input, packed_byte(62));
+            const __m128i eq_63 = _mm_cmpeq_epi8(input, packed_byte(63));
+
+            result = _mm_add_epi8(result, _mm_and_si128(ge_26, packed_byte(  6)));
+            result = _mm_sub_epi8(result, _mm_and_si128(ge_52, packed_byte( 75)));
+            result = _mm_add_epi8(result, _mm_and_si128(eq_62, packed_byte(241)));
+            result = _mm_sub_epi8(result, _mm_and_si128(eq_63, packed_byte( 12)));
+
+            result = _mm_add_epi8(result, input);
 
             return result;
         }

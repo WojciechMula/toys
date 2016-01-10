@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <memory>
 
+#include "config.h"
 #include "../gettime.cpp"
 #include "../cmdline.cpp"
 #include "fnv32.cpp"
@@ -17,16 +18,22 @@ class Application final {
     const CommandLine& cmd;
     const unsigned count;
     const unsigned iterations;
+    bool initialized;
 
     std::unique_ptr<uint8_t> input;
     std::unique_ptr<uint8_t> output;
 public:
     Application(const CommandLine& c)
         : cmd(c)
-        , count(32*1024*1024)
-        , iterations(10) {}
+        , count(64*1024*1024)
+        , iterations(10)
+        , initialized(false) {}
 
     void initialize() {
+
+        if (initialized) {
+            return;
+        }
         
         input.reset (new uint8_t[get_input_size()]);
         output.reset(new uint8_t[get_output_size()]);
@@ -34,6 +41,8 @@ public:
         printf("input size: %lu\n", get_input_size());
 
         fill_input();
+
+        initialized = true;
     }
 
     int run() {
@@ -49,23 +58,55 @@ public:
             base64::sse::encode(base64::sse::lookup_naive, input, bytes, output);
         };
 
-        auto sse_optimized = [](uint8_t* input, size_t bytes, uint8_t* output) {
+        auto sse_optimized1 = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode(base64::sse::lookup_version1, input, bytes, output);
         };
 
-        if (cmd.empty() || cmd.has("sse1")) {
+        auto sse_optimized2 = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode(base64::sse::lookup_version2, input, bytes, output);
+        };
+
+        if (cmd.empty() || cmd.has("sse")) {
             measure("SSE (naive)", sse_naive);
         }
 
-        if (cmd.empty() || cmd.has("sse2")) {
-            measure("SSE (optimized)", sse_optimized);
+        if (cmd.empty() || cmd.has("sse1")) {
+            measure("SSE (optimized v1)", sse_optimized1);
         }
 
+        if (cmd.empty() || cmd.has("sse2")) {
+            measure("SSE (optimized v2)", sse_optimized2);
+        }
+
+#if defined(HAVE_PEXT_INSTRUCTION)
+        auto sse_bmi2_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_bmi2(base64::sse::lookup_naive, input, bytes, output);
+        };
+
+        auto sse_bmi2_optimized = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_bmi2(base64::sse::lookup_version1, input, bytes, output);
+        };
+
+        if (cmd.empty() || cmd.has("bmi1")) {
+            measure("SSE & BMI2 (naive)", sse_bmi2_naive);
+        }
+
+        if (cmd.empty() || cmd.has("bmi2")) {
+            measure("SSE & BMI2 (optimized)", sse_bmi2_optimized);
+        }
+#endif
+
         if (cmd.has("check")) {
-            check("scalar32", base64::scalar::encode32);
-            check("scalar64", base64::scalar::encode64);
-            check("SSE (naive)", sse_naive);
-            check("SSE (optimized)", sse_optimized);
+            uint32_t valid;
+            valid = check("scalar32", base64::scalar::encode32, 0);
+            check("scalar64", base64::scalar::encode64, valid);
+            check("SSE (naive)", sse_naive, valid);
+            check("SSE (optimized v1)", sse_optimized1, valid);
+            check("SSE (optimized v2)", sse_optimized2, valid);
+#if defined(HAVE_PEXT_INSTRUCTION)
+            check("SSE & BMI2 (naive)", sse_bmi2_naive, valid);
+            check("SSE & BMI2 (optimized)", sse_bmi2_optimized, valid);
+#endif
         }
 
         return 0;
@@ -93,6 +134,8 @@ private:
     template<typename T>
     double measure(const char* name, T callback) {
 
+        initialize();
+
         printf("%s... ", name);
         fflush(stdout);
 
@@ -117,7 +160,9 @@ private:
     }
 
     template<typename T>
-    uint32_t check(const char* name, T callback) {
+    uint32_t check(const char* name, T callback, uint32_t valid) {
+
+        initialize();
 
         printf("%20s... ", name);
         fflush(stdout);
@@ -127,7 +172,11 @@ private:
 
         const uint32_t result = FNV32::get(reinterpret_cast<const char*>(output.get()), get_output_size() - 16);
 
-        printf("%08x\n", result);
+        if (valid != 0) {
+            printf("%08x %s\n", result, (valid != result) ? "!!!ERROR!!!" : "OK");
+        } else {
+            printf("%08x\n", result);
+        }
         return result;
     }
 };
@@ -138,7 +187,6 @@ int main(int argc, char* argv[]) {
     CommandLine cmd(argc, argv);
     Application app(cmd);
 
-    app.initialize();
     return app.run();
 }
 

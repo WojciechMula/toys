@@ -2,6 +2,7 @@
 #include <x86intrin.h>
 
 #include <cstdint>
+#include "pext.cpp"
 
 namespace base64 {
 
@@ -46,6 +47,31 @@ namespace base64 {
                 out += 16;
             }
         }
+
+
+#if defined(HAVE_PEXT_INSTRUCTION)
+        template <typename LOOKUP_FN>
+        void encode_bmi2(LOOKUP_FN lookup, uint8_t* input, size_t bytes, uint8_t* output) {
+        
+            uint8_t* out = output;
+
+            for (size_t i = 0; i < bytes; i += 4*3) {
+
+                const uint64_t lo = *reinterpret_cast<const uint64_t*>(input);
+                const uint64_t hi = *reinterpret_cast<const uint64_t*>(input + 6);
+
+                const uint64_t expanded_lo = pext(lo, 0x3f3f3f3f3f3f3f3flu);
+                const uint64_t expanded_hi = pext(hi, 0x3f3f3f3f3f3f3f3flu);
+
+                const __m128i indices = _mm_set_epi64x(expanded_lo, expanded_hi);
+
+                const auto result = lookup(indices);
+
+                _mm_storeu_si128(reinterpret_cast<__m128i*>(out), result);
+                out += 16;
+            }
+        }
+#endif
 
     } // namespace sse
 

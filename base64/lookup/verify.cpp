@@ -67,6 +67,14 @@ bool test_sse(LOOKUP_FN fn) {
 
 int test() {
 
+    printf("reference branchless (optimized v2)... ");
+    fflush(stdout);
+    if (test_scalar(reference::lookup_version2)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
     printf("reference branchless (naive)... ");
     fflush(stdout);
     if (test_scalar(reference::lookup_naive)) {
