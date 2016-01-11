@@ -78,7 +78,7 @@ public:
             measure("SSE (optimized v2)", sse_optimized2);
         }
 
-#if defined(HAVE_PEXT_INSTRUCTION)
+#if defined(HAVE_BMI2_INSTRUCTIONS)
         auto sse_bmi2_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode_bmi2(base64::sse::lookup_naive, input, bytes, output);
         };
@@ -103,7 +103,7 @@ public:
             check("SSE (naive)", sse_naive, valid);
             check("SSE (optimized v1)", sse_optimized1, valid);
             check("SSE (optimized v2)", sse_optimized2, valid);
-#if defined(HAVE_PEXT_INSTRUCTION)
+#if defined(HAVE_BMI2_INSTRUCTIONS)
             check("SSE & BMI2 (naive)", sse_bmi2_naive, valid);
             check("SSE & BMI2 (optimized)", sse_bmi2_optimized, valid);
 #endif

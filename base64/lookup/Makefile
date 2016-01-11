@@ -9,7 +9,7 @@ all: verify speed
 verify: verify.cpp lookup.*.cpp
 	$(GCC) $(FLAGS) verify.cpp -o verify
 
-speed: speed.cpp fnv32.cpp lookup.sse.cpp encode.*.cpp pext.cpp config.h
+speed: speed.cpp fnv32.cpp lookup.sse.cpp encode.*.cpp bmi2.cpp config.h
 	$(GCC) $(FLAGS) -mssse3 speed.cpp -o speed
 
 clean:

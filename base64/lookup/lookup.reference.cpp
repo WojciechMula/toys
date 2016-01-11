@@ -49,18 +49,14 @@ namespace reference {
     */
     char lookup_version2(uint8_t i) {
 
-        uint8_t range;
+        uint8_t shift = 'A';
 
-        range = 'A';
-        range += cmp(i >= 26) & 6;
-        range -= cmp(i >= 52) & 75;
-        range += cmp(i == 62) & 241;
-        range -= cmp(i == 63) & 12;
+        shift += cmp(i >= 26) & 6;
+        shift -= cmp(i >= 52) & 75;
+        shift += cmp(i == 62) & 241;
+        shift -= cmp(i == 63) & 12;
 
-        range += i;
-
-        // 3. merge ranges
-        return range;
+        return shift + i;
     }
 
     /*
