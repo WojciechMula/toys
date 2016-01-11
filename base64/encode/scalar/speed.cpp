@@ -4,8 +4,8 @@
 #include <memory>
 
 #include "encode.cpp"
-#include "gettime.cpp"
-#include "cmdline.cpp"
+#include "../../gettime.cpp"
+#include "../../cmdline.cpp"
 
 class Application final {
 

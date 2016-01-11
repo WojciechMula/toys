@@ -2,7 +2,7 @@
 #include <x86intrin.h>
 
 #include <cstdint>
-#include "bmi2.cpp"
+#include "../../bmi2.cpp"
 
 namespace base64 {
 
