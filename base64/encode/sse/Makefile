@@ -12,10 +12,10 @@ verify: verify.cpp lookup.*.cpp
 	$(GCC) $(FLAGS) verify.cpp -o verify
 
 speed: speed.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
-	$(GCC) $(FLAGS) -mssse3 speed.cpp -o speed
+	$(GCC) $(FLAGS) -msse4 speed.cpp -o speed
 
 check: check.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
-	$(GCC) $(FLAGS) -mssse3 check.cpp -o check
+	$(GCC) $(FLAGS) -msse4 check.cpp -o check
 
 clean:
 	rm -f $(ALL)
