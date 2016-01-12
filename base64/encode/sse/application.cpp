@@ -20,7 +20,7 @@ public:
         if (initialized) {
             return;
         }
-        
+
         input.reset (new uint8_t[get_input_size()]);
         output.reset(new uint8_t[get_output_size()]);
 

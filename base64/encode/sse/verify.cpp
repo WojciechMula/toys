@@ -10,7 +10,7 @@ template<typename LOOKUP_FN>
 bool test_scalar(LOOKUP_FN fn) {
 
     for (unsigned i=0; i < 64; i++) {
-        
+
         const auto ref = fn(i);
         if (ref != lookup[i]) {
 
@@ -30,7 +30,7 @@ bool test_sse(LOOKUP_FN fn) {
     uint8_t output[16];
 
     for (unsigned byte=0; byte < 16; byte++) {
-        
+
         for (unsigned j=0; j < 16; j++) {
             input[j] = 0;
         }
@@ -43,9 +43,9 @@ bool test_sse(LOOKUP_FN fn) {
             __m128i out = fn(in);
 
             _mm_storeu_si128(reinterpret_cast<__m128i*>(output), out);
-            
+
             for (unsigned j=0; j < 16; j++) {
-                
+
                 if (j == byte) {
                     if (output[j] != lookup[i]) {
                         printf("failed at %d, byte %d - wrong result\n", i, byte);

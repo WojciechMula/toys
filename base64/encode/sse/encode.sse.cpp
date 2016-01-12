@@ -7,12 +7,12 @@
 namespace base64 {
 
     namespace sse {
-    
+
 #define packed_dword(x) _mm_set1_epi32(x)
 
         template <typename LOOKUP_FN>
         void encode(LOOKUP_FN lookup, uint8_t* input, size_t bytes, uint8_t* output) {
-        
+
             uint8_t* out = output;
 
             const __m128i shuf = _mm_setr_epi8(
@@ -52,7 +52,7 @@ namespace base64 {
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         template <typename LOOKUP_FN>
         void encode_bmi2(LOOKUP_FN lookup, uint8_t* input, size_t bytes, uint8_t* output) {
-        
+
             uint8_t* out = output;
 
             for (size_t i = 0; i < bytes; i += 2*6) {
@@ -62,8 +62,14 @@ namespace base64 {
 
                 const uint64_t expanded_lo = pdep(lo, 0x3f3f3f3f3f3f3f3flu);
                 const uint64_t expanded_hi = pdep(hi, 0x3f3f3f3f3f3f3f3flu);
+#if 1
+                __m128i indices;
 
+                indices = _mm_insert_epi64(indices, expanded_lo, 0);
+                indices = _mm_insert_epi64(indices, expanded_hi, 1);
+#else
                 const __m128i indices = _mm_set_epi64x(expanded_hi, expanded_lo);
+#endif
 
                 const auto result = lookup(indices);
 

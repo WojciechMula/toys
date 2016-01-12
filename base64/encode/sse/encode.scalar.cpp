@@ -2,14 +2,14 @@
 namespace base64 {
 
     namespace scalar {
-    
+
         /*
             Note: function doesn't encode few tail bytes as the
                   single step is 3 bytes. The method is not intended
                   to be production-ready. Sorry for that.
         */
         void encode32(uint8_t* input, size_t bytes, uint8_t* output) {
-        
+
             static const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
             uint8_t* out = output;
@@ -31,7 +31,7 @@ namespace base64 {
         }
 
         void encode64(uint8_t* input, size_t bytes, uint8_t* output) {
-        
+
             static const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
             uint8_t* out = output;
