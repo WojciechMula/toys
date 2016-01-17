@@ -2,6 +2,8 @@
 
 namespace base64 {
 
+    static const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
     class invalid_input final {
         
     public:

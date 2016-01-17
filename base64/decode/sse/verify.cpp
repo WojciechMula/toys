@@ -1,58 +1,165 @@
 #include <cstdio>
 #include <cstring>
 
-#include "decode.exception.cpp"
+#include "decode.common.cpp"
 #include "decode.scalar.cpp"
+#include "decode.sse.cpp"
 
-template <typename FN>
-bool test_scalar(FN fn) {
+class Test {
 
-    uint8_t input[4];
-    union {
-        uint8_t output_bytes[4];
-        uint32_t output_dword;
-    };
+    uint8_t input[16];
+    uint8_t output[16];
+    unsigned bytes;
+    unsigned out_size;
+    unsigned current;
 
-    for (unsigned i=0; i < 4; i++) {
+    uint8_t decode_table[256]; // ASCII -> raw value or 0xff if a value is not valid
 
-        for (unsigned j=0; j < 4; j++) {
-            input[j] = base64::lookup[0];
+public:
+    Test(unsigned in_size, unsigned out_size)
+        : bytes(in_size)
+        , out_size(out_size) {
+    
+        for (unsigned i=0; i < 256; i++) {
+            decode_table[i] = 0xff;
         }
 
-        for (unsigned k=0; k < 64; k++) {
-            input[i] = base64::lookup[k];
-
-            fn(input, 4, output_bytes);
-
-            const uint32_t mask = uint32_t(0x3f) << (i*6);
-            if (output_dword & ~mask) {
-                printf("modifed unexpected bits: %08x (mask=%08x)\n", output_dword, mask);
-                return false;
-            }
+        for (unsigned i=0; i < 64; i++) {
+            uint8_t idx = base64::lookup[i];
+            decode_table[idx] = i;
         }
     }
 
-    return true;
-}
+public:
+    template <typename FN>
+    bool run(FN fn) {
+
+        for (current=0; current < bytes; current++) {
+            
+            clear_input();
+
+            for (unsigned k=0; k < 256; k++) {
+                input[current] = k;
+
+                if (decode_table[k] != 0xff) {
+
+                    try {
+                        fn(input, bytes, output);
+                    } catch (base64::invalid_input& e) {
+                        printf("unexpected error: invalid input byte %c (%02x)\n", e.byte, e.byte);
+                        return false;
+                    }
+
+                    const bool ok = validate_output(decode_table[k]);
+                    if (!ok) {
+                        return false;
+                    }
+                } else {
+                    try {
+                        fn(input, bytes, output);
+
+                        printf("function should return error for invalid input %02x\n", k);
+                        dump_input();
+                        return false;
+                    } catch (base64::invalid_input& e) {
+                        ;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+private:
+    void clear_input() {
+        for (unsigned i=0; i < bytes; i++) {
+            input[i] = base64::lookup[0];
+        }
+    }
+
+    bool validate_output(unsigned expected_current) {
+
+        for (unsigned i=0; i < bytes; i++) {
+
+            const uint8_t val = get_6bit_word(i);
+            if (i == current) {
+                if (val != expected_current) {
+                    printf("6-bit field #%d has value %d, expected %d\n", i, val, expected_current);
+                    dump_output();
+                    return false;
+                }
+            } else {
+                if (val != 0) {
+                    printf("6-bit field #%d has value %d, expected to be cleared\n", i, val);
+                    dump_output();
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    void dump_output() {
+
+        for (int i=out_size - 1; i >= 0; i--) {
+            printf("%02x", output[i]);
+        }
+
+        putchar('\n');
+    }
+
+    void dump_input() {
+
+        for (int i=bytes - 1; i >= 0; i--) {
+            printf("%02x", input[i]);
+        }
+
+        putchar('\n');
+    }
+
+    uint8_t get_6bit_word(unsigned i) {
+
+        const unsigned pos   = i * 6;
+        const unsigned idx   = pos / 8;
+        const unsigned shift = pos % 8;
+
+        if (shift == 0) {
+            return output[idx] & 0x3f;
+        } else {
+            const uint8_t b0 = output[idx];
+            const uint8_t b1 = output[idx + 1];
+
+            return ((b0 >> shift) | (b1 << (8 - shift))) & 0x3f;
+        }
+    }
+};
 
 
 int test() {
 
     printf("lookup...");
     fflush(stdout);
-    if (test_scalar(base64::scalar::decode_lookup1)) {
-        puts("OK");
-    } else {
-        return 1;
+    {   Test test(4, 3);
+
+        if (test.run(base64::scalar::decode_lookup1)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
     }
 
     printf("four lookups...");
     fflush(stdout);
-    if (test_scalar(base64::scalar::decode_lookup2)) {
-        puts("OK");
-    } else {
-        return 1;
-    }
+    {   Test test(4, 3);
+
+        if (test.run(base64::scalar::decode_lookup2)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+     }
 
 #if defined(HAVE_BMI2)
     printf("lookup (BMI2)...");
@@ -63,6 +170,17 @@ int test() {
         return 1;
     }
 #endif
+
+    printf("SSE...");
+    fflush(stdout);
+    {   Test test(16, 12);
+
+        if (test.run(base64::sse::decode)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+     }
 
     return 0;
 }

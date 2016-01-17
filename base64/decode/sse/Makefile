@@ -2,7 +2,7 @@
 .PHONY: all
 
 GCC=g++
-FLAGS=-Wall -pedantic -O3 -std=c++11
+FLAGS=-Wall -pedantic -O3 -std=c++11 -mssse3
 ALL=verify
 
 all: $(ALL)

@@ -3,8 +3,6 @@
 
 namespace base64 {
 
-    static const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
     namespace scalar {
 
         static uint8_t lookup[256];
