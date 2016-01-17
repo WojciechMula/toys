@@ -134,3 +134,120 @@ void encode_triplets_6(const uint8_t* ptr, unsigned count, uint8_t* output) {
         SAVE_DWORD
     }
 }
+
+void encode_triplets_7(const uint8_t* ptr, unsigned count, uint8_t* output) {
+
+    uint8_t* r = output;
+
+    for (unsigned i=0; i < count; i+=2) {
+        
+        const uint64_t x = *reinterpret_cast<const uint32_t*>(&ptr[3*i]);
+
+        const uint64_t a = (x >> (0*6)) & 0x3f;
+        const uint64_t b = (x >> (1*6)) & 0x3f;
+        const uint64_t c = (x >> (2*6)) & 0x3f;
+        const uint64_t d = (x >> (3*6)) & 0x3f;
+        const uint64_t e = (x >> (4*6)) & 0x3f;
+        const uint64_t f = (x >> (5*6)) & 0x3f;
+        const uint64_t g = (x >> (6*6)) & 0x3f;
+        const uint64_t h = (x >> (7*6)) & 0x3f;
+
+        *r++ = lookup8[a];
+        *r++ = lookup8[b];
+        *r++ = lookup8[c];
+        *r++ = lookup8[d];
+        *r++ = lookup8[e];
+        *r++ = lookup8[f];
+        *r++ = lookup8[g];
+        *r++ = lookup8[h];
+    }
+}
+
+//#define HAVE_BMI2_INSTRUCTION
+
+#if defined(HAVE_BMI2_INSTRUCTION)
+
+#include <immintrin.h>
+
+void encode_triplets_8(const uint8_t* ptr, unsigned count, uint8_t* output) {
+
+    uint8_t* r = output;
+
+    for (unsigned i=0; i < count; i+=2) {
+        
+        const uint64_t x = *reinterpret_cast<const uint64_t*>(&ptr[3*i]);
+
+        const uint64_t a = x & 0x3f;//_bextr_u64(x, 0*6, 6);
+        const uint64_t b = _bextr_u64(x, 1*6, 6);
+        const uint64_t c = _bextr_u64(x, 2*6, 6);
+        const uint64_t d = _bextr_u64(x, 3*6, 6);
+        const uint64_t e = _bextr_u64(x, 4*6, 6);
+        const uint64_t f = _bextr_u64(x, 5*6, 6);
+        const uint64_t g = _bextr_u64(x, 6*6, 6);
+        const uint64_t h = _bextr_u64(x, 7*6, 6);
+
+        *r++ = lookup8[a];
+        *r++ = lookup8[b];
+        *r++ = lookup8[c];
+        *r++ = lookup8[d];
+        *r++ = lookup8[e];
+        *r++ = lookup8[f];
+        *r++ = lookup8[g];
+        *r++ = lookup8[h];
+    }
+}
+
+
+void encode_triplets_9(const uint8_t* ptr, unsigned count, uint8_t* output) {
+
+    uint64_t* r = reinterpret_cast<uint64_t*>(output);
+
+    for (unsigned i=0; i < count; i+=2) {
+        
+        const uint64_t x = *reinterpret_cast<const uint64_t*>(&ptr[3*i]);
+
+        const uint64_t a = x & 0x3f;
+        const uint64_t b = _bextr_u64(x, 1*6, 6);
+        const uint64_t c = _bextr_u64(x, 2*6, 6);
+        const uint64_t d = _bextr_u64(x, 3*6, 6);
+        const uint64_t e = _bextr_u64(x, 4*6, 6);
+        const uint64_t f = _bextr_u64(x, 5*6, 6);
+        const uint64_t g = _bextr_u64(x, 6*6, 6);
+        const uint64_t h = _bextr_u64(x, 7*6, 6);
+
+        const uint64_t result = 0
+          | (uint64_t(lookup8[a]) << 0*6)
+          | (uint64_t(lookup8[b]) << 1*6)
+          | (uint64_t(lookup8[c]) << 2*6)
+          | (uint64_t(lookup8[d]) << 3*6)
+          | (uint64_t(lookup8[e]) << 4*6)
+          | (uint64_t(lookup8[f]) << 5*6)
+          | (uint64_t(lookup8[g]) << 6*6)
+          | (uint64_t(lookup8[h]) << 7*6);
+
+        *r++ = result;
+    }
+}
+
+
+void encode_triplets_10(const uint8_t* ptr, unsigned count, uint8_t* output) {
+
+    uint8_t* r = output;
+
+    for (unsigned i=0; i < count; i++) {
+        
+        const uint32_t x = *reinterpret_cast<const uint32_t*>(&ptr[3*i]);
+
+        const uint32_t a = x & 0x3f;
+        const uint32_t b = _bextr_u32(x, 1*6, 6);
+        const uint32_t c = _bextr_u32(x, 2*6, 6);
+        const uint32_t d = _bextr_u32(x, 3*6, 6);
+
+        *r++ = lookup8[a];
+        *r++ = lookup8[b];
+        *r++ = lookup8[c];
+        *r++ = lookup8[d];
+    }
+}
+
+#endif // define(HAVE_BMI2_INSTRUCTION)
