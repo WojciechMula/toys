@@ -1,7 +1,7 @@
 CC=g++
-FLAGS=-Wall -pedantic -std=c++11 -O2
+FLAGS=-Wall -pedantic -std=c++11 -O3
 DEPS=strstr-*.cpp
-ALL=test32 test64
+ALL=test32 test64 verify
 
 all: $(ALL)
 
@@ -17,7 +17,7 @@ test32: test.cpp strstr32.cpp $(DEPS)
 demo32: test32 i386.txt words
 	./test32 i386.txt `cat words` > demo32
 	
-test64: test.cpp strstr32.cpp $(DEPS)
+test64: test.cpp strstr64.cpp $(DEPS)
 	$(CC) $(FLAGS) -DTEST64 $< -o $@
 
 demo64: test64 i386.txt words
@@ -28,6 +28,9 @@ analyze32: demo32
 
 analyze64: demo64
 	python analyze.py < $<
+
+verify: verify.cpp $(DEPS) strstr64.cpp
+	$(CC) $(FLAGS) verify.cpp -o $@
 
 clean:
 	rm -f $(ALL)
