@@ -29,22 +29,22 @@ namespace base64 {
 
             for (size_t i=0; i < size; i += 4) {
 
-                const uint8_t b0 = lookup[input[i + 0]];
+                const uint8_t b0 = base64::scalar::lookup[input[i + 0]];
                 if (b0 == 0xff) {
                     throw invalid_input(i + 0, input[i + 0]);
                 }
 
-                const uint8_t b1 = lookup[input[i + 1]];
+                const uint8_t b1 = base64::scalar::lookup[input[i + 1]];
                 if (b1 == 0xff) {
                     throw invalid_input(i + 1, input[i + 1]);
                 }
 
-                const uint8_t b2 = lookup[input[i + 2]];
+                const uint8_t b2 = base64::scalar::lookup[input[i + 2]];
                 if (b2 == 0xff) {
                     throw invalid_input(i + 2, input[i + 2]);
                 }
 
-                const uint8_t b3 = lookup[input[i + 3]];
+                const uint8_t b3 = base64::scalar::lookup[input[i + 3]];
                 if (b3 == 0xff) {
                     throw invalid_input(i + 3, input[i + 3]);
                 }
@@ -163,6 +163,12 @@ namespace base64 {
         }
 #endif
 
+        void initialize() {
+
+            prepare_lookup();
+            prepare_lookup32();
+        }
+        
     } // namespace scalar
 
 } // namespace base64

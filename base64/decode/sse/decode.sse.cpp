@@ -101,7 +101,7 @@ namespace base64 {
                                        _mm_or_si128(bits_b,
                                        _mm_or_si128(bits_c, bits_d)));
 
-                // meged = packed_byte([0XXX|0YYY|0ZZZ|0WWW])
+                // merged = packed_byte([0XXX|0YYY|0ZZZ|0WWW])
 
                 const __m128i shuf = _mm_setr_epi8(
                        0,  1,  2,
@@ -114,8 +114,18 @@ namespace base64 {
                 // lower 12 bytes contains
                 const __m128i shuffled = _mm_shuffle_epi8(merged, shuf);
 
-                // XXX
+#if 0
+                // Note: maskmove is slower on Core i5 than bare write
+                const __m128i mask = _mm_setr_epi8(
+                      char(0xff), char(0xff), char(0xff), char(0xff),
+                      char(0xff), char(0xff), char(0xff), char(0xff),
+                      char(0xff), char(0xff), char(0xff), char(0xff),
+                      char(0x00), char(0x00), char(0x00), char(0x00)
+                );
+                _mm_maskmoveu_si128(shuffled, mask, reinterpret_cast<char*>(out));
+#else
                 _mm_storeu_si128(reinterpret_cast<__m128i*>(out), shuffled);
+#endif
                 out += 12;
             }
         }
