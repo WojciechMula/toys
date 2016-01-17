@@ -32,5 +32,8 @@ analyze64: demo64
 verify: verify.cpp $(DEPS) strstr64.cpp
 	$(CC) $(FLAGS) verify.cpp -o $@
 
+verification: verify i386.txt words
+	@./verify i386.txt words && echo OK
+
 clean:
 	rm -f $(ALL)
