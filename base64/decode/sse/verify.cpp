@@ -62,7 +62,16 @@ public:
                         dump_input();
                         return false;
                     } catch (base64::invalid_input& e) {
-                        ;
+                        
+                        if (e.offset != current) {
+                            printf("exception field 'offset' is %lu, should be %u\n", e.offset, current);
+                            return false;
+                        }
+
+                        if (e.byte != k) {
+                            printf("exception field 'byte' is %u, should be %u\n", e.byte, k);
+                            return false;
+                        }
                     }
                 }
             }

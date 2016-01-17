@@ -6,7 +6,6 @@
 #include "config.h"
 #include "../../gettime.cpp"
 #include "../../cmdline.cpp"
-#include "../../fnv32.cpp"
 
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
@@ -14,40 +13,11 @@
 
 #include "application.cpp"
 
-class Application final {
+class Application final: public ApplicationBase {
 
-protected:
-    const CommandLine& cmd;
-    const unsigned count;
-    const unsigned iterations;
-    bool initialized;
-
-    std::unique_ptr<uint8_t> input;
-    std::unique_ptr<uint8_t> output;
 public:
     Application(const CommandLine& c)
-        : cmd(c)
-        , count(64*1024*1024)
-        , iterations(10)
-        , initialized(false) {}
-
-    void initialize() {
-
-        if (initialized) {
-            return;
-        }
-
-        base64::scalar::initialize();
-
-        input.reset (new uint8_t[get_input_size()]);
-        output.reset(new uint8_t[get_output_size()]);
-
-        printf("input size: %lu\n", get_input_size());
-
-        fill_input();
-
-        initialized = true;
-    }
+        : ApplicationBase(c) {}
 
     int run() {
         double reference = 0.0;
@@ -67,6 +37,7 @@ public:
         return 0;
     }
 
+private:
     template<typename T>
     double measure(const char* name, T callback, double reference) {
 
@@ -97,29 +68,9 @@ public:
             printf("%0.3f", time);
         }
 
-        printf(" hash: %08x\n", FNV32::get(reinterpret_cast<const char*>(output.get()), get_output_size()));
+        putchar('\n');
 
         return time;
-    }
-
-protected:
-    size_t get_input_size() const {
-        return count;
-    }
-
-    size_t get_output_size() const {
-        return (3*count)/4;
-    }
-
-    void fill_input() {
-        for (unsigned i=0; i < get_input_size(); i++) {
-            const uint8_t idx = i * 71;
-            input.get()[i] = base64::lookup[idx % 64];
-        }
-    }
-
-    void clear_output() {
-        memset(output.get(), 0, get_output_size());
     }
 };
 

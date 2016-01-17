@@ -59,17 +59,24 @@ namespace base64 {
             const __m128i eq_slash = _mm_cmpeq_epi8(input, packed_byte('/'));
             const __m128i char_slash = _mm_and_si128(packed_byte(16), eq_slash);
 
-            // 
+            // merge partial results
 
             const __m128i shift = _mm_or_si128(range_AZ,
                                   _mm_or_si128(range_az,
                                   _mm_or_si128(range_09,
                                   _mm_or_si128(char_plus, char_slash))));
 
+            // Individual shift values are non-zero, thus if any
+            // byte in a shift vector is zero, then the input
+            // contains invalid bytes.
             const auto mask = _mm_movemask_epi8(_mm_cmpeq_epi8(shift, packed_byte(0)));
             if (mask) {
                 // some characters do not match the valid range
-                throw invalid_input(0, 0);
+                for (unsigned i=0; i < 16; i++) {
+                    if (mask & (1 << i)) {
+                        throw invalid_input(i, 0);
+                    }
+                }
             }
 
             return _mm_add_epi8(input, shift);
@@ -85,8 +92,15 @@ namespace base64 {
             for (size_t i=0; i < size; i += 16) {
 
                 __m128i in = _mm_loadu_si128(reinterpret_cast<const __m128i*>(input + i));
+                __m128i values;
 
-                const __m128i values = lookup(in);
+                try {
+                    values = lookup(in);
+                } catch (invalid_input& e) {
+                    
+                    const auto shift = e.offset;
+                    throw invalid_input(i + shift, input[i + shift]);
+                }
 
                 // input:  packed_dword([00dddddd|00cccccc|00bbbbbb|00aaaaaa] x 4)
                 // merged: packed_dword([00000000|ddddddcc|ccccbbbb|bbaaaaaa] x 4)
