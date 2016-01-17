@@ -22,12 +22,12 @@ public:
     int run() {
         double reference = 0.0;
 
-        if (cmd.empty() || cmd.has("scalar1")) {
-            reference = measure("scalar1", base64::scalar::decode_lookup1, 0.0);
+        if (cmd.empty() || cmd.has("scalar")) {
+            reference = measure("scalar", base64::scalar::decode_lookup1, 0.0);
         }
 
-        if (cmd.empty() || cmd.has("scalar2")) {
-            measure("scalar2", base64::scalar::decode_lookup2, reference);
+        if (cmd.empty() || cmd.has("improved")) {
+            measure("improved scalar", base64::scalar::decode_lookup2, reference);
         }
 
         if (cmd.empty() || cmd.has("sse")) {
