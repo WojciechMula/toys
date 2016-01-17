@@ -6,6 +6,7 @@
 #include "config.h"
 #include "../../cmdline.cpp"
 #include "../../fnv32.cpp"
+#include "../../bmi2.cpp"
 
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
@@ -36,6 +37,12 @@ public:
         if (cmd.empty() || cmd.has("sse")) {
             check("SSE", base64::sse::decode, valid_hash);
         }
+
+#if defined(HAVE_BMI2_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("bmi2")) {
+            check("SSE & BMI2", base64::sse::decode_bmi2, valid_hash);
+        }
+#endif
 
         if (cmd.empty()) {
             

@@ -6,6 +6,7 @@
 #include "config.h"
 #include "../../gettime.cpp"
 #include "../../cmdline.cpp"
+#include "../../bmi2.cpp"
 
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
@@ -33,6 +34,12 @@ public:
         if (cmd.empty() || cmd.has("sse")) {
             measure("SSE", base64::sse::decode, reference);
         }
+
+#if defined(HAVE_BMI2_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("bmi2")) {
+            measure("SSE & BMI2", base64::sse::decode_bmi2, reference);
+        }
+#endif
 
         return 0;
     }
