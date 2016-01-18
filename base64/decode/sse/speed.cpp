@@ -23,20 +23,26 @@ public:
     int run() {
         double reference = 0.0;
 
-        if (cmd.empty() || cmd.has("scalar")) {
-            reference = measure("scalar", base64::scalar::decode_lookup1, 0.0);
+        if (cmd.empty() || cmd.has("improved")) {
+            reference = measure("improved scalar", base64::scalar::decode_lookup2, reference);
         }
 
-        if (cmd.empty() || cmd.has("improved")) {
-            measure("improved scalar", base64::scalar::decode_lookup2, reference);
+        if (cmd.empty() || cmd.has("scalar")) {
+            measure("scalar", base64::scalar::decode_lookup1, reference);
         }
+
+#if defined(HAVE_BMI2_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("scalar_bmi2")) {
+            measure("scalar & BMI2", base64::sse::decode_bmi2, reference);
+        }
+#endif
 
         if (cmd.empty() || cmd.has("sse")) {
             measure("SSE", base64::sse::decode, reference);
         }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("bmi2")) {
+        if (cmd.empty() || cmd.has("sse_bmi2")) {
             measure("SSE & BMI2", base64::sse::decode_bmi2, reference);
         }
 #endif

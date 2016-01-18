@@ -26,20 +26,26 @@ public:
     int run() {
         uint32_t valid_hash = 0;
 
-        if (cmd.empty() || cmd.has("scalar1")) {
-            valid_hash = check("scalar1", base64::scalar::decode_lookup1, valid_hash);
+        if (cmd.empty() || cmd.has("scalar")) {
+            valid_hash = check("scalar", base64::scalar::decode_lookup1, valid_hash);
         }
 
-        if (cmd.empty() || cmd.has("scalar2")) {
-            check("scalar2", base64::scalar::decode_lookup2, valid_hash);
+        if (cmd.empty() || cmd.has("improved")) {
+            check("improved scalar", base64::scalar::decode_lookup2, valid_hash);
         }
+
+#if defined(HAVE_BMI2_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("scalar_bmi2")) {
+            check("scalar & BMI2", base64::scalar::decode_lookup1_bmi2, valid_hash);
+        }
+#endif
 
         if (cmd.empty() || cmd.has("sse")) {
             check("SSE", base64::sse::decode, valid_hash);
         }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("bmi2")) {
+        if (cmd.empty() || cmd.has("sse_bmi2")) {
             check("SSE & BMI2", base64::sse::decode_bmi2, valid_hash);
         }
 #endif

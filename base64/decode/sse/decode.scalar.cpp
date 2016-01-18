@@ -120,7 +120,7 @@ namespace base64 {
             }
         }
 
-#ifdef HAVE_BMI2
+#if defined(HAVE_BMI2_INSTRUCTIONS)
         void decode_lookup1_bmi2(const uint8_t* input, size_t size, uint8_t* output) {
 
             assert(size % 4 == 0);
@@ -155,7 +155,7 @@ namespace base64 {
                 // output: [00000000|ddddddcc|ccccbbbb|bbaaaaaa]
 
                 const uint32_t combined = (b3 << (3*8)) | (b2 << (2*8)) | (b1 << (1*8)) | (b0);
-                const uint32_t dword = pdep32(combined, 0x3f3f3f3f);
+                const uint32_t dword = pext32(combined, 0x3f3f3f3f);
 
                 *reinterpret_cast<uint32_t*>(out) = dword;
                 out += 3;
