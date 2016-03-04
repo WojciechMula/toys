@@ -1,5 +1,5 @@
 /*
-	Lookup-based 32bpp pixels transformations, $Revision: 1.7 $
+	Lookup-based 32bpp pixels transformations
 	
 	This simple program includes following procedures:
 	* naive 	--- strightforward C implementation
@@ -9,25 +9,26 @@
 
 	Define RGBA to process RGBA pixels.  By default RGB pixels are processed.
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 	
 	License: BSD
-	
-	initial release 25-05-2008, last update $Date: 2008-06-08 23:00:44 $
 */
+
+#define _POSIX_C_SOURCE 201603
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <strings.h>
 
-static uint32_t LUT_R[256] __attribute__((aligned(16)));
-static uint32_t LUT_G[256] __attribute__((aligned(16)));
-static uint32_t LUT_B[256] __attribute__((aligned(16)));
+uint32_t LUT_R[256] __attribute__((aligned(16)));
+uint32_t LUT_G[256] __attribute__((aligned(16)));
+uint32_t LUT_B[256] __attribute__((aligned(16)));
 #ifdef RGBA
-static uint32_t LUT_A[256] __attribute__((aligned(16)));
+uint32_t LUT_A[256] __attribute__((aligned(16)));
 #endif
 
 
