@@ -1,5 +1,5 @@
 /*
-	16bpp to 32bpp pixel conversion, $Revision: 1.11 $
+	16bpp to 32bpp pixel conversion
 	
 	This simple program includes following procedures:
 	* naive      --- straightforward conversion that use and, or and shifts
@@ -14,13 +14,11 @@
 	Define NONTEMPORAL to use non-temporal stores in procedures
 	MMX, SSE2 and SSE2(2).
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl
 	
 	License: BSD
-	
-	initial release 20-05-2008, last update $Date: 2008-06-08 22:59:38 $
 */
 #include <stdint.h>
 #include <stdlib.h>
