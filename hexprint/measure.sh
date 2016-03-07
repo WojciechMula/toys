@@ -7,7 +7,8 @@ time="/usr/bin/time -f %E -a -o $log"
 rm -f $log
 for method in std std2 std3 ssse3
 do
-    echo -n "method $method\t" >> $log
+    echo "method $method ..."
+    echo -n "method $method " >> $log
     $time ./$program $method > /dev/null
 done
 

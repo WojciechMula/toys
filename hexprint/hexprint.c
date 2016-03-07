@@ -160,7 +160,7 @@ int main(int argc, char* argv[]) {
 		ssse3_print(buffer, 5);
 	}
 	else {
-		int n = 1000;
+		int n = 1000000;
 		if (strcasecmp(argv[1], "std") == 0 || strcasecmp(argv[1], "std1") == 0)
 			for (i=0; i < n; i++)
 				c_print(buffer, 100);
