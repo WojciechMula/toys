@@ -1,0 +1,4 @@
+*.log
+hexprint
+hexprint_aligned
+branchless_hex

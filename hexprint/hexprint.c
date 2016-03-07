@@ -1,5 +1,5 @@
 /*
-	Hex dump comparison, $Revision: 1.9 $
+	Hex dump comparison
 	
 	Four different approaches to dump hex:
 	* lookup[16]  (nibble-addressing)
@@ -7,13 +7,11 @@
 	* 2 x lookup[256]
 	* using SSSE3 instruction PSHUFB
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl
 	
 	License: BSD
-	
-	initial release 23-05-2008, last update $Date: 2008-06-08 23:00:44 $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -76,9 +74,7 @@ uint32_t c3_hexdigits1[256] __attribute__((aligned(16)));
 
 void c3_prepare_lookups() {
 	uint32_t x;
-	uint32_t z[2];
 	int i;
-	z[1] = 0;
 	for (i=0; i < 256; i++) {
 		x = (HEXDIGITS[i >> 4]) | (HEXDIGITS[i & 0xf] << 8);
 		c3_hexdigits0[i] = x;
@@ -164,7 +160,7 @@ int main(int argc, char* argv[]) {
 		ssse3_print(buffer, 5);
 	}
 	else {
-		int n = 100000;
+		int n = 1000;
 		if (strcasecmp(argv[1], "std") == 0 || strcasecmp(argv[1], "std1") == 0)
 			for (i=0; i < n; i++)
 				c_print(buffer, 100);

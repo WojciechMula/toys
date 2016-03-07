@@ -1,7 +1,7 @@
 /*
 	Brancheless conversion hex to ASCII
 
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 
@@ -9,15 +9,7 @@
 
 	initial release 8-05-2010
 
-	$Id$
-
 	----------------------------------------------------------------------
-
-	maybe some detailed info
-
-	Compilation:
-
-		gcc branchless_hex.c -o prog
 
 	Usage:
 
@@ -26,11 +18,14 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
 
 /* branchless convert nibble to ASCII */
 int to_hex(int x) {
 	int result;
-	asm volatile (
+	__asm__ volatile (
 		"andl $0x0f, %%eax			\n"
 		"leal -10(%%eax), %%ebx			\n"
 		"shrl $29, %%ebx			\n"
@@ -48,7 +43,7 @@ int to_hex(int x) {
 /* branchless convert nibble to ASCII */
 int to_hex2(int x) {
 	int result;
-	asm volatile (
+	__asm__ volatile (
 		"andl $0x0f, %%eax			\n"
 		"leal (0x7fffffff-9)(%%eax), %%ebx	\n"	// MSB(ebx)=1 when eax >= 10
 		"sarl $31, %%ebx			\n"	// ebx - mask
@@ -65,14 +60,14 @@ int to_hex2(int x) {
 //------------------------------------------------------------------------
 
 /* branchless convert 4 nibbles to ASCII */
-int word_to_hex(int x) {
-	int result;
-	int tmp;
+uint32_t word_to_hex(int x) {
+	uint32_t result;
+	uint32_t tmp;
 
 	// [0000abcd] => [0a0b0c0d]
 	tmp = (x & 0x000f) | ((x & 0x00f0) << 4) | ((x & 0x0f00) << 8) | ((x & 0xf000) << 12);
 
-	asm volatile (
+	__asm__ volatile (
 
 		"leal 0x76767676(%%eax), %%ebx		\n"	// MSB of each byte is set when corresponding
 								// eax byte is >= 10
@@ -91,10 +86,15 @@ int word_to_hex(int x) {
 	return result;
 }
 
-int main(int argc, char* argv[0]) {
+int main(int argc, char* argv[]) {
 	int i;
 	int x;
-	char buf[5] = {0};
+    union {
+	    char string[5];
+        uint32_t word;
+    }buffer ;
+
+    memset(buffer.string, 0, sizeof(buffer.string));
 	
 	for (i=0; i <= 15; i++)
 		printf("%d => %d ('%c')\n", i, to_hex(i), to_hex(i));
@@ -105,8 +105,8 @@ int main(int argc, char* argv[0]) {
 
 	for (i=1; i < argc; i++) {
 		x = atoi(argv[i]);
-		*(int*)(&buf[0]) = word_to_hex(x);
-		printf("%08x => %08x ('%s')", x, word_to_hex(x), buf);
+        buffer.word = word_to_hex(x);
+		printf("%08x => %08x ('%s')", x, word_to_hex(x), buffer.string);
 	}
 	
 	return 0;
