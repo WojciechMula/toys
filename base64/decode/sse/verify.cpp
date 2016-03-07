@@ -1,6 +1,9 @@
 #include <cstdio>
 #include <cstring>
 
+#include "config.h"
+#include "../../bmi2.cpp"
+
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
 #include "decode.sse.cpp"
@@ -170,14 +173,17 @@ int test() {
         }
      }
 
-#if defined(HAVE_BMI2)
+#if defined(HAVE_BMI2_INSTRUCTIONS)
     printf("lookup (BMI2)...");
     fflush(stdout);
-    if (test_scalar(base64::scalar::decode_lookup1_bmi2)) {
-        puts("OK");
-    } else {
-        return 1;
-    }
+    {   Test test(4, 3);
+
+        if (test.run(base64::scalar::decode_lookup1_bmi2)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+     }
 #endif
 
     printf("SSE...");

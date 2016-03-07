@@ -33,7 +33,7 @@ public:
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         if (cmd.empty() || cmd.has("scalar_bmi2")) {
-            measure("scalar & BMI2", base64::sse::decode_bmi2, reference);
+            measure("scalar & BMI2", base64::scalar::decode_lookup1_bmi2, reference);
         }
 #endif
 
