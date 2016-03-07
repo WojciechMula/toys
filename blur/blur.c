@@ -71,19 +71,17 @@ void initialize_divide_lookup() {
 		divide_lookup[i] = (i * (65536/9) + (65536/9)) >> 16;
 }
 
-#define inlinefun __attribute__ ((always_inline))
-
 
 // C-language implementation
 
-void inlinefun
+void
 blur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t  border_color,
 	uint16_t *sum_tbl,
 	unsigned int width
 ) {
-	int x;
+	unsigned x;
 	uint8_t *pix;
 	uint16_t a, b, c;
 
@@ -102,14 +100,12 @@ blur_gray_calc_sums(
 }
 
 
-void inlinefun
+void
 blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
-	unsigned int x;
+	unsigned x;
 	uint8_t *pix;
-	uint16_t *sum;
 
 	pix = dst_img;
-	sum = SUM_TABLE;
 	for (x=0; x < width; x++)
 		*pix++ = divide_lookup[
 			SUM_TABLE[x + 0*SUM_TABLE_SIZE] +
@@ -122,12 +118,12 @@ blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 
 // x86 implementation
 
-void inlinefun
+void
 x86blur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
 	uint16_t *sum_tbl,
-	unsigned int width
+	unsigned width
 ) {
 	uint32_t dummy __attribute__((unused));
 
@@ -166,7 +162,7 @@ x86blur_gray_calc_sums(
 	);
 }
 
-void inlinefun
+void
 x86blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	uint32_t dummy __attribute__((unused));
 
@@ -198,7 +194,7 @@ x86blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 
 // MMX implementation
 
-void inlinefun
+void
 mmxblur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
@@ -258,7 +254,7 @@ mmxblur_gray_calc_sums(
 
 // MMX[2] implementation
 
-void inlinefun
+void
 mmx2blur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
@@ -330,7 +326,7 @@ mmx2blur_gray_calc_sums(
 }
 
 
-void inlinefun
+void
 mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	uint32_t dummy __attribute__((unused));
 	static uint16_t mul_const[4] = {65536/9, 65536/9, 65536/9, 65536/9};
@@ -370,7 +366,7 @@ mmxblur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 
 // SSE2 implementation
 
-void inlinefun
+void
 sse2blur_gray_calc_sums(
 	uint8_t  *src_img,
 	uint8_t   border_color,
@@ -434,7 +430,7 @@ sse2blur_gray_calc_sums(
 }
 
 
-void inlinefun
+void
 sse2blur_gray_calc_avg(uint8_t *dst_img, unsigned int width) {
 	uint32_t dummy __attribute__((unused));
 	static uint16_t mul_const[8] = {65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9, 65536/9};
@@ -481,7 +477,7 @@ void fun_name(													\
 	unsigned int height,										\
 	uint8_t border_color										\
 ) {																\
-	int y, i;												\
+	unsigned y, i;												\
 	int offset = 2*SUM_TABLE_SIZE;								\
 																\
 	for (i=0; i < width; i++)									\
