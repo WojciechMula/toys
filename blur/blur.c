@@ -16,11 +16,6 @@
 	Compilation
 	------------------------------------------------------------------------
 
-	simple test program:
-
-	$ gcc -O2 saturated_add.c -o program
-
-
 	X11 view program
 
 	$ gcc -IXscr -Iloadppm -DUSE_Xscr saturated_add.c Xscr/Xscr.c loadppm/load_ppm.c -lX11 -o program
@@ -28,12 +23,6 @@
 	Additional libraries are available at github:
 	* https://github.com/WojciechMula/Xscr
 	* https://github.com/WojciechMula/loadppm
-
-
-	Usage
-	------------------------------------------------------------------------
-
-	Run program without arguments to read help.
 
 
 	Author: Wojciech Muła
