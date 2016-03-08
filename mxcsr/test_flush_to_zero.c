@@ -4,6 +4,9 @@
 #include "mxcsr.c"
 #include "time.c"
 
+#if !defined(DUMP_MXCSR)
+//#   define DUMP_MXCSR
+#endif
 
 void mulps_in_loop();
 
@@ -12,7 +15,6 @@ void mulps_with_flush_to_zero();
 
 int main() {
 	mulps_without_flush_to_zero();
-	puts("");
 	mulps_with_flush_to_zero();
 }
 
@@ -28,7 +30,9 @@ void mulps_without_flush_to_zero() {
 
 	printf("%0.3fs\n", (t2-t1)/1000000.0);
 
+#if defined(DUMP_MXCSR)
 	print_mxcsr_exception_flags(stdout, get_mxcsr());
+#endif
 }
 
 void mulps_with_flush_to_zero() {
@@ -49,7 +53,9 @@ void mulps_with_flush_to_zero() {
 
 	printf("%0.3fs\n", (t2-t1)/1000000.0);
 
+#if defined(DUMP_MXCSR)
 	print_mxcsr_exception_flags(stdout, get_mxcsr());
+#endif
 }
 
 

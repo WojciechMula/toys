@@ -15,6 +15,10 @@ int main() {
 }
 
 
+#if !defined(DUMP_MXCSR)
+//#define DUMP_MXCSR
+#endif
+
 #define packed_float(x) {(x), (x), (x), (x)}
 #define packed_value(name, x) float name[4] = packed_float(x)
 
@@ -45,7 +49,9 @@ void test(const char* msg, const uint32_t flags) {
 		fpclassifyf_str(final_value[0])
 	);
 
+#if defined(DUMP_MXCSR)
 	dump_mxcsr();
+#endif
 }
 
 
