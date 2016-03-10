@@ -11,6 +11,9 @@
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
 #include "decode.sse.cpp"
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+#   include "decode.avx2.cpp"
+#endif
 
 #include "application.cpp"
 
@@ -47,6 +50,18 @@ public:
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         if (cmd.empty() || cmd.has("sse_bmi2")) {
             check("SSE & BMI2", base64::sse::decode_bmi2, valid_hash);
+        }
+#endif
+
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("avx2")) {
+            check("AVX2", base64::avx2::decode, valid_hash);
+        }
+#endif
+
+#if defined(HAVE_AVX2_INSTRUCTIONS) && defined(HAVE_BMI2_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("avx2_bmi2")) {
+            check("AVX2 & BMI2", base64::avx2::decode_bmi2, valid_hash);
         }
 #endif
 

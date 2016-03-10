@@ -7,11 +7,14 @@
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
 #include "decode.sse.cpp"
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+#   include "decode.avx2.cpp"
+#endif
 
 class Test {
 
-    uint8_t input[16];
-    uint8_t output[16];
+    uint8_t input[64];
+    uint8_t output[64];
     unsigned bytes;
     unsigned out_size;
     unsigned current;
@@ -184,7 +187,7 @@ int test() {
             return 1;
         }
      }
-#endif
+#endif // HAVE_BMI2_INSTRUCTIONS
 
     printf("SSE...");
     fflush(stdout);
@@ -196,6 +199,45 @@ int test() {
             return 1;
         }
      }
+
+#if defined(HAVE_BMI2_INSTRUCTIONS)
+    printf("SSE && BMI2...");
+    fflush(stdout);
+    {   Test test(16, 12);
+
+        if (test.run(base64::sse::decode_bmi2)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+     }
+#endif
+
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+    printf("AVX2...");
+    fflush(stdout);
+    {   Test test(32, 24);
+
+        if (test.run(base64::avx2::decode)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+     }
+#endif
+
+#if defined(HAVE_AVX2_INSTRUCTIONS) && defined(HAVE_BMI2_INSTRUCTIONS)
+    printf("AVX2 & BMI2...");
+    fflush(stdout);
+    {   Test test(32, 24);
+
+        if (test.run(base64::avx2::decode_bmi2)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+     }
+#endif // HAVE_AVX2_INSTRUCTIONS
 
     return 0;
 }
