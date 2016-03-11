@@ -1,3 +1,6 @@
 *.pgm
 mandelbrot
-parallel_mandelbrot
+parallel_mandelbrot4
+parallel_mandelbrot8
+parallel_mandelbrot16
+parallel_mandelbrot32
