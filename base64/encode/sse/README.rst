@@ -1,8 +1,15 @@
 Base64 encoding with SIMD instructions
 --------------------------------------------------------------------------------
 
-An SSE implementation is more then **2 times faster** on Core i7,
-and about **70% faster** on Core i5.
+An SSE implementation is more then **2 times faster** on Core i7 (Haswell),
+and about **70% faster** on Core i5. An AVX2 implementation is **3.5 times**
+faster on Core i7 (Skylake).
+
+The full description: http://0x80.pl/notesen/2016-01-12-sse-base64-encoding.html
+
+
+Contents
+--------------------------------------------------
 
 This directory contains following programs:
 
@@ -14,4 +21,14 @@ This directory contains following programs:
   it encodes 192 MiB of artificial data 10 times, and then print the smallest
   measurement.
 
-The full description: http://0x80.pl/notesen/2016-01-12-sse-base64-encoding.html
+
+Compilation
+--------------------------------------------------
+
+Please edit ``config.h`` if you have BMI2 or AVX2 instruction set.
+
+Run ``make`` to compile all the programs containing scalar, SSE and
+possibly BMI2 versions.
+
+Run ``make avx2`` to compile all the programs containing all versions,
+including AVX2.
