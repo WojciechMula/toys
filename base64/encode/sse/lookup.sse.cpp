@@ -80,6 +80,8 @@ namespace base64 {
             return result;
         }
 
+    #undef packed_byte
+
     } // namespace sse
 
 } // namespace base64

@@ -79,6 +79,8 @@ namespace base64 {
         }
 #endif
 
+    #undef packed_dword
+
     } // namespace sse
 
 } // namespace base64

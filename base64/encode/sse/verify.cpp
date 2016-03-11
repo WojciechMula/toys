@@ -1,8 +1,12 @@
 #include <cstdio>
 #include <cstring>
 
+#include "config.h"
 #include "lookup.reference.cpp"
 #include "lookup.sse.cpp"
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+#   include "lookup.avx2.cpp"
+#endif
 
 const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -65,6 +69,50 @@ bool test_sse(LOOKUP_FN fn) {
 }
 
 
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+template<typename LOOKUP_FN>
+bool test_avx2(LOOKUP_FN fn) {
+
+    uint8_t input[32];
+    uint8_t output[32];
+
+    for (unsigned byte=0; byte < 32; byte++) {
+
+        for (unsigned j=0; j < 32; j++) {
+            input[j] = 0;
+        }
+
+        for (unsigned i=0; i < 64; i++) {
+
+            input[byte] = i;
+
+            __m256i in  = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(input));
+            __m256i out = fn(in);
+
+            _mm256_storeu_si256(reinterpret_cast<__m256i*>(output), out);
+
+            for (unsigned j=0; j < 16; j++) {
+
+                if (j == byte) {
+                    if (output[j] != lookup[i]) {
+                        printf("failed at %d, byte %d - wrong result\n", i, byte);
+                        return false;
+                    }
+                } else {
+                    if (output[j] != lookup[0]) {
+                        printf("failed at %d, byte %d - spoiled random byte\n", i, byte);
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+#endif
+
+
 int test() {
 
     printf("reference branchless (optimized v2)... ");
@@ -106,6 +154,16 @@ int test() {
     } else {
         return 1;
     }
+
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+    printf("AVX2 implementation of optimized algorithm... ");
+    fflush(stdout);
+    if (test_avx2(base64::avx2::lookup_version2)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+#endif
 
     return 0;
 }

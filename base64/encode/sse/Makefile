@@ -1,21 +1,42 @@
 .SUFFIXES:
-.PHONY: all
+.PHONY: all avx2
 
-GCC=g++
+CC=g++
 FLAGS=-Wall -pedantic -O3 -std=c++11
 EXT_DEPS=../../fnv32.cpp ../../bmi2.cpp ../../gettime.cpp
 ALL=verify speed check
+ALL_AVX2=verify_avx2 speed_avx2 check_avx2
 
 all: $(ALL)
 
-verify: verify.cpp lookup.*.cpp
-	$(GCC) $(FLAGS) verify.cpp -o verify
+avx2: $(ALL_AVX2)
 
-speed: speed.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
-	$(GCC) $(FLAGS) -msse4 speed.cpp -o speed
 
-check: check.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
-	$(GCC) $(FLAGS) -msse4 check.cpp -o check
+VERIFY_DEPS=verify.cpp lookup.*.cpp
+
+verify: $(VERIFY_DEPS)
+	$(CC) $(FLAGS) -msse4 verify.cpp -o $@
+
+verify_avx2: $(VERIFY_DEPS)
+	$(CC) $(FLAGS) -mavx2 verify.cpp -o $@
+
+
+SPEED_DEPS=speed.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
+
+speed: $(SPEED_DEPS)
+	$(CC) $(FLAGS) -msse4 speed.cpp -o $@
+
+speed_avx2: $(SPEED_DEPS) lookup.avx2.cpp
+	$(CC) $(FLAGS) -mavx2 speed.cpp -o $@
+
+
+CHECK_DEPS=check.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
+
+check: $(CHECK_DEPS)
+	$(CC) $(FLAGS) -msse4 check.cpp -o $@
+
+check_avx2: $(CHECK_DEPS)
+	$(CC) $(FLAGS) -mavx2 check.cpp -o $@
 
 clean:
-	rm -f $(ALL)
+	rm -f $(ALL) $(ALL_AVX2)

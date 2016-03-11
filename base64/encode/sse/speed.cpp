@@ -11,6 +11,10 @@
 #include "encode.scalar.cpp"
 #include "lookup.sse.cpp"
 #include "encode.sse.cpp"
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+#   include "lookup.avx2.cpp"
+#   include "encode.avx2.cpp"
+#endif
 
 #include "application.cpp"
 
@@ -68,6 +72,16 @@ public:
 
         if (cmd.empty() || cmd.has("bmi2")) {
             measure("SSE & BMI2 (optimized)", sse_bmi2_optimized);
+        }
+#endif
+
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+        auto avx2_optimized2 = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::avx2::encode(base64::avx2::lookup_version2, input, bytes, output);
+        };
+
+        if (cmd.empty() || cmd.has("avx2")) {
+            measure("AVX2 (optimized v2)", avx2_optimized2);
         }
 #endif
 

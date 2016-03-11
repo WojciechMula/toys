@@ -11,6 +11,10 @@
 #include "encode.scalar.cpp"
 #include "lookup.sse.cpp"
 #include "encode.sse.cpp"
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+#   include "lookup.avx2.cpp"
+#   include "encode.avx2.cpp"
+#endif
 
 #include "application.cpp"
 
@@ -44,6 +48,12 @@ public:
         };
 #endif
 
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+        auto avx2_optimized2 = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::avx2::encode(base64::avx2::lookup_version2, input, bytes, output);
+        };
+#endif
+
         uint32_t valid;
         valid = check("scalar32", base64::scalar::encode32, 0);
         check("scalar64", base64::scalar::encode64, valid);
@@ -53,6 +63,9 @@ public:
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         check("SSE & BMI2 (naive)", sse_bmi2_naive, valid);
         check("SSE & BMI2 (optimized)", sse_bmi2_optimized, valid);
+#endif
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+        check("AVX2 (optimized v2)", avx2_optimized2, valid);
 #endif
 
         return 0;
