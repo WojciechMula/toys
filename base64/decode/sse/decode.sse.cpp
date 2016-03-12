@@ -4,86 +4,13 @@
 #include <immintrin.h>
 #include <x86intrin.h>
 
+
 namespace base64 {
 
-    namespace sse {
+    namespace sse_templates {
 
-        __m128i lookup(const __m128i input) {
-
-            /*
-            +--------+-------------------+------------------------+
-            | range  | expression        | after constant folding |
-            +========+===================+========================+
-            | A-Z    | i - ord('A')      | i - 65                 |
-            +--------+-------------------+------------------------+
-            | a-z    | i - ord('a') + 26 | i - 71                 |
-            +--------+-------------------+------------------------+
-            | 0-9    | i - ord('0') + 52 | i + 4                  |
-            +--------+-------------------+------------------------+
-            | +      | i - ord('+') + 62 | i + 19                 |
-            +--------+-------------------+------------------------+
-            | /      | i - ord('/') + 63 | i + 16                 |
-            +--------+-------------------+------------------------+
-
-            number of operations:
-            - cmp (le/gt/eq): 9
-            - bit-and:        8
-            - bit-or:         4
-            - add:            1
-            - movemask:       1
-            - total:        =23
-            */
-
-#define packed_byte(b) _mm_set1_epi8(uint8_t(b))
-
-            // shift for range 'A' - 'Z'
-            const __m128i ge_A = _mm_cmpgt_epi8(input, packed_byte('A' - 1));
-            const __m128i le_Z = _mm_cmplt_epi8(input, packed_byte('Z' + 1));
-            const __m128i range_AZ = _mm_and_si128(packed_byte(-65), _mm_and_si128(ge_A, le_Z));
-
-            // shift for range 'a' - 'z'
-            const __m128i ge_a = _mm_cmpgt_epi8(input, packed_byte('a' - 1));
-            const __m128i le_z = _mm_cmplt_epi8(input, packed_byte('z' + 1));
-            const __m128i range_az = _mm_and_si128(packed_byte(-71), _mm_and_si128(ge_a, le_z));
-
-            // shift for range '0' - '9'
-            const __m128i ge_0 = _mm_cmpgt_epi8(input, packed_byte('0' - 1));
-            const __m128i le_9 = _mm_cmplt_epi8(input, packed_byte('9' + 1));
-            const __m128i range_09 = _mm_and_si128(packed_byte(4), _mm_and_si128(ge_0, le_9));
-
-            // shift for character '+'
-            const __m128i eq_plus = _mm_cmpeq_epi8(input, packed_byte('+'));
-            const __m128i char_plus = _mm_and_si128(packed_byte(19), eq_plus);
-
-            // shift for character '/'
-            const __m128i eq_slash = _mm_cmpeq_epi8(input, packed_byte('/'));
-            const __m128i char_slash = _mm_and_si128(packed_byte(16), eq_slash);
-
-            // merge partial results
-
-            const __m128i shift = _mm_or_si128(range_AZ,
-                                  _mm_or_si128(range_az,
-                                  _mm_or_si128(range_09,
-                                  _mm_or_si128(char_plus, char_slash))));
-
-            // Individual shift values are non-zero, thus if any
-            // byte in a shift vector is zero, then the input
-            // contains invalid bytes.
-            const auto mask = _mm_movemask_epi8(_mm_cmpeq_epi8(shift, packed_byte(0)));
-            if (mask) {
-                // some characters do not match the valid range
-                for (unsigned i=0; i < 16; i++) {
-                    if (mask & (1 << i)) {
-                        throw invalid_input(i, 0);
-                    }
-                }
-            }
-
-            return _mm_add_epi8(input, shift);
-#undef packed_byte
-        }
-
-        void decode(const uint8_t* input, size_t size, uint8_t* output) {
+        template <typename FN>
+        void decode(FN lookup, const uint8_t* input, size_t size, uint8_t* output) {
 
             assert(size % 16 == 0);
 
@@ -129,7 +56,7 @@ namespace base64 {
                 const __m128i shuffled = _mm_shuffle_epi8(merged, shuf);
 
 #if 0
-                // Note: maskmove is slower on Core i5 than bare write
+                // Note: on Core i5 maskmove is slower than bare write
                 const __m128i mask = _mm_setr_epi8(
                       char(0xff), char(0xff), char(0xff), char(0xff),
                       char(0xff), char(0xff), char(0xff), char(0xff),
@@ -146,7 +73,8 @@ namespace base64 {
 
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-        void decode_bmi2(const uint8_t* input, size_t size, uint8_t* output) {
+        template <typename FN>
+        void decode_bmi2(FN lookup, const uint8_t* input, size_t size, uint8_t* output) {
 
             assert(size % 16 == 0);
 
@@ -181,7 +109,7 @@ namespace base64 {
         }
 #endif // defined(HAVE_BMI2_INSTRUCTIONS)
 
-    } // namespace sse
+    } // namespace sse_templates
 
 } // namespace base64
 

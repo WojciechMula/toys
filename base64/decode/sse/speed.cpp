@@ -10,9 +10,9 @@
 
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
-#include "decode.sse.cpp"
+#include "decoders.sse.cpp"
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-#   include "decode.avx2.cpp"
+#   include "decoders.avx2.cpp"
 #endif
 
 #include "application.cpp"
@@ -40,27 +40,51 @@ public:
         }
 #endif
 
-        if (cmd.empty() || cmd.has("sse")) {
-            measure("SSE", base64::sse::decode, reference);
+        if (cmd.empty() || cmd.has("sse") || cmd.has("sse/base")) {
+            measure("SSE (lookup: base)       ", base64::sse::decode_with_lookup_base, reference);
+        }
+
+        if (cmd.empty() || cmd.has("sse") || cmd.has("sse/blend")) {
+            measure("SSE (lookup: byte blend) ", base64::sse::decode_with_lookup_byte_blend, reference);
+        }
+
+        if (cmd.empty() || cmd.has("sse") || cmd.has("sse/incremental")) {
+            measure("SSE (lookup: incremental)", base64::sse::decode_with_lookup_incremental, reference);
         }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("sse_bmi2")) {
-            measure("SSE & BMI2", base64::sse::decode_bmi2, reference);
+        if (cmd.empty() || cmd.has("sse_bmi2") || cmd.has("sse_bmi2/base")) {
+            measure("SSE & BMI2 (lookup: base)       ", base64::sse::bmi2::decode_with_lookup_base, reference);
+        }
+
+        if (cmd.empty() || cmd.has("sse_bmi2") || cmd.has("sse_bmi2/blend")) {
+            measure("SSE & BMI2 (lookup: byte blend) ", base64::sse::bmi2::decode_with_lookup_byte_blend, reference);
+        }
+
+        if (cmd.empty() || cmd.has("sse_bmi2") || cmd.has("sse_bmi2/incremental")) {
+            measure("SSE & BMI2 (lookup: incremental)", base64::sse::bmi2::decode_with_lookup_incremental, reference);
         }
 #endif
 
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("avx2")) {
-            measure("AVX2", base64::avx2::decode, reference);
+        if (cmd.empty() || cmd.has("avx2") || cmd.has("avx2/base")) {
+            measure("AVX2 (lookup: base)      ", base64::avx2::decode_with_lookup_base, reference);
         }
-#endif
 
-#if defined(HAVE_AVX2_INSTRUCTIONS) && defined(HAVE_BMI2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("avx2_bmi2")) {
-            measure("AVX2 & BMI2", base64::avx2::decode_bmi2, reference);
+        if (cmd.empty() || cmd.has("avx2") || cmd.has("avx2/blend")) {
+            measure("AVX2 (lookup: byte blend)", base64::avx2::decode_with_lookup_byte_blend, reference);
         }
-#endif
+
+    #if defined(HAVE_BMI2_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("avx2_bmi2") || cmd.has("avx2_bmi2/base")) {
+            measure("AVX2 & BMI2 (lookup: base)      ", base64::avx2::bmi2::decode_with_lookup_base, reference);
+        }
+
+        if (cmd.empty() || cmd.has("avx2_bmi2") || cmd.has("avx2_bmi2/blend")) {
+            measure("AVX2 & BMI2 (lookup: byte blend)", base64::avx2::bmi2::decode_with_lookup_byte_blend, reference);
+        }
+    #endif // HAVE_BMI2_INSTRUCTIONS
+#endif // HAVE_AVX2_INSTRUCTIONS
 
         return 0;
     }
@@ -71,7 +95,7 @@ private:
 
         initialize();
 
-        printf("%20s... ", name);
+        printf("%40s... ", name);
         fflush(stdout);
 
         unsigned n = iterations;
@@ -91,9 +115,9 @@ private:
         }
 
         if (reference > 0.0) {
-            printf("%0.3f (speed up: %0.2f)", time, reference/time);
+            printf("%0.5f (speed up: %0.2f)", time, reference/time);
         } else {
-            printf("%0.3f", time);
+            printf("%0.5f", time);
         }
 
         putchar('\n');

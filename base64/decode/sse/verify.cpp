@@ -6,9 +6,9 @@
 
 #include "decode.common.cpp"
 #include "decode.scalar.cpp"
-#include "decode.sse.cpp"
+#include "decoders.sse.cpp"
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-#   include "decode.avx2.cpp"
+#   include "decoders.avx2.cpp"
 #endif
 
 class Test {
@@ -174,7 +174,7 @@ int test() {
         } else {
             return 1;
         }
-     }
+    }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
     printf("lookup (BMI2)...");
@@ -189,54 +189,121 @@ int test() {
      }
 #endif // HAVE_BMI2_INSTRUCTIONS
 
-    printf("SSE...");
+    printf("SSE (lookup: base)...");
     fflush(stdout);
     {   Test test(16, 12);
 
-        if (test.run(base64::sse::decode)) {
+        if (test.run(base64::sse::decode_with_lookup_base)) {
             puts("OK");
         } else {
             return 1;
         }
-     }
+    }
+
+    printf("SSE (lookup: byte blend)...");
+    fflush(stdout);
+    {   Test test(16, 12);
+
+        if (test.run(base64::sse::decode_with_lookup_byte_blend)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+    }
+
+    printf("SSE (lookup: incremental)...");
+    fflush(stdout);
+    {   Test test(16, 12);
+
+        if (test.run(base64::sse::decode_with_lookup_incremental)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+    }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-    printf("SSE && BMI2...");
+    printf("SSE & BMI2 (lookup: base)...");
     fflush(stdout);
     {   Test test(16, 12);
 
-        if (test.run(base64::sse::decode_bmi2)) {
+        if (test.run(base64::sse::bmi2::decode_with_lookup_base)) {
             puts("OK");
         } else {
             return 1;
         }
-     }
+    }
+
+    printf("SSE & BMI2 (lookup: byte_blend)...");
+    fflush(stdout);
+    {   Test test(16, 12);
+
+        if (test.run(base64::sse::bmi2::decode_with_lookup_byte_blend)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+    }
+
+    printf("SSE & BMI2 (lookup: incremental)...");
+    fflush(stdout);
+    {   Test test(16, 12);
+
+        if (test.run(base64::sse::bmi2::decode_with_lookup_incremental)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+    }
 #endif
 
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-    printf("AVX2...");
+    printf("AVX2 (lookup: base)...");
     fflush(stdout);
     {   Test test(32, 24);
 
-        if (test.run(base64::avx2::decode)) {
+        if (test.run(base64::avx2::decode_with_lookup_base)) {
             puts("OK");
         } else {
             return 1;
         }
-     }
-#endif
+    }
 
-#if defined(HAVE_AVX2_INSTRUCTIONS) && defined(HAVE_BMI2_INSTRUCTIONS)
-    printf("AVX2 & BMI2...");
+    printf("AVX2 (lookup: byte blend)...");
     fflush(stdout);
     {   Test test(32, 24);
 
-        if (test.run(base64::avx2::decode_bmi2)) {
+        if (test.run(base64::avx2::decode_with_lookup_byte_blend)) {
             puts("OK");
         } else {
             return 1;
         }
-     }
+    }
+
+    #if defined(HAVE_BMI2_INSTRUCTIONS)
+    printf("AVX2 & BMI2 (lookup: base)...");
+    fflush(stdout);
+    {   Test test(32, 24);
+
+        if (test.run(base64::avx2::bmi2::decode_with_lookup_base)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+    }
+
+    printf("AVX2 & BMI2 (lookup: byte blend)...");
+    fflush(stdout);
+    {   Test test(32, 24);
+
+        if (test.run(base64::avx2::bmi2::decode_with_lookup_byte_blend)) {
+            puts("OK");
+        } else {
+            return 1;
+        }
+    }
+    #endif // HAVE_BMI2_INSTRUCTIONS
+
 #endif // HAVE_AVX2_INSTRUCTIONS
 
     return 0;
