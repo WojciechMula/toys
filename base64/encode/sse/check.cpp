@@ -38,6 +38,14 @@ public:
             base64::sse::encode(base64::sse::lookup_version2, input, bytes, output);
         };
 
+        auto sse_optimized1_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_unrolled(base64::sse::lookup_version1, input, bytes, output);
+        };
+
+        auto sse_optimized2_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_unrolled(base64::sse::lookup_version2, input, bytes, output);
+        };
+
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         auto sse_bmi2_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode_bmi2(base64::sse::lookup_naive, input, bytes, output);
@@ -64,6 +72,8 @@ public:
         check("SSE (naive)", sse_naive, valid);
         check("SSE (optimized v1)", sse_optimized1, valid);
         check("SSE (optimized v2)", sse_optimized2, valid);
+        check("SSE (optimized v1 unrolled)", sse_optimized1_unrolled, valid);
+        check("SSE (optimized v2 unrolled)", sse_optimized2_unrolled, valid);
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         check("SSE & BMI2 (naive)", sse_bmi2_naive, valid);
         check("SSE & BMI2 (optimized)", sse_bmi2_optimized, valid);
@@ -82,7 +92,7 @@ private:
 
         initialize();
 
-        printf("%20s... ", name);
+        printf("%-30s... ", name);
         fflush(stdout);
 
         clear_output();
