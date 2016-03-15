@@ -20,11 +20,16 @@
 
 class Application final: public ApplicationBase {
 
+    double reference_time;
+
 public:
     Application(const CommandLine& c)
         : ApplicationBase(c) {}
 
     int run() {
+        
+        reference_time = 0.0;
+
         if (cmd.empty() || cmd.has("scalar32")) {
             measure("scalar32", base64::scalar::encode32);
         }
@@ -117,7 +122,7 @@ public:
 
         initialize();
 
-        printf("%s... ", name);
+        printf("%-35s... ", name);
         fflush(stdout);
 
         unsigned n = iterations;
@@ -136,7 +141,16 @@ public:
             }
         }
 
-        printf("%0.3f\n", time);
+        printf("%0.3f", time);
+
+        if (reference_time == 0.0) {
+            reference_time = time;
+        } else {
+            printf(" (speedup %0.2f)", reference_time/time);
+        }
+
+        putchar('\n');
+
         return time;
     }
 };
