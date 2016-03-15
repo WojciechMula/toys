@@ -96,8 +96,16 @@ public:
             base64::avx2::encode(base64::avx2::lookup_version2, input, bytes, output);
         };
 
+        auto avx2_optimized2_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::avx2::encode_unrolled(base64::avx2::lookup_version2, input, bytes, output);
+        };
+
         if (cmd.empty() || cmd.has("avx2")) {
             measure("AVX2 (optimized v2)", avx2_optimized2);
+        }
+
+        if (cmd.empty() || cmd.has("avx2/unrolled")) {
+            measure("AVX2 (optimized v2 unrolled)", avx2_optimized2_unrolled);
         }
 #endif
 

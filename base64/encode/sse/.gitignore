@@ -1,3 +1,6 @@
 verify
 speed
 check
+verify_avx2
+speed_avx2
+check_avx2
