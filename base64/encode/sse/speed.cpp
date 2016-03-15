@@ -78,6 +78,10 @@ public:
             measure("SSE (optimized v2 unrolled)", sse_optimized2_unrolled);
         }
 
+        if (cmd.empty() || cmd.has("sse2/fully_unrolled")) {
+            measure("SSE (optimized v2 fully unrolled)", base64::sse::encode_full_unrolled);
+        }
+
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         auto sse_bmi2_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode_bmi2(base64::sse::lookup_naive, input, bytes, output);
@@ -122,7 +126,7 @@ public:
 
         initialize();
 
-        printf("%-35s... ", name);
+        printf("%-40s... ", name);
         fflush(stdout);
 
         unsigned n = iterations;

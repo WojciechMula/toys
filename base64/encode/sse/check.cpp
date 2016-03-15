@@ -74,6 +74,7 @@ public:
         check("SSE (optimized v2)", sse_optimized2, valid);
         check("SSE (optimized v1 unrolled)", sse_optimized1_unrolled, valid);
         check("SSE (optimized v2 unrolled)", sse_optimized2_unrolled, valid);
+        check("SSE (optimized v2 fully unrolled)", base64::sse::encode_full_unrolled, valid);
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         check("SSE & BMI2 (naive)", sse_bmi2_naive, valid);
         check("SSE & BMI2 (optimized)", sse_bmi2_optimized, valid);
@@ -92,7 +93,7 @@ private:
 
         initialize();
 
-        printf("%-30s... ", name);
+        printf("%-40s... ", name);
         fflush(stdout);
 
         clear_output();
