@@ -18,7 +18,7 @@ verify: $(VERIFY_DEPS)
 	$(CC) $(FLAGS) -msse4 verify.cpp -o $@
 
 verify_avx2: $(VERIFY_DEPS)
-	$(CC) $(FLAGS) -mavx2 verify.cpp -o $@
+	$(CC) $(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS verify.cpp -o $@
 
 
 SPEED_DEPS=speed.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
@@ -27,7 +27,7 @@ speed: $(SPEED_DEPS)
 	$(CC) $(FLAGS) -msse4 speed.cpp -o $@
 
 speed_avx2: $(SPEED_DEPS) lookup.avx2.cpp
-	$(CC) $(FLAGS) -mavx2 speed.cpp -o $@
+	$(CC) $(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS speed.cpp -o $@
 
 
 CHECK_DEPS=check.cpp lookup.sse.cpp encode.*.cpp application.cpp config.h $(EXT_DEPS)
@@ -36,7 +36,7 @@ check: $(CHECK_DEPS)
 	$(CC) $(FLAGS) -msse4 check.cpp -o $@
 
 check_avx2: $(CHECK_DEPS)
-	$(CC) $(FLAGS) -mavx2 check.cpp -o $@
+	$(CC) $(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS check.cpp -o $@
 
 clean:
 	rm -f $(ALL) $(ALL_AVX2)
