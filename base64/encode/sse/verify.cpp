@@ -147,9 +147,17 @@ int test() {
         return 1;
     }
 
-    printf("SSE implementation of optimized algorithm... ");
+    printf("SSE implementation of optimized algorithm (ver 1)... ");
     fflush(stdout);
     if (test_sse(base64::sse::lookup_version1)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
+    printf("SSE implementation of optimized algorithm (ver 2)... ");
+    fflush(stdout);
+    if (test_sse(base64::sse::lookup_version2)) {
         puts("OK");
     } else {
         return 1;

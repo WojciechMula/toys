@@ -45,6 +45,14 @@ public:
             base64::sse::encode(base64::sse::lookup_version2, input, bytes, output);
         };
 
+        auto sse_optimized1_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_unrolled(base64::sse::lookup_version1, input, bytes, output);
+        };
+
+        auto sse_optimized2_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_unrolled(base64::sse::lookup_version2, input, bytes, output);
+        };
+
         if (cmd.empty() || cmd.has("sse")) {
             measure("SSE (naive)", sse_naive);
         }
@@ -55,6 +63,14 @@ public:
 
         if (cmd.empty() || cmd.has("sse2")) {
             measure("SSE (optimized v2)", sse_optimized2);
+        }
+
+        if (cmd.empty() || cmd.has("sse1/unrolled")) {
+            measure("SSE (optimized v1 unrolled)", sse_optimized1_unrolled);
+        }
+
+        if (cmd.empty() || cmd.has("sse2/unrolled")) {
+            measure("SSE (optimized v2 unrolled)", sse_optimized2_unrolled);
         }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
