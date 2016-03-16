@@ -18,12 +18,14 @@ This directory contains following programs:
 * ``speed`` --- allows to measure speed of all or selected base64 decoder;
   it decodes 64 MiB of artificial data 10 times, and then print the smallest
   measurement.
+* ``verify_avx2``, ``check_avx2`` and ``speed_avx2`` do the same as above
+  programs, but include AVX2 versions of the algorithms.
 
 
 Compilation
 --------------------------------------------------
 
-Please edit ``config.h`` if you have BMI2 or AVX2 instruction set.
+Please edit ``config.h`` if you have BMI2 instruction set.
 
 Run ``make see`` (or simply ``make``) to run all the programs containing
 scalar, SSE and possibly BMI2 versions.
