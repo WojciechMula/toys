@@ -15,7 +15,7 @@ rm -f $tmp
 for i in `seq $iterations`
 do
     echo "iteration $i"
-    #$prog | tee -a $tmp
+    $prog | tee -a $tmp
 done
 
 mv $tmp $results

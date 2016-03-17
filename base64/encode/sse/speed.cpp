@@ -35,7 +35,7 @@ public:
         }
 
         if (cmd.empty() || cmd.has("scalar64")) {
-            measure("scalar (32 bit)", base64::scalar::encode64);
+            measure("scalar (64 bit)", base64::scalar::encode64);
         }
 
         auto sse_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
