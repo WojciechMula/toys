@@ -1,0 +1,45 @@
+input size: 201326592
+scalar (32 bit)                         ... 0.17484
+scalar (64 bit)                         ... 0.17091 (speedup 1.02)
+SSE (lookup: naive)                     ... 0.10392 (speedup 1.68)
+SSE (lookup: other improved)            ... 0.09680 (speedup 1.81)
+SSE (lookup: improved)                  ... 0.09201 (speedup 1.90)
+SSE (lookup: other improved, unrolled)  ... 0.08546 (speedup 2.05)
+SSE (lookup: improved, unrolled)        ... 0.08567 (speedup 2.04)
+SSE (fully unrolled improved lookup)    ... 0.08572 (speedup 2.04)
+input size: 201326592
+scalar (32 bit)                         ... 0.17514
+scalar (64 bit)                         ... 0.17128 (speedup 1.02)
+SSE (lookup: naive)                     ... 0.10407 (speedup 1.68)
+SSE (lookup: other improved)            ... 0.09687 (speedup 1.81)
+SSE (lookup: improved)                  ... 0.09209 (speedup 1.90)
+SSE (lookup: other improved, unrolled)  ... 0.08567 (speedup 2.04)
+SSE (lookup: improved, unrolled)        ... 0.08582 (speedup 2.04)
+SSE (fully unrolled improved lookup)    ... 0.08581 (speedup 2.04)
+input size: 201326592
+scalar (32 bit)                         ... 0.17466
+scalar (64 bit)                         ... 0.17073 (speedup 1.02)
+SSE (lookup: naive)                     ... 0.10379 (speedup 1.68)
+SSE (lookup: other improved)            ... 0.09671 (speedup 1.81)
+SSE (lookup: improved)                  ... 0.09186 (speedup 1.90)
+SSE (lookup: other improved, unrolled)  ... 0.08540 (speedup 2.05)
+SSE (lookup: improved, unrolled)        ... 0.08559 (speedup 2.04)
+SSE (fully unrolled improved lookup)    ... 0.08556 (speedup 2.04)
+input size: 201326592
+scalar (32 bit)                         ... 0.17538
+scalar (64 bit)                         ... 0.17143 (speedup 1.02)
+SSE (lookup: naive)                     ... 0.10418 (speedup 1.68)
+SSE (lookup: other improved)            ... 0.09699 (speedup 1.81)
+SSE (lookup: improved)                  ... 0.09218 (speedup 1.90)
+SSE (lookup: other improved, unrolled)  ... 0.08588 (speedup 2.04)
+SSE (lookup: improved, unrolled)        ... 0.08620 (speedup 2.03)
+SSE (fully unrolled improved lookup)    ... 0.08606 (speedup 2.04)
+input size: 201326592
+scalar (32 bit)                         ... 0.17474
+scalar (64 bit)                         ... 0.17087 (speedup 1.02)
+SSE (lookup: naive)                     ... 0.10379 (speedup 1.68)
+SSE (lookup: other improved)            ... 0.09673 (speedup 1.81)
+SSE (lookup: improved)                  ... 0.09187 (speedup 1.90)
+SSE (lookup: other improved, unrolled)  ... 0.08549 (speedup 2.04)
+SSE (lookup: improved, unrolled)        ... 0.08559 (speedup 2.04)
+SSE (fully unrolled improved lookup)    ... 0.08571 (speedup 2.04)
