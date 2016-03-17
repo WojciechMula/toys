@@ -31,11 +31,11 @@ public:
         reference_time = 0.0;
 
         if (cmd.empty() || cmd.has("scalar32")) {
-            measure("scalar32", base64::scalar::encode32);
+            measure("scalar (32 bit)", base64::scalar::encode32);
         }
 
         if (cmd.empty() || cmd.has("scalar64")) {
-            measure("scalar64", base64::scalar::encode64);
+            measure("scalar (32 bit)", base64::scalar::encode64);
         }
 
         auto sse_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
@@ -59,27 +59,27 @@ public:
         };
 
         if (cmd.empty() || cmd.has("sse")) {
-            measure("SSE (naive)", sse_naive);
+            measure("SSE (lookup: naive)", sse_naive);
         }
 
         if (cmd.empty() || cmd.has("sse1")) {
-            measure("SSE (optimized v1)", sse_optimized1);
+            measure("SSE (lookup: other improved)", sse_optimized1);
         }
 
         if (cmd.empty() || cmd.has("sse2")) {
-            measure("SSE (optimized v2)", sse_optimized2);
+            measure("SSE (lookup: improved)", sse_optimized2);
         }
 
         if (cmd.empty() || cmd.has("sse1/unrolled")) {
-            measure("SSE (optimized v1 unrolled)", sse_optimized1_unrolled);
+            measure("SSE (lookup: other improved, unrolled)", sse_optimized1_unrolled);
         }
 
         if (cmd.empty() || cmd.has("sse2/unrolled")) {
-            measure("SSE (optimized v2 unrolled)", sse_optimized2_unrolled);
+            measure("SSE (lookup: improved, unrolled)", sse_optimized2_unrolled);
         }
 
         if (cmd.empty() || cmd.has("sse2/fully_unrolled")) {
-            measure("SSE (optimized v2 fully unrolled)", base64::sse::encode_full_unrolled);
+            measure("SSE (fully unrolled improved lookup)", base64::sse::encode_full_unrolled);
         }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
@@ -87,16 +87,16 @@ public:
             base64::sse::encode_bmi2(base64::sse::lookup_naive, input, bytes, output);
         };
 
-        auto sse_bmi2_optimized = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode_bmi2(base64::sse::lookup_version1, input, bytes, output);
+        auto sse_bmi2_improved = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_bmi2(base64::sse::lookup_version2, input, bytes, output);
         };
 
         if (cmd.empty() || cmd.has("bmi1")) {
-            measure("SSE & BMI2 (naive)", sse_bmi2_naive);
+            measure("SSE & BMI2 (lookup: naive)", sse_bmi2_naive);
         }
 
         if (cmd.empty() || cmd.has("bmi2")) {
-            measure("SSE & BMI2 (optimized)", sse_bmi2_optimized);
+            measure("SSE & BMI2 (lookup: improved)", sse_bmi2_improved);
         }
 #endif
 
@@ -110,11 +110,11 @@ public:
         };
 
         if (cmd.empty() || cmd.has("avx2")) {
-            measure("AVX2 (optimized v2)", avx2_optimized2);
+            measure("AVX2 (lookup: improved)", avx2_optimized2);
         }
 
         if (cmd.empty() || cmd.has("avx2/unrolled")) {
-            measure("AVX2 (optimized v2 unrolled)", avx2_optimized2_unrolled);
+            measure("AVX2 (lookup: improved, unrolled)", avx2_optimized2_unrolled);
         }
 #endif
 
@@ -145,7 +145,7 @@ public:
             }
         }
 
-        printf("%0.3f", time);
+        printf("%0.5f", time);
 
         if (reference_time == 0.0) {
             reference_time = time;

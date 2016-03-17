@@ -36,29 +36,29 @@ namespace base64 {
 
                 // single lane layout; a, b, c and d are bits from 6-bit groups
                 // [00000000|ddddddcc|ccccbbbb|bbaaaaaa]
-                const __m128i indice_a = _mm_and_si128(in, packed_dword(0x0000003f));
-                const __m128i indice_b = _mm_and_si128(_mm_slli_epi32(in, 2), packed_dword(0x00003f00));
-                const __m128i indice_c = _mm_and_si128(_mm_slli_epi32(in, 4), packed_dword(0x003f0000));
-                const __m128i indice_d = _mm_and_si128(_mm_slli_epi32(in, 6), packed_dword(0x3f000000));
+                const __m128i indices_a = _mm_and_si128(in, packed_dword(0x0000003f));
+                const __m128i indices_b = _mm_and_si128(_mm_slli_epi32(in, 2), packed_dword(0x00003f00));
+                const __m128i indices_c = _mm_and_si128(_mm_slli_epi32(in, 4), packed_dword(0x003f0000));
+                const __m128i indices_d = _mm_and_si128(_mm_slli_epi32(in, 6), packed_dword(0x3f000000));
 
                 // indices = [00dddddd|00cccccc|00bbbbbb|00aaaaaa]
-                const __m128i indices = _mm_or_si128(_mm_or_si128(_mm_or_si128(indice_a, indice_b), indice_c), indice_d);
+                const __m128i indices = _mm_or_si128(_mm_or_si128(_mm_or_si128(indices_a, indices_b), indices_c), indices_d);
 #else
                 // improved version
 
                 // in        = [00000000|ddddddcc|ccccbbbb|bbaaaaaa]
 
-                // indice_ab = [00000000|00000000|0000bbbb|bbaaaaaa]
-                // indice_cd = [0000dddd|ddcccccc|00000000|00000000]
-                const __m128i indice_ab = _mm_and_si128(in, packed_dword(0x00000fff));
-                const __m128i indice_cd = _mm_and_si128(_mm_slli_epi32(in, 4), packed_dword(0x0fff0000));
+                // indices_ab = [00000000|00000000|0000bbbb|bbaaaaaa]
+                // indices_cd = [0000dddd|ddcccccc|00000000|00000000]
+                const __m128i indices_ab = _mm_and_si128(in, packed_dword(0x00000fff));
+                const __m128i indices_cd = _mm_and_si128(_mm_slli_epi32(in, 4), packed_dword(0x0fff0000));
 
                 // in'       = [0000dddd|ddcccccc|0000bbbb|bbaaaaaa]
-                in = _mm_or_si128(indice_ab, indice_cd);
-                const __m128i indice_ac = _mm_and_si128(in, packed_dword(0x003f003f));
-                const __m128i indice_db = _mm_and_si128(_mm_slli_epi32(in, 2), packed_dword(0x3f003f00));
+                in = _mm_or_si128(indices_ab, indices_cd);
+                const __m128i indices_ac = _mm_and_si128(in, packed_dword(0x003f003f));
+                const __m128i indices_db = _mm_and_si128(_mm_slli_epi32(in, 2), packed_dword(0x3f003f00));
 
-                const __m128i indices = _mm_or_si128(indice_ac, indice_db);
+                const __m128i indices = _mm_or_si128(indices_ac, indices_db);
 #endif
                 const auto result = lookup(indices);
 
@@ -94,35 +94,35 @@ namespace base64 {
                 in2 = _mm_shuffle_epi8(in2, shuf);
                 in3 = _mm_shuffle_epi8(in3, shuf);
 
-                const __m128i indice_ab0 = _mm_and_si128(in0, packed_dword(0x00000fff));
-                const __m128i indice_ab1 = _mm_and_si128(in1, packed_dword(0x00000fff));
-                const __m128i indice_ab2 = _mm_and_si128(in2, packed_dword(0x00000fff));
-                const __m128i indice_ab3 = _mm_and_si128(in3, packed_dword(0x00000fff));
+                const __m128i indices_ab0 = _mm_and_si128(in0, packed_dword(0x00000fff));
+                const __m128i indices_ab1 = _mm_and_si128(in1, packed_dword(0x00000fff));
+                const __m128i indices_ab2 = _mm_and_si128(in2, packed_dword(0x00000fff));
+                const __m128i indices_ab3 = _mm_and_si128(in3, packed_dword(0x00000fff));
 
-                const __m128i indice_cd0 = _mm_and_si128(_mm_slli_epi32(in0, 4), packed_dword(0x0fff0000));
-                const __m128i indice_cd1 = _mm_and_si128(_mm_slli_epi32(in1, 4), packed_dword(0x0fff0000));
-                const __m128i indice_cd2 = _mm_and_si128(_mm_slli_epi32(in2, 4), packed_dword(0x0fff0000));
-                const __m128i indice_cd3 = _mm_and_si128(_mm_slli_epi32(in3, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd0 = _mm_and_si128(_mm_slli_epi32(in0, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd1 = _mm_and_si128(_mm_slli_epi32(in1, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd2 = _mm_and_si128(_mm_slli_epi32(in2, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd3 = _mm_and_si128(_mm_slli_epi32(in3, 4), packed_dword(0x0fff0000));
 
-                in0 = _mm_or_si128(indice_ab0, indice_cd0);
-                in1 = _mm_or_si128(indice_ab1, indice_cd1);
-                in2 = _mm_or_si128(indice_ab2, indice_cd2);
-                in3 = _mm_or_si128(indice_ab3, indice_cd3);
+                in0 = _mm_or_si128(indices_ab0, indices_cd0);
+                in1 = _mm_or_si128(indices_ab1, indices_cd1);
+                in2 = _mm_or_si128(indices_ab2, indices_cd2);
+                in3 = _mm_or_si128(indices_ab3, indices_cd3);
 
-                const __m128i indice_ac0 = _mm_and_si128(in0, packed_dword(0x003f003f));
-                const __m128i indice_ac1 = _mm_and_si128(in1, packed_dword(0x003f003f));
-                const __m128i indice_ac2 = _mm_and_si128(in2, packed_dword(0x003f003f));
-                const __m128i indice_ac3 = _mm_and_si128(in3, packed_dword(0x003f003f));
+                const __m128i indices_ac0 = _mm_and_si128(in0, packed_dword(0x003f003f));
+                const __m128i indices_ac1 = _mm_and_si128(in1, packed_dword(0x003f003f));
+                const __m128i indices_ac2 = _mm_and_si128(in2, packed_dword(0x003f003f));
+                const __m128i indices_ac3 = _mm_and_si128(in3, packed_dword(0x003f003f));
 
-                const __m128i indice_db0 = _mm_and_si128(_mm_slli_epi32(in0, 2), packed_dword(0x3f003f00));
-                const __m128i indice_db1 = _mm_and_si128(_mm_slli_epi32(in1, 2), packed_dword(0x3f003f00));
-                const __m128i indice_db2 = _mm_and_si128(_mm_slli_epi32(in2, 2), packed_dword(0x3f003f00));
-                const __m128i indice_db3 = _mm_and_si128(_mm_slli_epi32(in3, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db0 = _mm_and_si128(_mm_slli_epi32(in0, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db1 = _mm_and_si128(_mm_slli_epi32(in1, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db2 = _mm_and_si128(_mm_slli_epi32(in2, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db3 = _mm_and_si128(_mm_slli_epi32(in3, 2), packed_dword(0x3f003f00));
 
-                const __m128i input0 = _mm_or_si128(indice_ac0, indice_db0);
-                const __m128i input1 = _mm_or_si128(indice_ac1, indice_db1);
-                const __m128i input2 = _mm_or_si128(indice_ac2, indice_db2);
-                const __m128i input3 = _mm_or_si128(indice_ac3, indice_db3);
+                const __m128i input0 = _mm_or_si128(indices_ac0, indices_db0);
+                const __m128i input1 = _mm_or_si128(indices_ac1, indices_db1);
+                const __m128i input2 = _mm_or_si128(indices_ac2, indices_db2);
+                const __m128i input3 = _mm_or_si128(indices_ac3, indices_db3);
 
                 {
                     const auto result = lookup(input0);
@@ -179,35 +179,35 @@ namespace base64 {
                 in2 = _mm_shuffle_epi8(in2, shuf);
                 in3 = _mm_shuffle_epi8(in3, shuf);
 
-                const __m128i indice_ab0 = _mm_and_si128(in0, packed_dword(0x00000fff));
-                const __m128i indice_ab1 = _mm_and_si128(in1, packed_dword(0x00000fff));
-                const __m128i indice_ab2 = _mm_and_si128(in2, packed_dword(0x00000fff));
-                const __m128i indice_ab3 = _mm_and_si128(in3, packed_dword(0x00000fff));
+                const __m128i indices_ab0 = _mm_and_si128(in0, packed_dword(0x00000fff));
+                const __m128i indices_ab1 = _mm_and_si128(in1, packed_dword(0x00000fff));
+                const __m128i indices_ab2 = _mm_and_si128(in2, packed_dword(0x00000fff));
+                const __m128i indices_ab3 = _mm_and_si128(in3, packed_dword(0x00000fff));
 
-                const __m128i indice_cd0 = _mm_and_si128(_mm_slli_epi32(in0, 4), packed_dword(0x0fff0000));
-                const __m128i indice_cd1 = _mm_and_si128(_mm_slli_epi32(in1, 4), packed_dword(0x0fff0000));
-                const __m128i indice_cd2 = _mm_and_si128(_mm_slli_epi32(in2, 4), packed_dword(0x0fff0000));
-                const __m128i indice_cd3 = _mm_and_si128(_mm_slli_epi32(in3, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd0 = _mm_and_si128(_mm_slli_epi32(in0, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd1 = _mm_and_si128(_mm_slli_epi32(in1, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd2 = _mm_and_si128(_mm_slli_epi32(in2, 4), packed_dword(0x0fff0000));
+                const __m128i indices_cd3 = _mm_and_si128(_mm_slli_epi32(in3, 4), packed_dword(0x0fff0000));
 
-                in0 = _mm_or_si128(indice_ab0, indice_cd0);
-                in1 = _mm_or_si128(indice_ab1, indice_cd1);
-                in2 = _mm_or_si128(indice_ab2, indice_cd2);
-                in3 = _mm_or_si128(indice_ab3, indice_cd3);
+                in0 = _mm_or_si128(indices_ab0, indices_cd0);
+                in1 = _mm_or_si128(indices_ab1, indices_cd1);
+                in2 = _mm_or_si128(indices_ab2, indices_cd2);
+                in3 = _mm_or_si128(indices_ab3, indices_cd3);
 
-                const __m128i indice_ac0 = _mm_and_si128(in0, packed_dword(0x003f003f));
-                const __m128i indice_ac1 = _mm_and_si128(in1, packed_dword(0x003f003f));
-                const __m128i indice_ac2 = _mm_and_si128(in2, packed_dword(0x003f003f));
-                const __m128i indice_ac3 = _mm_and_si128(in3, packed_dword(0x003f003f));
+                const __m128i indices_ac0 = _mm_and_si128(in0, packed_dword(0x003f003f));
+                const __m128i indices_ac1 = _mm_and_si128(in1, packed_dword(0x003f003f));
+                const __m128i indices_ac2 = _mm_and_si128(in2, packed_dword(0x003f003f));
+                const __m128i indices_ac3 = _mm_and_si128(in3, packed_dword(0x003f003f));
 
-                const __m128i indice_db0 = _mm_and_si128(_mm_slli_epi32(in0, 2), packed_dword(0x3f003f00));
-                const __m128i indice_db1 = _mm_and_si128(_mm_slli_epi32(in1, 2), packed_dword(0x3f003f00));
-                const __m128i indice_db2 = _mm_and_si128(_mm_slli_epi32(in2, 2), packed_dword(0x3f003f00));
-                const __m128i indice_db3 = _mm_and_si128(_mm_slli_epi32(in3, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db0 = _mm_and_si128(_mm_slli_epi32(in0, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db1 = _mm_and_si128(_mm_slli_epi32(in1, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db2 = _mm_and_si128(_mm_slli_epi32(in2, 2), packed_dword(0x3f003f00));
+                const __m128i indices_db3 = _mm_and_si128(_mm_slli_epi32(in3, 2), packed_dword(0x3f003f00));
 
-                const __m128i input0 = _mm_or_si128(indice_ac0, indice_db0);
-                const __m128i input1 = _mm_or_si128(indice_ac1, indice_db1);
-                const __m128i input2 = _mm_or_si128(indice_ac2, indice_db2);
-                const __m128i input3 = _mm_or_si128(indice_ac3, indice_db3);
+                const __m128i input0 = _mm_or_si128(indices_ac0, indices_db0);
+                const __m128i input1 = _mm_or_si128(indices_ac1, indices_db1);
+                const __m128i input2 = _mm_or_si128(indices_ac2, indices_db2);
+                const __m128i input3 = _mm_or_si128(indices_ac3, indices_db3);
 
                 // unrolled lookup_version2 from lookup.sse.cpp
                 __m128i result_0 = packed_byte(65);
