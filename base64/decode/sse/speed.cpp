@@ -15,74 +15,49 @@
 #   include "decoders.avx2.cpp"
 #endif
 
+#include "function_registry.cpp"
 #include "application.cpp"
 
 class Application final: public ApplicationBase {
 
 public:
-    Application(const CommandLine& c)
-        : ApplicationBase(c) {}
+    Application(const CommandLine& c, const FunctionRegistry& r)
+        : ApplicationBase(c, r) {}
 
     int run() {
         double reference = 0.0;
 
-        if (cmd.empty() || cmd.has("improved")) {
-            reference = measure("improved scalar", base64::scalar::decode_lookup2, reference);
+#define RUN(name, function) \
+        if (cmd.empty() || cmd.has(name)) { \
+            const double ret = measure(name, function, reference); \
+            if (reference == 0.0) { \
+                reference = ret; \
+            } \
         }
 
-        if (cmd.empty() || cmd.has("scalar")) {
-            measure("scalar", base64::scalar::decode_lookup1, reference);
-        }
+        RUN("improved", base64::scalar::decode_lookup2);
+        RUN("scalar", base64::scalar::decode_lookup1);
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("scalar_bmi2")) {
-            measure("scalar & BMI2", base64::scalar::decode_lookup1_bmi2, reference);
-        }
+        RUN("scalar_bmi2", base64::scalar::decode_lookup1_bmi2);
 #endif
-
-        if (cmd.empty() || cmd.has("sse") || cmd.has("sse/base")) {
-            measure("SSE (lookup: base)       ", base64::sse::decode_with_lookup_base, reference);
-        }
-
-        if (cmd.empty() || cmd.has("sse") || cmd.has("sse/blend")) {
-            measure("SSE (lookup: byte blend) ", base64::sse::decode_with_lookup_byte_blend, reference);
-        }
-
-        if (cmd.empty() || cmd.has("sse") || cmd.has("sse/incremental")) {
-            measure("SSE (lookup: incremental)", base64::sse::decode_with_lookup_incremental, reference);
-        }
+        RUN("sse/base", base64::sse::decode_with_lookup_base);
+        RUN("sse/blend", base64::sse::decode_with_lookup_byte_blend);
+        RUN("sse/incremental", base64::sse::decode_with_lookup_incremental);
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("sse_bmi2") || cmd.has("sse_bmi2/base")) {
-            measure("SSE & BMI2 (lookup: base)       ", base64::sse::bmi2::decode_with_lookup_base, reference);
-        }
-
-        if (cmd.empty() || cmd.has("sse_bmi2") || cmd.has("sse_bmi2/blend")) {
-            measure("SSE & BMI2 (lookup: byte blend) ", base64::sse::bmi2::decode_with_lookup_byte_blend, reference);
-        }
-
-        if (cmd.empty() || cmd.has("sse_bmi2") || cmd.has("sse_bmi2/incremental")) {
-            measure("SSE & BMI2 (lookup: incremental)", base64::sse::bmi2::decode_with_lookup_incremental, reference);
-        }
+        RUN("sse_bmi2/base", base64::sse::bmi2::decode_with_lookup_base);
+        RUN("sse_bmi2/blend", base64::sse::bmi2::decode_with_lookup_byte_blend);
+        RUN("sse_bmi2/incremental", base64::sse::bmi2::decode_with_lookup_incremental);
 #endif
 
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("avx2") || cmd.has("avx2/base")) {
-            measure("AVX2 (lookup: base)      ", base64::avx2::decode_with_lookup_base, reference);
-        }
-
-        if (cmd.empty() || cmd.has("avx2") || cmd.has("avx2/blend")) {
-            measure("AVX2 (lookup: byte blend)", base64::avx2::decode_with_lookup_byte_blend, reference);
-        }
+        RUN("avx2/base", base64::avx2::decode_with_lookup_base);
+        RUN("avx2/blend", base64::avx2::decode_with_lookup_byte_blend);
 
     #if defined(HAVE_BMI2_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("avx2_bmi2") || cmd.has("avx2_bmi2/base")) {
-            measure("AVX2 & BMI2 (lookup: base)      ", base64::avx2::bmi2::decode_with_lookup_base, reference);
-        }
-
-        if (cmd.empty() || cmd.has("avx2_bmi2") || cmd.has("avx2_bmi2/blend")) {
-            measure("AVX2 & BMI2 (lookup: byte blend)", base64::avx2::bmi2::decode_with_lookup_byte_blend, reference);
-        }
+        RUN("avx2_bmi2/base", base64::avx2::bmi2::decode_with_lookup_base);
+        RUN("avx2_bmi2/blend", base64::avx2::bmi2::decode_with_lookup_byte_blend);
     #endif // HAVE_BMI2_INSTRUCTIONS
 #endif // HAVE_AVX2_INSTRUCTIONS
 
@@ -95,7 +70,7 @@ private:
 
         initialize();
 
-        printf("%40s... ", name);
+        printf("%*s ... ", -names.get_width(), names[name]);
         fflush(stdout);
 
         unsigned n = iterations;
@@ -129,8 +104,9 @@ private:
 
 int main(int argc, char* argv[]) {
 
+    FunctionRegistry registry;
     CommandLine cmd(argc, argv);
-    Application app(cmd);
+    Application app(cmd, registry);
 
     return app.run();
 }

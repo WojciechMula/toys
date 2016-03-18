@@ -2,8 +2,12 @@
 .PHONY: all clean run
 
 CC=g++
-FLAGS=-Wall -pedantic -O3 -std=c++11
-DEPS=decode.*.cpp decoders.*.cpp lookup.*.cpp config.h
+FLAGS_BASE=-Wall -Wextra -pedantic -O3 -std=c++11
+FLAGS=$(FLAGS_BASE) -msse4
+FLAGS_AVX2=$(FLAGS_BASE) -mavx2 -DHAVE_AVX2_INSTRUCTIONS
+
+DEPS=decode.*.cpp decoders.*.cpp lookup.*.cpp function_registry.cpp config.h
+
 ALL=verify speed check
 ALL_AVX2=verify_avx2 speed_avx2 check_avx2
 
@@ -28,22 +32,22 @@ SPEED_DEPS=speed.cpp $(DEPS) application.cpp ../../cmdline.cpp ../../bmi2.cpp ..
 CHECK_DEPS=check.cpp $(DEPS) application.cpp ../../cmdline.cpp ../../bmi2.cpp ../../fnv32.cpp
 
 verify: $(VERIFY_DEPS)
-	$(CC) $(FLAGS) -msse4 verify.cpp -o $@
+	$(CC) $(FLAGS) verify.cpp -o $@
 
 speed: $(SPEED_DEPS)
-	$(CC) $(FLAGS) -msse4 speed.cpp -o $@
+	$(CC) $(FLAGS) speed.cpp -o $@
 
 check: $(CHECK_DEPS)
-	$(CC) $(FLAGS) -msse4 check.cpp -o $@
+	$(CC) $(FLAGS) check.cpp -o $@
 
 verify_avx2: $(VERIFY_DEPS)
-	$(CC) $(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS verify.cpp -o $@
+	$(CC) $(FLAGS_AVX2) verify.cpp -o $@
 
 speed_avx2: $(SPEED_DEPS)
-	$(CC) $(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS speed.cpp -o $@
+	$(CC) $(FLAGS_AVX2) speed.cpp -o $@
 
 check_avx2: $(CHECK_DEPS)
-	$(CC) $(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS check.cpp -o $@
+	$(CC) $(FLAGS_AVX2) check.cpp -o $@
 
 clean:
 	rm -f $(ALL) $(ALL_AVX2)

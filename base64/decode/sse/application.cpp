@@ -2,6 +2,7 @@ class ApplicationBase {
 
 protected:
     const CommandLine& cmd;
+    const FunctionRegistry& names;
     const unsigned count;
     const unsigned iterations;
     bool initialized;
@@ -9,8 +10,9 @@ protected:
     std::unique_ptr<uint8_t> input;
     std::unique_ptr<uint8_t> output;
 public:
-    ApplicationBase(const CommandLine& c)
+    ApplicationBase(const CommandLine& c, const FunctionRegistry& names)
         : cmd(c)
+        , names(names)
         , count(64*1024*1024)
         , iterations(10)
         , initialized(false) {}
