@@ -106,14 +106,14 @@ namespace base64 {
                                      | lookup32[1][input[i + 1]]
                                      | lookup32[2][input[i + 2]]
                                      | lookup32[3][input[i + 3]];
-                
+
                 // Note: character '=' is not handled here.
                 if (dword & 0x80000000) {
-                    
+
                     const auto shift = (dword >> 24) & 0x3;
                     throw invalid_input(i + shift, input[i + shift]);
                 }
-        
+
                 *reinterpret_cast<uint32_t*>(out) = dword;
                 out += 3;
 
@@ -168,7 +168,7 @@ namespace base64 {
             prepare_lookup();
             prepare_lookup32();
         }
-        
+
     } // namespace scalar
 
 } // namespace base64

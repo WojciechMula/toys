@@ -35,34 +35,31 @@ public:
             valid_hash = check(name, function, valid_hash); \
         }
 
-        RUN("improved", base64::scalar::decode_lookup2);
-        RUN("scalar", base64::scalar::decode_lookup1);
+#define RUN_TEMPLATE1(name, decode_fn, lookup_fn) \
+        if (cmd.empty() || cmd.has(name)) { \
+            auto function = [](const uint8_t* input, size_t size, uint8_t* output) { \
+                return decode_fn(lookup_fn, input, size, output); \
+            }; \
+            valid_hash = check(name, function, valid_hash); \
+        }
 
-#if defined(HAVE_BMI2_INSTRUCTIONS)
-        RUN("scalar_bmi2", base64::scalar::decode_lookup1_bmi2);
-#endif
-        RUN("sse/base", base64::sse::decode_with_lookup_base);
-        RUN("sse/blend", base64::sse::decode_with_lookup_byte_blend);
-        RUN("sse/incremental", base64::sse::decode_with_lookup_incremental);
+#define RUN_TEMPLATE2(name, decode_fn, lookup_fn, pack_fn) \
+        if (cmd.empty() || cmd.has(name)) { \
+            auto function = [](const uint8_t* input, size_t size, uint8_t* output) { \
+                return decode_fn(lookup_fn, pack_fn, input, size, output); \
+            }; \
+            valid_hash = check(name, function, valid_hash); \
+        }
 
-#if defined(HAVE_BMI2_INSTRUCTIONS)
-        RUN("sse_bmi2/base", base64::sse::bmi2::decode_with_lookup_base);
-        RUN("sse_bmi2/blend", base64::sse::bmi2::decode_with_lookup_byte_blend);
-        RUN("sse_bmi2/incremental", base64::sse::bmi2::decode_with_lookup_incremental);
-#endif
+#define RUN_SSE_TEMPLATE1 RUN_TEMPLATE1
+#define RUN_AVX2_TEMPLATE1 RUN_TEMPLATE1
+#define RUN_SSE_TEMPLATE2 RUN_TEMPLATE2
+#define RUN_AVX2_TEMPLATE2 RUN_TEMPLATE2
 
-#if defined(HAVE_AVX2_INSTRUCTIONS)
-        RUN("avx2/base", base64::avx2::decode_with_lookup_base);
-        RUN("avx2/blend", base64::avx2::decode_with_lookup_byte_blend);
-
-    #if defined(HAVE_BMI2_INSTRUCTIONS)
-        RUN("avx2_bmi2/base", base64::avx2::bmi2::decode_with_lookup_base);
-        RUN("avx2_bmi2/blend", base64::avx2::bmi2::decode_with_lookup_byte_blend);
-    #endif // HAVE_BMI2_INSTRUCTIONS
-#endif // HAVE_AVX2_INSTRUCTIONS
+        #include "run_all.cpp"
 
         if (cmd.empty()) {
-            
+
             puts(all_ok ? "all OK" : "!!!ERRORS!!!");
         }
 

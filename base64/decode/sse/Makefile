@@ -6,7 +6,7 @@ FLAGS_BASE=-Wall -Wextra -pedantic -O3 -std=c++11
 FLAGS=$(FLAGS_BASE) -msse4
 FLAGS_AVX2=$(FLAGS_BASE) -mavx2 -DHAVE_AVX2_INSTRUCTIONS
 
-DEPS=decode.*.cpp decoders.*.cpp lookup.*.cpp function_registry.cpp config.h
+DEPS=decode.*.cpp decoders.*.cpp lookup.*.cpp pack.*.cpp run_all.cpp function_registry.cpp config.h
 
 ALL=verify speed check
 ALL_AVX2=verify_avx2 speed_avx2 check_avx2

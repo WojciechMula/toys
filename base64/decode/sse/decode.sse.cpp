@@ -7,10 +7,10 @@
 
 namespace base64 {
 
-    namespace sse_templates {
+    namespace sse {
 
-        template <typename FN>
-        void decode(FN lookup, const uint8_t* input, size_t size, uint8_t* output) {
+        template <typename FN_LOOKUP, typename FN_PACK>
+        void decode(FN_LOOKUP lookup, FN_PACK pack, const uint8_t* input, size_t size, uint8_t* output) {
 
             assert(size % 16 == 0);
 
@@ -24,7 +24,7 @@ namespace base64 {
                 try {
                     values = lookup(in);
                 } catch (invalid_input& e) {
-                    
+
                     const auto shift = e.offset;
                     throw invalid_input(i + shift, input[i + shift]);
                 }
@@ -32,15 +32,7 @@ namespace base64 {
                 // input:  packed_dword([00dddddd|00cccccc|00bbbbbb|00aaaaaa] x 4)
                 // merged: packed_dword([00000000|ddddddcc|ccccbbbb|bbaaaaaa] x 4)
 
-#define packed_dword(x) _mm_set1_epi32(x)
-                const __m128i bits_a = _mm_and_si128(values, packed_dword(0x0000003f));
-                const __m128i bits_b = _mm_srli_epi32(_mm_and_si128(values, packed_dword(0x00003f00)), 2);
-                const __m128i bits_c = _mm_srli_epi32(_mm_and_si128(values, packed_dword(0x003f0000)), 4);
-                const __m128i bits_d = _mm_srli_epi32(_mm_and_si128(values, packed_dword(0x3f000000)), 6);
-#undef packed_dword
-                const __m128i merged = _mm_or_si128(bits_a,
-                                       _mm_or_si128(bits_b,
-                                       _mm_or_si128(bits_c, bits_d)));
+                const __m128i merged = pack(values);
 
                 // merged = packed_byte([0XXX|0YYY|0ZZZ|0WWW])
 
@@ -88,7 +80,7 @@ namespace base64 {
                 try {
                     values = lookup(in);
                 } catch (invalid_input& e) {
-                    
+
                     const auto shift = e.offset;
                     throw invalid_input(i + shift, input[i + shift]);
                 }
@@ -109,7 +101,8 @@ namespace base64 {
         }
 #endif // defined(HAVE_BMI2_INSTRUCTIONS)
 
-    } // namespace sse_templates
+    } // namespace sse
 
 } // namespace base64
+
 

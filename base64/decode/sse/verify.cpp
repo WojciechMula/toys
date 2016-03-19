@@ -28,7 +28,7 @@ public:
     Test(unsigned in_size, unsigned out_size)
         : bytes(in_size)
         , out_size(out_size) {
-    
+
         for (unsigned i=0; i < 256; i++) {
             decode_table[i] = 0xff;
         }
@@ -44,7 +44,7 @@ public:
     bool run(FN fn) {
 
         for (current=0; current < bytes; current++) {
-            
+
             clear_input();
 
             for (unsigned k=0; k < 256; k++) {
@@ -71,7 +71,7 @@ public:
                         dump_input();
                         return false;
                     } catch (base64::invalid_input& e) {
-                        
+
                         if (e.offset != current) {
                             printf("exception field 'offset' is %lu, should be %u\n", e.offset, current);
                             return false;
@@ -196,108 +196,99 @@ int test() {
      }
 #endif // HAVE_BMI2_INSTRUCTIONS
 
-    show_name("sse/base");
-    {   Test test(16, 12);
-
-        if (test.run(base64::sse::decode_with_lookup_base)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
+#define RUN_TEMPLATE1(input_size, output_size, name, decode_fn, lookup_fn) { \
+        show_name(name); \
+        auto function = [](const uint8_t* input, size_t size, uint8_t* output) { \
+            return decode_fn(lookup_fn, input, size, output); \
+        }; \
+        Test test(input_size, output_size); \
+        \
+        if (test.run(function)) { \
+            puts("OK"); \
+        } else { \
+            return 1; \
+        } \
     }
 
-    show_name("sse/blend");
-    {   Test test(16, 12);
-
-        if (test.run(base64::sse::decode_with_lookup_byte_blend)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
+#define RUN_TEMPLATE2(input_size, output_size, name, decode_fn, lookup_fn, pack_fn) { \
+        show_name(name); \
+        auto function = [](const uint8_t* input, size_t size, uint8_t* output) { \
+            return decode_fn(lookup_fn, pack_fn, input, size, output); \
+        }; \
+        Test test(input_size, output_size); \
+        \
+        if (test.run(function)) { \
+            puts("OK"); \
+        } else { \
+            return 1; \
+        } \
     }
 
-    show_name("sse/incremental");
-    {   Test test(16, 12);
+#define RUN_SSE_TEMPLATE2(name, decode_fn, lookup_fn, pack_fn) \
+    RUN_TEMPLATE2(16, 12, name, decode_fn, lookup_fn, pack_fn)
 
-        if (test.run(base64::sse::decode_with_lookup_incremental)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
+#define RUN_AVX2_TEMPLATE2(name, decode_fn, lookup_fn, pack_fn) \
+    RUN_TEMPLATE2(32, 24, name, decode_fn, lookup_fn, pack_fn)
+
+#define RUN_SSE_TEMPLATE1(name, decode_fn, lookup_fn) \
+    RUN_TEMPLATE1(16, 12, name, decode_fn, lookup_fn)
+
+#define RUN_AVX2_TEMPLATE1(name, decode_fn, lookup_fn) \
+    RUN_TEMPLATE1(32, 24, name, decode_fn, lookup_fn)
+
+    {
+    using namespace base64::sse;
+
+    RUN_SSE_TEMPLATE2("sse/base/naive",                  decode, lookup_base,        pack_naive);
+    RUN_SSE_TEMPLATE2("sse/blend/naive",                 decode, lookup_byte_blend,  pack_naive);
+    RUN_SSE_TEMPLATE2("sse/incremental/naive",           decode, lookup_incremental, pack_naive);
+
+    RUN_SSE_TEMPLATE2("sse/base/improved",               decode, lookup_base,        pack_improved);
+    RUN_SSE_TEMPLATE2("sse/blend/improved",              decode, lookup_byte_blend,  pack_improved);
+    RUN_SSE_TEMPLATE2("sse/incremental/improved",        decode, lookup_incremental, pack_improved);
+
+    RUN_SSE_TEMPLATE2("sse/base/madd_improved",          decode, lookup_base,        pack_madd_improved);
+    RUN_SSE_TEMPLATE2("sse/blend/madd_improved",         decode, lookup_byte_blend,  pack_madd_improved);
+    RUN_SSE_TEMPLATE2("sse/incremental/madd_improved",   decode, lookup_incremental, pack_madd_improved);
+
+    RUN_SSE_TEMPLATE2("sse/base/madd",                   decode, lookup_base,        pack_madd);
+    RUN_SSE_TEMPLATE2("sse/blend/madd",                  decode, lookup_byte_blend,  pack_madd);
+    RUN_SSE_TEMPLATE2("sse/incremental/madd",            decode, lookup_incremental, pack_madd);
     }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-    show_name("sse_bmi2/base");
-    {   Test test(16, 12);
+    {
+    using namespace base64::sse;
 
-        if (test.run(base64::sse::bmi2::decode_with_lookup_base)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
-    }
-
-    show_name("sse_bmi2/blend");
-    {   Test test(16, 12);
-
-        if (test.run(base64::sse::bmi2::decode_with_lookup_byte_blend)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
-    }
-
-    show_name("sse_bmi2/incremental");
-    {   Test test(16, 12);
-
-        if (test.run(base64::sse::bmi2::decode_with_lookup_incremental)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
+    RUN_SSE_TEMPLATE1("sse_bmi2/base",          decode_bmi2, lookup_base);
+    RUN_SSE_TEMPLATE1("sse_bmi2/blend",         decode_bmi2, lookup_byte_blend);
+    RUN_SSE_TEMPLATE1("sse_bmi2/incremental",   decode_bmi2, lookup_incremental);
     }
 #endif
 
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-    show_name("avx2/base");
-    {   Test test(32, 24);
+    {
+    using namespace base64::avx2;
 
-        if (test.run(base64::avx2::decode_with_lookup_base)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
-    }
+    RUN_AVX2_TEMPLATE2("avx2/base/naive",            decode, lookup_base,        pack_naive);
+    RUN_AVX2_TEMPLATE2("avx2/blend/naive",           decode, lookup_byte_blend,  pack_naive);
 
-    show_name("avx2/blend");
-    {   Test test(32, 24);
+    RUN_AVX2_TEMPLATE2("avx2/base/improved",         decode, lookup_base,        pack_improved);
+    RUN_AVX2_TEMPLATE2("avx2/blend/improved",        decode, lookup_byte_blend,  pack_improved);
 
-        if (test.run(base64::avx2::decode_with_lookup_byte_blend)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
+    RUN_AVX2_TEMPLATE2("avx2/base/madd_improved",    decode, lookup_base,        pack_madd_improved);
+    RUN_AVX2_TEMPLATE2("avx2/blend/madd_improved",   decode, lookup_byte_blend,  pack_madd_improved);
+
+    RUN_AVX2_TEMPLATE2("avx2/base/madd",             decode, lookup_base,        pack_madd);
+    RUN_AVX2_TEMPLATE2("avx2/blend/madd",            decode, lookup_byte_blend,  pack_madd);
     }
 
     #if defined(HAVE_BMI2_INSTRUCTIONS)
-    show_name("avx2_bmi2/base");
-    {   Test test(32, 24);
+    {
+    using namespace base64::avx2;
 
-        if (test.run(base64::avx2::bmi2::decode_with_lookup_base)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
-    }
-
-    show_name("avx2_bmi2/blend");
-    {   Test test(32, 24);
-
-        if (test.run(base64::avx2::bmi2::decode_with_lookup_byte_blend)) {
-            puts("OK");
-        } else {
-            return 1;
-        }
+    RUN_AVX2_TEMPLATE1("avx2_bmi2/base",  decode_bmi2, lookup_base);
+    RUN_AVX2_TEMPLATE1("avx2_bmi2/blend", decode_bmi2, lookup_byte_blend);
     }
     #endif // HAVE_BMI2_INSTRUCTIONS
 
@@ -315,7 +306,7 @@ int main() {
     try {
         return test();
     } catch (base64::invalid_input& e) {
-        
+
         printf("invalid input byte %c (%02x)\n", e.byte, e.byte);
         return 2;
     }

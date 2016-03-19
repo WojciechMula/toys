@@ -6,6 +6,7 @@ protected:
     const unsigned count;
     const unsigned iterations;
     bool initialized;
+    bool quiet;
 
     std::unique_ptr<uint8_t> input;
     std::unique_ptr<uint8_t> output;
@@ -15,7 +16,8 @@ public:
         , names(names)
         , count(64*1024*1024)
         , iterations(10)
-        , initialized(false) {}
+        , initialized(false)
+        , quiet(false) {}
 
 protected:
     void initialize() {
@@ -29,7 +31,9 @@ protected:
         input.reset (new uint8_t[get_input_size()]);
         output.reset(new uint8_t[get_output_size()]);
 
-        printf("input size: %lu\n", get_input_size());
+        if (!quiet) {
+            printf("input size: %lu\n", get_input_size());
+        }
 
         fill_input();
 

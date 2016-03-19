@@ -20,9 +20,15 @@
 
 class Application final: public ApplicationBase {
 
+    bool print_csv;
+
 public:
     Application(const CommandLine& c, const FunctionRegistry& r)
-        : ApplicationBase(c, r) {}
+        : ApplicationBase(c, r) {
+
+        print_csv = cmd.has_flag("csv");
+        quiet     = print_csv;
+    }
 
     int run() {
         double reference = 0.0;
@@ -35,31 +41,35 @@ public:
             } \
         }
 
-        RUN("improved", base64::scalar::decode_lookup2);
-        RUN("scalar", base64::scalar::decode_lookup1);
 
-#if defined(HAVE_BMI2_INSTRUCTIONS)
-        RUN("scalar_bmi2", base64::scalar::decode_lookup1_bmi2);
-#endif
-        RUN("sse/base", base64::sse::decode_with_lookup_base);
-        RUN("sse/blend", base64::sse::decode_with_lookup_byte_blend);
-        RUN("sse/incremental", base64::sse::decode_with_lookup_incremental);
+#define RUN_TEMPLATE1(name, decode_fn, lookup_fn) \
+        if (cmd.empty() || cmd.has(name)) { \
+            auto function = [](const uint8_t* input, size_t size, uint8_t* output) { \
+                return decode_fn(lookup_fn, input, size, output); \
+            }; \
+            const double ret = measure(name, function, reference); \
+            if (reference == 0.0) { \
+                reference = ret; \
+            } \
+        }
 
-#if defined(HAVE_BMI2_INSTRUCTIONS)
-        RUN("sse_bmi2/base", base64::sse::bmi2::decode_with_lookup_base);
-        RUN("sse_bmi2/blend", base64::sse::bmi2::decode_with_lookup_byte_blend);
-        RUN("sse_bmi2/incremental", base64::sse::bmi2::decode_with_lookup_incremental);
-#endif
+#define RUN_TEMPLATE2(name, decode_fn, lookup_fn, pack_fn) \
+        if (cmd.empty() || cmd.has(name)) { \
+            auto function = [](const uint8_t* input, size_t size, uint8_t* output) { \
+                return decode_fn(lookup_fn, pack_fn, input, size, output); \
+            }; \
+            const double ret = measure(name, function, reference); \
+            if (reference == 0.0) { \
+                reference = ret; \
+            } \
+        }
 
-#if defined(HAVE_AVX2_INSTRUCTIONS)
-        RUN("avx2/base", base64::avx2::decode_with_lookup_base);
-        RUN("avx2/blend", base64::avx2::decode_with_lookup_byte_blend);
+#define RUN_SSE_TEMPLATE1 RUN_TEMPLATE1
+#define RUN_AVX2_TEMPLATE1 RUN_TEMPLATE1
+#define RUN_SSE_TEMPLATE2 RUN_TEMPLATE2
+#define RUN_AVX2_TEMPLATE2 RUN_TEMPLATE2
 
-    #if defined(HAVE_BMI2_INSTRUCTIONS)
-        RUN("avx2_bmi2/base", base64::avx2::bmi2::decode_with_lookup_base);
-        RUN("avx2_bmi2/blend", base64::avx2::bmi2::decode_with_lookup_byte_blend);
-    #endif // HAVE_BMI2_INSTRUCTIONS
-#endif // HAVE_AVX2_INSTRUCTIONS
+        #include "run_all.cpp"
 
         return 0;
     }
@@ -70,7 +80,13 @@ private:
 
         initialize();
 
-        printf("%*s ... ", -names.get_width(), names[name]);
+        if (print_csv) {
+            const auto& fn = names.get(name);
+            printf("%s, %s, %s", fn.display_name.c_str(), fn.lookup_method.c_str(), fn.pack_method.c_str());
+        } else {
+            printf("%*s ... ", -names.get_width(), names[name]);
+        }
+
         fflush(stdout);
 
         unsigned n = iterations;
@@ -89,13 +105,17 @@ private:
             }
         }
 
-        if (reference > 0.0) {
-            printf("%0.5f (speed up: %0.2f)", time, reference/time);
+        if (print_csv) {
+            printf(", %0.5f\n", time);
         } else {
-            printf("%0.5f", time);
+            if (reference > 0.0) {
+                printf("%0.5f (speed up: %0.2f)", time, reference/time);
+            } else {
+                printf("%0.5f", time);
+            }
+            putchar('\n');
         }
 
-        putchar('\n');
 
         return time;
     }

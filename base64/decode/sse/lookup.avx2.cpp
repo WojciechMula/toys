@@ -65,7 +65,7 @@ namespace base64 {
         __m256i lookup_byte_blend(const __m256i input) {
 
 #define packed_byte(b) _mm256_set1_epi8(uint8_t(b))
-    
+
             __m256i shift;
 
             // shift for range 'A' - 'Z'

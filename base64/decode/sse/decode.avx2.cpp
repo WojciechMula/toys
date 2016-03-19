@@ -6,10 +6,10 @@
 
 namespace base64 {
 
-    namespace avx2_templates {
+    namespace avx2 {
 
-        template <typename FN>
-        void decode(FN lookup, const uint8_t* input, size_t size, uint8_t* output) {
+        template <typename FN_LOOKUP, typename FN_PACK>
+        void decode(FN_LOOKUP lookup, FN_PACK pack, const uint8_t* input, size_t size, uint8_t* output) {
 
             assert(size % 32 == 0);
 
@@ -23,7 +23,7 @@ namespace base64 {
                 try {
                     values = lookup(in);
                 } catch (invalid_input& e) {
-                    
+
                     const auto shift = e.offset;
                     throw invalid_input(i + shift, input[i + shift]);
                 }
@@ -31,15 +31,7 @@ namespace base64 {
                 // input:  packed_dword([00dddddd|00cccccc|00bbbbbb|00aaaaaa] x 4)
                 // merged: packed_dword([00000000|ddddddcc|ccccbbbb|bbaaaaaa] x 4)
 
-#define packed_dword(x) _mm256_set1_epi32(x)
-                const __m256i bits_a = _mm256_and_si256(values, packed_dword(0x0000003f));
-                const __m256i bits_b = _mm256_srli_epi32(_mm256_and_si256(values, packed_dword(0x00003f00)), 2);
-                const __m256i bits_c = _mm256_srli_epi32(_mm256_and_si256(values, packed_dword(0x003f0000)), 4);
-                const __m256i bits_d = _mm256_srli_epi32(_mm256_and_si256(values, packed_dword(0x3f000000)), 6);
-#undef packed_dword
-                const __m256i merged = _mm256_or_si256(bits_a,
-                                       _mm256_or_si256(bits_b,
-                                       _mm256_or_si256(bits_c, bits_d)));
+                const __m256i merged = pack(values);
 
                 // merged = packed_byte([0XXX|0YYY|0ZZZ|0WWW])
 
@@ -82,7 +74,7 @@ namespace base64 {
                 try {
                     values = lookup(in);
                 } catch (invalid_input& e) {
-                    
+
                     const auto shift = e.offset;
                     throw invalid_input(i + shift, input[i + shift]);
                 }
