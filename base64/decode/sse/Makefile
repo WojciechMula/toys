@@ -3,6 +3,12 @@
 
 CC=g++
 FLAGS_BASE=-Wall -Wextra -pedantic -O3 -std=c++11
+
+HAVE_BMI2=$(shell python script/cpuflags.py bmi2)
+ifeq ($(HAVE_BMI2),present)
+    FLAGS_BASE+=-DHAVE_BMI2_INSTRUCTIONS
+endif
+
 FLAGS=$(FLAGS_BASE) -msse4
 FLAGS_AVX2=$(FLAGS_BASE) -mavx2 -DHAVE_AVX2_INSTRUCTIONS
 
