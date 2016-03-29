@@ -11,7 +11,7 @@ protected:
 public:
     ApplicationBase(const CommandLine& c)
         : cmd(c)
-        , count(64*1024*1024)
+        , count(1*1024*1024)
         , iterations(10)
         , initialized(false) {}
 

@@ -16,6 +16,10 @@
 #   include "encode.avx2.cpp"
 #endif
 
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "encode.avx512.cpp"
+#endif
+
 #include "application.cpp"
 
 class Application final: public ApplicationBase {
@@ -68,6 +72,7 @@ public:
 
         uint32_t valid;
         valid = check("scalar32", base64::scalar::encode32, 0);
+
         check("scalar64", base64::scalar::encode64, valid);
         check("SSE (naive)", sse_naive, valid);
         check("SSE (optimized v1)", sse_optimized1, valid);
@@ -82,6 +87,22 @@ public:
 #if defined(HAVE_AVX2_INSTRUCTIONS)
         check("AVX2 (optimized v2)", avx2_optimized2, valid);
         check("AVX2 (optimized v2 unrolled)", avx2_optimized2_unrolled, valid);
+#endif
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+    {
+        auto avx512 = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::avx512::encode_improved_splitting(input, bytes, output);
+        };
+
+        check("AVX512 (improved splitting)", avx512, valid);
+    }
+    {
+        auto avx512 = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::avx512::encode_faster_spliting(input, bytes, output);
+        };
+
+        check("AVX512 (faster splitting)", avx512, valid);
+    }
 #endif
 
         return 0;

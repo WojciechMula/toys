@@ -65,7 +65,7 @@ namespace base64 {
                 __m256i in = _mm256_shuffle_epi8(data, shuf);
 #endif
 
-                // this is "improved version" well commented in ecnode.sse.cpp
+                // this is "improved version" well commented in encode.sse.cpp
                 const __m256i indice_ab = _mm256_and_si256(in, packed_dword(0x00000fff));
                 const __m256i indice_cd = _mm256_and_si256(_mm256_slli_epi32(in, 4), packed_dword(0x0fff0000));
                 in = _mm256_or_si256(indice_ab, indice_cd);
