@@ -121,7 +121,9 @@ void FunctionRegistry::build() {
     add("avx2_bmi2/blend",      "AVX2 & BMI2",      "byte blend",   "N/A");
 #   endif
 #endif
-
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+    add("avx512",               "AVX512",           "N/A",         "multiply-add");
+#endif
     widest_image = 0;
     for (auto& it: registry) {
 

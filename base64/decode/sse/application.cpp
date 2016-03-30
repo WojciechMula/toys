@@ -26,7 +26,11 @@ protected:
             return;
         }
 
-        base64::scalar::initialize();
+        base64::scalar::prepare_lookup();
+        base64::scalar::prepare_lookup32();
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+        base64::avx512::prepare_lookups();
+#endif // HAVE_AVX512_INSTRUCTIONS
 
         input.reset (new uint8_t[get_input_size()]);
         output.reset(new uint8_t[get_output_size()]);

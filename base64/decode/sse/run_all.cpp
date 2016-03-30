@@ -83,3 +83,11 @@ RUN_SSE_TEMPLATE2("sse/pshufb/madd",                 decode, lookup_pshufb, pack
     #endif // HAVE_BMI2_INSTRUCTIONS
 #endif // HAVE_AVX2_INSTRUCTIONS
 
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+    {
+    using namespace base64::avx512;
+
+    RUN_AVX2_TEMPLATE2("avx512", decode, lookup, pack_madd);
+    }
+#endif // HAVE_AVX512_INSTRUCTIONS
+

@@ -11,6 +11,10 @@
 #   include "decoders.avx2.cpp"
 #endif
 
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "decoders.avx512.cpp"
+#endif
+
 #include "function_registry.cpp"
 
 
@@ -104,12 +108,14 @@ private:
             if (i == current) {
                 if (val != expected_current) {
                     printf("6-bit field #%d has value %d, expected %d\n", i, val, expected_current);
+                    dump_input();
                     dump_output();
                     return false;
                 }
             } else {
                 if (val != 0) {
                     printf("6-bit field #%d has value %d, expected to be cleared\n", i, val);
+                    dump_input();
                     dump_output();
                     return false;
                 }
@@ -302,6 +308,12 @@ int test() {
 
 #endif // HAVE_AVX2_INSTRUCTIONS
 
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+    {
+    using namespace base64::avx512;
+    RUN_TEMPLATE2(64, 48, "avx512", decode, lookup, pack_madd)
+    }
+#endif // HAVE_AVX512_INSTRUCTIONS
     return 0;
 }
 
@@ -310,6 +322,10 @@ int main() {
 
     base64::scalar::prepare_lookup();
     base64::scalar::prepare_lookup32();
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+    base64::avx512::prepare_lookups();
+#endif // HAVE_AVX512_INSTRUCTIONS
+
 
     try {
         return test();

@@ -13,9 +13,33 @@ void dump(__m128i xmm) {
 }
 
 
-void dump(const char* name, __m128i xmm) {
+#if defined(HAVE_AVX2_INSTRUCTIONS)
+void dump(__m256i xmm) {
+    
+    uint8_t buf[32];
+    _mm256_storeu_si256(reinterpret_cast<__m256*>(buf), xmm);
+    dump_hex(buf, 32);
+}
+#endif
+
+
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+void dump(__m512i xmm) {
+    
+    uint8_t buf[64];
+    _mm512_storeu_si512(reinterpret_cast<__m512*>(buf), xmm);
+    dump_hex(buf, 64);
+}
+#endif
+
+
+template <typename T>
+void dump(const char* name, T vector) {
     
     printf("%-20s = [", name);
-    dump(xmm);
+    dump(vector);
     printf("]\n");
 }
+
+
+#define DUMP(var) dump(#var, var)
