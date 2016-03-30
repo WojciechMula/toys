@@ -224,6 +224,77 @@ namespace base64 {
 #undef packed_byte
         }
 
+
+        __m128i lookup_pshufb(const __m128i input) {
+
+            /*
+            number of operations:
+            - cmp (le/gt/eq):  3
+            - shift:           1
+            - add/sub:         3
+            - and/or/andnot:   4
+            - movemask:        1
+            - pshufb           3
+            - total:         =15
+            */
+
+#define packed_byte(b) _mm_set1_epi8(uint8_t(b))
+
+            const __m128i higher_nibble = _mm_srli_epi32(input, 4) & packed_byte(0x0f);
+            const char linv = 1;
+            const char hinv = 0;
+
+            const __m128i lower_bound_LUT = _mm_setr_epi8(
+                /* 0 */ linv, /* 1 */ linv, /* 2 */ 0x2b, /* 3 */ 0x30,
+                /* 4 */ 0x41, /* 5 */ 0x50, /* 6 */ 0x61, /* 7 */ 0x70,
+                /* 8 */ linv, /* 9 */ linv, /* a */ linv, /* b */ linv,
+                /* c */ linv, /* d */ linv, /* e */ linv, /* f */ linv
+            );
+
+            const __m128i upper_bound_LUT = _mm_setr_epi8(
+                /* 0 */ hinv, /* 1 */ hinv, /* 2 */ 0x2b, /* 3 */ 0x39,
+                /* 4 */ 0x4f, /* 5 */ 0x5a, /* 6 */ 0x6f, /* 7 */ 0x7a,
+                /* 8 */ hinv, /* 9 */ hinv, /* a */ hinv, /* b */ hinv,
+                /* c */ hinv, /* d */ hinv, /* e */ hinv, /* f */ hinv
+            );
+
+            const __m128i shift_LUT = _mm_setr_epi8(
+                /* 0 */ 0x00, /* 1 */ 0x00, /* 2 */ 0x3e, /* 3 */ 0x34,
+                /* 4 */ 0x00, /* 5 */ 0x0f, /* 6 */ 0x1a, /* 7 */ 0x29,
+                /* 8 */ 0x00, /* 9 */ 0x00, /* a */ 0x00, /* b */ 0x00,
+                /* c */ 0x00, /* d */ 0x00, /* e */ 0x00, /* f */ 0x00
+            );
+
+            const __m128i upper_bound = _mm_shuffle_epi8(upper_bound_LUT, higher_nibble);
+            const __m128i lower_bound = _mm_shuffle_epi8(lower_bound_LUT, higher_nibble);
+
+            const __m128i below = _mm_cmplt_epi8(input, lower_bound);
+            const __m128i above = _mm_cmpgt_epi8(input, upper_bound);
+            const __m128i eq_2f = _mm_cmpeq_epi8(input, packed_byte(0x2f));
+
+            // in_range = not (below or above) or eq_2f
+            // outside  = not in_range = below or above and not eq_2f (from de Morgan law)
+            const __m128i outside = _mm_andnot_si128(eq_2f, above | below);
+
+            const auto mask = _mm_movemask_epi8(outside);
+            if (mask) {
+                // some characters do not match the valid range
+                for (unsigned i=0; i < 16; i++) {
+                    if (mask & (1 << i)) {
+                        throw invalid_input(i, 0);
+                    }
+                }
+            }
+
+            __m128i shift  = _mm_shuffle_epi8(shift_LUT, higher_nibble);
+            __m128i result = _mm_sub_epi8(input, lower_bound);
+            result = _mm_add_epi8(result, shift);
+            result = _mm_add_epi8(result, _mm_and_si128(eq_2f, packed_byte(-3)));
+
+            return result;
+#undef packed_byte
+        }
+
     } // namespace sse
 
 } // namespace base64

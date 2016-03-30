@@ -77,18 +77,22 @@ void FunctionRegistry::build() {
     add("sse/base/naive",                   "SSE",              "base",         "naive");
     add("sse/blend/naive",                  "SSE",              "byte blend",   "naive");
     add("sse/incremental/naive",            "SSE",              "incremental",  "naive");
+    add("sse/pshufb/naive",                 "SSE",              "pshufb",       "naive");
 
     add("sse/base/improved",                "SSE",              "base",         "improved");
     add("sse/blend/improved",               "SSE",              "byte blend",   "improved");
     add("sse/incremental/improved",         "SSE",              "incremental",  "improved");
+    add("sse/pshufb/improved",              "SSE",              "pshufb",       "improved");
 
     add("sse/base/madd_improved",           "SSE",              "base",         "improved + mult-add");
     add("sse/blend/madd_improved",          "SSE",              "byte blend",   "improved + mult-add");
     add("sse/incremental/madd_improved",    "SSE",              "incremental",  "improved + mult-add");
+    add("sse/pshufb/madd_improved",         "SSE",              "pshufb",       "improved + mult-add");
 
     add("sse/base/madd",                    "SSE",              "base",         "multiply-add");
     add("sse/blend/madd",                   "SSE",              "byte blend",   "multiply-add");
     add("sse/incremental/madd",             "SSE",              "incremental",  "multiply-add");
+    add("sse/pshufb/madd",                  "SSE",              "pshufb",       "multiply-add");
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
     add("sse_bmi2/base",        "SSE & BMI2",       "base",         "N/A");
@@ -98,15 +102,19 @@ void FunctionRegistry::build() {
 #if defined(HAVE_AVX2_INSTRUCTIONS)
     add("avx2/base/naive",                   "AVX2",              "base",         "naive");
     add("avx2/blend/naive",                  "AVX2",              "byte blend",   "naive");
+    add("avx2/pshufb/naive",                 "AVX2",              "pshufb",       "naive");
 
     add("avx2/base/improved",                "AVX2",              "base",         "improved");
     add("avx2/blend/improved",               "AVX2",              "byte blend",   "improved");
+    add("avx2/pshufb/improved",              "AVX2",              "pshufb",       "improved");
 
     add("avx2/base/madd_improved",           "AVX2",              "base",         "improved + mult-add");
     add("avx2/blend/madd_improved",          "AVX2",              "byte blend",   "improved + mult-add");
+    add("avx2/pshufb/madd_improved",         "AVX2",              "pshufb",       "improved + mult-add");
 
     add("avx2/base/madd",                    "AVX2",              "base",         "multiply-add");
     add("avx2/blend/madd",                   "AVX2",              "byte blend",   "multiply-add");
+    add("avx2/pshufb/madd",                  "AVX2",              "pshufb",       "multiply-add");
 
 #   if defined(HAVE_BMI2_INSTRUCTIONS)
     add("avx2_bmi2/base",       "AVX2 & BMI2",      "base",         "N/A");

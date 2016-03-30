@@ -15,7 +15,7 @@ void dump(__m128i xmm) {
 
 void dump(const char* name, __m128i xmm) {
     
-    printf("%s = [", name);
+    printf("%-20s = [", name);
     dump(xmm);
     printf("]\n");
 }
