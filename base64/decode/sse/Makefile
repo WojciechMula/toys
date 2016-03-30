@@ -1,7 +1,6 @@
 .SUFFIXES:
 .PHONY: all clean run
 
-CC=g++
 FLAGS_BASE=-Wall -Wextra -pedantic -O3 -std=c++11
 
 HAVE_BMI2=$(shell python script/cpuflags.py bmi2)
@@ -38,22 +37,22 @@ SPEED_DEPS=speed.cpp $(DEPS) application.cpp ../../cmdline.cpp ../../bmi2.cpp ..
 CHECK_DEPS=check.cpp $(DEPS) application.cpp ../../cmdline.cpp ../../bmi2.cpp ../../fnv32.cpp
 
 verify: $(VERIFY_DEPS)
-	$(CC) $(FLAGS) verify.cpp -o $@
+	$(CXX) $(FLAGS) verify.cpp -o $@
 
 speed: $(SPEED_DEPS)
-	$(CC) $(FLAGS) speed.cpp -o $@
+	$(CXX) $(FLAGS) speed.cpp -o $@
 
 check: $(CHECK_DEPS)
-	$(CC) $(FLAGS) check.cpp -o $@
+	$(CXX) $(FLAGS) check.cpp -o $@
 
 verify_avx2: $(VERIFY_DEPS)
-	$(CC) $(FLAGS_AVX2) verify.cpp -o $@
+	$(CXX) $(FLAGS_AVX2) verify.cpp -o $@
 
 speed_avx2: $(SPEED_DEPS)
-	$(CC) $(FLAGS_AVX2) speed.cpp -o $@
+	$(CXX) $(FLAGS_AVX2) speed.cpp -o $@
 
 check_avx2: $(CHECK_DEPS)
-	$(CC) $(FLAGS_AVX2) check.cpp -o $@
+	$(CXX) $(FLAGS_AVX2) check.cpp -o $@
 
 clean:
 	rm -f $(ALL) $(ALL_AVX2)
