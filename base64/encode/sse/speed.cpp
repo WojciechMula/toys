@@ -50,12 +50,20 @@ public:
             base64::sse::encode(base64::sse::lookup_version2, input, bytes, output);
         };
 
+        auto sse_pshufb = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode(base64::sse::lookup_pshufb, input, bytes, output);
+        };
+
         auto sse_optimized1_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode_unrolled(base64::sse::lookup_version1, input, bytes, output);
         };
 
         auto sse_optimized2_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode_unrolled(base64::sse::lookup_version2, input, bytes, output);
+        };
+
+        auto sse_pshufb_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_unrolled(base64::sse::lookup_pshufb, input, bytes, output);
         };
 
         if (cmd.empty() || cmd.has("sse")) {
@@ -70,12 +78,20 @@ public:
             measure("SSE (lookup: improved)", sse_optimized2);
         }
 
+        if (cmd.empty() || cmd.has("sse3")) {
+            measure("SSE (lookup: pshufb-based)", sse_pshufb);
+        }
+
         if (cmd.empty() || cmd.has("sse1/unrolled")) {
             measure("SSE (lookup: other improved, unrolled)", sse_optimized1_unrolled);
         }
 
         if (cmd.empty() || cmd.has("sse2/unrolled")) {
             measure("SSE (lookup: improved, unrolled)", sse_optimized2_unrolled);
+        }
+
+        if (cmd.empty() || cmd.has("sse2/unrolled2")) {
+            measure("SSE (lookup: pshufb-based, unrolled)", sse_pshufb_unrolled);
         }
 
         if (cmd.empty() || cmd.has("sse2/fully_unrolled")) {

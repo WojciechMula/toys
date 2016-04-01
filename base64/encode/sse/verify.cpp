@@ -163,6 +163,14 @@ int test() {
         return 1;
     }
 
+    printf("SSE pshufb-base algorithm... ");
+    fflush(stdout);
+    if (test_sse(base64::sse::lookup_pshufb)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
 #if defined(HAVE_AVX2_INSTRUCTIONS)
     printf("AVX2 implementation of optimized algorithm... ");
     fflush(stdout);

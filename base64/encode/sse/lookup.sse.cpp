@@ -1,7 +1,7 @@
 #include <immintrin.h>
 #include <x86intrin.h>
 
-#include <cstdint>
+#include "../../debug_dump.cpp"
 
 namespace base64 {
 
@@ -78,6 +78,47 @@ namespace base64 {
             result = _mm_add_epi8(result, input);
 
             return result;
+        }
+
+
+        __m128i lookup_pshufb(const __m128i input) {
+
+            const __m128i row_LUT = _mm_setr_epi8(
+                /*  0 ..  9 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                /* 10 .. 12 */ 4*1, 4*1, 4*1,
+                /* 13 .. 14 */ 4*2, 4*2,
+                /*       15 */ 4*3
+            );
+
+            // input (byte): [00abcdef]
+
+            //     bits_1_4: [000bcde0]
+            //   bit_0_and5: [00a0000f]
+            const __m128i bits_1_4    = input & packed_byte(0x1e);
+            const __m128i bit_0_and_5 = input ^ bits_1_4;
+
+            //       index1: [0000bcde]
+            const __m128i index1 = _mm_srli_epi16(bits_1_4, 1);
+
+            // note: row_number is already shifted left
+            const __m128i row_number = _mm_shuffle_epi8(row_LUT, index1);
+
+            //       index2: [000000af]
+            const __m128i index2 = bit_0_and_5 | (_mm_srli_epi16(bit_0_and_5, 4));
+
+            //       index2: [0000XYaf] -- bits X, Y come from row_LUT
+            const __m128i shift_index = row_number | index2;
+
+            const __m128i shift_LUT = _mm_setr_epi8(
+                /* 0 */ 65, 65,  71,  71,
+                /* 1 */ 65, 65,  -4,  -4,
+                /* 2 */ 71, 71,  -4,  -4,
+                /* 3 */ 71, 71, -19, -16
+            );
+
+            const __m128i shift = _mm_shuffle_epi8(shift_LUT, shift_index);
+
+            return _mm_add_epi8(input, shift);
         }
 
     #undef packed_byte

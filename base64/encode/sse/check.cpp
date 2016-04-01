@@ -42,12 +42,20 @@ public:
             base64::sse::encode(base64::sse::lookup_version2, input, bytes, output);
         };
 
+        auto sse_pshufb = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode(base64::sse::lookup_pshufb, input, bytes, output);
+        };
+
         auto sse_optimized1_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode_unrolled(base64::sse::lookup_version1, input, bytes, output);
         };
 
         auto sse_optimized2_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
             base64::sse::encode_unrolled(base64::sse::lookup_version2, input, bytes, output);
+        };
+
+        auto sse_pshufb_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+            base64::sse::encode_unrolled(base64::sse::lookup_pshufb, input, bytes, output);
         };
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
@@ -77,8 +85,10 @@ public:
         check("SSE (naive)", sse_naive, valid);
         check("SSE (optimized v1)", sse_optimized1, valid);
         check("SSE (optimized v2)", sse_optimized2, valid);
+        check("SSE (pshuf-based)",  sse_pshufb, valid);
         check("SSE (optimized v1 unrolled)", sse_optimized1_unrolled, valid);
         check("SSE (optimized v2 unrolled)", sse_optimized2_unrolled, valid);
+        check("SSE (pshufb-based unrolled)", sse_pshufb_unrolled, valid);
         check("SSE (optimized v2 fully unrolled)", base64::sse::encode_full_unrolled, valid);
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         check("SSE & BMI2 (naive)", sse_bmi2_naive, valid);
