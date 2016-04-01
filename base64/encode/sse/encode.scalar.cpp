@@ -59,6 +59,7 @@ namespace base64 {
                 *out++ = lookup[h];
             }
         }
-    }
+
+    } // namespace scalar
 
 } // namespace base64

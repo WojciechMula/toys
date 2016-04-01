@@ -30,6 +30,8 @@ public:
         
         reference_time = 0.0;
 
+        #include "functions.cpp"
+
         if (cmd.empty() || cmd.has("scalar32")) {
             measure("scalar (32 bit)", base64::scalar::encode32);
         }
@@ -37,34 +39,6 @@ public:
         if (cmd.empty() || cmd.has("scalar64")) {
             measure("scalar (64 bit)", base64::scalar::encode64);
         }
-
-        auto sse_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode(base64::sse::lookup_naive, input, bytes, output);
-        };
-
-        auto sse_optimized1 = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode(base64::sse::lookup_version1, input, bytes, output);
-        };
-
-        auto sse_optimized2 = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode(base64::sse::lookup_version2, input, bytes, output);
-        };
-
-        auto sse_pshufb = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode(base64::sse::lookup_pshufb, input, bytes, output);
-        };
-
-        auto sse_optimized1_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode_unrolled(base64::sse::lookup_version1, input, bytes, output);
-        };
-
-        auto sse_optimized2_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode_unrolled(base64::sse::lookup_version2, input, bytes, output);
-        };
-
-        auto sse_pshufb_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode_unrolled(base64::sse::lookup_pshufb, input, bytes, output);
-        };
 
         if (cmd.empty() || cmd.has("sse")) {
             measure("SSE (lookup: naive)", sse_naive);
@@ -117,20 +91,20 @@ public:
 #endif
 
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-        auto avx2_optimized2 = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::avx2::encode(base64::avx2::lookup_version2, input, bytes, output);
-        };
-
-        auto avx2_optimized2_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::avx2::encode_unrolled(base64::avx2::lookup_version2, input, bytes, output);
-        };
-
         if (cmd.empty() || cmd.has("avx2")) {
             measure("AVX2 (lookup: improved)", avx2_optimized2);
         }
 
         if (cmd.empty() || cmd.has("avx2/unrolled")) {
             measure("AVX2 (lookup: improved, unrolled)", avx2_optimized2_unrolled);
+        }
+
+        if (cmd.empty() || cmd.has("avx2/pshufb")) {
+            measure("AVX2 (lookup: pshufb-based)", avx2_pshufb);
+        }
+
+        if (cmd.empty() || cmd.has("avx2/pshufb/unrolled")) {
+            measure("AVX2 (lookup: pshufb-based, unrolled)", avx2_pshufb_unrolled);
         }
 #endif
 

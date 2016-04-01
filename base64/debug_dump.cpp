@@ -17,7 +17,7 @@ void dump(__m128i xmm) {
 void dump(__m256i xmm) {
     
     uint8_t buf[32];
-    _mm256_storeu_si256(reinterpret_cast<__m256*>(buf), xmm);
+    _mm256_storeu_si256(reinterpret_cast<__m256i*>(buf), xmm);
     dump_hex(buf, 32);
 }
 #endif

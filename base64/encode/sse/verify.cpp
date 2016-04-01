@@ -179,6 +179,14 @@ int test() {
     } else {
         return 1;
     }
+
+    printf("AVX2 implementation of pshufb-based algorithm... ");
+    fflush(stdout);
+    if (test_avx2(base64::avx2::lookup_pshufb)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
 #endif
 
     return 0;

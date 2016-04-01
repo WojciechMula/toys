@@ -175,6 +175,6 @@ namespace base64 {
 
     #undef packed_dword
 
-    } // namespace sse
+    } // namespace avx2
 
 } // namespace base64

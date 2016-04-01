@@ -120,4 +120,6 @@ namespace reference {
         // 3. merge ranges
         return range | ord_62 | ord_63;
     }
-}
+
+} // namespace reference
+
