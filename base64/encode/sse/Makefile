@@ -1,7 +1,7 @@
 .SUFFIXES:
 .PHONY: all avx2 avx512
 
-SDE=sde
+SDE=sde -cnl
 FLAGS=-Wall -pedantic -O3 -std=c++11
 EXT_DEPS=../../fnv32.cpp ../../bmi2.cpp ../../gettime.cpp
 ALL=verify speed check
@@ -13,7 +13,7 @@ all: $(ALL)
 avx2: $(ALL_AVX2)
 
 avx512: $(ALL_AVX512)
-	$(SDE) -cnl -- ./check_avx512
+	$(SDE) -- ./check_avx512
 
 VERIFY_DEPS=verify.cpp lookup.*.cpp
 

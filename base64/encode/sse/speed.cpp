@@ -73,20 +73,12 @@ public:
         }
 
 #if defined(HAVE_BMI2_INSTRUCTIONS)
-        auto sse_bmi2_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode_bmi2(base64::sse::lookup_naive, input, bytes, output);
-        };
-
-        auto sse_bmi2_improved = [](uint8_t* input, size_t bytes, uint8_t* output) {
-            base64::sse::encode_bmi2(base64::sse::lookup_version2, input, bytes, output);
-        };
-
         if (cmd.empty() || cmd.has("bmi1")) {
             measure("SSE & BMI2 (lookup: naive)", sse_bmi2_naive);
         }
 
         if (cmd.empty() || cmd.has("bmi2")) {
-            measure("SSE & BMI2 (lookup: improved)", sse_bmi2_improved);
+            measure("SSE & BMI2 (lookup: improved)", sse_bmi2_optimized);
         }
 #endif
 

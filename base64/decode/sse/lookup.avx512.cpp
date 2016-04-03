@@ -4,8 +4,6 @@
 #include <immintrin.h>
 #include <x86intrin.h>
 
-#include "../../debug_dump.cpp"
-
 namespace base64 {
 
     namespace avx512 {
@@ -34,7 +32,7 @@ namespace base64 {
                 const uint8_t bits05 = val & 0x3f;
 
                 // Yes, I know that lookup_X could be merged and
-                // adressed directly by six lower bits.
+                // addressed directly by six lower bits.
                 if (bit6) {
                     lookup_1[bits05] = i;
                 } else {

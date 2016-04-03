@@ -34,3 +34,16 @@ possibly BMI2 versions.
 
 Run ``make avx2`` to compile all the programs containing all versions,
 including AVX2.
+
+
+AVX512
+--------------------------------------------------
+
+Type ``make avx512`` to compile AVX512 versions of the programs.
+GCC 5.3.1 was tested, GCC 4.9.2 haven't got AVX512 support.
+
+`Intel Software Development Emulator`__ is required to run the programs.
+It should be added to the ``PATH``.
+
+__ https://software.intel.com/en-us/articles/intel-software-development-emulator
+
