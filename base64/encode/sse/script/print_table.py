@@ -3,10 +3,10 @@ from table import Table
 from utils import unicode_bar
 from data  import Data
 from codecs import open
+import os.path
 
-def main():
-
-    with open(argv[1], 'rt') as f:
+def convert(csv_path):
+    with open(csv_path) as f:
         data = Data(f)
 
     table = Table()
@@ -24,10 +24,22 @@ def main():
         speedup = '%0.2f' % speedup
         table.add_row([name, time, speedup, bar])
 
-    path = 'table.txt'
+    def get_path():
+        basename = os.path.splitext(os.path.basename(csv_path))[0]
+        return basename + ".txt"
+
+    path = get_path()
     with open(path, 'wt', encoding='utf-8') as f:
         f.write(unicode(table))
 
     print "%s created" % path
 
-main()
+def main():
+
+    for path in argv[1:]:
+        print "processing %s..." % path
+        convert(path)
+
+
+if __name__ == '__main__':
+    main()
