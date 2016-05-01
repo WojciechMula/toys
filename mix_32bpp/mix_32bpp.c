@@ -50,6 +50,8 @@
 #include <stdint.h>
 #include <sys/time.h>
 #include <time.h>
+#include <immintrin.h>
+#include <emmintrin.h>
 
 #ifdef USE_Xscr
 #include "../Xscr/Xscr.h"
@@ -102,63 +104,30 @@ void die(const char* fmt, ...) {
 
 //=== crossfading implementations ========================================
 void SSE4_blend() {
-	int n = width * height * 4;
-	int dummy __attribute__((unused));
+	size_t n = width * height * 4;
 
-	__asm__ volatile (
-		"	pxor   %%xmm0, %%xmm0		\n"
-		"	movd    %%edx, %%xmm6		\n"
-		"	xorl      $-1, %%edx		\n"
-		"	movd    %%edx, %%xmm7		\n"
+    __m128i alpha_pos = _mm_set1_epi16(256 * (uint16_t)alpha);
+    __m128i alpha_neg = _mm_set1_epi16(256 * (uint16_t)(~alpha));
 
-		"	pshufb %%xmm0, %%xmm6		\n"
-		"	pshufb %%xmm0, %%xmm7		\n"
-		"					\n"
-		"	psllw      $8, %%xmm6		\n"
-		"	psllw      $8, %%xmm7		\n"
-		"0:					\n"
-		"	movdqa (%%eax), %%xmm0		\n"
-		"	movdqa (%%ebx), %%xmm2		\n"
-		"	movhlps %%xmm0, %%xmm1		\n"
-		"	movhlps %%xmm2, %%xmm3		\n"
-		"					\n"
-		"	pmovzxbw  %%xmm0, %%xmm0	\n"
-		"	pmovzxbw  %%xmm1, %%xmm1	\n"
-		"	pmovzxbw  %%xmm2, %%xmm2	\n"
-		"	pmovzxbw  %%xmm3, %%xmm3	\n"
-		"					\n"
-		"	pmulhuw %%xmm6, %%xmm0		\n"
-		"	pmulhuw %%xmm6, %%xmm1		\n"
-		"	pmulhuw %%xmm7, %%xmm2		\n"
-		"	pmulhuw %%xmm7, %%xmm3		\n"
-		"					\n"
-		"	packuswb %%xmm1, %%xmm0		\n"
-		"	packuswb %%xmm3, %%xmm2		\n"
-		"					\n"
-		"	paddusb %%xmm2, %%xmm0		\n"
-		"	addl $16, %%eax			\n"
-		"	addl $16, %%ebx			\n"
-		"					\n"
-#ifdef NONTEMPORAL_STORES
-		"	movntdq %%xmm0, (%%edi)		\n"
-#else
-		"	movdqa %%xmm0, (%%edi)		\n"
-#endif
-		"	addl $16, %%edi			\n"
-		"					\n"
-		"	subl  $1, %%ecx			\n"
-		"	jnz   0b			\n"
-		: "=a" (dummy), 
-		  "=b" (dummy),
-		  "=D" (dummy),
-		  "=c" (dummy),
-		  "=d" (dummy)
-		: "a" (imgA),
-		  "b" (imgB),
-		  "D" (data),
-		  "c" (n/16),
-		  "d" (alpha)
-	);
+    for (size_t i=0; i < n; i += 16) {
+        __m128i A = _mm_load_si128((__m128i*)(imgA + i));
+        __m128i B = _mm_load_si128((__m128i*)(imgB + i));
+
+        __m128i A0 = _mm_cvtepu8_epi16(A);
+        __m128i B0 = _mm_cvtepu8_epi16(B);
+        __m128i A1 = _mm_cvtepu8_epi16(_mm_srli_si128(A, 8));
+        __m128i B1 = _mm_cvtepu8_epi16(_mm_srli_si128(B, 8));
+
+        A0 = _mm_mulhi_epu16(A0, alpha_pos);
+        A1 = _mm_mulhi_epu16(A1, alpha_pos);
+        B0 = _mm_mulhi_epu16(B0, alpha_neg);
+        B1 = _mm_mulhi_epu16(B1, alpha_neg);
+
+        A  = _mm_packus_epi16(A0, A1);
+        B  = _mm_packus_epi16(B0, B1);
+
+        _mm_store_si128((__m128i*)(data + i), _mm_adds_epu8(A, B));
+    }
 }
 
 
@@ -166,65 +135,38 @@ void SSE42_blend() {
 	int n = width * height * 4;
 	int dummy __attribute__((unused));
 
-	__asm__ volatile (
-		"	pxor   %%xmm0, %%xmm0		\n"
+    const uint8_t alpha2 = alpha/4;
+    __m128i alpha_np = _mm_set1_epi16(alpha2 | ((uint16_t)(alpha2 ^ 0x3f) << 8));
 
-		"	movd    %%edx, %%xmm6		\n"
-		"	xorl	$0x3f, %%edx		\n"
-		"	movd    %%edx, %%xmm7		\n"
-		"	pshufb %%xmm0, %%xmm6		\n"
-		"	pshufb %%xmm0, %%xmm7		\n"
-		"	punpcklbw %%xmm7, %%xmm6	\n"
-		"0:					\n"
-		"	movdqa (%%eax), %%xmm0		\n"
-		"	movdqa (%%ebx), %%xmm2		\n"
-		"	movdqa 16(%%eax), %%xmm3	\n"
-		"	movdqa 16(%%ebx), %%xmm5	\n"
-		"	movdqa  %%xmm0, %%xmm1		\n"
-		"	movdqa  %%xmm3, %%xmm4		\n"
-		"					\n"
-		"	punpcklbw %%xmm2, %%xmm0	\n"
-		"	punpckhbw %%xmm2, %%xmm1	\n"
-		"	punpcklbw %%xmm5, %%xmm3	\n"
-		"	punpckhbw %%xmm5, %%xmm4	\n"
-		"					\n"
-		"	pmaddubsw %%xmm6, %%xmm0	\n"
-		"	pmaddubsw %%xmm6, %%xmm1	\n"
-		"	pmaddubsw %%xmm6, %%xmm3	\n"
-		"	pmaddubsw %%xmm6, %%xmm4	\n"
-		"					\n"
-		"	psrlw        $6, %%xmm0		\n"
-		"	psrlw        $6, %%xmm1		\n"
-		"	psrlw        $6, %%xmm3		\n"
-		"	psrlw        $6, %%xmm4		\n"
-		"	packuswb %%xmm1, %%xmm0		\n"
-		"	packuswb %%xmm4, %%xmm3		\n"
-		"					\n"
-		"	addl $32, %%eax			\n"
-		"	addl $32, %%ebx			\n"
-		"					\n"
-#ifdef NONTEMPORAL_STORES
-		"	movntdq %%xmm0, (%%edi)	\n"
-		"	movntdq %%xmm3, 16(%%edi)	\n"
-#else
-		"	movdqa %%xmm0, (%%edi)		\n"
-		"	movdqa %%xmm3, 16(%%edi)	\n"
-#endif
-		"	addl $32, %%edi			\n"
-		"					\n"
-		"	subl  $1, %%ecx			\n"
-		"	jnz   0b			\n"
-		: "=a" (dummy),
-		  "=b" (dummy),
-		  "=D" (dummy),
-		  "=c" (dummy),
-		  "=d" (dummy)
-		: "a" (imgA),
-		  "b" (imgB),
-		  "D" (data),
-		  "c" (n/32),
-		  "d" (alpha/4)	// [0..63]
-	);
+    for (size_t i=0; i < n; i += 32) {
+        __m128i A0 = _mm_load_si128((__m128i*)(imgA + i));
+        __m128i B0 = _mm_load_si128((__m128i*)(imgB + i));
+
+        __m128i A1 = _mm_load_si128((__m128i*)(imgA + i + 16));
+        __m128i B1 = _mm_load_si128((__m128i*)(imgB + i + 16));
+
+        __m128i lo0 = _mm_unpacklo_epi8(A0, B0);
+        __m128i hi0 = _mm_unpackhi_epi8(A0, B0);
+
+        __m128i lo1 = _mm_unpacklo_epi8(A1, B1);
+        __m128i hi1 = _mm_unpackhi_epi8(A1, B1);
+
+        lo0 = _mm_maddubs_epi16(lo0, alpha_np);
+        lo1 = _mm_maddubs_epi16(lo1, alpha_np);
+        hi0 = _mm_maddubs_epi16(hi0, alpha_np);
+        hi1 = _mm_maddubs_epi16(hi1, alpha_np);
+
+        lo0 = _mm_srli_epi16(lo0, 6);
+        lo1 = _mm_srli_epi16(lo1, 6);
+        hi0 = _mm_srli_epi16(hi0, 6);
+        hi1 = _mm_srli_epi16(hi1, 6);
+
+        __m128i res0 = _mm_packus_epi16(lo0, hi0);
+        __m128i res1 = _mm_packus_epi16(lo1, hi1);
+
+        _mm_store_si128((__m128i*)(data + i +  0), res0);
+        _mm_store_si128((__m128i*)(data + i + 16), res1);
+    }
 }
 
 
@@ -414,7 +356,7 @@ void view(const char* file1, const char* file2) {
 	err = Xscr_mainloop(
 		width, height, DEPTH_32bpp, False, data, 
 		keyboard, motion, NULL,
-		"Image mixing demo - Wojciech Mula, wojciech_mula@poczta.onet.pl"
+		"Image mixing demo"
 	);
 
 	// check exit status

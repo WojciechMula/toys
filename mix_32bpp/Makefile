@@ -1,7 +1,7 @@
 .SUFFIXES:
 .PHONY: all clean
 
-FLAGS=-O3 -Wall -pedantic -std=c99
+FLAGS=-O3 -Wall -pedantic -std=c99 -march=native
 XSCR_DEPS=../Xscr/Xscr.h ../Xscr/Xscr.c
 LOADPPM_DEPS=../loadppm/load_ppm.h ../loadppm/load_ppm.c
 
@@ -23,7 +23,7 @@ Xscr.o: $(XSCR_DEPS)
 	$(CC) $(FLAGS) -c -lX11 ../Xscr/Xscr.c -o $@
 
 loadppm.o: $(LOADPPM_DEPS)
-	$(CC) $(FLAGS) -c -lX11 -DPPM_ALIGN_MALLOC=16 ../loadppm/load_ppm.c -o $@
+	$(CC) $(FLAGS) -c -DPPM_ALIGN_MALLOC=16 ../loadppm/load_ppm.c -o $@
 
 clean:
 	rm -f demo mix *.o
