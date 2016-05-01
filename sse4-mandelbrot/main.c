@@ -153,6 +153,7 @@ int main(int argc, char* argv[]) {
 	if (strcasecmp(argv[1], "SSE") == 0)
 		function = SSEprocedure;
 #if defined(AVX2)
+	else
 	if (strcasecmp(argv[1], "AVX2") == 0)
 		function = AVX2procedure;
 #endif
@@ -295,4 +296,3 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-// eof
