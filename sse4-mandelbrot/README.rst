@@ -1,13 +1,15 @@
-========================================================================
-  Mandelbrot fractal generator --- SSE2, SSE4.1 & AVX2 implementations
-========================================================================
+=================================================================================
+  Mandelbrot fractal generator --- SSE2, SSE4.1, AVX2 and AVX512 implementations
+=================================================================================
 
 SSE procedure calculates 4 pixels in parallel. SSE4.1 procedure uses
 ``PTEST`` instruction to break loop when lengths of all 4 complex numbers
 are greater then some threshold.  SSE2 version uses ``PMOVMSKB`` and x86
-``TEST``. AVX2 procedure is a translation of the SSE4.1 version.
+``TEST``. Both AVX2 & AVX512 procedures are a translation of the SSE4.1
+version.
 
-Average speedup over FPU procedure is around 4.5 times --- see below
+Average speedup over FPU procedure is around 4.5 times --- see below.
+
 
 Compilation
 ------------------------------------------------------------------------
@@ -22,6 +24,11 @@ Simply type ``make``. Following programs will be compiled:
 * ``fractal32sse2fpu`` --- 32-bit SSE2 procedure + scalar version using FPU
 * ``fractal32sse4fpu`` --- 32-bit SSE2 procedure + scalar version using FPU
 * ``fractal64sse4fpu`` --- 64-bit SSE4.1 procedure + scalar version using FPU
+* ``fractal64avx512``  --- AVX515 and AVX2, SSE4.1 and FPU versions
+
+To run ``fractal64avx512`` you need `Intel Software Development Emulator`__.
+
+__ https://software.intel.com/en-us/articles/intel-software-development-emulator
 
 
 Results for 32-bit versions

@@ -23,7 +23,7 @@
 	Compilation SSE4.1 version:
 
 		gcc -O3 -Wall -pedantic -std=c99 sse4-mandelbrot.c -o your_favorite_name
-	
+
 	Compilation SSE2 version:
 
 		gcc -O3 -Wall -pedantic -std=c99 -DSSE2 sse-mandelbrot.c -o your_favorite_name
@@ -76,6 +76,9 @@ void die(const char* fmt, ...) {
 #   if defined(AVX2)
 #       include "avx2-proc-64-bit.c"
 #   endif
+#   if defined(AVX512)
+#       include "avx512-proc-64-bit.c"
+#   endif
 #   include "sse4-proc-64-bit.c"
 #endif
 
@@ -111,6 +114,9 @@ void help(char* progname) {
 #if defined(AVX2)
     puts("AVX2 - select AVX2 procedure");
 #endif
+#if defined(AVX512)
+    puts("AVX512 - select AVX512 procedure");
+#endif
     puts("Parameters:");
     puts("");
 	puts("Remin Immin Remax Immax - define area of calculations; default -2.0 -2.0 +2.0 +2.0");
@@ -136,7 +142,7 @@ int main(int argc, char* argv[]) {
 	float threshold = 20.0;
 	int   maxiters  = 255;
 
-	enum {None, FPUprocedure, SSEprocedure, AVX2procedure} function;
+	enum {None, FPUprocedure, SSEprocedure, AVX2procedure, AVX512procedure} function;
 	function = None;
 
 	// parse command line
@@ -144,7 +150,7 @@ int main(int argc, char* argv[]) {
 	if (argc == 1) {
 		help(argv[0]);
     }
-	
+
 
 	// 1. function name
 	if (strcasecmp(argv[1], "FPU") == 0)
@@ -157,6 +163,11 @@ int main(int argc, char* argv[]) {
 	if (strcasecmp(argv[1], "AVX2") == 0)
 		function = AVX2procedure;
 #endif
+#if defined(AVX512)
+	else
+	if (strcasecmp(argv[1], "AVX512") == 0)
+		function = AVX512procedure;
+#endif
 	else
 		help(argv[0]);
 
@@ -165,13 +176,13 @@ int main(int argc, char* argv[]) {
 	if (argc >= 6) {
 		Re_min = strtod(argv[2], &err);
 		if (*err != '\0') die("Invalid Remin value");
-		
+
 		Im_min = strtod(argv[3], &err);
 		if (*err != '\0') die("Invalid Immin value");
-		
+
 		Re_max = strtod(argv[4], &err);
 		if (*err != '\0') die("Invalid Remax value");
-		
+
 		Im_max = strtod(argv[5], &err);
 		if (*err != '\0') die("Invalid Immax value");
 	}
@@ -230,7 +241,7 @@ int main(int argc, char* argv[]) {
 			);
 			t2 = get_time();
 			printf("%d us\n", t2-t1);
-		
+
             if (!dry_run) {
 			    f = fopen("fpu.pgm", "wb");
             }
@@ -258,14 +269,13 @@ int main(int argc, char* argv[]) {
 			);
 			t2 = get_time();
 			printf("%d us\n", t2-t1);
-		
+
             if (!dry_run) {
 			    f = fopen("sse.pgm", "wb");
             }
 			break;
 
 		case AVX2procedure:
-
 #if defined(AVX2)
             printf("AVX2 ");
 			fflush(stdout);
@@ -279,9 +289,30 @@ int main(int argc, char* argv[]) {
 			);
 			t2 = get_time();
 			printf("%d us\n", t2-t1);
-		
+
             if (!dry_run) {
-			    f = fopen("avx.pgm", "wb");
+			    f = fopen("avx2.pgm", "wb");
+            }
+#endif
+			break;
+
+		case AVX512procedure:
+#if defined(AVX512)
+            printf("AVX512 ");
+			fflush(stdout);
+			t1 = get_time();
+			AVX512_mandelbrot(
+				Re_min, Re_max,
+				Im_min, Im_max,
+				threshold, maxiters,
+				WIDTH, HEIGHT,
+				&image[0][0]
+			);
+			t2 = get_time();
+			printf("%d us\n", t2-t1);
+
+            if (!dry_run) {
+			    f = fopen("avx512.pgm", "wb");
             }
 #endif
 			break;

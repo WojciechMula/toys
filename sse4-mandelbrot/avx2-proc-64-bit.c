@@ -1,5 +1,4 @@
 //=== AVX2 implementation - 64-bit code ==================================
-#define SIMD_ALIGN __attribute__((aligned(16)))
 #include <immintrin.h>
 
 void AVX2_mandelbrot(

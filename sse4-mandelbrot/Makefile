@@ -1,12 +1,11 @@
 # Note: flag ``mfpmath=387`` is very important, because in 32-bit version
 #       I mixed floating points calculations with asm statements.
-CC=gcc
 FLAGS=-std=c99 -Wall -Wextra -pedantic -O3
 FORCEFPU=-mfpmath=387
 
 MAIN=main.c
 DEPS=$(MAIN) fpu-proc.c
-ALL=fractal32sse2 fractal32sse4 fractal64sse4 fractal32sse2fpu fractal32sse4fpu fractal64sse4fpu fractal64avx2
+ALL=fractal32sse2 fractal32sse4 fractal64sse4 fractal32sse2fpu fractal32sse4fpu fractal64sse4fpu fractal64avx2 fractal64avx512
 
 all: $(ALL)
 
@@ -30,6 +29,9 @@ fractal64sse4fpu: $(DEPS) sse4-proc-64-bit.c
 
 fractal64avx2: $(DEPS) avx2-proc-64-bit.c
 	$(CC) $(FLAGS) -mavx2 -DVERSION64BIT -DAVX2 $(MAIN) -o $@
+
+fractal64avx512: $(DEPS) avx512-proc-64-bit.c
+	$(CC) $(FLAGS) -mavx512vl -mavx512vbmi -DVERSION64BIT -DAVX2 -DAVX512 $(MAIN) -o $@
 
 clean:
 	rm -f $(ALL)
