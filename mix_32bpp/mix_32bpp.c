@@ -15,27 +15,6 @@
 	1. x86    --- naive C implementation
 	2. sse4   --- SSE implementation
 	3. sse4-2 --- SSE4 implementation, that use new instruction PMADDUBSW 
-
-	Compilation:
-
-		gcc -O3 -Wall -pedantic -std=c99 mix_32bpp.c -o mix
-	
-	Compilation for X11
-		
-		Xscr and load_ppm are tiny libraries:
-		* http://republika.pl/wmula/proj/Xscr/Xscr.c
-		* http://republika.pl/wmula/proj/Xscr/Xscr.h
-		* http://republika.pl/wmula/snippets/load_ppm.c
-		* http://republika.pl/wmula/snippets/load_ppm.h
-		
-		gcc -c -O3 -lX11 Xscr.c
-		gcc -c -O3 -DPPM_ALIGN_MALLOC=16 load_ppm.c
-		gcc -O3 -lX11 -std=c99 -DUSE_Xscr mix_32bpp.c Xscr.o load_ppm.o -o mix
-
-	Usage:
-
-		run program without argument to read help
-
 */
 
 #ifndef _XOPEN_SOURCE
