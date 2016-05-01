@@ -52,8 +52,8 @@
 #include <time.h>
 
 #ifdef USE_Xscr
-#include "Xscr.h"
-#include "load_ppm.h"
+#include "../Xscr/Xscr.h"
+#include "../loadppm/load_ppm.h"
 #endif
 
 
@@ -364,7 +364,7 @@ void view(const char* file1, const char* file2) {
 	if (err < 0)
 		die("Can't read %s: %s", file1, PPM_errormsg[-err]);
 	else
-	if ((((uint32_t)imgA) & 0x0f) != 0x00)
+	if ((((uintptr_t)imgA) & 0x0f) != 0x00)
 		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
 
@@ -375,7 +375,7 @@ void view(const char* file1, const char* file2) {
 	if (err < 0)
 		die("Can't read %s: %s", file2, PPM_errormsg[-err]);
 	else
-	if ((((uint32_t)imgB) & 0x0f) != 0x00)
+	if ((((uintptr_t)imgB) & 0x0f) != 0x00)
 		die("Compile load_ppm library with -DPPM_ALIGN_MALLOC=16.");
 	fclose(f);
 
@@ -419,7 +419,7 @@ void view(const char* file1, const char* file2) {
 
 	// check exit status
 	if (err < 0) {
-		printf("Xscr error: %s\n", Xscr_errormsg[-err]);
+		printf("Xscr error: %s\n", Xscr_error_str(err));
 	}
 	else {
 		for (i=0; i < OPT_COUNT; i++) {
@@ -502,7 +502,6 @@ void help(char* progname) {
 
 
 int main(int argc, char* argv[]) {
-	int action = -1;
 	int function;
 	int repeat_count;
 
@@ -511,7 +510,6 @@ int main(int argc, char* argv[]) {
 		help(argv[0]);
 
 	if (strcasecmp(argv[1], "measure") == 0) {
-		action = 1;
 		if (argc < 4)
 			help(argv[0]);
 
@@ -555,7 +553,6 @@ int main(int argc, char* argv[]) {
 #ifdef USE_Xscr
 	else
 	if (strcasecmp(argv[1], "view") == 0) {
-		action = 0;
 		if (argc < 4)
 			help(argv[0]);
 		else

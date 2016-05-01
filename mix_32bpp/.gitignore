@@ -1,1 +1,4 @@
 mix
+demo
+*.o
+*.pnm

@@ -1,0 +1,6 @@
+[submodule "Xscr"]
+	path = Xscr
+	url = https://github.com/WojciechMula/Xscr
+[submodule "loadppm"]
+	path = loadppm
+	url = https://github.com/WojciechMula/loadppm
