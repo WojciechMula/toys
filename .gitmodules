@@ -1,6 +1,8 @@
 [submodule "Xscr"]
 	path = Xscr
 	url = https://github.com/WojciechMula/Xscr
+    branch = master
 [submodule "loadppm"]
 	path = loadppm
 	url = https://github.com/WojciechMula/loadppm
+    branch = master
