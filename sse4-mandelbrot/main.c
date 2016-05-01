@@ -1,7 +1,7 @@
 /*
 	Mandelbrot fractal generator --- SSE2 & SSE4.1 implementation, $Revision: 1.3 $
 
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl/
 
@@ -73,6 +73,9 @@ void die(const char* fmt, ...) {
 #if defined(VERSION32BIT)
 #   include "sse4-proc-32-bit.c"
 #elif defined(VERSION64BIT)
+#   if defined(AVX2)
+#       include "avx2-proc-64-bit.c"
+#   endif
 #   include "sse4-proc-64-bit.c"
 #endif
 
@@ -93,7 +96,7 @@ void help(char* progname) {
 #endif
     puts("");
 
-	printf("%s FPU|SSE [Remin Immin Remax Immax [threshold] [maxiters]] [--dry-run]\n", progname);
+	printf("%s procedure [Remin Immin Remax Immax [threshold] [maxiters]] [--dry-run]\n", progname);
     puts("");
 	puts("FPU - select FPU procedure");
 #if defined(VERSION32BIT)
@@ -104,6 +107,9 @@ void help(char* progname) {
     #endif
 #else
     puts("SSE - select SSE procedure");
+#endif
+#if defined(AVX2)
+    puts("AVX2 - select AVX2 procedure");
 #endif
     puts("Parameters:");
     puts("");
@@ -130,7 +136,7 @@ int main(int argc, char* argv[]) {
 	float threshold = 20.0;
 	int   maxiters  = 255;
 
-	enum {None, FPUprocedure, SSEprocedure} function;
+	enum {None, FPUprocedure, SSEprocedure, AVX2procedure} function;
 	function = None;
 
 	// parse command line
@@ -146,6 +152,10 @@ int main(int argc, char* argv[]) {
 	else
 	if (strcasecmp(argv[1], "SSE") == 0)
 		function = SSEprocedure;
+#if defined(AVX2)
+	if (strcasecmp(argv[1], "AVX2") == 0)
+		function = AVX2procedure;
+#endif
 	else
 		help(argv[0]);
 
@@ -251,6 +261,28 @@ int main(int argc, char* argv[]) {
             if (!dry_run) {
 			    f = fopen("sse.pgm", "wb");
             }
+			break;
+
+		case AVX2procedure:
+
+#if defined(AVX2)
+            printf("AVX2 ");
+			fflush(stdout);
+			t1 = get_time();
+			AVX2_mandelbrot(
+				Re_min, Re_max,
+				Im_min, Im_max,
+				threshold, maxiters,
+				WIDTH, HEIGHT,
+				&image[0][0]
+			);
+			t2 = get_time();
+			printf("%d us\n", t2-t1);
+		
+            if (!dry_run) {
+			    f = fopen("avx.pgm", "wb");
+            }
+#endif
 			break;
 	}
 
