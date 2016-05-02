@@ -46,15 +46,15 @@ uint8_t alpha;
 int function = 0;
 
 
-#define OPT_COUNT 3
+#define OPT_COUNT 4
 
 static char* function_name[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2"
+	"x86", "SSE4", "SSE4-2", "swar-64bit"
 };
 
 
 static char* function_name_abbr[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2"
+	"x86", "SSE4", "SSE4-2", "swar"
 };
 
 
@@ -189,6 +189,9 @@ void blend() {
 }
 
 
+#include "blend_swar_64bit.c"
+
+
 //=== X11 procedures =====================================================
 #ifdef USE_Xscr
 static struct {
@@ -220,6 +223,10 @@ void motion(
 			case 2:
 				printf("%s", function_name[function]);
 				SSE42_blend();
+				break;
+			case 3:
+				printf("%s", function_name[function]);
+				swar_64bit_blend();
 				break;
 			default:
 				return;
@@ -262,6 +269,10 @@ void keyboard(
 
 		case XK_3:
 			function = 2;
+			break;
+
+		case XK_4:
+			function = 3;
 			break;
 
 		case XK_q:
@@ -344,7 +355,7 @@ void view(const char* file1, const char* file2) {
 	}
 	else {
 		for (i=0; i < OPT_COUNT; i++) {
-			printf("function %-6s called %5d time(s) ",
+			printf("function %-11s called %5d time(s) ",
 				function_name[i], frequency[i].n
 			);
 			if (frequency[i].n > 0)
@@ -394,6 +405,13 @@ void measure(int function, int repeat_count) {
 			t1 = getTime();
 			while (n--)
 				SSE42_blend();
+			t2 = getTime();
+			break;
+		
+		case 3:
+			t1 = getTime();
+			while (n--)
+				swar_64bit_blend();
 			t2 = getTime();
 			break;
 		default:
@@ -487,5 +505,3 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-
-// eof
