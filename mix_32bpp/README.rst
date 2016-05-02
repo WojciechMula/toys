@@ -15,7 +15,7 @@ Run ``make`` to compare perfromance on your machine.
 Run ``make demo`` to build a X11 application. Perhaps you'll have to run
 ``git submodule init``.
 
-Application reads two two .pnm files of the same size. Mouse position
-determines alpha values, keys 1, 2 and 3 select bledning procedure. Usage::
+Application reads two .pnm files of the same size. Mouse position
+determines alpha value, keys 1, 2 and 3 select bledning procedure. Usage::
 
     ./demo view file1.pnm file2.pnm
