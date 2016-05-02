@@ -9,16 +9,18 @@ LOADPPM_DEPS=../loadppm/load_ppm.h ../loadppm/load_ppm.c
 
 all: measure
 
+COUNT=100
 measure: mix
-	./mix measure x86 100
-	./mix measure SSE4 100
-	./mix measure SSE4-2 100
-	./mix measure swar 100
+	./mix measure x86    $(COUNT)
+	./mix measure SSE4   $(COUNT)
+	./mix measure SSE4-2 $(COUNT)
+	./mix measure swar   $(COUNT)
+	./mix measure SSE    $(COUNT)
 
 mix: mix_32bpp.c $(DEPS)
 	$(CC) $(FLAGS) mix_32bpp.c -o $@
 
-demo: mix_32bpp.c swar.c loadppm.o Xscr.o
+demo: mix_32bpp.c $(DEPS) loadppm.o Xscr.o
 	$(CC) $(FLAGS) -lX11 mix_32bpp.c Xscr.o loadppm.o -DUSE_Xscr -o $@
 
 Xscr.o: $(XSCR_DEPS)

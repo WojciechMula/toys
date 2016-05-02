@@ -46,15 +46,15 @@ uint8_t alpha;
 int function = 0;
 
 
-#define OPT_COUNT 4
+#define OPT_COUNT 5
 
 static char* function_name[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2", "swar-64bit"
+	"x86", "SSE4", "SSE4-2", "swar-64bit", "SSE",
 };
 
 
 static char* function_name_abbr[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2", "swar"
+	"x86", "SSE4", "SSE4-2", "swar", "SSE"
 };
 
 
@@ -86,6 +86,7 @@ void die(const char* fmt, ...) {
 #include "blend_sse4.c"
 #include "blend_sse42.c"
 #include "blend_swar_64bit.c"
+#include "blend_sse.c"
 
 
 //=== X11 procedures =====================================================
@@ -123,6 +124,10 @@ void motion(
 			case 3:
 				printf("%s", function_name[function]);
 				swar_64bit_blend();
+				break;
+			case 4:
+				printf("%s", function_name[function]);
+				blend_sse();
 				break;
 			default:
 				return;
@@ -169,6 +174,10 @@ void keyboard(
 
 		case XK_4:
 			function = 3;
+			break;
+
+		case XK_5:
+			function = 4;
 			break;
 
 		case XK_q:
@@ -308,6 +317,13 @@ void measure(int function, int repeat_count) {
 			t1 = getTime();
 			while (n--)
 				swar_64bit_blend();
+			t2 = getTime();
+			break;
+		
+		case 4:
+			t1 = getTime();
+			while (n--)
+				blend_sse();
 			t2 = getTime();
 			break;
 		default:
