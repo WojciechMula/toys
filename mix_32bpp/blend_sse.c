@@ -85,5 +85,3 @@ void blend_sse_2() {
         _mm_store_si128((__m128i*)(data + i), _mm_or_si128(R0, R1));
     }
 }
-
-#define blend_sse blend_sse_1

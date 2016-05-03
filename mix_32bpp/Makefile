@@ -15,7 +15,8 @@ measure: mix
 	./mix measure SSE4   $(COUNT)
 	./mix measure SSE4-2 $(COUNT)
 	./mix measure swar   $(COUNT)
-	./mix measure SSE    $(COUNT)
+	./mix measure SSE-1  $(COUNT)
+	./mix measure SSE-2  $(COUNT)
 
 mix: mix_32bpp.c $(DEPS)
 	$(CC) $(FLAGS) mix_32bpp.c -o $@

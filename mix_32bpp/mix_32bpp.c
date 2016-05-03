@@ -46,15 +46,15 @@ uint8_t alpha;
 int function = 0;
 
 
-#define OPT_COUNT 5
+#define OPT_COUNT 6
 
 static char* function_name[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2", "swar-64bit", "SSE",
+	"x86", "SSE4", "SSE4-2", "swar-64bit", "SSE(1)", "SSE(2)",
 };
 
 
 static char* function_name_abbr[OPT_COUNT] = {
-	"x86", "SSE4", "SSE4-2", "swar", "SSE"
+	"x86", "SSE4", "SSE4-2", "swar", "SSE-1", "SSE-2"
 };
 
 
@@ -127,7 +127,11 @@ void motion(
 				break;
 			case 4:
 				printf("%s", function_name[function]);
-				blend_sse();
+				blend_sse_1();
+				break;
+			case 5:
+				printf("%s", function_name[function]);
+				blend_sse_2();
 				break;
 			default:
 				return;
@@ -178,6 +182,10 @@ void keyboard(
 
 		case XK_5:
 			function = 4;
+			break;
+
+		case XK_6:
+			function = 5;
 			break;
 
 		case XK_q:
@@ -323,7 +331,14 @@ void measure(int function, int repeat_count) {
 		case 4:
 			t1 = getTime();
 			while (n--)
-				blend_sse();
+				blend_sse_2();
+			t2 = getTime();
+			break;
+		
+		case 5:
+			t1 = getTime();
+			while (n--)
+				blend_sse_2();
 			t2 = getTime();
 			break;
 		default:
