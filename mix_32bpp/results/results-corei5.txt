@@ -1,0 +1,154 @@
+machine: Core i5 M 540 @ 2.53GHz
+
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 208829 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 63026 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 45320 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 143426 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 70617 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 63984 us
+wojtek@ack:~/toys/mix_32bpp$ make
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 209187 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 62124 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 46325 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 143509 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 71596 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 64987 us
+wojtek@ack:~/toys/mix_32bpp$ make
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 209077 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 62264 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 47260 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 143810 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 71995 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 64918 us
+wojtek@ack:~/toys/mix_32bpp$ make
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 212217 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 64144 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 46021 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 144126 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 71430 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 65156 us
+wojtek@ack:~/toys/mix_32bpp$ make
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 212121 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 63376 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 45300 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 143651 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 70995 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 64999 us
+wojtek@ack:~/toys/mix_32bpp$ make
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 206565 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 62431 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 45622 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 143959 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 71684 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 64909 us
+wojtek@ack:~/toys/mix_32bpp$ make
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 208725 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 62626 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 46999 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 144343 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 71440 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 65308 us
+wojtek@ack:~/toys/mix_32bpp$ make
+./mix measure x86    100
+function x86, called 100 times; image 1024 x 768
+time = 211717 us
+./mix measure SSE4   100
+function SSE4, called 100 times; image 1024 x 768
+time = 59119 us
+./mix measure SSE4-2 100
+function SSE4-2, called 100 times; image 1024 x 768
+time = 44996 us
+./mix measure swar   100
+function swar-64bit, called 100 times; image 1024 x 768
+time = 144083 us
+./mix measure SSE-1  100
+function SSE(1), called 100 times; image 1024 x 768
+time = 71819 us
+./mix measure SSE-2  100
+function SSE(2), called 100 times; image 1024 x 768
+time = 64838 us
+
