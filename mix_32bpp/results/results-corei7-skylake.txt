@@ -1,182 +1,182 @@
-machine: Core i5 M 540 @ 2.53GHz
+machine: Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
 
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 208049 us
+time = 70870 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 62029 us
+time = 47608 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 48696 us
+time = 20948 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 143723 us
+time = 71887 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 69265 us
+time = 33693 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 67869 us
+time = 31738 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 206657 us
+time = 70785 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 61996 us
+time = 47579 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 45199 us
+time = 20978 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 143256 us
+time = 71849 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 69430 us
+time = 33741 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64221 us
+time = 31751 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 206333 us
+time = 70791 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 61072 us
+time = 47598 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 44315 us
+time = 20939 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 149671 us
+time = 71908 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 69683 us
+time = 33684 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 66773 us
+time = 31769 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 213032 us
+time = 70728 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 55530 us
+time = 47598 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 50268 us
+time = 20957 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 144189 us
+time = 71826 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 70043 us
+time = 33700 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64620 us
+time = 31761 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 207738 us
+time = 70845 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 64092 us
+time = 47601 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 45622 us
+time = 20981 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 144274 us
+time = 71891 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 69491 us
+time = 33735 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64366 us
+time = 31763 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 210876 us
+time = 70768 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 55787 us
+time = 47566 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 45529 us
+time = 20946 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 143165 us
+time = 71858 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 74147 us
+time = 33734 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64640 us
+time = 31749 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 208025 us
+time = 70863 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 64348 us
+time = 47580 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 45936 us
+time = 20964 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 144023 us
+time = 71876 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 74227 us
+time = 33722 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64700 us
+time = 31727 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 209400 us
+time = 70817 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 63044 us
+time = 47596 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 45148 us
+time = 20946 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 143059 us
+time = 71865 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 69296 us
+time = 33713 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64304 us
+time = 31754 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 206044 us
+time = 70798 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 61950 us
+time = 47578 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 45900 us
+time = 20977 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 143134 us
+time = 71909 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 69636 us
+time = 33703 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64286 us
+time = 31761 us
 ./mix measure x86    100
 function x86, called 100 times; image 1024 x 768
-time = 212496 us
+time = 70782 us
 ./mix measure SSE4   100
 function SSE4, called 100 times; image 1024 x 768
-time = 64139 us
+time = 47603 us
 ./mix measure SSE4-2 100
 function SSE4-2, called 100 times; image 1024 x 768
-time = 45814 us
+time = 20945 us
 ./mix measure swar   100
 function swar-64bit, called 100 times; image 1024 x 768
-time = 143123 us
+time = 71897 us
 ./mix measure SSE-1  100
 function SSE(1), called 100 times; image 1024 x 768
-time = 69228 us
+time = 33723 us
 ./mix measure SSE-2  100
 function SSE(2), called 100 times; image 1024 x 768
-time = 64294 us
+time = 31759 us

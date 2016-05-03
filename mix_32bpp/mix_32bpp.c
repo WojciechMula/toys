@@ -331,7 +331,7 @@ void measure(int function, int repeat_count) {
 		case 4:
 			t1 = getTime();
 			while (n--)
-				blend_sse_2();
+				blend_sse_1();
 			t2 = getTime();
 			break;
 		
