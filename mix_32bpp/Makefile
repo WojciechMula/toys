@@ -21,8 +21,8 @@ measure: mix
 mix: mix_32bpp.c $(DEPS)
 	$(CC) $(FLAGS) mix_32bpp.c -o $@
 
-demo: mix_32bpp.c $(DEPS) loadppm.o Xscr.o
-	$(CC) $(FLAGS) -lX11 mix_32bpp.c Xscr.o loadppm.o -DUSE_Xscr -o $@
+demo: demo.c $(DEPS) loadppm.o Xscr.o
+	$(CC) $(FLAGS) -lX11 demo.c Xscr.o loadppm.o -o $@
 
 Xscr.o: $(XSCR_DEPS)
 	$(CC) $(FLAGS) -c -lX11 ../Xscr/Xscr.c -o $@
