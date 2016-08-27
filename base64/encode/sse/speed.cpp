@@ -15,6 +15,9 @@
 #   include "lookup.avx2.cpp"
 #   include "encode.avx2.cpp"
 #endif
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "encode.avx512.cpp"
+#endif
 
 #include "application.cpp"
 
@@ -97,6 +100,12 @@ public:
 
         if (cmd.empty() || cmd.has("avx2/pshufb/unrolled")) {
             measure("AVX2 (lookup: pshufb-based, unrolled)", avx2_pshufb_unrolled);
+        }
+#endif
+
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+        if (cmd.empty() || cmd.has("avx512")) {
+            measure("AVX512", avx512);
         }
 #endif
 

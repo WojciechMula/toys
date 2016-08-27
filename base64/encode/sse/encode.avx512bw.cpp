@@ -5,7 +5,7 @@
 
 namespace base64 {
 
-    namespace avx512 {
+    namespace avx512bw {
 
         void encode_faster_spliting(uint8_t* input, size_t bytes, uint8_t* output) {
 

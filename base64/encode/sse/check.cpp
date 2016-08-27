@@ -20,6 +20,10 @@
 #   include "encode.avx512.cpp"
 #endif
 
+#if defined(HAVE_AVX512BW_INSTRUCTIONS)
+#   include "encode.avx512bw.cpp"
+#endif
+
 #include "application.cpp"
 
 class Application final: public ApplicationBase {
@@ -54,9 +58,12 @@ public:
         check("AVX2 (pshufb-based)", avx2_pshufb, valid);
         check("AVX2 (pshufb-based unrolled)", avx2_pshufb_unrolled, valid);
 #endif
+#if defined(HAVE_AVX512BW_INSTRUCTIONS)
+        check("AVX512BW (improved splitting)", avx512bw, valid);
+        check("AVX512BW (faster splitting)", avx512bw_faster, valid);
+#endif
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-        check("AVX512 (improved splitting)", avx512, valid);
-        check("AVX512 (faster splitting)", avx512_faster, valid);
+        check("AVX512", avx512, valid);
 #endif
 
         return 0;
@@ -87,6 +94,10 @@ private:
 
 
 int main(int argc, char* argv[]) {
+
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+        base64::avx512::initialize();
+#endif
 
     CommandLine cmd(argc, argv);
     Application app(cmd);

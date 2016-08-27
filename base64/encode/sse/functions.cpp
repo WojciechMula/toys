@@ -56,12 +56,18 @@ auto avx2_pshufb_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
 };
 #endif
 
-#if defined(HAVE_AVX512_INSTRUCTIONS)
-auto avx512 = [](uint8_t* input, size_t bytes, uint8_t* output) {
-    base64::avx512::encode_improved_splitting(input, bytes, output);
+#if defined(HAVE_AVX512BW_INSTRUCTIONS)
+auto avx512bw = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx512bw::encode_improved_splitting(input, bytes, output);
 };
 
-auto avx512_faster = [](uint8_t* input, size_t bytes, uint8_t* output) {
-    base64::avx512::encode_faster_spliting(input, bytes, output);
+auto avx512bw_faster = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx512bw::encode_faster_spliting(input, bytes, output);
+};
+#endif
+
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+auto avx512 = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx512::encode_with_gathers(input, bytes, output);
 };
 #endif

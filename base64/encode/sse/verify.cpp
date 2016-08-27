@@ -7,6 +7,9 @@
 #if defined(HAVE_AVX2_INSTRUCTIONS)
 #   include "lookup.avx2.cpp"
 #endif
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "encode.avx512.cpp"
+#endif
 
 const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -113,6 +116,87 @@ bool test_avx2(LOOKUP_FN fn) {
 #endif
 
 
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+bool test_avx512() {
+
+	base64::avx512::initialize();
+
+    uint8_t input[64];
+    uint8_t output[64];
+
+	for (int index=0; index < 4*12; index++) {
+		for (uint8_t value=0; value < 64; value++) {
+			
+			memset(input, 0, 64);
+
+			const size_t shift  = index * 6;
+			const size_t byte   = shift / 8;
+			const size_t lshift = shift % 8;
+
+			switch (lshift) {
+				case 0:
+					input[byte] = value;
+					break;
+
+				case 1:
+					input[byte] = value << 1;
+					break;
+
+				case 2:
+					input[byte] = value << 2;
+					break;
+
+				case 3:
+					input[byte]     = value << 3;
+					input[byte + 1] = value >> 5;
+					break;
+
+				case 4:
+					input[byte]     = value << 4;
+					input[byte + 1] = value >> 4;
+					break;
+
+				case 5:
+					input[byte]     = value << 5;
+					input[byte + 1] = value >> 3;
+					break;
+
+				case 6:
+					input[byte]     = value << 6;
+					input[byte + 1] = value >> 2;
+					break;
+
+				case 7:
+					input[byte]     = value << 7;
+					input[byte + 1] = value >> 1;
+					break;
+			} // switch
+
+			base64::avx512::encode_with_gathers(input, 4*12, output);
+
+			// verify
+			for (int i=0; i < 64; i++) {
+				
+				if (i != index) {
+					if (output[i] != lookup[0]) {
+						printf("failed for %d at %d - other bytes have to be zeroed\n", value, index);
+						return false;
+					}
+				} else {
+					if (output[index] != lookup[value]) {
+						printf("failed for %d at %d\n", value, index);
+						return false;
+					}
+				}
+			}
+		}
+	}
+
+	return true;
+}
+#endif
+
+
 int test() {
 
     printf("reference branchless (optimized v2)... ");
@@ -189,6 +273,16 @@ int test() {
     }
 #endif
 
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+	printf("AVX512F... ");
+    fflush(stdout);
+
+    if (test_avx512()) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+#endif
     return 0;
 }
 
