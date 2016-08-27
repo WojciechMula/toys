@@ -105,7 +105,11 @@ public:
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
         if (cmd.empty() || cmd.has("avx512")) {
-            measure("AVX512", avx512);
+            measure("AVX512", avx512_swar);
+        }
+
+        if (cmd.empty() || cmd.has("avx512/gather")) {
+            measure("AVX512 (gather)", avx512_gathers);
         }
 #endif
 

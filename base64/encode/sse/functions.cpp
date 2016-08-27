@@ -67,7 +67,11 @@ auto avx512bw_faster = [](uint8_t* input, size_t bytes, uint8_t* output) {
 #endif
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-auto avx512 = [](uint8_t* input, size_t bytes, uint8_t* output) {
+auto avx512_gathers = [](uint8_t* input, size_t bytes, uint8_t* output) {
     base64::avx512::encode_with_gathers(input, bytes, output);
+};
+
+auto avx512_swar = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx512::encode_with_SWAR(input, bytes, output);
 };
 #endif

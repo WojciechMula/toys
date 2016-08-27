@@ -63,7 +63,8 @@ public:
         check("AVX512BW (faster splitting)", avx512bw_faster, valid);
 #endif
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-        check("AVX512", avx512, valid);
+        check("AVX512", avx512_swar, valid);
+        check("AVX512 (gather)", avx512_gathers, valid);
 #endif
 
         return 0;
@@ -96,7 +97,7 @@ private:
 int main(int argc, char* argv[]) {
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-        base64::avx512::initialize();
+    base64::avx512::initialize();
 #endif
 
     CommandLine cmd(argc, argv);
