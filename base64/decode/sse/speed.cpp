@@ -14,6 +14,9 @@
 #if defined(HAVE_AVX2_INSTRUCTIONS)
 #   include "decoders.avx2.cpp"
 #endif
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "decoders.avx512.cpp"
+#endif
 
 #include "function_registry.cpp"
 #include "application.cpp"
