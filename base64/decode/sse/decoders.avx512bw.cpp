@@ -1,10 +1,10 @@
-#include "pack.avx512.cpp"
-#include "lookup.avx512.cpp"
-#include "decode.avx512.cpp"
+#include "pack.avx512bw.cpp"
+#include "lookup.avx512bw.cpp"
+#include "decode.avx512bw.cpp"
 
 namespace base64 {
 
-    namespace avx512 {
+    namespace avx512bw {
 
         void prepare_lookups() {
 
@@ -12,6 +12,6 @@ namespace base64 {
             initalize_decode();
         }
 
-    } // namespace avx512
+    } // namespace avx512bw
 
 } // namespace base64

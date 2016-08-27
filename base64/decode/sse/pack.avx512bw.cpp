@@ -3,7 +3,7 @@
 
 namespace base64 {
 
-    namespace avx512 {
+    namespace avx512bw {
 
 #define packed_dword(x) _mm512_set1_epi32(x)
 
@@ -16,6 +16,6 @@ namespace base64 {
 
 #undef packed_dword
 
-    } // namespace avx512
+    } // namespace avx512bw
 
 } // namespace base64

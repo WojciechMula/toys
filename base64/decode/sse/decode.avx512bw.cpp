@@ -6,7 +6,7 @@
 
 namespace base64 {
 
-    namespace avx512 {
+    namespace avx512bw {
 
         namespace precalc {
 
@@ -68,7 +68,6 @@ namespace base64 {
             }
         }
 
-
-    } // namespace avx512
+    } // namespace avx512bw
 
 } // namespace base64

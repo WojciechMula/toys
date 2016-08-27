@@ -4,6 +4,6 @@ check
 speed_avx2
 verify_avx2
 check_avx2
-verify_avx512
-check_avx512
+verify_avx512bw
+check_avx512bw
 *.txt

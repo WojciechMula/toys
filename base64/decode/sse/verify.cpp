@@ -11,8 +11,8 @@
 #   include "decoders.avx2.cpp"
 #endif
 
-#if defined(HAVE_AVX512_INSTRUCTIONS)
-#   include "decoders.avx512.cpp"
+#if defined(HAVE_AVX512BW_INSTRUCTIONS)
+#   include "decoders.avx512bw.cpp"
 #endif
 
 #include "function_registry.cpp"
@@ -308,12 +308,12 @@ int test() {
 
 #endif // HAVE_AVX2_INSTRUCTIONS
 
-#if defined(HAVE_AVX512_INSTRUCTIONS)
+#if defined(HAVE_AVX512BW_INSTRUCTIONS)
     {
-    using namespace base64::avx512;
+    using namespace base64::avx512bw;
     RUN_TEMPLATE2(64, 48, "avx512", decode, lookup, pack_madd)
     }
-#endif // HAVE_AVX512_INSTRUCTIONS
+#endif // HAVE_AVX512BW_INSTRUCTIONS
     return 0;
 }
 
@@ -322,9 +322,9 @@ int main() {
 
     base64::scalar::prepare_lookup();
     base64::scalar::prepare_lookup32();
-#if defined(HAVE_AVX512_INSTRUCTIONS)
-    base64::avx512::prepare_lookups();
-#endif // HAVE_AVX512_INSTRUCTIONS
+#if defined(HAVE_AVX512BW_INSTRUCTIONS)
+    base64::avx512bw::prepare_lookups();
+#endif // HAVE_AVX512BW_INSTRUCTIONS
 
 
     try {

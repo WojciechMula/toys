@@ -116,13 +116,13 @@ void FunctionRegistry::build() {
     add("avx2/blend/madd",                   "AVX2",              "byte blend",   "multiply-add");
     add("avx2/pshufb/madd",                  "AVX2",              "pshufb",       "multiply-add");
 
-#   if defined(HAVE_BMI2_INSTRUCTIONS)
+# if defined(HAVE_BMI2_INSTRUCTIONS)
     add("avx2_bmi2/base",       "AVX2 & BMI2",      "base",         "N/A");
     add("avx2_bmi2/blend",      "AVX2 & BMI2",      "byte blend",   "N/A");
 #   endif
 #endif
-#if defined(HAVE_AVX512_INSTRUCTIONS)
-    add("avx512",               "AVX512",           "N/A",         "multiply-add");
+#if defined(HAVE_AVX512BW_INSTRUCTIONS)
+    add("avx512bw",              "AVX512BW",        "N/A",         "multiply-add");
 #endif
     widest_image = 0;
     for (auto& it: registry) {
