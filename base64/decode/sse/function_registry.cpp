@@ -125,7 +125,8 @@ void FunctionRegistry::build() {
     add("avx512bw",              "AVX512BW",        "N/A",         "multiply-add");
 #endif
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-    add("avx512",                "AVX512",          "N/A",         "N/A");
+    add("avx512/gather",         "AVX512 (gather)",        "N/A",         "N/A");
+    add("avx512/comparisons",    "AVX512 (comparisons)",   "N/A",         "improved");
 #endif
     widest_image = 0;
     for (auto& it: registry) {

@@ -310,10 +310,18 @@ int test() {
 
 #endif // HAVE_AVX2_INSTRUCTIONS
 
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+    {
+    using namespace base64::avx512;
+    RUN_TEMPLATE2(64, 48, "avx512/gather",      decode, lookup_gather,      pack_identity);
+    RUN_TEMPLATE2(64, 48, "avx512/comparisons", decode, lookup_comparisons, pack_improved);
+    }
+#endif // HAVE_AVX512_INSTRUCTIONS
+
 #if defined(HAVE_AVX512BW_INSTRUCTIONS)
     {
     using namespace base64::avx512bw;
-    RUN_TEMPLATE2(64, 48, "avx512", decode, lookup, pack_madd)
+    RUN_TEMPLATE2(64, 48, "avx512bw", decode, lookup, pack_madd)
     }
 #endif // HAVE_AVX512BW_INSTRUCTIONS
     return 0;
@@ -324,6 +332,9 @@ int main() {
 
     base64::scalar::prepare_lookup();
     base64::scalar::prepare_lookup32();
+#if defined(HAVE_AVX512_INSTRUCTIONS)
+    base64::avx512::prepare_lookups();
+#endif // HAVE_AVX515_INSTRUCTIONS
 #if defined(HAVE_AVX512BW_INSTRUCTIONS)
     base64::avx512bw::prepare_lookups();
 #endif // HAVE_AVX512BW_INSTRUCTIONS

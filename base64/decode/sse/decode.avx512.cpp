@@ -24,8 +24,9 @@ namespace base64 {
             precalc::scatter_offsets = _mm512_loadu_si512(reinterpret_cast<__m512i*>(lookup));
         }
 
-        template <typename FN_LOOKUP>
-        void decode(FN_LOOKUP lookup, const uint8_t* input, size_t size, uint8_t* output) {
+
+        template <typename FN_LOOKUP, typename FN_PACK>
+        void decode(FN_LOOKUP lookup, FN_PACK pack, const uint8_t* input, size_t size, uint8_t* output) {
 
             assert(size % 64 == 0);
 
@@ -43,8 +44,10 @@ namespace base64 {
                     const auto shift = e.offset;
                     throw invalid_input(i + shift, input[i + shift]);
                 }
-                
-                _mm512_i32scatter_epi32(reinterpret_cast<int*>(out), precalc::scatter_offsets, values, 1);
+
+                const __m512i packed = pack(values);
+
+                _mm512_i32scatter_epi32(reinterpret_cast<int*>(out), precalc::scatter_offsets, packed, 1);
 
                 out += 48;
             }
