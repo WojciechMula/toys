@@ -28,6 +28,14 @@ auto sse_pshufb_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
     base64::sse::encode_unrolled(base64::sse::lookup_pshufb, input, bytes, output);
 };
 
+auto sse_pshufb_improved = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::sse::encode(base64::sse::lookup_pshufb_improved, input, bytes, output);
+};
+
+auto sse_pshufb_improved_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::sse::encode_unrolled(base64::sse::lookup_pshufb_improved, input, bytes, output);
+};
+
 #if defined(HAVE_BMI2_INSTRUCTIONS)
 auto sse_bmi2_naive = [](uint8_t* input, size_t bytes, uint8_t* output) {
     base64::sse::encode_bmi2(base64::sse::lookup_naive, input, bytes, output);
@@ -53,6 +61,14 @@ auto avx2_pshufb = [](uint8_t* input, size_t bytes, uint8_t* output) {
 
 auto avx2_pshufb_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
     base64::avx2::encode_unrolled(base64::avx2::lookup_pshufb, input, bytes, output);
+};
+
+auto avx2_pshufb_improved = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx2::encode(base64::avx2::lookup_pshufb_improved, input, bytes, output);
+};
+
+auto avx2_pshufb_improved_unrolled = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx2::encode_unrolled(base64::avx2::lookup_pshufb_improved, input, bytes, output);
 };
 #endif
 

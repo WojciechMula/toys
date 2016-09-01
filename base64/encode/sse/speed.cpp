@@ -59,6 +59,10 @@ public:
             measure("SSE (lookup: pshufb-based)", sse_pshufb);
         }
 
+        if (cmd.empty() || cmd.has("sse3/improved")) {
+            measure("SSE (lookup: pshufb improved)", sse_pshufb_improved);
+        }
+
         if (cmd.empty() || cmd.has("sse1/unrolled")) {
             measure("SSE (lookup: other improved, unrolled)", sse_optimized1_unrolled);
         }
@@ -69,6 +73,10 @@ public:
 
         if (cmd.empty() || cmd.has("sse2/unrolled2")) {
             measure("SSE (lookup: pshufb-based, unrolled)", sse_pshufb_unrolled);
+        }
+
+        if (cmd.empty() || cmd.has("sse3/improved/unrolled")) {
+            measure("SSE (lookup: pshufb improved unrolled)", sse_pshufb_improved_unrolled);
         }
 
         if (cmd.empty() || cmd.has("sse2/fully_unrolled")) {
@@ -100,6 +108,14 @@ public:
 
         if (cmd.empty() || cmd.has("avx2/pshufb/unrolled")) {
             measure("AVX2 (lookup: pshufb-based, unrolled)", avx2_pshufb_unrolled);
+        }
+
+        if (cmd.empty() || cmd.has("avx2/pshufb/improved")) {
+            measure("AVX2 (lookup: pshufb improved)", avx2_pshufb_improved);
+        }
+
+        if (cmd.empty() || cmd.has("avx2/pshufb/improved/unrolled")) {
+            measure("AVX2 (lookup: pshufb unrolled improved)", avx2_pshufb_improved_unrolled);
         }
 #endif
 

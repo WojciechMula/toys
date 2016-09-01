@@ -65,6 +65,32 @@ namespace base64 {
             return _mm256_add_epi8(input, shift);
         }
 
+
+        __m256i lookup_pshufb_improved(const __m256i input) {
+
+            __m256i result = _mm256_subs_epu8(input, packed_byte(51));
+
+            const __m256i less = _mm256_cmpgt_epi8(packed_byte(26), input);
+
+            result = _mm256_or_si256(result, _mm256_and_si256(less, packed_byte(13)));
+
+            const __m256i shift_LUT = _mm256_setr_epi8(
+                'a' - 26, '0' - 52, '0' - 52, '0' - 52, '0' - 52, '0' - 52,
+                '0' - 52, '0' - 52, '0' - 52, '0' - 52, '0' - 52, '+' - 62,
+                '/' - 63, 'A', 0, 0,
+
+                'a' - 26, '0' - 52, '0' - 52, '0' - 52, '0' - 52, '0' - 52,
+                '0' - 52, '0' - 52, '0' - 52, '0' - 52, '0' - 52, '+' - 62,
+                '/' - 63, 'A', 0, 0
+            );
+
+            result = _mm256_shuffle_epi8(shift_LUT, result);
+
+            return _mm256_add_epi8(result, input);
+        }
+
+
+
     #undef packed_byte
 
     } // namespace avx2

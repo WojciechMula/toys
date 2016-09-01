@@ -44,19 +44,23 @@ public:
         check("SSE (optimized v1)", sse_optimized1, valid);
         check("SSE (optimized v2)", sse_optimized2, valid);
         check("SSE (pshuf-based)",  sse_pshufb, valid);
+        check("SSE (pshuf improved)",  sse_pshufb_improved, valid);
         check("SSE (optimized v1 unrolled)", sse_optimized1_unrolled, valid);
         check("SSE (optimized v2 unrolled)", sse_optimized2_unrolled, valid);
         check("SSE (pshufb-based unrolled)", sse_pshufb_unrolled, valid);
+        check("SSE (pshuf improved unrolled)",  sse_pshufb_improved_unrolled, valid);
         check("SSE (optimized v2 fully unrolled)", base64::sse::encode_full_unrolled, valid);
 #if defined(HAVE_BMI2_INSTRUCTIONS)
         check("SSE & BMI2 (naive)", sse_bmi2_naive, valid);
         check("SSE & BMI2 (optimized)", sse_bmi2_optimized, valid);
 #endif
 #if defined(HAVE_AVX2_INSTRUCTIONS)
-        check("AVX2 (optimized v2)", avx2_optimized2, valid);
-        check("AVX2 (optimized v2 unrolled)", avx2_optimized2_unrolled, valid);
-        check("AVX2 (pshufb-based)", avx2_pshufb, valid);
-        check("AVX2 (pshufb-based unrolled)", avx2_pshufb_unrolled, valid);
+        check("AVX2 (optimized v2)",                avx2_optimized2, valid);
+        check("AVX2 (optimized v2 unrolled)",       avx2_optimized2_unrolled, valid);
+        check("AVX2 (pshufb-based)",                avx2_pshufb, valid);
+        check("AVX2 (pshufb-based unrolled)",       avx2_pshufb_unrolled, valid);
+        check("AVX2 (pshufb improved)",             avx2_pshufb_improved, valid);
+        check("AVX2 (pshufb improved unrolled)",    avx2_pshufb_improved_unrolled, valid);
 #endif
 #if defined(HAVE_AVX512BW_INSTRUCTIONS)
         check("AVX512BW (improved splitting)", avx512bw, valid);

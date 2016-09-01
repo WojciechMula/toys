@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstring>
+#include <cassert>
 
 #include "config.h"
 #include "lookup.reference.cpp"
@@ -76,6 +77,7 @@ bool test_sse(LOOKUP_FN fn) {
 template<typename LOOKUP_FN>
 bool test_avx2(LOOKUP_FN fn) {
 
+
     uint8_t input[32];
     uint8_t output[32];
 
@@ -94,11 +96,12 @@ bool test_avx2(LOOKUP_FN fn) {
 
             _mm256_storeu_si256(reinterpret_cast<__m256i*>(output), out);
 
-            for (unsigned j=0; j < 16; j++) {
+            for (unsigned j=0; j < 32; j++) {
 
                 if (j == byte) {
                     if (output[j] != lookup[i]) {
                         printf("failed at %d, byte %d - wrong result\n", i, byte);
+                        printf("%02x != %02x (%c != %c)\n", output[j], lookup[i], output[j], lookup[i]);
                         return false;
                     }
                 } else {
@@ -248,9 +251,17 @@ int test() {
         return 1;
     }
 
-    printf("SSE pshufb-base algorithm... ");
+    printf("SSE pshufb-based algorithm... ");
     fflush(stdout);
     if (test_sse(base64::sse::lookup_pshufb)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
+    printf("SSE pshufb improved algorithm... ");
+    fflush(stdout);
+    if (test_sse(base64::sse::lookup_pshufb_improved)) {
         puts("OK");
     } else {
         return 1;
@@ -268,6 +279,14 @@ int test() {
     printf("AVX2 implementation of pshufb-based algorithm... ");
     fflush(stdout);
     if (test_avx2(base64::avx2::lookup_pshufb)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
+    printf("AVX2 implementation of pshufb improved algorithm... ");
+    fflush(stdout);
+    if (test_avx2(base64::avx2::lookup_pshufb_improved)) {
         puts("OK");
     } else {
         return 1;

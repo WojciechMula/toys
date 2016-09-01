@@ -119,6 +119,26 @@ namespace base64 {
             return _mm_add_epi8(input, shift);
         }
 
+
+        __m128i lookup_pshufb_improved(const __m128i input) {
+
+            __m128i result = _mm_subs_epu8(input, packed_byte(51));
+
+            const __m128i less = _mm_cmpgt_epi8(packed_byte(26), input);
+
+            result = _mm_or_si128(result, _mm_and_si128(less, packed_byte(13)));
+
+            const __m128i shift_LUT = _mm_setr_epi8(
+                'a' - 26, '0' - 52, '0' - 52, '0' - 52, '0' - 52, '0' - 52,
+                '0' - 52, '0' - 52, '0' - 52, '0' - 52, '0' - 52, '+' - 62,
+                '/' - 63, 'A', 0, 0
+            );
+
+            result = _mm_shuffle_epi8(shift_LUT, result);
+
+            return _mm_add_epi8(result, input);
+        }
+
     #undef packed_byte
 
     } // namespace sse
