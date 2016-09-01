@@ -84,14 +84,14 @@ auto avx512bw_faster = [](uint8_t* input, size_t bytes, uint8_t* output) {
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
 auto avx512_gathers = [](uint8_t* input, size_t bytes, uint8_t* output) {
-    base64::avx512::encode_with_gathers(input, bytes, output);
+    base64::avx512::encode(base64::avx512::lookup_gather, input, bytes, output);
 };
 
-auto avx512_swar = [](uint8_t* input, size_t bytes, uint8_t* output) {
-    base64::avx512::encode_with_SWAR(input, bytes, output);
+auto avx512_swar_arith= [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx512::encode(base64::avx512::lookup_incremental_arithmetic, input, bytes, output);
 };
 
-auto avx512_swar_xor = [](uint8_t* input, size_t bytes, uint8_t* output) {
-    base64::avx512::encode_with_SWAR_xor(input, bytes, output);
+auto avx512_swar_logic = [](uint8_t* input, size_t bytes, uint8_t* output) {
+    base64::avx512::encode(base64::avx512::lookup_incremental_logic, input, bytes, output);
 };
 #endif

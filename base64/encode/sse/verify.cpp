@@ -9,7 +9,7 @@
 #   include "lookup.avx2.cpp"
 #endif
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-#   include "encode.avx512.cpp"
+#   include "lookup.avx512.cpp"
 #endif
 
 const char* lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -77,7 +77,6 @@ bool test_sse(LOOKUP_FN fn) {
 template<typename LOOKUP_FN>
 bool test_avx2(LOOKUP_FN fn) {
 
-
     uint8_t input[32];
     uint8_t output[32];
 
@@ -120,75 +119,40 @@ bool test_avx2(LOOKUP_FN fn) {
 
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-template <typename ENCODING_FN>
-bool test_avx512(ENCODING_FN function) {
+template<typename LOOKUP_FN>
+bool test_avx512(LOOKUP_FN fn) {
 
     base64::avx512::initialize();
 
     uint8_t input[64];
     uint8_t output[64];
 
-    for (int index=0; index < 4*12; index++) {
-        for (uint8_t value=0; value < 64; value++) {
-            
-            memset(input, 0, 64);
+    for (unsigned byte=0; byte < 64; byte++) {
 
-            const size_t shift  = index * 6;
-            const size_t byte   = shift / 8;
-            const size_t lshift = shift % 8;
+        for (unsigned j=0; j < 64; j++) {
+            input[j] = 0;
+        }
 
-            switch (lshift) {
-                case 0:
-                    input[byte] = value;
-                    break;
+        for (unsigned i=0; i < 64; i++) {
 
-                case 1:
-                    input[byte] = value << 1;
-                    break;
+            input[byte] = i;
 
-                case 2:
-                    input[byte] = value << 2;
-                    break;
+            __m512i in  = _mm512_loadu_si512(reinterpret_cast<const __m512i*>(input));
+            __m512i out = fn(in);
 
-                case 3:
-                    input[byte]     = value << 3;
-                    input[byte + 1] = value >> 5;
-                    break;
+            _mm512_storeu_si512(reinterpret_cast<__m512i*>(output), out);
 
-                case 4:
-                    input[byte]     = value << 4;
-                    input[byte + 1] = value >> 4;
-                    break;
+            for (unsigned j=0; j < 64; j++) {
 
-                case 5:
-                    input[byte]     = value << 5;
-                    input[byte + 1] = value >> 3;
-                    break;
-
-                case 6:
-                    input[byte]     = value << 6;
-                    input[byte + 1] = value >> 2;
-                    break;
-
-                case 7:
-                    input[byte]     = value << 7;
-                    input[byte + 1] = value >> 1;
-                    break;
-            } // switch
-
-            function(input, 4*12, output);
-
-            // verify
-            for (int i=0; i < 64; i++) {
-                
-                if (i != index) {
-                    if (output[i] != lookup[0]) {
-                        printf("failed for %d at %d: got %d\n", value, index, output[i]);
+                if (j == byte) {
+                    if (output[j] != lookup[i]) {
+                        printf("failed at %d, byte %d - wrong result\n", i, byte);
+                        printf("%02x != %02x (%c != %c)\n", output[j], lookup[i], output[j], lookup[i]);
                         return false;
                     }
                 } else {
-                    if (output[index] != lookup[value]) {
-                        printf("failed for %d at %d: got %d, expected %d\n", value, index, output[index], lookup[value]);
+                    if (output[j] != lookup[0]) {
+                        printf("failed at %d, byte %d - spoiled random byte\n", i, byte);
                         return false;
                     }
                 }
@@ -294,28 +258,19 @@ int test() {
 #endif
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-    printf("AVX512F (comparison based)... ");
+    printf("AVX512F (incremental arithmetic)... ");
     fflush(stdout);
 
-    if (test_avx512(base64::avx512::encode_with_SWAR)) {
+    if (test_avx512(base64::avx512::lookup_incremental_arithmetic)) {
         puts("OK");
     } else {
         return 1;
     }
 
-    printf("AVX512F (comparison based - xor variant)... ");
+    printf("AVX512F (incremental logic)... ");
     fflush(stdout);
 
-    if (test_avx512(base64::avx512::encode_with_SWAR_xor)) {
-        puts("OK");
-    } else {
-        return 1;
-    }
-
-    printf("AVX512F (gather)... ");
-    fflush(stdout);
-
-    if (test_avx512(base64::avx512::encode_with_gathers)) {
+    if (test_avx512(base64::avx512::lookup_incremental_logic)) {
         puts("OK");
     } else {
         return 1;

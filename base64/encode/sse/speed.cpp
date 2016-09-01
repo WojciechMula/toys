@@ -16,6 +16,7 @@
 #   include "encode.avx2.cpp"
 #endif
 #if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "lookup.avx512.cpp"
 #   include "encode.avx512.cpp"
 #endif
 
@@ -120,12 +121,12 @@ public:
 #endif
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
-        if (cmd.empty() || cmd.has("avx512")) {
-            measure("AVX512", avx512_swar);
+        if (cmd.empty() || cmd.has("avx512/arith")) {
+            measure("AVX512 (incremental arithmetic)", avx512_swar_arith);
         }
 
-        if (cmd.empty() || cmd.has("avx512/xor")) {
-            measure("AVX512 (with xor)", avx512_swar);
+        if (cmd.empty() || cmd.has("avx512/logic")) {
+            measure("AVX512 (incremental logic)", avx512_swar_logic);
         }
 
         if (cmd.empty() || cmd.has("avx512/gather")) {
