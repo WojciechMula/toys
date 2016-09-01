@@ -303,6 +303,15 @@ int test() {
         return 1;
     }
 
+    printf("AVX512F (comparison based - xor variant)... ");
+    fflush(stdout);
+
+    if (test_avx512(base64::avx512::encode_with_SWAR_xor)) {
+        puts("OK");
+    } else {
+        return 1;
+    }
+
     printf("AVX512F (gather)... ");
     fflush(stdout);
 

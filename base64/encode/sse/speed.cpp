@@ -124,6 +124,10 @@ public:
             measure("AVX512", avx512_swar);
         }
 
+        if (cmd.empty() || cmd.has("avx512/xor")) {
+            measure("AVX512 (with xor)", avx512_swar);
+        }
+
         if (cmd.empty() || cmd.has("avx512/gather")) {
             measure("AVX512 (gather)", avx512_gathers);
         }
