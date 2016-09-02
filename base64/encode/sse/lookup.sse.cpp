@@ -122,10 +122,16 @@ namespace base64 {
 
         __m128i lookup_pshufb_improved(const __m128i input) {
 
+            // reduce  0..51 -> 0
+            //        52..61 -> 1 .. 10
+            //            62 -> 11
+            //            63 -> 12
             __m128i result = _mm_subs_epu8(input, packed_byte(51));
 
+            // distinguish between ranges 0..25 and 26..51:
+            //         0 .. 25 -> remains 0
+            //        26 .. 51 -> becomes 13
             const __m128i less = _mm_cmpgt_epi8(packed_byte(26), input);
-
             result = _mm_or_si128(result, _mm_and_si128(less, packed_byte(13)));
 
             const __m128i shift_LUT = _mm_setr_epi8(
@@ -134,6 +140,7 @@ namespace base64 {
                 '/' - 63, 'A', 0, 0
             );
 
+            // read shift
             result = _mm_shuffle_epi8(shift_LUT, result);
 
             return _mm_add_epi8(result, input);
