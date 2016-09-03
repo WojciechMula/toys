@@ -96,18 +96,58 @@ namespace base64 {
         }
 
 
-        // returns packed (a[i] >= lo and a[i] <= hi) ? 0xff : 0x00;
+        // returns packed (a[i] >= lo and a[i] <= hi) ? 0x7f : 0x00;
         // assertion a[i] < 0x80
-
-        __m512i _mm512_range_mask(const __m512i a, const __m512i lo, const __m512i hi) {
+        __m512i _mm512_range_mask_7bit(const __m512i a, const __m512i lo, const __m512i hi) {
 
             const __m512i L = _mm512_add_epi32(a, lo);
             const __m512i H = _mm512_add_epi32(a, hi);
 
+            /*
+                MSB  H   L  |  R
+                 0   0   0  |  0
+                 0   0   1  |  0
+                 0   1   0  |  0
+                 0   1   1  |  0
+                 1   0   0  |  0
+                 1   0   1  |  1
+                 1   1   0  |  0
+                 1   1   1  |  0
+            */
+
+#if 0
             const __m512i MSB = _mm512_and_epi32(_mm512_andnot_epi32(H, L), packed_byte(0x80));
+#else
+            const __m512i MSB = _mm512_ternarylogic_epi32(packed_byte(0x80), H, L, 0x20);
+#endif
+            // MSB | (MSB - (MSB >> 7))
+            return _mm512_sub_epi32(MSB, _mm512_srli_epi32(MSB, 7));
+        }
+
+        // returns packed (a[i] >= lo and a[i] <= hi) ? 0xff : 0x00;
+        // assertion a[i] < 0x80
+        __m512i _mm512_range_mask_8bit(const __m512i a, const __m512i lo, const __m512i hi) {
+
+            const __m512i L = _mm512_add_epi32(a, lo);
+            const __m512i H = _mm512_add_epi32(a, hi);
+
+            const __m512i MSB = _mm512_ternarylogic_epi32(packed_byte(0x80), H, L, 0x20);
 
             // MSB | (MSB - (MSB >> 7))
             return _mm512_or_si512(MSB, _mm512_sub_epi32(MSB, _mm512_srli_epi32(MSB, 7)));
+        }
+
+
+        // returns packed (a[i] >= lo and a[i] <= hi) ? 0x04 : 0x00;
+        // assertion a[i] < 0x80
+        __m512i _mm512_range_3rd_bit(const __m512i a, const __m512i lo, const __m512i hi) {
+
+            const __m512i L = _mm512_add_epi32(a, lo);
+            const __m512i H = _mm512_add_epi32(a, hi);
+
+            const __m512i MSB = _mm512_ternarylogic_epi32(packed_byte(0x80), H, L, 0x20);
+
+            return _mm512_srli_epi32(MSB, 5);
         }
 
 
@@ -116,31 +156,54 @@ namespace base64 {
             // we operate on lower 7 bits, as all values with 8th bit set are invalid
             const __m512i in = _mm512_and_si512(input, packed_byte(0x7f));
 
-#define GET_RANGE_SHIFT(shift, lo, hi) \
+#define GET_RANGE_SHIFT_7BIT(shift, lo, hi) \
             _mm512_and_si512(packed_byte(uint8_t(shift)), \
-                             _mm512_range_mask(in, packed_byte(0x80 - (lo)), packed_byte(0x80 - (hi))))
+                             _mm512_range_mask_7bit(in, packed_byte(0x80 - (lo)), packed_byte(0x80 - (hi))))
+
+#define GET_RANGE_SHIFT_8BIT(shift, lo, hi) \
+            _mm512_and_si512(packed_byte(uint8_t(shift)), \
+                             _mm512_range_mask_8bit(in, packed_byte(0x80 - (lo)), packed_byte(0x80 - (hi))))
+
+#define GET_RANGE_SHIFT_3RD_BIT(lo, hi) \
+            _mm512_range_3rd_bit(in, packed_byte(0x80 - (lo)), packed_byte(0x80 - (hi)))
+
 
             // shift for range 'A' - 'Z'
-            const __m512i range_AZ = GET_RANGE_SHIFT(-65, 'A', 'Z' + 1);
+            const __m512i range_AZ = GET_RANGE_SHIFT_8BIT(-65, 'A', 'Z' + 1);
 
             // shift for range 'a' - 'z'
-            const __m512i range_az = GET_RANGE_SHIFT(-71, 'a', 'z' + 1);
+            const __m512i range_az = GET_RANGE_SHIFT_8BIT(-71, 'a', 'z' + 1);
 
             // shift for range '0' - '9'
-            const __m512i range_09 = GET_RANGE_SHIFT(4, '0', '9' + 1);
+            const __m512i range_09 = GET_RANGE_SHIFT_3RD_BIT('0', '9' + 1); // shift = 4
 
             // shift for character '+'
-            const __m512i char_plus = GET_RANGE_SHIFT(19, '+', '+' + 1);
+            const __m512i char_plus = GET_RANGE_SHIFT_7BIT(19, '+', '+' + 1);
 
             // shift for character '/'
-            const __m512i char_slash = GET_RANGE_SHIFT(16, '/', '/' + 1);
+            const __m512i char_slash = GET_RANGE_SHIFT_7BIT(16, '/', '/' + 1);
 
             // merge partial results
-
+            /*
+                a b c a|b|c
+                0 0 0   0
+                0 0 1   1
+                0 1 0   1
+                0 1 1   1
+                1 0 0   1
+                1 0 1   1
+                1 1 0   1
+                1 1 1   1
+            */
+#if 0
             const __m512i shift = _mm512_or_si512(range_AZ,
                                   _mm512_or_si512(range_az,
                                   _mm512_or_si512(range_09,
                                   _mm512_or_si512(char_plus, char_slash))));
+#else
+            const __m512i tmp   = _mm512_ternarylogic_epi32(range_AZ, range_az, range_09, 0xfe);
+            const __m512i shift = _mm512_ternarylogic_epi32(char_plus, char_slash, tmp, 0xfe);
+#endif
 
             // a paddb equivalent
             const __m512i shift06 = _mm512_and_si512(shift, packed_byte(0x7f));
