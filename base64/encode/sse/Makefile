@@ -31,7 +31,7 @@ avx512: $(ALL_AVX512)
 avx512bw: $(ALL_AVX512BW)
 	$(SDE) -- ./check_avx512bw
 
-VERIFY_DEPS=verify.cpp lookup.*.cpp encode.avx512.cpp
+VERIFY_DEPS=verify.cpp lookup.*.cpp unpack.*.cpp encode.avx512.cpp
 
 verify: $(VERIFY_DEPS)
 	$(CXX) $(FLAGS) verify.cpp -o $@
@@ -43,7 +43,7 @@ verify_avx512: $(VERIFY_DEPS)
 	$(CXX) $(FLAGS_AVX512) verify.cpp -o $@
 
 
-SPEED_DEPS=speed.cpp lookup.sse.cpp encode.*.cpp functions.cpp application.cpp config.h $(EXT_DEPS)
+SPEED_DEPS=speed.cpp lookup.sse.cpp encode.*.cpp unpack.*.cpp functions.cpp application.cpp config.h $(EXT_DEPS)
 
 speed: $(SPEED_DEPS)
 	$(CXX) $(FLAGS) speed.cpp -o $@
@@ -55,7 +55,7 @@ speed_avx512: $(SPEED_DEPS) lookup.avx2.cpp
 	$(CXX) $(FLAGS_AVX512) speed.cpp -o $@
 
 
-CHECK_DEPS=check.cpp lookup.sse.cpp encode.*.cpp functions.cpp application.cpp config.h $(EXT_DEPS)
+CHECK_DEPS=check.cpp lookup.sse.cpp encode.*.cpp unpack.*.cpp functions.cpp application.cpp config.h $(EXT_DEPS)
 
 check: $(CHECK_DEPS)
 	$(CXX) $(FLAGS) check.cpp -o $@

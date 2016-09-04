@@ -17,6 +17,7 @@
 #endif
 
 #if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "unpack.avx512.cpp"
 #   include "lookup.avx512.cpp"
 #   include "encode.avx512.cpp"
 #endif
@@ -39,6 +40,10 @@ public:
 
         uint32_t valid;
         valid = check("scalar32", base64::scalar::encode32, 0);
+        check("AVX512 (incremental arithmetic)", avx512_swar_arith, valid);
+        check("AVX512 (incremental logic)", avx512_swar_logic, valid);
+        check("AVX512 (gather)", avx512_gathers, valid);
+        return 0;
 
         check("scalar64", base64::scalar::encode64, valid);
         check("SSE (naive)", sse_naive, valid);

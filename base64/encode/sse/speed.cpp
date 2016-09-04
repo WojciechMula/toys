@@ -16,6 +16,7 @@
 #   include "encode.avx2.cpp"
 #endif
 #if defined(HAVE_AVX512_INSTRUCTIONS)
+#   include "unpack.avx512.cpp"
 #   include "lookup.avx512.cpp"
 #   include "encode.avx512.cpp"
 #endif
