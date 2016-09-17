@@ -14,10 +14,10 @@ uint32_t get_time(void) {
 
 
 
-void mesure(const char* msg, double (*function)(double x)) {
+double mesure(const char* msg, double tref, double (*function)(double x)) {
 	uint32_t t1, t2;
 
-	printf("%s: ", msg);
+	printf("%-40s: ", msg);
 	fflush(stdout);
 
 	t1 = get_time();
@@ -26,7 +26,15 @@ void mesure(const char* msg, double (*function)(double x)) {
 	}
 	t2 = get_time();
 
-	printf("%0.3f s\n", (t2 - t1)/1000000.0);
+    const double t = (t2 - t1)/1000000.0;
+
+    if (tref > 0.0) {
+	    printf("%0.3f s (%0.2f)\n", t, tref/t);
+    } else {
+	    printf("%0.3f s\n", t);
+    }
+
+    return t;
 }
 
 
@@ -34,11 +42,14 @@ void mesure(const char* msg, double (*function)(double x)) {
 #include "sse-sin.c"
 
 int main() {
-	mesure("libc sin", sin);
-	mesure("taylor series (3 terms)", sin_taylor3);
-	mesure("taylor series (4 terms)", sin_taylor4);
-	mesure("taylor series (5 terms)", sin_taylor5);
-	mesure("2 x taylor series (5 terms, SSE)", sin_sse_wrapper);
+
+    double t = 0.0;
+
+    t = mesure("libc sin", t, sin);
+    mesure("Taylor series (3 terms)", t, sin_taylor3);
+    mesure("Taylor series (4 terms)", t, sin_taylor4);
+    mesure("Taylor series (5 terms)", t, sin_taylor5);
+    mesure("2 x Taylor series (5 terms, SSE)", 2*t, sin_sse_wrapper);
 
 	return EXIT_SUCCESS;
 }
