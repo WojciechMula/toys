@@ -1,18 +1,5 @@
 #include <immintrin.h>
 
-void dump(const __m512i v) {
-
-    uint32_t item[16];
-
-    _mm512_storeu_si512(item, v);
-
-    putchar('[');
-    for (int i=0; i < 16; i++) {
-        printf("%8d ", item[i]);
-    }
-    printf("]\n");
-}
-
 
 __m512i avx512_sort_epi32(const __m512i v) {
 
