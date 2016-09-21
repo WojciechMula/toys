@@ -94,5 +94,15 @@ int main() {
         }
     }
 
+    {
+        printf("AVX512 + bmi2 version ... "); fflush(stdout);
+        if (test.run(avx512_bmi2_quicksort)) {
+            puts("OK");
+        } else {
+            puts("FAILED");
+            ret = EXIT_FAILURE;
+        }
+    }
+
     return ret;
 }

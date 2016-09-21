@@ -125,6 +125,7 @@ public:
         measure("quick sort",                   quicksort,               ref);
         measure("AVX512 quick sort",            avx512_quicksort,        ref);
         measure("AVX512 + popcnt quick sort",   avx512_popcnt_quicksort, ref);
+        measure("AVX512 + BMI2 quick sort",     avx512_bmi2_quicksort,   ref);
     }
 
 private:
