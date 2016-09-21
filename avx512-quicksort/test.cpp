@@ -24,7 +24,8 @@ bool is_sorted(uint32_t* array, size_t n) {
 
 bool test(InputData& data) {
     
-    avx512_quicksort(data.pointer(), 0, data.count() - 1);
+    //avx512_quicksort(data.pointer(), 0, data.count() - 1);
+    avx512_popcnt_quicksort(data.pointer(), 0, data.count() - 1);
 
     return is_sorted(data.pointer(), data.count());
 }

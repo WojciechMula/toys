@@ -12,17 +12,17 @@
 
 class PerformanceTest final {
 
-    int         count;
+    int         iterations;
     InputData&  input;
     uint32_t*   tmp;
 
 public:
     PerformanceTest(int n, InputData& input)
-        : count(n)
+        : iterations(n)
         , input(input) {
         
-        assert(count > 0);
-        tmp = new uint32_t[n];
+        assert(iterations > 0);
+        tmp = new uint32_t[input.count()];
     }
 
     ~PerformanceTest() {
@@ -35,7 +35,7 @@ public:
 
         uint32_t time = 0;
 
-        int k = count;
+        int k = iterations;
         while (k--) {
             memcpy(tmp, input.pointer(), input.size());
 
@@ -68,7 +68,7 @@ uint32_t measure(const char* name, SORT_FUNCTION sort, InputData& data, uint32_t
 
     PerformanceTest test(3, data);
 
-    printf("%20s ... ", name); fflush(stdout);
+    printf("%30s ... ", name); fflush(stdout);
     uint32_t time = test.run(sort);
     if (ref > 0) {
         printf("%0.4f s (%0.2f)\n", time/1000000.0, ref/double(time));
@@ -80,18 +80,22 @@ uint32_t measure(const char* name, SORT_FUNCTION sort, InputData& data, uint32_t
 }
 
 
-int main() {
+int main(int argc, char* argv[]) {
 
 #define M 1000000
-    const size_t count = 20*M;
-    const size_t size  = count * sizeof(uint32_t);
+    size_t count = 10*M;
 
-    InputRandom data(size);
+    if (argc > 1 && atoi(argv[1]) > 0) {
+        count = atoi(argv[1]) * M;
+    }
 
-    printf("items count: %lu (%lu bytes)\n", count, size);
+    InputRandom data(count);
+
+    printf("items count: %lu (%lu bytes)\n", data.count(), data.size());
 
     uint32_t ref = 0;
-    ref = measure("std::sort",            std_sort_wrapper,   data, 0);
-    measure("quick sort",           quicksort,          data, ref);
-    measure("AVX512 quick sort",    avx512_quicksort,   data, ref);
+    ref = measure("std::sort",              std_sort_wrapper,        data, 0);
+    measure("quick sort",                   quicksort,               data, ref);
+    measure("AVX512 quick sort",            avx512_quicksort,        data, ref);
+    measure("AVX512 + popcnt quick sort",   avx512_popcnt_quicksort, data, ref);
 }

@@ -39,7 +39,7 @@ void avx512_swap_epi32(__m512i& a, __m512i& b, __mmask16 mask_a, __mmask16 mask_
 }
 
 
-void avx512_parition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
+void avx512_partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
 
     const int N = 16;
 
