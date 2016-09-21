@@ -22,44 +22,77 @@ bool is_sorted(uint32_t* array, size_t n) {
 }
 
 
-bool test(InputData& data) {
-    
-    //avx512_quicksort(data.pointer(), 0, data.count() - 1);
-    avx512_popcnt_quicksort(data.pointer(), 0, data.count() - 1);
+const size_t AVX512_REGISTER_SIZE = 16;
 
-    return is_sorted(data.pointer(), data.count());
-}
+
+class Test {
+
+public:
+    template <typename SORT_FN>
+    bool run(SORT_FN sort) {
+        for (size_t size=2*AVX512_REGISTER_SIZE; size < 256*AVX512_REGISTER_SIZE; size += 1) {
+
+            InputAscending  asc(size);
+            InputDescending dsc(size);
+            InputRandom     rnd(size);
+
+            if (!test(sort, asc)) {
+                printf("failed for size %lu, intput ascending\n", size);
+                return false;
+            }
+
+            if (!test(sort, dsc)) {
+                printf("failed for size %lu, intput descending\n", size);
+                return false;
+            }
+
+            if (!test(sort, dsc)) {
+                printf("failed for size %lu, intput random\n", size);
+                return false;
+            }
+        } // for
+
+        return true;
+    }
+
+
+private:
+    template <typename SORT_FN>
+    bool test(SORT_FN sort, InputData& data) {
+        sort(data.pointer(), 0, data.count() - 1);
+
+        return is_sorted(data.pointer(), data.count());
+    }
+};
 
 
 int main() {
 
-    const size_t AVX512_REGISTER_SIZE = 16;
+    puts("Please wait, it might take a while...");
+    puts("");
 
-    puts("Please wait, it may take a while...");
+    Test test;
+    int ret = EXIT_SUCCESS;
 
-    for (size_t size=2*AVX512_REGISTER_SIZE; size < 100*AVX512_REGISTER_SIZE; size += 1) {
-
-        InputAscending  asc(size);
-        InputDescending dsc(size);
-        InputRandom     rnd(size);
-
-        if (!test(asc)) {
-            printf("failed for size %lu, intput ascending\n", size);
-            return EXIT_FAILURE;
-        }
-
-        if (!test(dsc)) {
-            printf("failed for size %lu, intput descending\n", size);
-            return EXIT_FAILURE;
-        }
-
-        if (!test(dsc)) {
-            printf("failed for size %lu, intput random\n", size);
-            return EXIT_FAILURE;
+    {
+        printf("AVX512 base version... "); fflush(stdout);
+        if (test.run(avx512_quicksort)) {
+            puts("OK");
+        } else {
+            puts("FAILED");
+            ret = EXIT_FAILURE;
         }
     }
 
-    puts("All OK");
+    {
+        printf("AVX512 + popcnt version... "); fflush(stdout);
+        if (test.run(avx512_popcnt_quicksort)) {
+            puts("OK");
+        } else {
+            puts("FAILED");
+            ret = EXIT_FAILURE;
+        }
+    }
 
-    return EXIT_SUCCESS;
+    return ret;
 }
