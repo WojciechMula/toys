@@ -1,3 +1,3 @@
 #pragma once
 
-#define FORCE_INLINE inline __attribute__((force_inline))
+#define FORCE_INLINE inline __attribute__((always_inline))

@@ -8,7 +8,7 @@
 
 #include "input_data.cpp"
 #include "gettime.cpp"
-#include "quicksort.cpp"
+#include "quicksort-all.cpp"
 
 
 class PerformanceTest final {
@@ -123,9 +123,14 @@ public:
         uint32_t ref = 0;
         ref = measure("std::sort",              std_sort_wrapper,        ref);
         measure("quick sort",                   quicksort,               ref);
+#ifdef HAVE_AVX2_INSTRUCTIONS
+        measure("AVX2 quick sort",              avx2_quicksort,          ref);
+#endif
+#ifdef HAVE_AVX512F_INSTRUCTIONS
         measure("AVX512 quick sort",            avx512_quicksort,        ref);
         measure("AVX512 + popcnt quick sort",   avx512_popcnt_quicksort, ref);
         measure("AVX512 + BMI2 quick sort",     avx512_bmi2_quicksort,   ref);
+#endif
     }
 
 private:
@@ -176,7 +181,7 @@ int main(int argc, char* argv[]) {
     InputType type;
 
 #define is_keyword(key) (strcmp(argv[3], key) == 0)
-    if (is_keyword("descending") || is_keyword("dsc") || is_keyword("dsc")) {
+    if (is_keyword("descending") || is_keyword("desc") || is_keyword("dsc")) {
         type = InputType::descending;
     } else if (is_keyword("ascending") || is_keyword("asc")) {
         type = InputType::ascending;

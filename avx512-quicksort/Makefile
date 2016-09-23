@@ -12,7 +12,7 @@ DEPS_SORT=partition.cpp \
           avx512-popcnt-partition.cpp \
           quicksort.cpp
 
-ALL=test speed test_avx2
+ALL=test speed test_avx2 speed_avx2
 
 all: $(ALL)
 
@@ -24,6 +24,9 @@ test_avx2: test.cpp input_data.cpp $(DEPS_SORT)
 
 speed: speed.cpp input_data.cpp gettime.cpp $(DEPS_SORT)
 	$(CXX) $(FLAGS_AVX512) -O3 -DNDEBUG speed.cpp -o $@
+
+speed_avx2: speed.cpp input_data.cpp gettime.cpp $(DEPS_SORT)
+	$(CXX) $(FLAGS_AVX2) -O3 -DNDEBUG speed.cpp -o $@
 
 run: test
 	sde -cnl -- ./$^
