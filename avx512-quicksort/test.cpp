@@ -6,7 +6,7 @@
 #include <immintrin.h>
 
 #include "input_data.cpp"
-#include "quicksort.cpp"
+#include "quicksort-all.cpp"
 
 
 bool is_sorted(uint32_t* array, size_t n) {
@@ -74,6 +74,19 @@ int main() {
     Test test;
     int ret = EXIT_SUCCESS;
 
+#ifdef HAVE_AVX2_INSTRUCTIONS
+    {
+        printf("AVX2 base version... "); fflush(stdout);
+        if (test.run(avx2_quicksort)) {
+            puts("OK");
+        } else {
+            puts("FAILED");
+            ret = EXIT_FAILURE;
+        }
+    }
+#endif
+
+#ifdef HAVE_AVX512F_INSTRUCTIONS
     {
         printf("AVX512 base version... "); fflush(stdout);
         if (test.run(avx512_quicksort)) {
@@ -103,6 +116,7 @@ int main() {
             ret = EXIT_FAILURE;
         }
     }
+#endif // HAVE_AVX512F_INSTRUCTIONS
 
     return ret;
 }

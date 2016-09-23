@@ -1,6 +1,3 @@
-#include <cassert>
-
-
 void avx512_swap_align_masks(__mmask16& a, __mmask16& b, __mmask16& rem_a, __mmask16& rem_b) {
 
     assert(a != 0);
