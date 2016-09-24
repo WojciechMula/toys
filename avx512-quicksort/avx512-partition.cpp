@@ -2,7 +2,7 @@ namespace qs {
 
     namespace avx512 {
 
-        void align_masks(__mmask16& a, __mmask16& b, __mmask16& rem_a, __mmask16& rem_b) {
+        void FORCE_INLINE align_masks(__mmask16& a, __mmask16& b, __mmask16& rem_a, __mmask16& rem_b) {
 
             assert(a != 0);
             assert(b != 0);
@@ -27,7 +27,7 @@ namespace qs {
         }
 
 
-        void partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
+        void FORCE_INLINE partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
 
             const int N = 16;
 

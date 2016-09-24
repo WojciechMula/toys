@@ -2,7 +2,7 @@ namespace qs {
 
     namespace avx512 {
 
-        void bmi2_align_masks(__mmask16& a, __mmask16& b, __mmask16& rem_a, __mmask16& rem_b) {
+        void FORCE_INLINE bmi2_align_masks(__mmask16& a, __mmask16& b, __mmask16& rem_a, __mmask16& rem_b) {
 
             uint32_t tmpA = _pext_u32(0xffffffff, a);
             uint32_t tmpB = _pext_u32(0xffffffff, b);
@@ -24,7 +24,7 @@ namespace qs {
         }
 
 
-        void bmi2_partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
+        void FORCE_INLINE bmi2_partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
 
             const int N = 16;
 

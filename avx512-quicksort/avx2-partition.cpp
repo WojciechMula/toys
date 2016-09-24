@@ -93,7 +93,7 @@ namespace qs {
 
 #define _mm256_iszero(vec) (_mm256_testz_si256(vec, vec) != 0)
 
-        void partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
+        void FORCE_INLINE partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
 
             const int N = 8; // the number of items in a register (256/32)
 

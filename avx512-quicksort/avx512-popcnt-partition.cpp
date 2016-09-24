@@ -2,7 +2,7 @@ namespace qs {
 
     namespace avx512 {
 
-        void popcnt_partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
+        void FORCE_INLINE popcnt_partition_epi32(uint32_t* array, uint32_t pv, int& left, int& right) {
 
             const int N = 16;
 
