@@ -186,7 +186,7 @@ int main(int argc, char* argv[]) {
     } else if (is_keyword("ascending") || is_keyword("asc")) {
         type = InputType::ascending;
     } else if (is_keyword("random") || is_keyword("rand") || is_keyword("rnd")) {
-        type = InputType::ascending;
+        type = InputType::random;
     } else {
         usage();
         return EXIT_FAILURE;
