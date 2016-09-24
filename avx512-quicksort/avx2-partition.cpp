@@ -184,7 +184,7 @@ namespace qs {
             }
 
             if (left < right) {
-                ::partition_epi32(array, pv, left, right);
+                scalar_partition_epi32(array, pv, left, right);
             }
         }
 

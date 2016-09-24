@@ -7,6 +7,7 @@ FLAGS_AVX2=$(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS
 
 DEPS_SORT=partition.cpp \
           avx2-partition.cpp \
+          avx512-swap.cpp \
           avx512-partition.cpp \
           avx512-bmi2-partition.cpp \
           avx512-popcnt-partition.cpp \

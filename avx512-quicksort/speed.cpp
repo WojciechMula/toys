@@ -121,15 +121,15 @@ public:
         printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
 
         uint32_t ref = 0;
-        ref = measure("std::sort",              std_sort_wrapper,        ref);
-        measure("quick sort",                   quicksort,               ref);
+        ref = measure("std::sort",              std_sort_wrapper,             ref);
+        measure("quick sort",                   quicksort,                    ref);
 #ifdef HAVE_AVX2_INSTRUCTIONS
-        measure("AVX2 quick sort",              avx2_quicksort,          ref);
+        measure("AVX2 quick sort",              qs::avx2::quicksort,          ref);
 #endif
 #ifdef HAVE_AVX512F_INSTRUCTIONS
-        measure("AVX512 quick sort",            avx512_quicksort,        ref);
-        measure("AVX512 + popcnt quick sort",   avx512_popcnt_quicksort, ref);
-        measure("AVX512 + BMI2 quick sort",     avx512_bmi2_quicksort,   ref);
+        measure("AVX512 quick sort",            qs::avx512::quicksort,        ref);
+        measure("AVX512 + popcnt quick sort",   qs::avx512::popcnt_quicksort, ref);
+        measure("AVX512 + BMI2 quick sort",     qs::avx512::bmi2_quicksort,   ref);
 #endif
     }
 

@@ -77,7 +77,7 @@ int main() {
 #ifdef HAVE_AVX2_INSTRUCTIONS
     {
         printf("AVX2 base version... "); fflush(stdout);
-        if (test.run(avx2_quicksort)) {
+        if (test.run(qs::avx2::quicksort)) {
             puts("OK");
         } else {
             puts("FAILED");
@@ -89,7 +89,7 @@ int main() {
 #ifdef HAVE_AVX512F_INSTRUCTIONS
     {
         printf("AVX512 base version... "); fflush(stdout);
-        if (test.run(avx512_quicksort)) {
+        if (test.run(qs::avx512::quicksort)) {
             puts("OK");
         } else {
             puts("FAILED");
@@ -99,7 +99,7 @@ int main() {
 
     {
         printf("AVX512 + popcnt version... "); fflush(stdout);
-        if (test.run(avx512_popcnt_quicksort)) {
+        if (test.run(qs::avx512::popcnt_quicksort)) {
             puts("OK");
         } else {
             puts("FAILED");
@@ -109,7 +109,7 @@ int main() {
 
     {
         printf("AVX512 + bmi2 version ... "); fflush(stdout);
-        if (test.run(avx512_bmi2_quicksort)) {
+        if (test.run(qs::avx512::bmi2_quicksort)) {
             puts("OK");
         } else {
             puts("FAILED");

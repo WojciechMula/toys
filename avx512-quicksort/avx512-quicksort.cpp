@@ -1,76 +1,85 @@
+#include "avx512-swap.cpp"
 #include "avx512-partition.cpp"
 #include "avx512-popcnt-partition.cpp"
 #include "avx512-bmi2-partition.cpp"
 
 
-void avx512_quicksort(uint32_t* array, int left, int right) {
+namespace qs {
 
-    int i = left;
-    int j = right;
+    namespace avx512 {
 
-    const uint32_t pivot = array[(i + j)/2];
-    const int AVX512_REGISTER_SIZE = 16; // in 32-bit words
+        void quicksort(uint32_t* array, int left, int right) {
 
-    if (j - i >= 2 * AVX512_REGISTER_SIZE) {
-        avx512_partition_epi32(array, pivot, i, j);
-    } else {
-        partition_epi32(array, pivot, i, j);
-    }
+            int i = left;
+            int j = right;
 
-    if (left < j) {
-        avx512_quicksort(array, left, j);
-    }
+            const uint32_t pivot = array[(i + j)/2];
+            const int AVX512_REGISTER_SIZE = 16; // in 32-bit words
 
-    if (i < right) {
-        avx512_quicksort(array, i, right);
-    }
-}
+            if (j - i >= 2 * AVX512_REGISTER_SIZE) {
+                ::qs::avx512::partition_epi32(array, pivot, i, j);
+            } else {
+                scalar_partition_epi32(array, pivot, i, j);
+            }
 
+            if (left < j) {
+                quicksort(array, left, j);
+            }
 
-void avx512_popcnt_quicksort(uint32_t* array, int left, int right) {
-
-    int i = left;
-    int j = right;
-
-    const uint32_t pivot = array[(i + j)/2];
-    const int AVX512_REGISTER_SIZE = 16; // in 32-bit words
-
-    if (j - i >= 2 * AVX512_REGISTER_SIZE) {
-        avx512_popcnt_partition_epi32(array, pivot, i, j);
-    } else {
-        partition_epi32(array, pivot, i, j);
-    }
-
-    if (left < j) {
-        avx512_quicksort(array, left, j);
-    }
-
-    if (i < right) {
-        avx512_quicksort(array, i, right);
-    }
-}
+            if (i < right) {
+                quicksort(array, i, right);
+            }
+        }
 
 
-void avx512_bmi2_quicksort(uint32_t* array, int left, int right) {
+        void popcnt_quicksort(uint32_t* array, int left, int right) {
 
-    int i = left;
-    int j = right;
+            int i = left;
+            int j = right;
 
-    const uint32_t pivot = array[(i + j)/2];
-    const int AVX512_REGISTER_SIZE = 16; // in 32-bit words
+            const uint32_t pivot = array[(i + j)/2];
+            const int AVX512_REGISTER_SIZE = 16; // in 32-bit words
 
-    if (j - i >= 2 * AVX512_REGISTER_SIZE) {
-        avx512_bmi2_partition_epi32(array, pivot, i, j);
-    } else {
-        partition_epi32(array, pivot, i, j);
-    }
+            if (j - i >= 2 * AVX512_REGISTER_SIZE) {
+                ::qs::avx512::popcnt_partition_epi32(array, pivot, i, j);
+            } else {
+                scalar_partition_epi32(array, pivot, i, j);
+            }
 
-    if (left < j) {
-        avx512_quicksort(array, left, j);
-    }
+            if (left < j) {
+                popcnt_quicksort(array, left, j);
+            }
 
-    if (i < right) {
-        avx512_quicksort(array, i, right);
-    }
-}
+            if (i < right) {
+                popcnt_quicksort(array, i, right);
+            }
+        }
+
+
+        void bmi2_quicksort(uint32_t* array, int left, int right) {
+
+            int i = left;
+            int j = right;
+
+            const uint32_t pivot = array[(i + j)/2];
+            const int AVX512_REGISTER_SIZE = 16; // in 32-bit words
+
+            if (j - i >= 2 * AVX512_REGISTER_SIZE) {
+                ::qs::avx512::bmi2_partition_epi32(array, pivot, i, j);
+            } else {
+                scalar_partition_epi32(array, pivot, i, j);
+            }
+
+            if (left < j) {
+                quicksort(array, left, j);
+            }
+
+            if (i < right) {
+                quicksort(array, i, right);
+            }
+        }
+
+    } // namespace avx512
+
+} // namespace qs
 

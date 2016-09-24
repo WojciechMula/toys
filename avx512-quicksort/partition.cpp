@@ -1,4 +1,4 @@
-void partition_epi32(uint32_t* array, const uint32_t pivot, int& left, int& right) {
+void scalar_partition_epi32(uint32_t* array, const uint32_t pivot, int& left, int& right) {
 
     while (left <= right) {
 

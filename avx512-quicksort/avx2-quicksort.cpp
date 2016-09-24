@@ -1,26 +1,32 @@
 #include "avx2-partition.cpp"
 
+namespace qs {
 
-void avx2_quicksort(uint32_t* array, int left, int right) {
+    namespace avx2 {
 
-    int i = left;
-    int j = right;
+        void quicksort(uint32_t* array, int left, int right) {
 
-    const uint32_t pivot = array[(i + j)/2];
-    const int AVX2_REGISTER_SIZE = 8; // in 32-bit words
+            int i = left;
+            int j = right;
 
-    if (j - i >= 2 * AVX2_REGISTER_SIZE) {
-        qs::avx2::partition_epi32(array, pivot, i, j);
-    } else {
-        partition_epi32(array, pivot, i, j);
-    }
+            const uint32_t pivot = array[(i + j)/2];
+            const int AVX2_REGISTER_SIZE = 8; // in 32-bit words
 
-    if (left < j) {
-        avx2_quicksort(array, left, j);
-    }
+            if (j - i >= 2 * AVX2_REGISTER_SIZE) {
+                qs::avx2::partition_epi32(array, pivot, i, j);
+            } else {
+                scalar_partition_epi32(array, pivot, i, j);
+            }
 
-    if (i < right) {
-        avx2_quicksort(array, i, right);
-    }
-}
+            if (left < j) {
+                quicksort(array, left, j);
+            }
 
+            if (i < right) {
+                quicksort(array, i, right);
+            }
+        }
+
+    } // namespace avx2
+
+} // namespace qs
