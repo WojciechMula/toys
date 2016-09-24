@@ -71,11 +71,11 @@ namespace qs {
             }
 
             if (left < j) {
-                quicksort(array, left, j);
+                bmi2_quicksort(array, left, j);
             }
 
             if (i < right) {
-                quicksort(array, i, right);
+                bmi2_quicksort(array, i, right);
             }
         }
 
