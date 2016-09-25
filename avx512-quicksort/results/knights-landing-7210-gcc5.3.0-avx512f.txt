@@ -1,0 +1,140 @@
+items count: 100000 (400000 bytes), input ascending
+                     std::sort ... 0.0063 s
+                    quick sort ... 0.0067 s (0.93)
+               AVX2 quick sort ... 0.0071 s (0.88)
+             AVX512 quick sort ... 0.0055 s (1.14)
+    AVX512 + popcnt quick sort ... 0.0056 s (1.13)
+      AVX512 + BMI2 quick sort ... 0.0058 s (1.08)
+items count: 1000000 (4000000 bytes), input ascending
+                     std::sort ... 0.0728 s
+                    quick sort ... 0.0735 s (0.99)
+               AVX2 quick sort ... 0.0685 s (1.06)
+             AVX512 quick sort ... 0.0522 s (1.40)
+    AVX512 + popcnt quick sort ... 0.0528 s (1.38)
+      AVX512 + BMI2 quick sort ... 0.0554 s (1.31)
+items count: 2000000 (8000000 bytes), input ascending
+                     std::sort ... 0.1529 s
+                    quick sort ... 0.1523 s (1.00)
+               AVX2 quick sort ... 0.1402 s (1.09)
+             AVX512 quick sort ... 0.1057 s (1.45)
+    AVX512 + popcnt quick sort ... 0.1063 s (1.44)
+      AVX512 + BMI2 quick sort ... 0.1105 s (1.38)
+items count: 5000000 (20000000 bytes), input ascending
+                     std::sort ... 0.4433 s
+                    quick sort ... 0.3935 s (1.13)
+               AVX2 quick sort ... 0.3520 s (1.26)
+             AVX512 quick sort ... 0.2609 s (1.70)
+    AVX512 + popcnt quick sort ... 0.2609 s (1.70)
+      AVX512 + BMI2 quick sort ... 0.2668 s (1.66)
+items count: 10000000 (40000000 bytes), input ascending
+                     std::sort ... 0.9257 s
+                    quick sort ... 0.8108 s (1.14)
+               AVX2 quick sort ... 0.7222 s (1.28)
+             AVX512 quick sort ... 0.5265 s (1.76)
+    AVX512 + popcnt quick sort ... 0.5288 s (1.75)
+      AVX512 + BMI2 quick sort ... 0.5402 s (1.71)
+items count: 20000000 (80000000 bytes), input ascending
+                     std::sort ... 1.9285 s
+                    quick sort ... 1.6725 s (1.15)
+               AVX2 quick sort ... 1.4766 s (1.31)
+             AVX512 quick sort ... 1.0681 s (1.81)
+    AVX512 + popcnt quick sort ... 1.0699 s (1.80)
+      AVX512 + BMI2 quick sort ... 1.0949 s (1.76)
+items count: 10000 (40000 bytes), input descending
+                     std::sort ... 0.0004 s
+                    quick sort ... 0.0006 s (0.73)
+               AVX2 quick sort ... 0.0006 s (0.74)
+             AVX512 quick sort ... 0.0005 s (0.88)
+    AVX512 + popcnt quick sort ... 0.0005 s (0.89)
+      AVX512 + BMI2 quick sort ... 0.0005 s (0.87)
+items count: 100000 (400000 bytes), input descending
+                     std::sort ... 0.0048 s
+                    quick sort ... 0.0067 s (0.71)
+               AVX2 quick sort ... 0.0070 s (0.68)
+             AVX512 quick sort ... 0.0055 s (0.87)
+    AVX512 + popcnt quick sort ... 0.0056 s (0.86)
+      AVX512 + BMI2 quick sort ... 0.0058 s (0.83)
+items count: 1000000 (4000000 bytes), input descending
+                     std::sort ... 0.0551 s
+                    quick sort ... 0.0734 s (0.75)
+               AVX2 quick sort ... 0.0684 s (0.81)
+             AVX512 quick sort ... 0.0524 s (1.05)
+    AVX512 + popcnt quick sort ... 0.0526 s (1.05)
+      AVX512 + BMI2 quick sort ... 0.0547 s (1.01)
+items count: 2000000 (8000000 bytes), input descending
+                     std::sort ... 0.1154 s
+                    quick sort ... 0.1523 s (0.76)
+               AVX2 quick sort ... 0.1407 s (0.82)
+             AVX512 quick sort ... 0.1055 s (1.09)
+    AVX512 + popcnt quick sort ... 0.1065 s (1.08)
+      AVX512 + BMI2 quick sort ... 0.1111 s (1.04)
+items count: 5000000 (20000000 bytes), input descending
+                     std::sort ... 0.3300 s
+                    quick sort ... 0.3932 s (0.84)
+               AVX2 quick sort ... 0.3516 s (0.94)
+             AVX512 quick sort ... 0.2606 s (1.27)
+    AVX512 + popcnt quick sort ... 0.2602 s (1.27)
+      AVX512 + BMI2 quick sort ... 0.2657 s (1.24)
+items count: 10000000 (40000000 bytes), input descending
+                     std::sort ... 0.6890 s
+                    quick sort ... 0.8134 s (0.85)
+               AVX2 quick sort ... 0.7216 s (0.95)
+             AVX512 quick sort ... 0.5273 s (1.31)
+    AVX512 + popcnt quick sort ... 0.5351 s (1.29)
+      AVX512 + BMI2 quick sort ... 0.5392 s (1.28)
+items count: 20000000 (80000000 bytes), input descending
+                     std::sort ... 1.4358 s
+                    quick sort ... 1.6744 s (0.86)
+               AVX2 quick sort ... 1.4772 s (0.97)
+             AVX512 quick sort ... 1.0694 s (1.34)
+    AVX512 + popcnt quick sort ... 1.0675 s (1.34)
+      AVX512 + BMI2 quick sort ... 1.0929 s (1.31)
+items count: 10000 (40000 bytes), input random
+                     std::sort ... 0.0005 s
+                    quick sort ... 0.0006 s (0.98)
+               AVX2 quick sort ... 0.0006 s (0.99)
+             AVX512 quick sort ... 0.0005 s (1.18)
+    AVX512 + popcnt quick sort ... 0.0005 s (1.18)
+      AVX512 + BMI2 quick sort ... 0.0005 s (1.16)
+items count: 100000 (400000 bytes), input random
+                     std::sort ... 0.0063 s
+                    quick sort ... 0.0067 s (0.94)
+               AVX2 quick sort ... 0.0071 s (0.89)
+             AVX512 quick sort ... 0.0055 s (1.14)
+    AVX512 + popcnt quick sort ... 0.0056 s (1.13)
+      AVX512 + BMI2 quick sort ... 0.0058 s (1.08)
+items count: 1000000 (4000000 bytes), input random
+                     std::sort ... 0.0727 s
+                    quick sort ... 0.0742 s (0.98)
+               AVX2 quick sort ... 0.0684 s (1.06)
+             AVX512 quick sort ... 0.0522 s (1.39)
+    AVX512 + popcnt quick sort ... 0.0526 s (1.38)
+      AVX512 + BMI2 quick sort ... 0.0544 s (1.34)
+items count: 2000000 (8000000 bytes), input random
+                     std::sort ... 0.1533 s
+                    quick sort ... 0.1532 s (1.00)
+               AVX2 quick sort ... 0.1403 s (1.09)
+             AVX512 quick sort ... 0.1057 s (1.45)
+    AVX512 + popcnt quick sort ... 0.1066 s (1.44)
+      AVX512 + BMI2 quick sort ... 0.1101 s (1.39)
+items count: 5000000 (20000000 bytes), input random
+                     std::sort ... 0.4436 s
+                    quick sort ... 0.3932 s (1.13)
+               AVX2 quick sort ... 0.3529 s (1.26)
+             AVX512 quick sort ... 0.2622 s (1.69)
+    AVX512 + popcnt quick sort ... 0.2632 s (1.69)
+      AVX512 + BMI2 quick sort ... 0.2657 s (1.67)
+items count: 10000000 (40000000 bytes), input random
+                     std::sort ... 0.9235 s
+                    quick sort ... 0.8115 s (1.14)
+               AVX2 quick sort ... 0.7233 s (1.28)
+             AVX512 quick sort ... 0.5305 s (1.74)
+    AVX512 + popcnt quick sort ... 0.5328 s (1.73)
+      AVX512 + BMI2 quick sort ... 0.5379 s (1.72)
+items count: 20000000 (80000000 bytes), input random
+                     std::sort ... 1.9264 s
+                    quick sort ... 1.6716 s (1.15)
+               AVX2 quick sort ... 1.4898 s (1.29)
+             AVX512 quick sort ... 1.0853 s (1.77)
+    AVX512 + popcnt quick sort ... 1.0849 s (1.78)
+      AVX512 + BMI2 quick sort ... 1.0984 s (1.75)
