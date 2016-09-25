@@ -113,15 +113,12 @@ namespace qs {
                         }
 
                         L = _mm256_loadu_si256((__m256i*)(array + left));
-                        const __m256i bytemask = _mm256_or_si256(
-                            _mm256_cmpgt_epi32(L, pivot),
-                            _mm256_cmpeq_epi32(L, pivot)
-                        );
+                        const __m256i bytemask = _mm256_cmpgt_epi32(pivot, L);
 
-                        if (_mm256_iszero(bytemask)) {
+                        if (_mm256_testc_ps((__m256)bytemask, (__m256)_mm256_set1_epi32(-1))) {
                             left += N;
                         } else {
-                            maskL = _mm256_movemask_ps((__m256)bytemask);
+                            maskL = ~_mm256_movemask_ps((__m256)bytemask);
                             break;
                         }
                     }
