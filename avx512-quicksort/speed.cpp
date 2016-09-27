@@ -59,6 +59,7 @@ public:
 
 
 enum class InputType {
+    randomfew,
     random,
     ascending,
     descending,
@@ -67,6 +68,9 @@ enum class InputType {
 
 const char* as_string(InputType type) {
     switch (type) {
+        case InputType::randomfew:
+            return "randomfew";
+
         case InputType::random:
             return "random";
 
@@ -121,6 +125,10 @@ public:
         , iterations(iterations) {
 
         switch (type) {
+            case InputType::randomfew:
+                data.reset(new InputRandomFew(count));
+                break;
+
             case InputType::random:
                 data.reset(new InputRandom(count));
                 break;
@@ -187,6 +195,7 @@ void usage() {
     puts("                 ascending (or asc)");
     puts("                 descending (or dsc, desc)");
     puts("                 random (or rnd, rand)");
+    puts("                 randomfew");
 }
 
 
@@ -206,8 +215,8 @@ int main(int argc, char* argv[]) {
         type = InputType::descending;
     } else if (is_keyword("ascending") || is_keyword("asc")) {
         type = InputType::ascending;
-    } else if (is_keyword("random") || is_keyword("rand") || is_keyword("rnd")) {
-        type = InputType::random;
+    } else if (is_keyword("randomfew")) {
+        type = InputType::randomfew;
     } else {
         usage();
         return EXIT_FAILURE;
