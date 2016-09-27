@@ -37,7 +37,7 @@ namespace qs {
             __mmask16 maskR = 0;
             const __m512i pivot = _mm512_set1_epi32(pv);
 
-            while (right - left + 1 >= 2*N) {
+            while (true) {
 
                 while (maskL == 0) {
                     if (right - (left + N) + 1 < 2*N) {
