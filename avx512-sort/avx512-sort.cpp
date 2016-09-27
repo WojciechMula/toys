@@ -1,6 +1,9 @@
 #include <immintrin.h>
 
 
+#define FORCE_INLINE inline __attribute__((always_inline))
+
+
 __m512i avx512_sort_epi32(const __m512i v) {
 
     __m512i result = _mm512_setzero_si512();
@@ -80,6 +83,8 @@ __m512i avx512_sort_epi32_unrolled(const __m512i v) {
     STEP(2);
     STEP(3);
 
+#undef STEP
+
     return result;
 }
 
@@ -122,4 +127,50 @@ __m512i avx512_sort_while_epi32(const __m512i v) {
     }
 
     return result;
+}
+
+
+void FORCE_INLINE avx512_sort2xreg_update(const __m512i b, const __m512i v1, const __m512i v2, __m512i& r1, __m512i& r2) {
+
+    const uint64_t lt1    = _mm512_cmplt_epi32_mask(v1, b);
+    const uint64_t lt2    = _mm512_cmplt_epi32_mask(v2, b);
+    const uint64_t lt_cnt = _mm_popcnt_u64(lt1 | (lt2 << 16));
+
+    const uint64_t eq1    = _mm512_cmpeq_epi32_mask(v1, b);
+    const uint64_t eq2    = _mm512_cmpeq_epi32_mask(v2, b);
+    const uint64_t eq_cnt = _mm_popcnt_u64(eq1 | (eq2 << 16));
+
+    const uint64_t mask   = (uint64_t(1) << (lt_cnt + eq_cnt)) - (uint64_t(1) << lt_cnt);
+
+    r1 = _mm512_mask_mov_epi32(r1, mask & 0xffff, b);
+    r2 = _mm512_mask_mov_epi32(r2, mask >> 16, b);
+}
+
+
+void avx512_sort2xreg_epi32(const __m512i v1, const __m512i v2, __m512i& r1, __m512i& r2) {
+
+    r1 = _mm512_setzero_si512();
+    r2 = _mm512_setzero_si512();
+    __m512i index;
+    __m512i incr  = _mm512_set1_epi32(1);
+
+#define STEP(input) { \
+    const __m512i  b = _mm512_permutexvar_epi32(index, input); \
+    index  = _mm512_add_epi32(index, incr); \
+    avx512_sort2xreg_update(b, v1, v2, r1, r2); \
+}
+
+#define STEPx4(input) \
+    STEP(input); STEP(input); STEP(input); STEP(input);
+
+#define STEPx16(input) \
+    index = _mm512_setzero_si512(); \
+    STEPx4(input); STEPx4(input); STEPx4(input); STEPx4(input);
+
+    STEPx16(v1);
+    STEPx16(v2);
+
+#undef STEP
+#undef STEPx4
+#undef STEPx16
 }
