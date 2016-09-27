@@ -11,13 +11,9 @@ void scalar_partition_epi32(uint32_t* array, const uint32_t pivot, int& left, in
         }
 
         if (left <= right) {
-            const uint32_t l = array[left];
-            const uint32_t r = array[right];
-
-            if (l != r) {
-                array[left]  = r;
-                array[right] = l;
-            }
+            const uint32_t t = array[left];
+            array[left]      = array[right];
+            array[right]     = t;
 
             left  += 1;
             right -= 1;
