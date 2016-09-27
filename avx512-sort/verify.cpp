@@ -145,6 +145,7 @@ private:
 int main() {
 
     {
+        puts("");
         puts("avx512_sort_epi32");
         Test test(avx512_sort_epi32);
 
@@ -160,6 +161,32 @@ int main() {
         puts("");
         puts("avx512_sort_epi32_unrolled");
         Test test(avx512_sort_epi32_unrolled);
+
+        try {
+            test.run();
+            puts("OK");
+        } catch (Failed&) {
+            puts("ERROR");
+        }
+    }
+
+    {
+        puts("");
+        puts("avx512_sort_loop_epi32");
+        Test test(avx512_sort_loop_epi32);
+
+        try {
+            test.run();
+            puts("OK");
+        } catch (Failed&) {
+            puts("ERROR");
+        }
+    }
+
+    {
+        puts("");
+        puts("avx512_sort_while_epi32");
+        Test test(avx512_sort_while_epi32);
 
         try {
             test.run();

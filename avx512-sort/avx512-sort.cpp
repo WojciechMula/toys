@@ -82,3 +82,44 @@ __m512i avx512_sort_epi32_unrolled(const __m512i v) {
 
     return result;
 }
+
+
+__m512i avx512_sort_loop_epi32(const __m512i v) {
+
+    __m512i result = _mm512_setzero_si512();
+    __m512i index = _mm512_setzero_si512();
+    __m512i incr  = _mm512_set1_epi32(1);
+
+    for (int i=0; i < 16; i++) {
+        const __m512i  b    = _mm512_permutexvar_epi32(index, v);
+        const uint16_t lt   = _mm_popcnt_u32(_mm512_cmplt_epi32_mask(v, b));
+        const uint16_t eq   = _mm_popcnt_u32(_mm512_cmpeq_epi32_mask(v, b));
+        const uint16_t mask = (uint32_t(1) << (lt + eq)) - (uint32_t(1) << lt);
+        result = _mm512_mask_mov_epi32(result, mask, b);
+        index  = _mm512_add_epi32(index, incr);
+    }
+
+    return result;
+}
+
+
+__m512i avx512_sort_while_epi32(const __m512i v) {
+
+    __m512i result = _mm512_setzero_si512();
+    __m512i index = _mm512_setzero_si512();
+    __m512i incr  = _mm512_set1_epi32(1);
+
+    uint16_t updated = 0;
+    while (updated != 0xffff) {
+        const __m512i  b    = _mm512_permutexvar_epi32(index, v);
+        const uint16_t lt   = _mm_popcnt_u32(_mm512_cmplt_epi32_mask(v, b));
+        const uint16_t eq   = _mm_popcnt_u32(_mm512_cmpeq_epi32_mask(v, b));
+        const uint16_t mask = (uint32_t(1) << (lt + eq)) - (uint32_t(1) << lt);
+        result = _mm512_mask_mov_epi32(result, mask, b);
+        index  = _mm512_add_epi32(index, incr);
+
+        updated |= mask;
+    }
+
+    return result;
+}
