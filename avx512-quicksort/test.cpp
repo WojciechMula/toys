@@ -35,6 +35,7 @@ public:
             InputAscending  asc(size);
             InputDescending dsc(size);
             InputRandom     rnd(size);
+            InputRandomFew  rndfew(size);
 
             if (!test(sort, asc)) {
                 printf("failed for size %lu, intput ascending\n", size);
@@ -46,8 +47,13 @@ public:
                 return false;
             }
 
-            if (!test(sort, dsc)) {
+            if (!test(sort, rnd)) {
                 printf("failed for size %lu, intput random\n", size);
+                return false;
+            }
+
+            if (!test(sort, rndfew)) {
+                printf("failed for size %lu, intput random few\n", size);
                 return false;
             }
         } // for

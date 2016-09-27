@@ -98,11 +98,11 @@ void std_qsort_wrapper(uint32_t* array, int left, int right) {
     });
 }
 
+
 void std_stable_sort_wrapper(uint32_t* array, int left, int right) {
     
     std::stable_sort(array + left, array + right + 1);
 }
-
 
 
 void std_sort_wrapper(uint32_t* array, int left, int right) {
@@ -215,6 +215,8 @@ int main(int argc, char* argv[]) {
         type = InputType::descending;
     } else if (is_keyword("ascending") || is_keyword("asc")) {
         type = InputType::ascending;
+    } else if (is_keyword("random") || is_keyword("rnd") || is_keyword("rand")) {
+        type = InputType::randomfew;
     } else if (is_keyword("randomfew")) {
         type = InputType::randomfew;
     } else {
