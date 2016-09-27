@@ -81,6 +81,25 @@ const char* as_string(InputType type) {
     }
 }
 
+void std_qsort_wrapper(uint32_t* array, int left, int right) {
+    
+    std::qsort(array + left, right - left + 1, sizeof(uint32_t),  [](const void* a, const void* b)
+    {
+        uint32_t a1 = *static_cast<const uint32_t*>(a);
+        uint32_t a2 = *static_cast<const uint32_t*>(b);
+ 
+        if(a1 < a2) return -1;
+        if(a1 > a2) return 1;
+        return 0;
+    });
+}
+
+void std_stable_sort_wrapper(uint32_t* array, int left, int right) {
+    
+    std::stable_sort(array + left, array + right + 1);
+}
+
+
 
 void std_sort_wrapper(uint32_t* array, int left, int right) {
     
@@ -122,6 +141,8 @@ public:
 
         uint32_t ref = 0;
         ref = measure("std::sort",              std_sort_wrapper,             ref);
+        measure("std::qsort",                   std_qsort_wrapper,            ref);
+        measure("std::stable_sort",             std_stable_sort_wrapper,      ref);
         measure("quick sort",                   quicksort,                    ref);
 #ifdef HAVE_AVX2_INSTRUCTIONS
         measure("AVX2 quick sort",              qs::avx2::quicksort,          ref);
