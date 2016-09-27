@@ -81,6 +81,7 @@ int main() {
     int ret = EXIT_SUCCESS;
 
 #ifdef HAVE_AVX2_INSTRUCTIONS
+#if 0
     {
         printf("AVX2 base version... "); fflush(stdout);
         if (test.run(qs::avx2::quicksort)) {
@@ -90,6 +91,7 @@ int main() {
             ret = EXIT_FAILURE;
         }
     }
+#endif
 #endif
 
 #ifdef HAVE_AVX512F_INSTRUCTIONS
@@ -113,6 +115,7 @@ int main() {
         }
     }
 
+#if 0
     {
         printf("AVX512 + bmi2 version ... "); fflush(stdout);
         if (test.run(qs::avx512::bmi2_quicksort)) {
@@ -122,6 +125,7 @@ int main() {
             ret = EXIT_FAILURE;
         }
     }
+#endif
 #endif // HAVE_AVX512F_INSTRUCTIONS
 
     return ret;
