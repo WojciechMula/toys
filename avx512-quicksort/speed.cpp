@@ -216,7 +216,7 @@ int main(int argc, char* argv[]) {
     } else if (is_keyword("ascending") || is_keyword("asc")) {
         type = InputType::ascending;
     } else if (is_keyword("random") || is_keyword("rnd") || is_keyword("rand")) {
-        type = InputType::randomfew;
+        type = InputType::random;
     } else if (is_keyword("randomfew")) {
         type = InputType::randomfew;
     } else {
