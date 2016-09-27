@@ -164,20 +164,6 @@ int main() {
 
     {
         puts("");
-        puts("avx512_sort2xreg_epi32");
-        Test2Regs test(avx512_sort2xreg_epi32);
-
-        try {
-            test.run();
-            puts("OK");
-        } catch (Failed&) {
-            puts("ERROR");
-            return 1;
-        }
-    }
-
-    {
-        puts("");
         puts("avx512_sort_epi32");
         Test1Reg test(avx512_sort_epi32);
 

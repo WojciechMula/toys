@@ -17,8 +17,17 @@ __ https://software.intel.com/en-us/articles/intel-software-development-emulator
 
 Output from ``speed`` on Knights Landing 7120::
 
-    std::sort...                1.53
-    insertion sort...           5.55
-    AVX512F sort...             1.75
-    AVX512F sort unrolled...    1.77
+    sorting a single AVX512 register
+
+    std::sort...                    1.53
+    insertion sort...               5.55
+    AVX512F sort...                 1.77
+    AVX512F sort (for loop)...      2.04
+    AVX512F sort (while loop)...    2.19
+
+    sorting two AVX512 registers
+    
+    std::sort...                    5.24
+    insertion sort...              12.99
+    AVX512F sort...                 5.78
 
