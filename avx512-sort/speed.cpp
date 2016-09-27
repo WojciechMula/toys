@@ -9,36 +9,27 @@
 #include "insertion-sort.cpp"
 
 
+template <unsigned N>
 class Test {
 
-    uint32_t in[16];
-    uint32_t out[16];
+    static_assert(N == 16 || N == 32, "N has got invalid value");
+
+    uint32_t in[N];
+    uint32_t out[N];
 
     const size_t iterations = 10000000;
 
 public:
     template <typename FUNCTION>
     void run(FUNCTION fun) {
-        in[0]  = 1000;
-        in[1]  = 500;
-        in[2]  = 1000;
-        in[3]  = 1001;
-        in[4]  = 1;
-        in[5]  = 400;
-        in[6]  = 10000;
-        in[7]  = 9400;
-        in[8]  = 1400;
-        in[9]  = 5400;
-        in[10] = 400;
-        in[11] = 400;
-        in[12] = 400;
-        in[13] = 400;
-        in[14] = 400;
-        in[15] = 400;
+
+        for (int i=0; i < N; i++) {
+            in[i] = rand();
+        }
 
         memcpy(out, in, sizeof(in));
         for (size_t i=0; i < iterations; i++) {
-            fun(in, in + 16);
+            fun(in, in + N);
         }
     }
 };
@@ -60,6 +51,22 @@ void avx512_sort_unrolled(uint32_t* start, uint32_t* /*unused*/) {
 }
 
 
+void avx512_sort_for_loop(uint32_t* start, uint32_t* /*unused*/) {
+
+    const __m512i input  = _mm512_loadu_si512(start);
+    const __m512i sorted = avx512_sort_loop_epi32(input);
+    _mm512_storeu_si512(start, sorted);
+}
+
+
+void avx512_sort_while_loop(uint32_t* start, uint32_t* /*unused*/) {
+
+    const __m512i input  = _mm512_loadu_si512(start);
+    const __m512i sorted = avx512_sort_while_epi32(input);
+    _mm512_storeu_si512(start, sorted);
+}
+
+
 void test_std_sort(uint32_t* start, uint32_t* end) {
     std::sort(start, end);
 }
@@ -70,11 +77,23 @@ void test_insertion(uint32_t* start, uint32_t* end) {
 }
 
 
-template <typename FUNCTION>
+void avx512_sort2regs(uint32_t* start, uint32_t* /*unused*/) {
+
+    const __m512i in1 = _mm512_loadu_si512(start);
+    const __m512i in2 = _mm512_loadu_si512(start + 16);
+
+    __m512i sorted1, sorted2;
+    avx512_sort2xreg_epi32(in1, in2, sorted1, sorted2);
+    _mm512_storeu_si512(start, sorted1);
+    _mm512_storeu_si512(start + 16, sorted2);
+}
+
+
+template <unsigned N, typename FUNCTION>
 void measure(const char* name, FUNCTION fun) {
 
     printf("%s... ", name); fflush(stdout);
-    Test test;
+    Test<N> test;
     const auto t1 = get_time();
     test.run(fun);
     const auto t2 = get_time();
@@ -87,8 +106,15 @@ void measure(const char* name, FUNCTION fun) {
 
 int main() {
 
-    measure("std::sort",                test_std_sort);
-    measure("insertion sort",           test_insertion);
-    measure("AVX512F sort",             avx512_sort);
-    measure("AVX512F sort unrolled",    avx512_sort_unrolled);
+    puts("sorting a single AVX512 register");
+    measure<16>("std::sort",                    test_std_sort);
+    measure<16>("insertion sort",               test_insertion);
+    measure<16>("AVX512F sort",                 avx512_sort);
+    measure<16>("AVX512F sort (for loop)",      avx512_sort_for_loop);
+    measure<16>("AVX512F sort (while loop)",    avx512_sort_while_loop);
+
+    puts("sorting two AVX512 registers");
+    measure<32>("std::sort",                    test_std_sort);
+    measure<32>("insertion sort",               test_insertion);
+    measure<32>("AVX512F sort",                 avx512_sort2regs);
 }
