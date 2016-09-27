@@ -56,6 +56,17 @@ public:
     }
 };
 
+class InputRandomFew: public InputData {
+
+    using super = InputData;
+
+public:
+    InputRandomFew(size_t count) : super(count) {
+        for (size_t i=0; i < n; i++) {
+            array[i] = random() % 10;
+        }
+    }
+};
 
 class InputRandom: public InputData {
 
