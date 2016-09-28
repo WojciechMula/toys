@@ -7,10 +7,13 @@ FLAGS_AVX2=$(FLAGS) -mavx2 -DHAVE_AVX2_INSTRUCTIONS
 
 DEPS_SORT=partition.cpp \
           avx2-partition.cpp \
+          avx2-quicksort.cpp \
           avx512-swap.cpp \
           avx512-partition.cpp \
           avx512-bmi2-partition.cpp \
           avx512-popcnt-partition.cpp \
+          avx512-quicksort.cpp \
+          avx512-sort-register.cpp \
           quicksort.cpp
 
 ALL=test speed test_avx2 speed_avx2
