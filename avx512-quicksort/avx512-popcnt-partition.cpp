@@ -18,7 +18,7 @@ namespace qs {
             while (true) {
 
                 while (maskL == 0) {
-                    if (right - (left + N) + 1 < 2*N) {
+                    if (right - (left + N) + 1 < N) {
                         goto end;
                     }
 
@@ -32,7 +32,7 @@ namespace qs {
                 }
 
                 while (maskR == 0) {
-                    if ((right - N) - left + 1 < 2*N) {
+                    if ((right - N) - left + 1 < N) {
                         goto end;
                     }
 
@@ -101,11 +101,11 @@ namespace qs {
 
         end:
 
+            assert(!(maskL != 0 && maskR != 0));
+
             if (maskL != 0) {
                 _mm512_storeu_si512(array + left, L);
-            }
-
-            if (maskR != 0) {
+            } else if (maskR != 0) {
                 _mm512_storeu_si512(array + right - N + 1, R); 
             }
 
