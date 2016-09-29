@@ -204,6 +204,7 @@ void usage() {
     puts("                 descending (or dsc, desc)");
     puts("                 random (or rnd, rand)");
     puts("                 randomfew");
+    puts("                 randomuniq");
 }
 
 

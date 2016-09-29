@@ -37,22 +37,25 @@ namespace qs {
             __mmask16 maskR = 0;
             const __m512i pivot = _mm512_set1_epi32(pv);
 
+            int count = (right - left + 1)/N;
+
             while (true) {
 
                 while (maskL == 0) {
-                    if (right - (left + N) + 1 < N) {
+                    if (count <= 1) {
                         goto end;
                     }
 
                     L = _mm512_loadu_si512(array + left);
                     maskL = _mm512_cmpge_epi32_mask(L, pivot);
                     if (maskL == 0) {
-                        left += N;
+                        left  += N;
+                        count -= 1;
                     }
                 }
 
                 while (maskR == 0) {
-                    if ((right - N) - left + 1 < N) {
+                    if (count <= 1) {
                         goto end;
                     }
 
@@ -60,6 +63,7 @@ namespace qs {
                     maskR = _mm512_cmple_epi32_mask(R, pivot);
                     if (maskR == 0) {
                         right -= N;
+                        count -= 1;
                     }
                 }
 
@@ -78,12 +82,14 @@ namespace qs {
 
                 if (maskL == 0) {
                     _mm512_storeu_si512(array + left, L);
-                    left += N;
+                    left  += N;
+                    count -= 1;
                 }
 
                 if (maskR == 0) {
                     _mm512_storeu_si512(array + right - N + 1, R);
                     right -= N;
+                    count -= 1;
                 }
 
             } // while
