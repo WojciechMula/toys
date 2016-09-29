@@ -60,6 +60,7 @@ public:
 
 enum class InputType {
     randomfew,
+    randomuniq,
     random,
     ascending,
     descending,
@@ -70,6 +71,9 @@ const char* as_string(InputType type) {
     switch (type) {
         case InputType::randomfew:
             return "randomfew";
+
+        case InputType::randomuniq:
+            return "randomuniq";
 
         case InputType::random:
             return "random";
@@ -127,6 +131,10 @@ public:
         switch (type) {
             case InputType::randomfew:
                 data.reset(new InputRandomFew(count));
+                break;
+
+            case InputType::randomuniq:
+                data.reset(new InputRandomUnique(count));
                 break;
 
             case InputType::random:
@@ -219,6 +227,8 @@ int main(int argc, char* argv[]) {
         type = InputType::random;
     } else if (is_keyword("randomfew")) {
         type = InputType::randomfew;
+    } else if (is_keyword("randomuniq")) {
+        type = InputType::randomuniq;
     } else {
         usage();
         return EXIT_FAILURE;

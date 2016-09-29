@@ -80,3 +80,27 @@ public:
     }
 };
 
+class InputRandomUnique: public InputData {
+
+    using super = InputData;
+
+public:
+    InputRandomUnique(size_t count) : super(count) {
+        for (size_t i=0; i < n; i++) {
+            array[i] = i;
+        }
+
+        shuffle();
+    }
+
+private:
+    void shuffle() {
+        for (size_t i=0; i < n; i++) {
+            size_t j = rand() % (n - i);
+
+            const uint32_t t = array[i];
+            array[i] = array[j];
+            array[j] = t;
+        }
+    }
+};
