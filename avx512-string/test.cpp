@@ -6,6 +6,8 @@
 #include <immintrin.h>
 
 #include "avx512f-strlen.cpp"
+#include "avx512f-strchr.cpp"
+
 
 bool test_strlen() {
     const size_t N = 512;
@@ -47,6 +49,29 @@ bool test_strlen2() {
 }
 
 
+bool test_strchr() {
+    const size_t N = 512;
+    char buffer[N];
+
+    for (size_t length=0; length < N; length++) {
+        for (size_t i=length + 1; i < N; i++) {
+            memset(buffer, '?', N);
+            buffer[length] =  0;
+            buffer[i] =  'X';
+
+            const char* result   = avx512f_strchr(buffer, 'X');
+            const char* expected = strchr(buffer, 'X');
+            if (result != expected) {
+                printf("failed: result=%u, expected=%u\n", result, expected);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+
 template <typename TESTFN>
 void test(const char* name, TESTFN test) {
     printf("%s... ", name); fflush(stdout);
@@ -62,6 +87,7 @@ void test(const char* name, TESTFN test) {
 int main() {
     test("strlen (case 1)", test_strlen);
     test("strlen (case 2)", test_strlen2);
+    test("strchr", test_strchr);
 
     puts("All OK");
 }
