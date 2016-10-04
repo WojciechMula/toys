@@ -1,12 +1,20 @@
-.PHONY: all clean
+.PHONY: all clean speed
 
-all: test
+FLAGS=-std=c++14 -mavx512f -O3
+PERFTESTS=speed_strlen
+
+all: test speed
+
+speed: $(PERFTESTS)
 
 run: test
 	sde -cnl -- ./$^
 
 test: *.cpp
-	$(CXX) -std=c++14 -mavx512f -O3 test.cpp -o $@
+	$(CXX) $(FLAGS) test.cpp -o $@
+
+speed_strlen: speed_strlen.cpp avx512f-strlen.cpp
+	$(CXX) $(FLAGS) $< -o $@
 
 clean:
-	rm -f test
+	rm -f test $(PERFTESTS)
