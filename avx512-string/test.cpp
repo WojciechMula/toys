@@ -7,6 +7,7 @@
 
 #include "avx512f-strlen.cpp"
 #include "avx512f-strchr.cpp"
+#include "avx512f-strfind.cpp"
 
 
 bool test_strlen() {
@@ -62,9 +63,35 @@ bool test_strchr() {
             const char* result   = avx512f_strchr(buffer, 'X');
             const char* expected = strchr(buffer, 'X');
             if (result != expected) {
-                printf("failed: result=%u, expected=%u\n", result, expected);
+                printf("failed: result=%p, expected=%p\n", result, expected);
                 return false;
             }
+        }
+    }
+
+    return true;
+}
+
+
+bool test_strfind() {
+    const size_t N = 512;
+    char buffer[N];
+
+    const char*  needle = "kitten";
+    const size_t n      = strlen(needle);
+
+    for (size_t pos=0; pos < N - n; pos++) {
+        memset(buffer, '?', N);
+
+        for (size_t i=0; i < n; i++) {
+            buffer[pos + i] = needle[i];
+        }
+
+        const size_t result   = avx512f_strfind_gt4(buffer, N/64, needle, n);
+        const size_t expected = pos;
+        if (result != expected) {
+            printf("failed: result=%u, expected=%u\n", result, expected);
+            return false;
         }
     }
 
@@ -85,6 +112,7 @@ void test(const char* name, TESTFN test) {
 
 
 int main() {
+    test("strfind", test_strfind);
     test("strlen (case 1)", test_strlen);
     test("strlen (case 2)", test_strlen2);
     test("strchr", test_strchr);
