@@ -42,9 +42,9 @@ public:
 template <typename STRLEN>
 void measure(const char* name, STRLEN strlen_function) {
 
-    printf("%s", name); fflush(stdout);
+    printf("%-10s [", name); fflush(stdout);
 
-    Test test(1024*1024);
+    Test test(100*1024);
 
     const uint32_t t1 = get_time();
     for (int i=0; i < 10; i++) {
@@ -53,12 +53,12 @@ void measure(const char* name, STRLEN strlen_function) {
     }
     const uint32_t t2 = get_time();
 
-    printf(" %0.4f s\n", (t2 - t1)/1000000.0);
+    printf("] %0.4f s\n", (t2 - t1)/1000000.0);
 }
 
 
 int main() {
 
-    measure("strlen", std::strlen);
-    measure("AVX512", avx512f_strlen);
+    measure("strlen", strlen);
+    measure("AVX512F", avx512f_strlen);
 }
