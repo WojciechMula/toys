@@ -69,6 +69,7 @@ void die(const char* fmt, ...) {
 #   endif
 #   if defined(AVX512F)
 #       include "avx512-proc-64-bit.c"
+#       include "avx512-fma-proc-64-bit.c"
 #   endif
 #   include "sse4-proc-64-bit.c"
 #endif
@@ -106,7 +107,8 @@ void help(char* progname) {
     puts("AVX2 - select AVX2 procedure");
 #endif
 #if defined(AVX512F)
-    puts("AVX512F - select AVX512 procedure");
+    puts("AVX512F - select AVX512F procedure");
+    puts("AVX512F+FMA - select AVX512F using FMA instructions");
 #endif
     puts("Parameters:");
     puts("");
@@ -133,7 +135,7 @@ int main(int argc, char* argv[]) {
 	float threshold = 20.0;
 	int   maxiters  = 255;
 
-	enum {None, FPUprocedure, SSEprocedure, AVX2procedure, AVX512procedure} function;
+	enum {None, FPUprocedure, SSEprocedure, AVX2procedure, AVX512procedure, AVX512F_FMA_procedure} function;
 	function = None;
 
 	// parse command line
@@ -146,21 +148,23 @@ int main(int argc, char* argv[]) {
 	// 1. function name
 	if (strcasecmp(argv[1], "FPU") == 0)
 		function = FPUprocedure;
-	else
+
 	if (strcasecmp(argv[1], "SSE") == 0)
 		function = SSEprocedure;
 #if defined(AVX2)
-	else
 	if (strcasecmp(argv[1], "AVX2") == 0)
 		function = AVX2procedure;
 #endif
 #if defined(AVX512F)
-	else
 	if (strcasecmp(argv[1], "AVX512F") == 0)
 		function = AVX512procedure;
+	if (strcasecmp(argv[1], "AVX512F+FMA") == 0)
+		function = AVX512F_FMA_procedure;
 #endif
-	else
+
+    if (function == None) {
 		help(argv[0]);
+    }
 
 
 	// 2. optional area of calculations
@@ -292,6 +296,27 @@ int main(int argc, char* argv[]) {
             printf("AVX512F ");
 			fflush(stdout);
 			t1 = get_time();
+			AVX512F_FMA_mandelbrot(
+				Re_min, Re_max,
+				Im_min, Im_max,
+				threshold, maxiters,
+				WIDTH, HEIGHT,
+				&image[0][0]
+			);
+			t2 = get_time();
+			printf("%d us\n", t2-t1);
+
+            if (!dry_run) {
+			    f = fopen("avx512f.pgm", "wb");
+            }
+#endif
+			break;
+
+		case AVX512F_FMA_procedure:
+#if defined(AVX512F)
+            printf("AVX512F+FMA ");
+			fflush(stdout);
+			t1 = get_time();
 			AVX512F_mandelbrot(
 				Re_min, Re_max,
 				Im_min, Im_max,
@@ -303,7 +328,7 @@ int main(int argc, char* argv[]) {
 			printf("%d us\n", t2-t1);
 
             if (!dry_run) {
-			    f = fopen("avx512.pgm", "wb");
+			    f = fopen("avx512f+fma.pgm", "wb");
             }
 #endif
 			break;
