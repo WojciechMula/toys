@@ -10,15 +10,15 @@
 #include "scalar-strchr.cpp"
 
 
-class Test {
+class TestCase {
 
 private:
     char* buffer;
     size_t size;
-    size_t count;
+    volatile size_t count;
 
 public:
-    Test(size_t s)
+    TestCase(size_t s)
         : size(s) {
 
         buffer = new char[s + 64];
@@ -26,7 +26,7 @@ public:
         buffer[s - 1] = 0;
     }
 
-    ~Test() {
+    ~TestCase() {
         delete[] buffer;
     }
 
@@ -35,7 +35,7 @@ public:
     void run(STRCHR strchr_function) {
         for (size_t i=0; i < size; i++) {
             buffer[i] = 'X';
-            count += int(strchr_function(buffer, int('X')) != NULL);
+            count += int(strchr_function(buffer, 'X') != NULL);
             buffer[i] = '?';
         }
     }
@@ -44,51 +44,65 @@ public:
     void run_std_function() {
         for (size_t i=0; i < size; i++) {
             buffer[i] = 'X';
-            count += int(strchr(buffer, int('X')) != NULL);
+            count += int(strchr(buffer, 'X') != NULL);
             buffer[i] = '?';
         }
     }
 };
 
 
-template <typename STRCHR>
-void measure(const char* name, STRCHR strchr_function) {
+class Test {
 
-    printf("%-10s [", name); fflush(stdout);
+    size_t size;
+    size_t iterations;
 
-    Test test(1*1024);
+public:
+    Test(size_t size, size_t iterations)
+        : size(size)
+        , iterations(iterations) {}
 
-    const uint32_t t1 = get_time();
-    for (int i=0; i < 10; i++) {
-        putchar('.'); fflush(stdout);
-        test.run(strchr_function);
+
+    template <typename STRCHR>
+    void measure(const char* name, STRCHR strchr_function) {
+
+        printf("%-20s [", name); fflush(stdout);
+
+        TestCase test(size);
+
+        const uint32_t t1 = get_time();
+        for (size_t i=0; i < iterations; i++) {
+            putchar('.'); fflush(stdout);
+            test.run(strchr_function);
+        }
+        const uint32_t t2 = get_time();
+
+        printf("] %0.4f s\n", (t2 - t1)/1000000.0);
     }
-    const uint32_t t2 = get_time();
-
-    printf("] %0.4f s\n", (t2 - t1)/1000000.0);
-}
 
 
-void measure(const char* name) {
+    void measure(const char* name) {
 
-    printf("%-15s [", name); fflush(stdout);
+        printf("%-20s [", name); fflush(stdout);
 
-    Test test(100*1024);
+        TestCase test(size);
 
-    const uint32_t t1 = get_time();
-    for (int i=0; i < 10; i++) {
-        putchar('.'); fflush(stdout);
-        test.run_std_function();
+        const uint32_t t1 = get_time();
+        for (size_t i=0; i < iterations; i++) {
+            putchar('.'); fflush(stdout);
+            test.run_std_function();
+        }
+        const uint32_t t2 = get_time();
+
+        printf("] %0.4f s\n", (t2 - t1)/1000000.0);
     }
-    const uint32_t t2 = get_time();
-
-    printf("] %0.4f s\n", (t2 - t1)/1000000.0);
-}
+};
 
 
 int main() {
 
-    measure("strchr"); // for a mysterious reason GCC is not able to match std::strchr
-    measure("scalar strchr",    scalar_strchr);
-    measure("AVX512F",          avx512f_strchr);
+    Test test(100*1024, 5);
+
+    test.measure("strchr"); // for a mysterious reason GCC is not able to match std::strchr
+    test.measure("scalar strchr",    scalar_strchr);
+    test.measure("AVX512F",          avx512f_strchr);
 }
