@@ -7,6 +7,7 @@
 
 #include "gettime.cpp"
 #include "avx512f-strlen.cpp"
+#include "scalar-strlen.cpp"
 
 
 class Test {
@@ -42,7 +43,7 @@ public:
 template <typename STRLEN>
 void measure(const char* name, STRLEN strlen_function) {
 
-    printf("%-10s [", name); fflush(stdout);
+    printf("%-15s [", name); fflush(stdout);
 
     Test test(100*1024);
 
@@ -59,6 +60,7 @@ void measure(const char* name, STRLEN strlen_function) {
 
 int main() {
 
-    measure("strlen", strlen);
-    measure("AVX512F", avx512f_strlen);
+    measure("std::strlen",      strlen);
+    measure("scalar strlen",    scalar_strlen);
+    measure("AVX512F",          avx512f_strlen);
 }

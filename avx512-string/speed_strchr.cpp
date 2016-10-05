@@ -7,6 +7,7 @@
 
 #include "gettime.cpp"
 #include "avx512f-strchr.cpp"
+#include "scalar-strchr.cpp"
 
 
 class Test {
@@ -14,6 +15,7 @@ class Test {
 private:
     char* buffer;
     size_t size;
+    size_t count;
 
 public:
     Test(size_t s)
@@ -33,7 +35,7 @@ public:
     void run(STRCHR strchr_function) {
         for (size_t i=0; i < size; i++) {
             buffer[i] = 'X';
-            strchr_function(buffer, int('X'));
+            count += int(strchr_function(buffer, int('X')) != NULL);
             buffer[i] = '?';
         }
     }
@@ -42,7 +44,7 @@ public:
     void run_std_function() {
         for (size_t i=0; i < size; i++) {
             buffer[i] = 'X';
-            strchr(buffer, int('X'));
+            count += int(strchr(buffer, int('X')) != NULL);
             buffer[i] = '?';
         }
     }
@@ -69,7 +71,7 @@ void measure(const char* name, STRCHR strchr_function) {
 
 void measure(const char* name) {
 
-    printf("%-10s [", name); fflush(stdout);
+    printf("%-15s [", name); fflush(stdout);
 
     Test test(100*1024);
 
@@ -87,5 +89,6 @@ void measure(const char* name) {
 int main() {
 
     measure("strchr"); // for a mysterious reason GCC is not able to match std::strchr
-    measure("AVX512F", avx512f_strchr);
+    measure("scalar strchr",    scalar_strchr);
+    measure("AVX512F",          avx512f_strchr);
 }

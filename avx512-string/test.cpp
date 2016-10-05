@@ -20,7 +20,7 @@ bool test_strlen() {
 
         const size_t res = avx512f_strlen(buffer);
         if (res != length) {
-            printf("failed: result=%u, expected=%u\n", res, length);
+            printf("failed: result=%lu, expected=%lu\n", res, length);
             return false;
         }
     }
@@ -40,7 +40,7 @@ bool test_strlen2() {
 
             const size_t res = avx512f_strlen(buffer);
             if (res != length) {
-                printf("failed: result=%u, expected=%u\n", res, length);
+                printf("failed: result=%lu, expected=%lu\n", res, length);
                 return false;
             }
         }
@@ -90,7 +90,7 @@ bool test_strfind() {
         const size_t result   = avx512f_strfind_gt4(buffer, N/64, needle, n);
         const size_t expected = pos;
         if (result != expected) {
-            printf("failed: result=%u, expected=%u\n", result, expected);
+            printf("failed: result=%lu, expected=%lu\n", result, expected);
             return false;
         }
     }
