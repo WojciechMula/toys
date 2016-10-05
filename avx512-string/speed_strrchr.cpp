@@ -43,7 +43,7 @@ public:
     void run_std_function() {
         for (size_t i=0; i < size; i++) {
             buffer[i] = 'X';
-            count += int(strchr(buffer, 'X') != NULL);
+            count += int(strrchr(buffer, 'X') != NULL);
             buffer[i] = '?';
         }
     }
