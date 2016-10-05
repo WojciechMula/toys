@@ -1,7 +1,7 @@
 //=== AVX512 implementation - 64-bit code ==================================
 #include <immintrin.h>
 
-void AVX512_mandelbrot(
+void AVX512F_mandelbrot(
 	float Re_min, float Re_max,
 	float Im_min, float Im_max,
 	float threshold,
@@ -47,11 +47,7 @@ void AVX512_mandelbrot(
             __m512 Xre = _mm512_setzero_ps();
             __m512 Xim = _mm512_setzero_ps();
 
-#if defined(AVX512BASIC)
             __m512i itercount = _mm512_setzero_si512();
-#else
-            __m128i itercount = _mm_setzero_si128();
-#endif
 
             int i;
             for (i=0; i < maxiters; i++) {
@@ -76,23 +72,13 @@ void AVX512_mandelbrot(
                     break;
                 }
 
-#if defined(AVX512BASIC)
                 itercount = _mm512_mask_add_epi32(itercount, mask, itercount, _mm512_set1_epi32(1));
-#else
-                // Note: unlike SSE/AVX2 versions itercount is a packed byte vector,
-                //       thus conversion packed dword -> byte is not needed.
-                itercount = _mm_sub_epi8(itercount, _mm_movm_epi8(mask));
-#endif
                 Xre = Tre;
                 Xim = Tim;
 
             } // for
 
-#if defined(AVX512BASIC)
             *ptr++ = _mm512_cvtepi32_epi8(itercount);
-#else
-            *ptr++ = itercount;
-#endif
 
 			// advance Cre vector
             Cre = _mm512_add_ps(Cre, vec_dRe);

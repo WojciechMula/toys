@@ -24,9 +24,9 @@ Simply type ``make``. Following programs will be compiled:
 * ``fractal32sse2fpu`` --- 32-bit SSE2 procedure + scalar version using FPU
 * ``fractal32sse4fpu`` --- 32-bit SSE2 procedure + scalar version using FPU
 * ``fractal64sse4fpu`` --- 64-bit SSE4.1 procedure + scalar version using FPU
-* ``fractal64avx512``  --- AVX515 and AVX2, SSE4.1 and FPU versions
+* ``fractal64avx512f`` --- AVX512F and AVX2, SSE4.1 and FPU versions
 
-To run ``fractal64avx512`` you need `Intel Software Development Emulator`__.
+To run ``fractal64avx512*`` you need `Intel Software Development Emulator`__.
 
 __ https://software.intel.com/en-us/articles/intel-software-development-emulator
 

@@ -19,18 +19,9 @@
 	Average speedup over FPU procedure is around 4.5 times.
 	Measured on Core2 Duo E8200 @ 2.66GHz.
 
-
-	Compilation SSE4.1 version:
-
-		gcc -O3 -Wall -pedantic -std=c99 sse4-mandelbrot.c -o your_favorite_name
-
-	Compilation SSE2 version:
-
-		gcc -O3 -Wall -pedantic -std=c99 -DSSE2 sse-mandelbrot.c -o your_favorite_name
-
 	Usage:
 
-		run program without argument to read help
+		run program without arguments to read help
 
 */
 #include <stdlib.h>
@@ -76,7 +67,7 @@ void die(const char* fmt, ...) {
 #   if defined(AVX2)
 #       include "avx2-proc-64-bit.c"
 #   endif
-#   if defined(AVX512)
+#   if defined(AVX512F)
 #       include "avx512-proc-64-bit.c"
 #   endif
 #   include "sse4-proc-64-bit.c"
@@ -114,8 +105,8 @@ void help(char* progname) {
 #if defined(AVX2)
     puts("AVX2 - select AVX2 procedure");
 #endif
-#if defined(AVX512)
-    puts("AVX512 - select AVX512 procedure");
+#if defined(AVX512F)
+    puts("AVX512F - select AVX512 procedure");
 #endif
     puts("Parameters:");
     puts("");
@@ -163,9 +154,9 @@ int main(int argc, char* argv[]) {
 	if (strcasecmp(argv[1], "AVX2") == 0)
 		function = AVX2procedure;
 #endif
-#if defined(AVX512)
+#if defined(AVX512F)
 	else
-	if (strcasecmp(argv[1], "AVX512") == 0)
+	if (strcasecmp(argv[1], "AVX512F") == 0)
 		function = AVX512procedure;
 #endif
 	else
@@ -297,11 +288,11 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case AVX512procedure:
-#if defined(AVX512)
-            printf("AVX512 ");
+#if defined(AVX512F)
+            printf("AVX512F ");
 			fflush(stdout);
 			t1 = get_time();
-			AVX512_mandelbrot(
+			AVX512F_mandelbrot(
 				Re_min, Re_max,
 				Im_min, Im_max,
 				threshold, maxiters,
