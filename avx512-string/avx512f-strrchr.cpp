@@ -67,7 +67,7 @@ char* avx512f_strrchr(const char* s, char c) {
                     }
                 }
 
-                // clear char_mask after the first zero
+                // clear char_mask after the first zero (Note: first_zero is power of 2)
                 const uint32_t char_before_zero = char_mask & (first_zero - 1);
 
                 if (char_before_zero) {

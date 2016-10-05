@@ -49,7 +49,7 @@ char* avx512f_strchr__reference_implementation(const char* s, char c) {
             if (t == 0) return NULL;
             if (t == c) return ptr + 4*n + 3;
 
-            assert(false && "unxpected invocation");
+            assert(false && "unexpected invocation");
         }
 
         ptr += 64;
@@ -98,7 +98,7 @@ char* avx512f_strchr(const char* s, char c) {
             if (t == 0) return NULL;
             if (t == c) return ptr + 4*n + 3;
 
-            assert(false && "unxpected invocation");
+            assert(false && "unexpected invocation");
         }
 
         ptr += 64;
