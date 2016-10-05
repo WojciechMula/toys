@@ -10,21 +10,21 @@
 #include "scalar-strlen.cpp"
 
 
-class Test {
+class TestCase {
 
 private:
     char* buffer;
     size_t size;
 
 public:
-    Test(size_t s)
+    TestCase(size_t s)
         : size(s) {
 
         buffer = new char[s + 64];
         memset(buffer, '?', s + 64);
     }
 
-    ~Test() {
+    ~TestCase() {
         delete[] buffer;
     }
 
@@ -40,27 +40,52 @@ public:
 };
 
 
-template <typename STRLEN>
-void measure(const char* name, STRLEN strlen_function) {
+class Test {
 
-    printf("%-15s [", name); fflush(stdout);
+    size_t size;
+    size_t iterations;
+    uint32_t ref_time;
 
-    Test test(100*1024);
+public:
+    Test(size_t size, size_t iterations)
+        : size(size)
+        , iterations(iterations)
+        , ref_time(0) {}
 
-    const uint32_t t1 = get_time();
-    for (int i=0; i < 10; i++) {
-        putchar('.'); fflush(stdout);
-        test.run(strlen_function);
+
+    template <typename STRLEN>
+    void measure(const char* name, STRLEN strlen_function) {
+
+        printf("%-15s [", name); fflush(stdout);
+
+        TestCase test(size);
+
+        const uint32_t t1 = get_time();
+        for (size_t i=0; i < iterations; i++) {
+            putchar('.'); fflush(stdout);
+            test.run(strlen_function);
+        }
+        const uint32_t t2 = get_time();
+        const uint32_t time = t2 - t1;
+
+        printf("] %0.4f s", time/1000000.0);
+
+        if (ref_time == 0) {
+            ref_time = time;
+        } else {
+            printf(" (%0.2f)", ref_time/double(time));
+        }
+
+        putchar('\n');
     }
-    const uint32_t t2 = get_time();
-
-    printf("] %0.4f s\n", (t2 - t1)/1000000.0);
-}
+};
 
 
 int main() {
 
-    measure("std::strlen",      strlen);
-    measure("scalar strlen",    scalar_strlen);
-    measure("AVX512F",          avx512f_strlen);
+    Test test(10*1024, 5);
+
+    test.measure("std::strlen",      strlen);
+    test.measure("scalar strlen",    scalar_strlen);
+    test.measure("AVX512F",          avx512f_strlen);
 }
