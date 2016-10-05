@@ -5,7 +5,7 @@ FORCEFPU=-mfpmath=387
 
 MAIN=main.c
 DEPS=$(MAIN) fpu-proc.c
-ALL=fractal32sse2 fractal32sse4 fractal64sse4 fractal32sse2fpu fractal32sse4fpu fractal64sse4fpu fractal64avx2 fractal64avx512bw fractal64avx512f
+ALL=fractal32sse2 fractal32sse4 fractal64sse4 fractal32sse2fpu fractal32sse4fpu fractal64sse4fpu fractal64avx2 fractal64avx512f
 
 all: $(ALL)
 
