@@ -12,6 +12,7 @@ some SWAR tricks were used. Following functions are available:
 
 * ``strlen``,
 * ``strchr``,
+* ``strrchr``,
 * ``strfind`` -- which doesn't match any standard, it's modified Karp-Rabin
   scheme, where equality of first four characters causes exact comparison.
 
@@ -22,7 +23,7 @@ Building
 Type ``make`` to build following programs:
 
 * ``test`` --- does basic tests and validation;
-* ``speed_strlen``, ``speed_strchr`` --- compare performance of vector 
+* ``speed_{strlen,strchr,strrch}`` --- compare performance of vector 
   procecures against stdlib and custom scalar procedures.
 
 `Intel Software Development Emulator`__ can be used to run the programs.
@@ -58,3 +59,8 @@ strchr (10kB strings)::
     std::strchr     0.1000 s
     AVX512F         0.0225 s (4.44 faster)
     
+strrchr (10kB strings)::
+    
+    std::strrchr    0.7211 s
+    AVX512F         0.0454 s (15.88 faster)
+
