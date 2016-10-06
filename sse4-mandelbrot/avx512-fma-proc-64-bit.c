@@ -52,20 +52,22 @@ void AVX512F_FMA_mandelbrot(
             int i;
             for (i=0; i < maxiters; i++) {
 
-                // Tre = Xre^2 - Xim^2 + Cre
-                const __m512 t1  = _mm512_fmadd_ps(Xim, Xim, Cre); // Xim^2 + Cre
-                const __m512 Tre = _mm512_fmsub_ps(Xre, Xre, t1);  // Xre^2 - t1
+			    // Tre = Xre^2 - Xim^2 + Cim
+                const __m512 Xre2 = _mm512_mul_ps(Xre, Xre);
+                const __m512 Xim2 = _mm512_mul_ps(Xim, Xim);
+                const __m512 Tre  = _mm512_add_ps(Cre, _mm512_sub_ps(Xre2, Xim2));
 
-                // Tim = 2*Xre*Xim + Cim = (Xre + Xre)*Xim + Cim;
-                const __m512 t2  = _mm512_add_ps(Xre, Xre);
-                const __m512 Tim = _mm512_fmadd_ps(t2, Xim, Cim);
+			    // Tim = 2*Xre*Xim + Cre
+                const __m512 t1  = _mm512_mul_ps(Xre, Xim);
+                const __m512 Tim = _mm512_add_ps(Cim, _mm512_add_ps(t1, t1));
 
                 // sqr_dist = Tre^2 + Tim^2
-                const __m512 Tre2 = _mm512_mul_ps(Tre, Tre);
-                __m512 sqr_dist   = _mm512_fmadd_ps(Tim, Tim, Tre2);
+                __m512 Tre2 = _mm512_mul_ps(Tre, Tre);
+                __m512 Tim2 = _mm512_mul_ps(Tim, Tim);
+                __m512 sqr_dist = _mm512_add_ps(Tre2, Tim2);
 
                 // sqr_dist < threshold => 16-bit mask
-                __mmask16 mask = _mm512_cmp_ps_mask(sqr_dist, vec_threshold, _CMP_LE_OS);
+                const __mmask16 mask = _mm512_cmp_ps_mask(sqr_dist, vec_threshold, _CMP_LE_OS);
                 if (mask == 0) {
                     break;
                 }

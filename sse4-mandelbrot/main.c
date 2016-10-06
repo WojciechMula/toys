@@ -71,6 +71,9 @@ void die(const char* fmt, ...) {
 #       include "avx512-proc-64-bit.c"
 #       include "avx512-fma-proc-64-bit.c"
 #   endif
+#   if defined(AVX512BW)
+#       include "avx512bw-proc-64-bit.c"
+#   endif
 #   include "sse4-proc-64-bit.c"
 #endif
 
@@ -110,6 +113,9 @@ void help(char* progname) {
     puts("AVX512F - select AVX512F procedure");
     puts("AVX512F+FMA - select AVX512F using FMA instructions");
 #endif
+#if defined(AVX512BW)
+    puts("AVX512BW - select AVX512BW procedure");
+#endif
     puts("Parameters:");
     puts("");
 	puts("Remin Immin Remax Immax - define area of calculations; default -2.0 -2.0 +2.0 +2.0");
@@ -135,7 +141,16 @@ int main(int argc, char* argv[]) {
 	float threshold = 20.0;
 	int   maxiters  = 255;
 
-	enum {None, FPUprocedure, SSEprocedure, AVX2procedure, AVX512procedure, AVX512F_FMA_procedure} function;
+	enum {
+        None,
+        FPUprocedure,
+        SSEprocedure,
+        AVX2procedure,
+        AVX512procedure,
+        AVX512F_FMA_procedure,
+        AVX512BW_procedure
+    } function;
+
 	function = None;
 
 	// parse command line
@@ -160,6 +175,10 @@ int main(int argc, char* argv[]) {
 		function = AVX512procedure;
 	if (strcasecmp(argv[1], "AVX512F+FMA") == 0)
 		function = AVX512F_FMA_procedure;
+#endif
+#if defined(AVX512BW)
+	if (strcasecmp(argv[1], "AVX512BW") == 0)
+		function = AVX512BW_procedure;
 #endif
 
     if (function == None) {
@@ -329,6 +348,26 @@ int main(int argc, char* argv[]) {
 
             if (!dry_run) {
 			    f = fopen("avx512f+fma.pgm", "wb");
+            }
+#endif
+
+		case AVX512BW_procedure:
+#if defined(AVX512BW)
+            printf("AVX512BW ");
+			fflush(stdout);
+			t1 = get_time();
+			AVX512F_mandelbrot(
+				Re_min, Re_max,
+				Im_min, Im_max,
+				threshold, maxiters,
+				WIDTH, HEIGHT,
+				&image[0][0]
+			);
+			t2 = get_time();
+			printf("%d us\n", t2-t1);
+
+            if (!dry_run) {
+			    f = fopen("avx512bw.pgm", "wb");
             }
 #endif
 			break;
