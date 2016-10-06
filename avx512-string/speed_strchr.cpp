@@ -113,7 +113,6 @@ int main() {
 
     Test test(10*1024, 5);
 
-    test.measure("strchr"); // for a mysterious reason GCC is not able to match std::strchr
-    test.measure("AVX512F",          avx512f_strchr);
-    //test.measure("scalar strchr",    scalar_strchr);
+    test.measure("std::strchr"); // for a mysterious reason GCC is not able to match std::strchr
+    test.measure("AVX512F", avx512f_strchr);
 }
