@@ -44,15 +44,6 @@ public:
             buffer1[i] = '?';
         }
     }
-
-
-    void run_std_function() {
-        for (size_t i=0; i < size; i++) {
-            buffer1[i] = 'X';
-            count += strcmp(buffer1, buffer2);
-            buffer1[i] = '?';
-        }
-    }
 };
 
 
@@ -93,24 +84,6 @@ public:
 
         putchar('\n');
     }
-
-
-    void measure(const char* name) {
-
-        printf("%-20s [", name); fflush(stdout);
-
-        TestCase test(size);
-
-        const uint32_t t1 = get_time();
-        for (size_t i=0; i < iterations; i++) {
-            putchar('.'); fflush(stdout);
-            test.run_std_function();
-        }
-        const uint32_t t2 = get_time();
-        ref_time = t2 - t1;
-
-        printf("] %0.4f s\n", (t2 - t1)/1000000.0);
-    }
 };
 
 
@@ -118,6 +91,6 @@ int main() {
 
     Test test(10*1024, 5);
 
-    test.measure("strcmp", strcmp); // for a mysterious reason GCC is not able to match std::strcmp
+    test.measure("strcmp", strcmp);
     test.measure("AVX512F", avx512f_strcmp);
 }
