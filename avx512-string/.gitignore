@@ -2,3 +2,4 @@ test
 speed_strlen
 speed_strchr
 speed_strrchr
+speed_strcmp
