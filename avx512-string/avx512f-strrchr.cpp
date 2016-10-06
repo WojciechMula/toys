@@ -78,6 +78,8 @@ char* avx512f_strrchr(const char* s, char c) {
                     if (ptr[4*n + 1] == c) result = ptr + 4*n + 1; else
                     if (ptr[4*n + 0] == c) result = ptr + 4*n + 0; else assert(false);
                 }
+
+                return result;
             }
 
         }
