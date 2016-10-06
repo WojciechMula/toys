@@ -2,6 +2,7 @@
 
 FLAGS=-std=c++14 -mavx512f -O3 -Wall -Wextra -pedantic
 PERFTESTS=speed_strlen speed_strchr speed_strrchr
+DEPS=common.h
 
 all: test speed
 
@@ -10,7 +11,7 @@ speed: $(PERFTESTS)
 run: test
 	sde -cnl -- ./$^
 
-test: test.cpp avx512*.cpp
+test: test.cpp avx512*.cpp common.h
 	$(CXX) $(FLAGS) $< -o $@
 
 speed_strlen: speed_strlen.cpp avx512f-strlen.cpp scalar-strlen.cpp
