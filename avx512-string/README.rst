@@ -48,25 +48,20 @@ Preliminary performance results
 I'm aware that these tests aren't very good, they do not cover wider
 range of strings lengths and so forth.
 
-Compiler: GCC 5.4.3, CPU: Knights Landing 7210.
+* Compiler: GCC 5.4.3
+* CPU: Knights Landing 7210
+* 10kB strings were processed
 
-strlen (10kB strings)::
-
-    std::strlen     0.0829 s
-    AVX512F         0.0167 s (4.96 faster)
-
-strchr (10kB strings)::
-
-    std::strchr     0.1000 s
-    AVX512F         0.0225 s (4.44 faster)
-    
-strrchr (10kB strings)::
-    
-    std::strrchr    0.7211 s
-    AVX512F         0.0450 s (16.03 faster)
-
-strcmp (10kB strings)::
-
-    strcmp          0.1171 s
-    AVX512F         0.0297 s (3.94 faster)
-
++----------+-------------------+----------+
+|          |       time [s]    |          |
+| function +---------+---------+ speed-up |
+|          |   std   | AVX512F |          |
++==========+=========+=========+==========+
+| strlen   | 0.0829  | 0.0167  |     4.96 |
++----------+---------+---------+----------+
+| strchr   | 0.1000  | 0.0225  |     4.44 |
++----------+---------+---------+----------+
+| strrchr  | 0.7211  | 0.0450  |    16.03 |
++----------+---------+---------+----------+
+| strcmp   | 0.1171  | 0.0297  |     3.94 |
++----------+---------+---------+----------+
