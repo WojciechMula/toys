@@ -87,24 +87,6 @@ public:
 
         putchar('\n');
     }
-
-
-    void measure(const char* name) {
-
-        printf("%-20s [", name); fflush(stdout);
-
-        TestCase test(size);
-
-        const uint32_t t1 = get_time();
-        for (size_t i=0; i < iterations; i++) {
-            putchar('.'); fflush(stdout);
-            test.run_std_function();
-        }
-        const uint32_t t2 = get_time();
-        ref_time = t2 - t1;
-
-        printf("] %0.4f s\n", (t2 - t1)/1000000.0);
-    }
 };
 
 
@@ -112,6 +94,6 @@ int main() {
 
     Test test(10*1024, 5);
 
-    test.measure("std::strrchr"); // well, the same story was with strchr
+    test.measure("std::strrchr", [](const char* s, int c){return strrchr(s, c);});
     test.measure("AVX512F", avx512f_strrchr);
 }
