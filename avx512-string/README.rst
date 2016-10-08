@@ -13,9 +13,7 @@ some SWAR tricks were used. Following functions are available:
 * ``strlen``,
 * ``strchr``,
 * ``strrchr``,
-* ``strcmp``,
-* ``strfind`` -- which doesn't match any standard, it's modified Karp-Rabin
-  scheme, where equality of first four characters causes exact comparison.
+* ``strcmp``.
 
 
 Building
@@ -37,9 +35,9 @@ See also
 
 Other repositories related to string processing:
 
-* https://github.com/WojciechMula/sse4-strstr
-* https://github.com/WojciechMula/sse2string
-* https://github.com/WojciechMula/toys/tree/master/strstr
+* https://github.com/WojciechMula/sse4-strstr (SSE4.1, AVX2 and AVX512F)
+* https://github.com/WojciechMula/sse2string (SSE2)
+* https://github.com/WojciechMula/toys/tree/master/strstr (SWAR)
 
 
 Preliminary performance results
