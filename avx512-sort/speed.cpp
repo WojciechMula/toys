@@ -12,7 +12,7 @@
 template <unsigned N>
 class Test {
 
-    static_assert(N == 16 || N == 32, "N has got invalid value");
+    static_assert(N == 16 || N == 32 || N == 64, "N has got invalid value");
 
     uint32_t in[N];
     uint32_t out[N];
@@ -114,7 +114,12 @@ int main() {
     measure<16>("AVX512F sort (while loop)",    avx512_sort_while_loop);
 
     puts("sorting two AVX512 registers");
-    measure<32>("std::sort",                    test_std_sort);
-    measure<32>("insertion sort",               test_insertion);
-    measure<32>("AVX512F sort",                 avx512_sort2regs);
+    measure<16*2>("std::sort",                    test_std_sort);
+    measure<16*2>("insertion sort",               test_insertion);
+    measure<16*2>("AVX512F sort",                 avx512_sort2regs);
+
+    puts("sorting four AVX512 registers");
+    measure<16*4>("std::sort",                    test_std_sort);
+    measure<16*4>("insertion sort",               test_insertion);
+    measure<16*4>("AVX512F sort",                 avx512_sort2regs);
 }
