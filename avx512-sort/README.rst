@@ -31,3 +31,9 @@ Output from ``speed`` on Knights Landing 7120::
     insertion sort...              12.99
     AVX512F sort...                 5.78
 
+    sorting four AVX512 registers
+
+    std::sort...                   12.45
+    insertion sort...              29.74
+    AVX512F sort...                 5.78
+
