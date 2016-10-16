@@ -58,25 +58,25 @@ public:
 private:
 
     void input_ascending() {
-        for (int i=0; i < N; i++) {
+        for (size_t i=0; i < N; i++) {
             in[i] = i;
         }
     }
 
     void input_descending() {
-        for (int i=0; i < N; i++) {
+        for (size_t i=0; i < N; i++) {
             in[i] = N-i;
         }
     }
 
     void input_all_same() {
-        for (int i=0; i < N; i++) {
+        for (size_t i=0; i < N; i++) {
             in[i] = 42;
         }
     }
 
     void input_random() {
-        for (int i=0; i < N; i++) {
+        for (size_t i=0; i < N; i++) {
             in[i] = rand();
         }
     }
@@ -91,9 +91,9 @@ private:
         std::sort(ref, ref + N);
 
         // compare
-        for (int i=1; i < N; i++) {
+        for (size_t i=1; i < N; i++) {
             if (ref[i] != out[i]) {
-                printf("mismatch at %d\n", i);
+                printf("mismatch at %lu\n", i);
                 dump("in ", in);
                 dump("out", out);
                 throw Failed();
@@ -104,7 +104,7 @@ private:
     void dump(const char* name, const uint32_t* data) {
 
         printf("%s = [", name);
-        for (int i=0; i < N; i++) {
+        for (size_t i=0; i < N; i++) {
             if (i > 0) printf(", ");
             printf("%5d", data[i]);
         }

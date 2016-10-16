@@ -23,7 +23,7 @@ public:
     template <typename FUNCTION>
     void run(FUNCTION fun) {
 
-        for (int i=0; i < N; i++) {
+        for (size_t i=0; i < N; i++) {
             in[i] = rand();
         }
 
