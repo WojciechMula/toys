@@ -1,7 +1,7 @@
 /*
 	Convert to binary representation - conversion procedures
 
-	Author  : Wojciech Muła
+	Author  : Wojciech Muła, Larry Bank
 	Date    : 2014-09-11, 2015-04-18
 	License : BSD
 */
@@ -10,7 +10,6 @@
 #include <cstdio>
 #include <cstdint>
 #include <cstring>
-#include <assert.h>
 
 #define SIMD_ALIGN __attribute__((aligned(16)))
 #define packed_byte(x)   {x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}
@@ -72,7 +71,6 @@ uint64_t swar(uint8_t v) {
 	return 0x3030303030303030 + r4;  // ord('0') == 0x30
 }
 
-
 // --- SWAR version 2 -----------------------------------------------------
 
 
@@ -88,6 +86,22 @@ uint64_t swar2(uint8_t v) {
     return 0x3030303030303030 + r4;
 }
 
+// --- SWAR version 3 -----------------------------------------------------
+// author: Larry Bank
+
+uint64_t swar3(uint8_t v) {
+
+    // convert lowest 7 bits
+    const uint64_t mul = 0x02040810204081;
+    const uint64_t r1  = (v & 0x7f) * mul;
+    const uint64_t r2  = r1 & 0x0101010101010101;
+
+    // move the most significant bit to 56th bit
+    const uint64_t r3  = uint64_t(v & 0x80) << (56 - 7);
+    const uint64_t r4  = r2 | r3;
+
+    return 0x3030303030303030 + r4;
+}
 
 // --- SIMD version -------------------------------------------------------
 

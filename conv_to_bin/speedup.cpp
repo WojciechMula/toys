@@ -76,7 +76,7 @@ measure_item_t measure(F function, int iterations, const std::string& name) {
 
     m.stop();
 
-    std::printf("ok\n", value);
+    std::printf("ok [%lu]\n", value);
 
     return m;
 }
@@ -91,6 +91,7 @@ void measure() {
     results.push_back(measure(convert_to_bin::lookup, n, "lookup"));
     results.push_back(measure(convert_to_bin::swar,   n, "SWAR"));
     results.push_back(measure(convert_to_bin::swar2,  n, "SWAR2"));
+    results.push_back(measure(convert_to_bin::swar3,  n, "SWAR3"));
     results.push_back(measure(convert_to_bin::simd,   n, "SIMD"));
 #if defined(HAVE_PDEP_INSTRUCTION)
     results.push_back(measure(convert_to_bin::pdep,   n, "PDEP"));

@@ -14,7 +14,11 @@ verify: verify.cpp $(DEPS)
 	$(CC) $(FLAGS) $< -o $@
 
 speedup: speedup.cpp $(DEPS)
-	$(CC) $(FLAGS) -O2 -DNDEBUG $< -o $@
+	$(CC) $(FLAGS) -O3 -DNDEBUG $< -o $@
+
+run: speedup verify
+	./verify
+	./speedup
 
 clean:
 	rm -f $(ALL)
