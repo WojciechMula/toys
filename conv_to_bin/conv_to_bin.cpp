@@ -97,7 +97,11 @@ uint64_t swar3(uint8_t v) {
     const uint64_t r2  = r1 & 0x0101010101010101;
 
     // move the most significant bit to 56th bit
+#if 0
     const uint64_t r3  = uint64_t(v & 0x80) << (56 - 7);
+#else
+    const uint64_t r3  = uint64_t(int64_t(int8_t(v))) & 0x0100000000000000;
+#endif
     const uint64_t r4  = r2 | r3;
 
     return 0x3030303030303030 + r4;
