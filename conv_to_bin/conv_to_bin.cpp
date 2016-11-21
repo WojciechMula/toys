@@ -1,7 +1,7 @@
 /*
 	Convert to binary representation - conversion procedures
 
-	Author  : Wojciech Muła, Larry Bank
+	Author  : Wojciech Muła, Larry Bank (https://github.com/bitbank2)
 	Date    : 2014-09-11, 2015-04-18
 	License : BSD
 */
