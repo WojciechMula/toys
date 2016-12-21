@@ -65,7 +65,7 @@ uint64_t global_rdtsc_overhead = (uint64_t) UINT64_MAX;
  * test, repeat is the number of times we should repeat and size is the
  * number of operations represented by test.
  */
-#define BEST_TIME(test, repeat, size)                                \
+#define BEST_TIME(test, repeat, expected, size)                           \
         do {                                                              \
             if (global_rdtsc_overhead == UINT64_MAX) {                    \
                RDTSC_SET_OVERHEAD(rdtsc_overhead_func(1), repeat);        \
@@ -78,7 +78,10 @@ uint64_t global_rdtsc_overhead = (uint64_t) UINT64_MAX;
             for (int i = 0; i < repeat; i++) {                            \
                 __asm volatile("" ::: /* pretend to clobber */ "memory"); \
                 RDTSC_START(cycles_start);                                \
-                test;                                                     \
+                if (test != expected) {                                   \
+                    printf("returned %d, expected %d\n", test, expected); \
+                    break;                                                \
+                }                                                         \
                 RDTSC_STOP(cycles_final);                                 \
                 cycles_diff = (cycles_final - cycles_start - global_rdtsc_overhead);           \
                 if (cycles_diff < min_diff) min_diff = cycles_diff;       \

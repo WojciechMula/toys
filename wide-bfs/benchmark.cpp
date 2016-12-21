@@ -12,22 +12,24 @@
 
 void demo(size_t size) {
 
-    const size_t N = 64;
+    const size_t N = 1024;
 
     assert(size < N);
 
     static uint64_t tab[N];
-    memset(tab, 0, sizeof(N));
+    memset(tab, 0, sizeof(tab));
     tab[size - 1] = 0x8000000000000000llu;
- 
+
+    const size_t expected = scalar_bfs(tab, size);
+
     printf("size = %lu\n", size);
-    BEST_TIME(scalar_bfs(tab, size),    100000, size);
-    BEST_TIME(avx512f_bfs(tab, size),   100000, size);
+    BEST_TIME(scalar_bfs(tab, size),    100000, expected, size);
+    BEST_TIME(avx512f_bfs(tab, size),   100000, expected, size);
 }
 
 int main() {
 
-    for (size_t n=8; n < 64; n++) {
+    for (size_t n=3; n <= 10; n++) {
         demo(n);
     }
 
