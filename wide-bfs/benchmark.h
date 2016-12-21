@@ -79,7 +79,7 @@ uint64_t global_rdtsc_overhead = (uint64_t) UINT64_MAX;
                 __asm volatile("" ::: /* pretend to clobber */ "memory"); \
                 RDTSC_START(cycles_start);                                \
                 if (test != expected) {                                   \
-                    printf("returned %d, expected %d\n", test, expected); \
+                    printf("returned %ld, expected %ld\n", test, expected); \
                     break;                                                \
                 }                                                         \
                 RDTSC_STOP(cycles_final);                                 \

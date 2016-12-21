@@ -6,9 +6,10 @@
 #include "config.h"
 
 #include "scalar.cpp"
-#include "avx512f.cpp"
 #include "x86.cpp"
-
+#ifdef HAVE_AVX512_INSTRUCTIONS
+#   include "avx512f.cpp"
+#endif
 
 template <typename FUN>
 void validate(const char* name, FUN fun) {
@@ -48,7 +49,9 @@ int main() {
 
     validate("scalar" , scalar_bfs);
     validate("x86" ,    x86_bfs);
+#ifdef HAVE_AVX512_INSTRUCTIONS
     validate("AVX512F", avx512f_bfs);
+#endif
 
     return EXIT_SUCCESS;
 }
