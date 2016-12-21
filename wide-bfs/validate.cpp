@@ -7,6 +7,7 @@
 
 #include "scalar.cpp"
 #include "avx512f.cpp"
+#include "x86.cpp"
 
 
 template <typename FUN>
@@ -46,6 +47,7 @@ void validate(const char* name, FUN fun) {
 int main() {
 
     validate("scalar" , scalar_bfs);
+    validate("x86" ,    x86_bfs);
     validate("AVX512F", avx512f_bfs);
 
     return EXIT_SUCCESS;
