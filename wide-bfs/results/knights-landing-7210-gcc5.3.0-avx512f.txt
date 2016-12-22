@@ -1,0 +1,27 @@
+$ ./benchmark
+size = 8
+rdtsc_overhead set to 26
+scalar_bfs(tab, size)   :   4.88 best  6.71 avg
+avx512f_bfs(tab, size)  :   3.25 best  4.02 avg
+size = 16
+scalar_bfs(tab, size)   :   4.06 best  4.68 avg
+avx512f_bfs(tab, size)  :   2.44 best  2.74 avg
+size = 32
+scalar_bfs(tab, size)   :   3.66 best  3.83 avg
+avx512f_bfs(tab, size)  :   1.22 best  1.51 avg
+size = 64
+scalar_bfs(tab, size)   :   3.25 best  3.43 avg
+avx512f_bfs(tab, size)  :   1.02 best  1.05 avg
+size = 128
+scalar_bfs(tab, size)   :   3.15 best  3.23 avg
+avx512f_bfs(tab, size)  :   0.91 best  0.93 avg
+size = 256
+scalar_bfs(tab, size)   :   3.10 best  3.13 avg
+avx512f_bfs(tab, size)  :   0.76 best  0.78 avg
+size = 512
+scalar_bfs(tab, size)   :   3.05 best  3.08 avg
+avx512f_bfs(tab, size)  :   0.69 best  0.71 avg
+size = 1024
+scalar_bfs(tab, size)   :   3.02 best  3.05 avg
+avx512f_bfs(tab, size)  :   0.66 best  0.67 avg
+
