@@ -7,7 +7,7 @@ ALL=validate benchmark benchmark_scalar
 all: $(ALL)
 
 validate: validate.cpp $(DEPS)
-	$(CXX) $(FLAGS_AVX512) validate.cpp -o $@
+	$(CXX) $(FLAGS_AVX512) validate.cpp -DHAVE_AVX512_INSTRUCTIONS -o $@
 
 benchmark: benchmark.* $(DEPS)
 	$(CXX) $(FLAGS_AVX512) benchmark.cpp -DHAVE_AVX512_INSTRUCTIONS -o $@
