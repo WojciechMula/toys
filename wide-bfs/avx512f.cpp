@@ -11,9 +11,7 @@ uint64_t avx512f_bfs(const uint64_t* data, size_t n) {
         if (m) {
             const size_t index = bfs(m) + 8*i;
 
-            auto w= index * 64 +  bfs(data[index]);
-            //printf("ret = %lu %x %lu\n", w, m, index);
-            return w;
+            return index * 64 +  bfs(data[index]);
         }
     }
 

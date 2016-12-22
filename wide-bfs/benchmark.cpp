@@ -28,7 +28,9 @@ void demo(size_t size) {
 
     printf("size = %lu\n", size);
     BEST_TIME(scalar_bfs(tab, size),    100000, expected, size);
-    //BEST_TIME(x86_bfs(tab, size),       100000, expected, size); // fails on KNL
+#ifndef HAVE_AVX512_INSTRUCTIONS // fails on KNL
+    BEST_TIME(x86_bfs(tab, size),       100000, expected, size);
+#endif
 #ifdef HAVE_AVX512_INSTRUCTIONS
     BEST_TIME(avx512f_bfs(tab, size),   100000, expected, size);
 #endif

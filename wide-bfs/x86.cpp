@@ -1,7 +1,7 @@
-uint64_t __attribute__((never_inline)) x86_bfs(const uint64_t* data, size_t n) {
+uint64_t x86_bfs(const uint64_t* data, size_t n) {
 
-    uint64_t ptr;
-    uint64_t res;
+    uint64_t ptr = 0;
+    uint64_t res = 0;
 
     asm volatile (
         "mov   %[data], %[ptr]              \n"

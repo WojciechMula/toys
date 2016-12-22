@@ -47,8 +47,10 @@ void validate(const char* name, FUN fun) {
 
 int main() {
 
-    validate("scalar" , scalar_bfs);
-    validate("x86" ,    x86_bfs);
+    validate("scalar",  scalar_bfs);
+#ifndef HAVE_AVX512_INSTRUCTIONS
+    validate("x86",     x86_bfs);
+#endif
 #ifdef HAVE_AVX512_INSTRUCTIONS
     validate("AVX512F", avx512f_bfs);
 #endif
