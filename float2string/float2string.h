@@ -71,8 +71,8 @@ class tostring<float> {
     static const int max_fraction_dec_digits = 8;   // 2^-23 \approx 10^8
     static const int max_integer_dec_digits  = 20;  // ceil(log_10(2^54))
 
-    char integer_part[max_fraction_dec_digits];
-    char fraction_part[max_integer_dec_digits];
+    char integer_part[max_integer_dec_digits+1];
+    char fraction_part[max_fraction_dec_digits+1];
 
     static const char nullchar = '\0';
 
