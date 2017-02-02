@@ -54,7 +54,7 @@ public:
 
         return true;
     }
-    
+
 private:
     template <typename FUNCTION>
     bool check(FUNCTION fun, uint32_t value) {
@@ -158,4 +158,23 @@ int main() {
     } else {
         puts("FAILED");
     }
+
+#ifdef HAVE_AVX2_INSTRUCTIONS
+    printf("bitmask_avx2... "); fflush(stdout);
+    if (test.run_all(bitmask_avx2)) {
+        puts("OK");
+    } else {
+        puts("FAILED");
+    }
+#endif
+
+#ifdef HAVE_AVX512_INSTRUCTIONS
+    printf("bitmask_avx512... "); fflush(stdout);
+    if (test.run_all(bitmask_avx512)) {
+        puts("OK");
+    } else {
+        puts("FAILED");
+    }
+#endif
+
 }
