@@ -1,5 +1,5 @@
 FLAGS=-std=c99 -Wall -Wextra -pedantic -O3 -Wfatal-errors
-FLAGS+=-mfpu=neon
+FLAGS+=-mfpu=neon-vfpv4
 
 MAIN=main.c
 DEPS=$(MAIN) fpu-proc.c neon-proc-32-bit.c

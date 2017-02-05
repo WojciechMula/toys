@@ -57,6 +57,7 @@ void help(char* progname) {
     puts("");
     puts("FPU - select FPU procedure");
     puts("Neon - select ARM Neon procedure");
+    puts("fma - select ARM Neon procedure, that use FMA instructions");
     puts("");
     puts("Parameters:");
     puts("");
@@ -85,7 +86,8 @@ int main(int argc, char* argv[]) {
 
     enum {
         FPUprocedure,
-        NeonProcedure
+        NeonProcedure,
+        NeonFMAProcedure
     } function;
 
     // parse command line
@@ -100,6 +102,8 @@ int main(int argc, char* argv[]) {
         function = FPUprocedure;
     } else if (strcasecmp(argv[1], "Neon") == 0) {
         function = NeonProcedure;
+    } else if (strcasecmp(argv[1], "FMA") == 0) {
+        function = NeonFMAProcedure;
     } else {
         help(argv[0]);
     }
@@ -174,11 +178,25 @@ int main(int argc, char* argv[]) {
             break;
 
         case NeonProcedure:
-
             printf("ARM Neon ");
             fflush(stdout);
             t1 = get_time();
             Neon_mandelbrot(
+                Re_min, Re_max,
+                Im_min, Im_max,
+                threshold, maxiters,
+                WIDTH, HEIGHT,
+                &image[0][0]
+            );
+            t2 = get_time();
+            printf("%d us\n", t2-t1);
+            break;
+
+        case NeonFMAProcedure:
+            printf("ARM Neon (FMA) ");
+            fflush(stdout);
+            t1 = get_time();
+            NeonFMA_mandelbrot(
                 Re_min, Re_max,
                 Im_min, Im_max,
                 threshold, maxiters,
