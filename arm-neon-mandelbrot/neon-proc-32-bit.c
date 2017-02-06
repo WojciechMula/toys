@@ -153,18 +153,14 @@ void NeonFMA_mandelbrot(
 
 			for (i=0; i < maxiters; i++) {
 				// Tre = Xre*Xre - Xim*Xim + Cre;
-
-                Tre = Cre;                      // Tre  = Cre
-                Tre = vfmaq_f32(Tre, Xre, Xre); // Tre += Xre^2
+                Tre = vfmaq_f32(Cre, Xre, Xre); // Tre  = Cre + Xre^2
                 Tre = vfmsq_f32(Tre, Xim, Xim); // Tre -= Yre^2
 
 				// Tim = 2*Xre*Xim + Cim;
-                const float32x4_t XreXim = vmulq_f32(Xre, Xim);
-                Tim = vaddq_f32(XreXim, XreXim);
-                Tim = vaddq_f32(Tim, Cim);
+                Tim = vaddq_f32(Xre, Xre);      // Tim  = 2*Xre
+                Tim = vfmaq_f32(Cim, Tim, Xim); // Tim  = Cim + Tim*Xim
 
                 // dist = Tre*Tre + Tim*Tim
-
                 float32x4_t dist = vmulq_f32(Tre, Tre);
                 dist = vfmaq_f32(dist, Tim, Tim);
 
