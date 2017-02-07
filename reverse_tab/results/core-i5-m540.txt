@@ -1,0 +1,176 @@
+table size = 8, offset = 0, iterations count = 100000000
+                 x86       2105ms (seedup:     1.00): ok
+               bswap       1259ms (seedup:     1.67): ok
+              bswap2       1968ms (seedup:     1.07): ok
+                 sse       2044ms (seedup:     1.03): ok
+                sse2       2052ms (seedup:     1.03): ok
+              pshufb       2054ms (seedup:     1.02): ok
+             pshufb2       2048ms (seedup:     1.03): ok
+table size = 16, offset = 0, iterations count = 50000000
+                 x86       1275ms (seedup:     1.00): ok
+               bswap        758ms (seedup:     1.68): ok
+              bswap2        792ms (seedup:     1.61): ok
+                 sse       1395ms (seedup:     0.91): ok
+                sse2       1250ms (seedup:     1.02): ok
+              pshufb       1266ms (seedup:     1.01): ok
+             pshufb2       1248ms (seedup:     1.02): ok
+table size = 32, offset = 0, iterations count = 20000000
+                 x86        864ms (seedup:     1.00): ok
+               bswap        395ms (seedup:     2.19): ok
+              bswap2        394ms (seedup:     2.19): ok
+                 sse        321ms (seedup:     2.69): ok
+                sse2        776ms (seedup:     1.11): ok
+              pshufb        271ms (seedup:     3.19): ok
+             pshufb2        776ms (seedup:     1.11): ok
+table size = 64, offset = 0, iterations count = 20000000
+                 x86       1506ms (seedup:     1.00): ok
+               bswap        605ms (seedup:     2.49): ok
+              bswap2        579ms (seedup:     2.60): ok
+                 sse        467ms (seedup:     3.22): ok
+                sse2        444ms (seedup:     3.39): ok
+              pshufb        331ms (seedup:     4.55): ok
+             pshufb2        310ms (seedup:     4.86): ok
+table size = 128, offset = 0, iterations count = 10000000
+                 x86       1385ms (seedup:     1.00): ok
+               bswap        513ms (seedup:     2.70): ok
+              bswap2        474ms (seedup:     2.92): ok
+                 sse        329ms (seedup:     4.21): ok
+                sse2        307ms (seedup:     4.51): ok
+              pshufb        207ms (seedup:     6.69): ok
+             pshufb2        187ms (seedup:     7.41): ok
+table size = 256, offset = 0, iterations count = 5000000
+                 x86       1377ms (seedup:     1.00): ok
+               bswap        467ms (seedup:     2.95): ok
+              bswap2        421ms (seedup:     3.27): ok
+                 sse        270ms (seedup:     5.10): ok
+                sse2        242ms (seedup:     5.69): ok
+              pshufb        155ms (seedup:     8.88): ok
+             pshufb2        123ms (seedup:    11.20): ok
+table size = 512, offset = 0, iterations count = 2000000
+                 x86       1056ms (seedup:     1.00): ok
+               bswap        355ms (seedup:     2.97): ok
+              bswap2        316ms (seedup:     3.34): ok
+                 sse        189ms (seedup:     5.59): ok
+                sse2        171ms (seedup:     6.18): ok
+              pshufb        104ms (seedup:    10.15): ok
+             pshufb2         76ms (seedup:    13.89): ok
+table size = 1024, offset = 0, iterations count = 1000000
+                 x86       1034ms (seedup:     1.00): ok
+               bswap        283ms (seedup:     3.65): ok
+              bswap2        305ms (seedup:     3.39): ok
+                 sse        174ms (seedup:     5.94): ok
+                sse2        160ms (seedup:     6.46): ok
+              pshufb         94ms (seedup:    11.00): ok
+             pshufb2         65ms (seedup:    15.91): ok
+table size = 2048, offset = 0, iterations count = 500000
+                 x86       1023ms (seedup:     1.00): ok
+               bswap        268ms (seedup:     3.82): ok
+              bswap2        231ms (seedup:     4.43): ok
+                 sse        172ms (seedup:     5.95): ok
+                sse2        153ms (seedup:     6.69): ok
+              pshufb         89ms (seedup:    11.49): ok
+             pshufb2         59ms (seedup:    17.34): ok
+table size = 4096, offset = 0, iterations count = 300000
+                 x86       1220ms (seedup:     1.00): ok
+               bswap        312ms (seedup:     3.91): ok
+              bswap2        264ms (seedup:     4.62): ok
+                 sse        198ms (seedup:     6.16): ok
+                sse2        182ms (seedup:     6.70): ok
+              pshufb        108ms (seedup:    11.30): ok
+             pshufb2         66ms (seedup:    18.48): ok
+table size = 8192, offset = 0, iterations count = 100000
+                 x86        812ms (seedup:     1.00): ok
+               bswap        205ms (seedup:     3.96): ok
+              bswap2        172ms (seedup:     4.72): ok
+                 sse        128ms (seedup:     6.34): ok
+                sse2        116ms (seedup:     7.00): ok
+              pshufb         69ms (seedup:    11.77): ok
+             pshufb2         45ms (seedup:    18.04): ok
+table size = 9, offset = 3, iterations count = 100000000
+                 x86       2095ms (seedup:     1.00): ok
+               bswap       1375ms (seedup:     1.52): ok
+              bswap2       1965ms (seedup:     1.07): ok
+                 sse       2039ms (seedup:     1.03): ok
+                sse2       2057ms (seedup:     1.02): ok
+              pshufb       1999ms (seedup:     1.05): ok
+             pshufb2       2010ms (seedup:     1.04): ok
+table size = 19, offset = 3, iterations count = 50000000
+                 x86       1366ms (seedup:     1.00): ok
+               bswap        894ms (seedup:     1.53): ok
+              bswap2        911ms (seedup:     1.50): ok
+                 sse       1295ms (seedup:     1.05): ok
+                sse2       1303ms (seedup:     1.05): ok
+              pshufb       1375ms (seedup:     0.99): ok
+             pshufb2       1310ms (seedup:     1.04): ok
+table size = 38, offset = 3, iterations count = 20000000
+                 x86       1002ms (seedup:     1.00): ok
+               bswap        519ms (seedup:     1.93): ok
+              bswap2        521ms (seedup:     1.92): ok
+                 sse        440ms (seedup:     2.28): ok
+                sse2        897ms (seedup:     1.12): ok
+              pshufb        407ms (seedup:     2.46): ok
+             pshufb2        899ms (seedup:     1.11): ok
+table size = 66, offset = 3, iterations count = 20000000
+                 x86       1560ms (seedup:     1.00): ok
+               bswap        681ms (seedup:     2.29): ok
+              bswap2        649ms (seedup:     2.40): ok
+                 sse        528ms (seedup:     2.95): ok
+                sse2        498ms (seedup:     3.13): ok
+              pshufb        392ms (seedup:     3.98): ok
+             pshufb2        372ms (seedup:     4.19): ok
+table size = 127, offset = 3, iterations count = 10000000
+                 x86       1406ms (seedup:     1.00): ok
+               bswap        576ms (seedup:     2.44): ok
+              bswap2        592ms (seedup:     2.38): ok
+                 sse        627ms (seedup:     2.24): ok
+                sse2        741ms (seedup:     1.90): ok
+              pshufb        476ms (seedup:     2.95): ok
+             pshufb2        687ms (seedup:     2.05): ok
+table size = 253, offset = 3, iterations count = 5000000
+                 x86       1358ms (seedup:     1.00): ok
+               bswap        477ms (seedup:     2.85): ok
+              bswap2        452ms (seedup:     3.00): ok
+                 sse        374ms (seedup:     3.63): ok
+                sse2        454ms (seedup:     2.99): ok
+              pshufb        292ms (seedup:     4.65): ok
+             pshufb2        370ms (seedup:     3.67): ok
+table size = 517, offset = 3, iterations count = 2000000
+                 x86       1064ms (seedup:     1.00): ok
+               bswap        363ms (seedup:     2.93): ok
+              bswap2        324ms (seedup:     3.28): ok
+                 sse        206ms (seedup:     5.17): ok
+                sse2        183ms (seedup:     5.81): ok
+              pshufb        114ms (seedup:     9.33): ok
+             pshufb2         88ms (seedup:    12.09): ok
+table size = 1020, offset = 3, iterations count = 1000000
+                 x86       1029ms (seedup:     1.00): ok
+               bswap        284ms (seedup:     3.62): ok
+              bswap2        313ms (seedup:     3.29): ok
+                 sse        202ms (seedup:     5.09): ok
+                sse2        204ms (seedup:     5.04): ok
+              pshufb        119ms (seedup:     8.65): ok
+             pshufb2        114ms (seedup:     9.03): ok
+table size = 2050, offset = 3, iterations count = 500000
+                 x86       1024ms (seedup:     1.00): ok
+               bswap        267ms (seedup:     3.84): ok
+              bswap2        231ms (seedup:     4.43): ok
+                 sse        179ms (seedup:     5.72): ok
+                sse2        157ms (seedup:     6.52): ok
+              pshufb         90ms (seedup:    11.38): ok
+             pshufb2         67ms (seedup:    15.28): ok
+table size = 4102, offset = 3, iterations count = 300000
+                 x86       1221ms (seedup:     1.00): ok
+               bswap        319ms (seedup:     3.83): ok
+              bswap2        275ms (seedup:     4.44): ok
+                 sse        221ms (seedup:     5.52): ok
+                sse2        191ms (seedup:     6.39): ok
+              pshufb        113ms (seedup:    10.81): ok
+             pshufb2         86ms (seedup:    14.20): ok
+table size = 8189, offset = 3, iterations count = 100000
+                 x86        811ms (seedup:     1.00): ok
+               bswap        208ms (seedup:     3.90): ok
+              bswap2        175ms (seedup:     4.63): ok
+                 sse        141ms (seedup:     5.75): ok
+                sse2        126ms (seedup:     6.44): ok
+              pshufb         72ms (seedup:    11.26): ok
+             pshufb2         53ms (seedup:    15.30): ok
