@@ -15,3 +15,15 @@
 	PyGTK line attributes demo: join, bevel and capjoin styles, and also dashes
 
 	.. image:: gdk-line_attributes.png
+
+``MaskedEntry.py``
+    Widget which allows to enter fixed-size fields.
+
+	.. image:: MaskedEntry.png
+
+``fixed.py``
+    Container which allows to put widgets at fixed positions.
+
+``query_view.py`` (incomplete)
+    Attempt to create a source for database queries; the aim was to fetch
+    data when it was necessary.
