@@ -7,7 +7,9 @@ demo: *.c
 
 verify: verify.sh demo
 	./verify.sh
-    
+ 
+compare: experiment.sh demo
+	./experiment.sh
 
 clean:
 	rm -f demo

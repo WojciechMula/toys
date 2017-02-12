@@ -1,10 +1,16 @@
-Sample code for article `SSE: conversion integers to decimal representation`__
+Sample code for article `SSE: conversion integers to decimal representation`__.
+
+__ http://0x80.pl/articles/sse-itoa.html
+
+
+--------------------------------------------------------------------------------
 
 Type ``make`` to build a demo program.
 
-Type ``make verify`` to fully verify the SSE implementation (all 32-bit numbers
-are tests, it might take a few minutes.)
+Type ``make verify`` to fully verify an SSE implementation. The test checks all
+32-bit numbers, it might take a few minutes to complete.
+
+Type ``make compare`` to run performance comparison of the SSE and a scalar code.
 
 Run ``demo`` without arguments to find out usage.
 
-__ http://0x80.pl/articles/sse-itoa.html
