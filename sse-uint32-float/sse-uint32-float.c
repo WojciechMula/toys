@@ -5,11 +5,12 @@
 #include <stdint.h>
 #include <time.h>
 
-#include "sse-aux.c"
+#define SIMD_ALIGN __attribute__((__aligned__(16)))
+#define packed4(x) {(x), (x), (x), (x)}
+#define packed_float(x) packed4(x)
+#define packed_dword(x) packed4(x)
 
-//========================================================================
-// snippet-start
-float    CONST[4]     SIMD_ALIGN = packed_float((float)((uint32_t)(1 << 31))); /* 2^31 */
+uint32_t CONST[4]     SIMD_ALIGN = packed_float(0x4f000000); // = 2^31 = (float)((uint32_t)(1 << 31)));
 uint32_t MASK_0_30[4] SIMD_ALIGN = packed_dword(0x7fffffff);
 uint32_t MASK_31[4]   SIMD_ALIGN = packed_dword(0x80000000);
 
@@ -34,7 +35,6 @@ void convert_uint32_float(uint32_t in[4], float out[4]) {
 	  "b" (out)
 	);
 }
-// snippet-end
 
 
 //========================================================================
@@ -55,10 +55,25 @@ int main(int argc, char* argv[]) {
 	//=== convert ======================================
 	convert_uint32_float(v_in, v_out);
 	
-	print_vec_uint32(v_in);
-	print_vec_float(v_out);
+    printf("uint32_t[4] = {");
+    for (unsigned i=0; i < 4; i++) {
+        if (i > 0) {
+            printf(", ");
+        }
+        printf("%u", v_in[i]);
+    }
+    printf("}\n");
+
+
+    printf("float[4] = {");
+    for (unsigned i=0; i < 4; i++) {
+        if (i > 0) {
+            printf(", ");
+        }
+        printf("%0.3f", v_out[i]);
+    }
+    printf("}\n");
 
 	return 0;
 }
 
-// eof
