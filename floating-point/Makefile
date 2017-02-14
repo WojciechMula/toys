@@ -7,3 +7,7 @@ float2int: float2int.c
 
 round2: round2.c
 	$(CC) $(FLAGS) -lm -m32 $^ -o $@
+
+test: float2int round2
+	./test-float2int.sh
+	./test-round2.sh
