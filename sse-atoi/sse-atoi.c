@@ -1,5 +1,4 @@
 /*
-	short info
 	SSE: atoi implementation
 
 	Author: Wojciech Muła
@@ -9,13 +8,8 @@
 	License: BSD
 
 	initial release: 2011-11-07
-	$Id$
 
 	----------------------------------------------------------------------
-
-	Compilation:
-
-		gcc -O3
 
 	Usage:
 
@@ -106,7 +100,7 @@ int sse_atoi(char* s) {
 		"leal 0x7fffffff(%%ecx), %%ecx		\n"
 		"sarl $31, %%ecx					\n"
 
-		// load digits (and garbages)
+		// load digits (and garbage)
 		"movdqu	(%%eax, %%ebx), %%xmm0		\n"
 		
 		// locate '\0'
