@@ -1,13 +1,4 @@
 /*
-	Speedup accesing map with strings as keys. Instead of single std::map
-	there is table of maps (addressed in O(1) time) storing keys that share
-	same properies:
-	* equal length
-	* equal first char (one level trie)
-	* both
-
-	On my system the best speedup (60%) occured for third method.
-
 	Author: Wojciech Muła
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://wm.ite.pl/
