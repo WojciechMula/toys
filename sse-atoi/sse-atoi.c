@@ -24,6 +24,7 @@
 */
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #define SIMD_ALIGN __attribute__((aligned(16)))
 
@@ -55,7 +56,8 @@ uint8_t transform[18][16] SIMD_ALIGN = {
 
 #undef T
 
-#include "../snippets/asm/sse-aux.c"
+#define packed_byte(x) {(x), (x), (x), (x), (x), (x), (x), (x), (x), (x), (x), (x), (x), (x), (x), (x)} 
+#define packed_word(x) {(x), (x), (x), (x), (x), (x), (x), (x)}
 
 uint8_t ASCII_lower[16] = packed_byte('0');
 uint8_t ASCII_upper[16] = packed_byte('9' + 1);
