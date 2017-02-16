@@ -4,13 +4,13 @@ Introduction
 .. image:: img.png
 	:align: right
 
-This simple program display b/w image (128x256 pixels)
+This simple program displays b/w image (128x256 pixels)
 on Linux terminal run on EGA/VGA video card.
 
 It is just a proof of concept, so everything is hardwired
 in the code.
 
-What this program do?
+What this program does?
 
 - splits image into 256 pieces (8x16 pixels) and set them
   as console font (ioctl PIO_FONTX)

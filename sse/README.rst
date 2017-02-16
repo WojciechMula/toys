@@ -29,7 +29,7 @@ __ http://0x80.pl/articles/sse3-haddpsdotprod.html
 
 __ http://0x80.pl/articles/sse4-dppsdotprod.html
 
-* ``sse4-matvec-mult.S`` -- mutiplication of matrix 4x4 and vector 4x1 using ``DPPS`` from SSE4.1
+* ``sse4-matvec-mult.S`` -- multiplication of matrix 4x4 and vector 4x1 using ``DPPS`` from SSE4.1
 
 4. Samples from Polish article `SSE4: instrukcje działające na łańcuchach`__ [2007-09-xx]
 
@@ -39,5 +39,5 @@ __ http://0x80.pl/articles/sse4-string-instr.html
 
 5. Other
 
-* ``sse4-insertionsort.c`` [2008-08-31] -- unusual application of ``PHMINPOSUW`` instruction as the key part of insertion sort for 8 element tables
+* ``sse4-insertionsort.c`` [2008-08-31] -- unusual application of ``PHMINPOSUW`` instruction as the key part of insertion sort for 8-element tables
 * ``sse-matvecmult.c`` [2008-06-28] -- multiplication of matrix 4x4 by vector 4x1 --- FPU, SSE3 and SSE4 procedures.
