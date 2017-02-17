@@ -9,10 +9,11 @@
   	g++ -O2 -o bmp2ascii bmp2ascii.cc
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cerrno>
+#include <cstring>
+#include <cstdint>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -29,10 +30,10 @@ extern int errno;
 #define celly 16
 
 // predefined sets of chars using to build ASCII-image
-char* set_l = "abcdefghijklmnopqrstuvwxyz";
-char* set_L = "ABCDEFGHIJKLMNOPQRSTUVWXZY";
-char* set_n = "012345678";
-char* set_s = "+-|=)([]@#$%^&*_~,.:;\"'`\\/?><";
+const char* set_l = "abcdefghijklmnopqrstuvwxyz";
+const char* set_L = "ABCDEFGHIJKLMNOPQRSTUVWXZY";
+const char* set_n = "012345678";
+const char* set_s = "+-|=)([]@#$%^&*_~,.:;\"'`\\/?><";
 
 
 unsigned char font[256][32];  // font data
@@ -94,7 +95,7 @@ int main(int argc, char* argv[])
  	{
 	 for (int n=0; n<celly; n++)
 	 	{
-		 memset(image_row[n], sizeof(image_row[0]), 0);
+		 memset(image_row[n], 0, sizeof(image_row[0]));
 		 if (height--)
  	    	    fread(image_row[n], cx, 1, file);
 		}
@@ -113,10 +114,10 @@ void ASCII()
  static unsigned int diff[256];
  static unsigned int min;
  
- char *s;
+ uint8_t *s;
  for (int i=0; i<cx; i++)
  	{
-	 s = set;
+	 s = (uint8_t*)set;
 	 while (*s)
 	 	{
 		 diff[*s] = 0;
@@ -128,12 +129,12 @@ void ASCII()
 		 s++;
 		}
 		
-	 s   = set;
-	 min = diff[ char_row[cx-i-1] = *s ];
+	 s   = (uint8_t*)set;
+	 min = diff[uint8_t(char_row[cx-i-1] = *s)];
 	 while (*s)
 	 	{
 		 if (diff[*s] < min)
-			 min = diff[ char_row[cx-i-1] = *s];
+			 min = diff[uint8_t(char_row[cx-i-1] = *s)];
 		 s++;
 		}
 	}
