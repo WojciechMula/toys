@@ -15,6 +15,8 @@ namespace internal {
     uint8_t getbyte(uint64_t x, uint8_t index) {
         index = index & 0x7f; // index = 0..63
 
+        // return rotate_right(x, index) & 0xff;
+
         if (index < 64 - 8) {
             return (x >> index) & 0xff;
         } else {
@@ -38,6 +40,27 @@ namespace internal {
         return result;
     }
 
+
+    void test() {
+        for (int shift=0; shift < 64; shift++) {
+            for (uint64_t i=0; i < 256; i++) {
+                uint64_t x = i << shift;
+                if (shift > 64 - 8) {
+                    x = x | (i >> (8 - shift % 8));
+                }
+
+                const uint8_t expected = i;
+                const uint8_t result   = internal::getbyte(x, shift);
+
+                if (expected != result) {
+                    printf("failed for shift=%d, value=%016llx\n", shift, x);
+                    printf("expected result is %x, function returned %x\n", expected, result);
+                    assert(false);
+                }
+            }
+        }
+    }
+
 }
 
 
@@ -57,27 +80,9 @@ __m512i vpmultishiftqb_emu(__m512i in) {
 }
 
 
-void test_internal() {
-    for (int shift=57; shift < 64; shift++) {
-        for (uint64_t i=0; i < 256; i++) {
-            uint64_t x = i << shift;
-            if (shift > 64 - 8) {
-                x = x | (i >> (8 - shift % 8));
-            }
-
-            const uint8_t expected = i;
-            const uint8_t result   = internal::getbyte(x, shift);
-
-            if (expected != result) {
-                printf("failed for shift=%d, value=%016llx\n", shift, x);
-                printf("expected result is %x, function returned %x\n", expected, result);
-                assert(false);
-            }
-        }
-    }
-}
 
 
 int main() {
-    test_internal();
+    internal::test();
+    puts("All OK");
 }
