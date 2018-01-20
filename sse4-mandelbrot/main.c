@@ -27,8 +27,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
-#include <strings.h>
 #include <sys/time.h>
 #include <stdarg.h>
 
