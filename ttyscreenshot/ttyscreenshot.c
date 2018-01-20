@@ -7,7 +7,7 @@
 		gcc -O2 ttyscreenshot.c -o ttyscreenshot
 	
 	
-	Author: Wojciech Mu≥a
+	Author: Wojciech Mu≈Ça
 	e-mail: wojciech_mula@poczta.onet.pl
 	www:    http://0x80.pl
 
@@ -82,9 +82,7 @@ void usage() {
 		"9 pixels is a default width use by EGA/VGA cards,\n"
 		"8 pixels isn't.\n"
 		"\n"
-		"You need permissions to read /dev/vcsa[console-num] device.\n"
-		"\n"
-		"Author: Wojciech Mu≥a, http://www.republika.pl/wmula//\n",
+		"You need permissions to read /dev/vcsa[console-num] device.\n",
 		
 		stderr
 	);
