@@ -22,14 +22,9 @@
 #include <stdint.h>
 #include <limits.h>
 #include <errno.h>
-#include <string.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 
-#include <sys/ioctl.h>
 #include <sys/kd.h>
 
 extern int errno;
