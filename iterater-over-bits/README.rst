@@ -48,7 +48,7 @@ Tests & results
 Tests check different vectors sizes (given in bits) and various fill factors.
 
 Below are unprocessed outputs from ``make``. The number in parentheses next
-to "better" timing is the speed-up factors: in most cases the naive version
+to "better" timing is the speed-up factor: in most cases the naive version
 is 1.5 times faster.
 
 
