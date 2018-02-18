@@ -1,7 +1,8 @@
 #include <chrono>
 
-#include "ParallelAndNaive.h"
 #include "SequentialAnd.h"
+#include "ParallelAndNaive.h"
+#include "ParallelAndSplit.h"
 
 using Clock = std::chrono::high_resolution_clock;
 using std::chrono::duration_cast;
@@ -41,4 +42,7 @@ int main() {
 
     ParallelAndNaive par1(input, 4);
     test("ParallelAndNaive", par1, input);
+
+    ParallelAndSplit par2(input, 4);
+    test("ParallelAndSplit", par2, input);
 }
