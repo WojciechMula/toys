@@ -24,8 +24,8 @@ void test(const char* info, MultipleAndInterface& ma, const std::vector<bitvecto
 
 int main() {
     
-    const size_t bitmap_size = 10000000;
-    const size_t count = 20;
+    const size_t bitmap_size = 2000000;
+    const size_t count = 100;
 
     std::vector<bitvector*> input;
     srand(0);
@@ -39,6 +39,6 @@ int main() {
     SequentialAnd seq(input);
     test("SequentialAnd", seq, input);
 
-    ParallelAndNaive par1(input, 8);
+    ParallelAndNaive par1(input, 4);
     test("ParallelAndNaive", par1, input);
 }
