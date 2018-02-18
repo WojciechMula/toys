@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <cstring>
 #include <cassert>
 
 class bitvector {
@@ -14,6 +15,11 @@ public:
     bitvector(size_t n_) : n(n_) {
         assert(n > 0);
         data = new uint64_t[n];
+    }
+
+    bitvector(const bitvector& bv) : bitvector(bv.n) {
+
+        memcpy(data, bv.data, n * sizeof(uint64_t));
     }
 
     ~bitvector() {
