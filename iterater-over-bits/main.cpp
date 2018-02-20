@@ -138,6 +138,101 @@ public:
             }
         }
     }
+
+    template <typename CALLBACK>
+    void iterate_block4(CALLBACK callback) const {
+        for (size_t i=0; i < n; i++) {
+            uint64_t tmp = array[i];
+
+            size_t k = i * 64;
+            while (tmp) {
+                switch (tmp & 0xf) {
+                    case 0:
+                        break;
+
+                    case 1:
+                        callback(k);
+                        break;
+
+                    case 2:
+                        callback(k + 1);
+                        break;
+
+                    case 3:
+                        callback(k);
+                        callback(k + 1);
+                        break;
+
+                    case 4:
+                        callback(k + 2);
+                        break;
+
+                    case 5:
+                        callback(k);
+                        callback(k + 2);
+                        break;
+
+                    case 6:
+                        callback(k + 1);
+                        callback(k + 2);
+                        break;
+
+                    case 7:
+                        callback(k);
+                        callback(k + 1);
+                        callback(k + 2);
+                        break;
+
+                    case 8:
+                        callback(k + 3);
+                        break;
+
+                    case 9:
+                        callback(k);
+                        callback(k + 3);
+                        break;
+
+                    case 10:
+                        callback(k + 1);
+                        callback(k + 3);
+                        break;
+
+                    case 11:
+                        callback(k);
+                        callback(k + 1);
+                        callback(k + 3);
+                        break;
+
+                    case 12:
+                        callback(k + 2);
+                        callback(k + 3);
+                        break;
+
+                    case 13:
+                        callback(k);
+                        callback(k + 2);
+                        callback(k + 3);
+                        break;
+
+                    case 14:
+                        callback(k + 1);
+                        callback(k + 2);
+                        callback(k + 3);
+                        break;
+
+                    case 15:
+                        callback(k);
+                        callback(k + 1);
+                        callback(k + 2);
+                        callback(k + 3);
+                        break;
+                }
+
+                tmp >>= 4;
+                k += 4;
+            }
+        }
+    }
 };
 
 
@@ -166,7 +261,7 @@ void testcase(const bitvector& bv, int iterations) {
         const auto t2 = clock::now();
 
         ta = duration_cast<microseconds>(t2 - t1).count();
-        printf("\t\tnaive:  %ldms [%ld]\n", ta, k);
+        printf("\t\tnaive:  %10ldms [%ld]\n", ta, k);
     }
 
     {
@@ -186,10 +281,10 @@ void testcase(const bitvector& bv, int iterations) {
         const auto t2 = clock::now();
 
         tb = duration_cast<microseconds>(t2 - t1).count();
-        printf("\t\tbetter: %ldms [%ld]", tb, k);
+        printf("\t\tbetter: %10ldms [%ld]", tb, k);
+        printf(" (%0.2f)\n", ta/double(tb));
     }
 
-    printf(" (%0.2f)\n", ta/double(tb));
 
     {
         int tmp = iterations;
@@ -208,10 +303,31 @@ void testcase(const bitvector& bv, int iterations) {
         const auto t2 = clock::now();
 
         tb = duration_cast<microseconds>(t2 - t1).count();
-        printf("\t\tblock3: %ldms [%ld]", tb, k);
+        printf("\t\tblock3: %10ldms [%ld]", tb, k);
+        printf(" (%0.2f)\n", ta/double(tb));
     }
 
-    printf(" (%0.2f)\n", ta/double(tb));
+
+    {
+        int tmp = iterations;
+        volatile uint64_t k = 0;
+
+        const auto t1 = clock::now();
+        while (tmp--) {
+            uint64_t n = 0;
+            auto callback = [&n](size_t i) {
+                n += i;
+            };
+
+            bv.iterate_block4(callback);
+            k += n;
+        }
+        const auto t2 = clock::now();
+
+        tb = duration_cast<microseconds>(t2 - t1).count();
+        printf("\t\tblock4: %10ldms [%ld]", tb, k);
+        printf(" (%0.2f)\n", ta/double(tb));
+    }
 }
 
 
@@ -242,7 +358,8 @@ int main() {
     test("1/2",   sizes,  1000, [](bitvector& bv) {bv.fill(0x00000000ffffffff);});
     test("3/4",   sizes,  1000, [](bitvector& bv) {bv.fill(0x0000ffffffffffff);});
     test("full",  sizes,  1000, [](bitvector& bv) {bv.fill(0xffffffffffffffff);});
-    test("rand",  sizes, 10000, [](bitvector& bv) {bv.fill_random(80);});
+    test("rand",  sizes,  1000, [](bitvector& bv) {bv.fill_random(80);});
+    test("rand2", sizes,  1000, [](bitvector& bv) {bv.fill_random(5);});
     return 0;
 }
 
