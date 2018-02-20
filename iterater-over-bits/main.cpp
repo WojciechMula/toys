@@ -87,6 +87,57 @@ public:
             }
         }
     }
+
+    template <typename CALLBACK>
+    void iterate_block3(CALLBACK callback) const {
+        for (size_t i=0; i < n; i++) {
+            uint64_t tmp = array[i];
+
+            size_t k = i * 64;
+            while (tmp) {
+                switch (tmp & 0x7) {
+                    case 0:
+                        break;
+
+                    case 1:
+                        callback(k);
+                        break;
+
+                    case 2:
+                        callback(k + 1);
+                        break;
+
+                    case 3:
+                        callback(k);
+                        callback(k + 1);
+                        break;
+
+                    case 4:
+                        callback(k + 2);
+                        break;
+
+                    case 5:
+                        callback(k);
+                        callback(k + 2);
+                        break;
+
+                    case 6:
+                        callback(k + 1);
+                        callback(k + 2);
+                        break;
+
+                    case 7:
+                        callback(k);
+                        callback(k + 1);
+                        callback(k + 2);
+                        break;
+                }
+
+                tmp >>= 3;
+                k += 3;
+            }
+        }
+    }
 };
 
 
@@ -136,6 +187,28 @@ void testcase(const bitvector& bv, int iterations) {
 
         tb = duration_cast<microseconds>(t2 - t1).count();
         printf("\t\tbetter: %ldms [%ld]", tb, k);
+    }
+
+    printf(" (%0.2f)\n", ta/double(tb));
+
+    {
+        int tmp = iterations;
+        volatile uint64_t k = 0;
+
+        const auto t1 = clock::now();
+        while (tmp--) {
+            uint64_t n = 0;
+            auto callback = [&n](size_t i) {
+                n += i;
+            };
+
+            bv.iterate_block3(callback);
+            k += n;
+        }
+        const auto t2 = clock::now();
+
+        tb = duration_cast<microseconds>(t2 - t1).count();
+        printf("\t\tblock3: %ldms [%ld]", tb, k);
     }
 
     printf(" (%0.2f)\n", ta/double(tb));
