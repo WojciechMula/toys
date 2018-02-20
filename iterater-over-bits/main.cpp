@@ -261,7 +261,7 @@ void testcase(const bitvector& bv, int iterations) {
         const auto t2 = clock::now();
 
         ta = duration_cast<microseconds>(t2 - t1).count();
-        printf("\t\tnaive:  %10ldms [%ld]\n", ta, k);
+        printf("\t\tnaive:  %10ld us [%ld]\n", ta, k);
     }
 
     {
@@ -281,7 +281,7 @@ void testcase(const bitvector& bv, int iterations) {
         const auto t2 = clock::now();
 
         tb = duration_cast<microseconds>(t2 - t1).count();
-        printf("\t\tbetter: %10ldms [%ld]", tb, k);
+        printf("\t\tbetter: %10ld us [%ld]", tb, k);
         printf(" (%0.2f)\n", ta/double(tb));
     }
 
@@ -303,7 +303,7 @@ void testcase(const bitvector& bv, int iterations) {
         const auto t2 = clock::now();
 
         tb = duration_cast<microseconds>(t2 - t1).count();
-        printf("\t\tblock3: %10ldms [%ld]", tb, k);
+        printf("\t\tblock3: %10ld us [%ld]", tb, k);
         printf(" (%0.2f)\n", ta/double(tb));
     }
 
@@ -325,7 +325,7 @@ void testcase(const bitvector& bv, int iterations) {
         const auto t2 = clock::now();
 
         tb = duration_cast<microseconds>(t2 - t1).count();
-        printf("\t\tblock4: %10ldms [%ld]", tb, k);
+        printf("\t\tblock4: %10ld us [%ld]", tb, k);
         printf(" (%0.2f)\n", ta/double(tb));
     }
 }
