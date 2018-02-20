@@ -235,8 +235,18 @@ public:
     }
 };
 
+#ifdef __GNUC__
+#   define NOINLINE __attribute__((noline))
+#else
+#   define NOINLINE
+#endif
 
-void testcase(const bitvector& bv, int iterations) {
+size_t callback_function(size_t index) {
+    return index;
+}
+
+
+void testcase(const bitvector& bv, int iterations, size_t (*cb_fun)(size_t)) {
     using clock = std::chrono::high_resolution_clock;
     using std::chrono::duration_cast;
     using std::chrono::microseconds;
@@ -244,17 +254,22 @@ void testcase(const bitvector& bv, int iterations) {
     uint64_t ta;
     uint64_t tb;
 
+    uint64_t n;
+    auto callback = [&n, cb_fun](size_t i) {
+#if 0
+        n += cb_fun(i);
+#else
+        n += i;
+#endif
+    };
+
     {
         int tmp = iterations;
         volatile uint64_t k = 0;
 
         const auto t1 = clock::now();
         while (tmp--) {
-            uint64_t n = 0;
-            auto callback = [&n](size_t i) {
-                n += i;
-            };
-
+            n = 0;
             bv.iterate_naive(callback);
             k += n;
         }
@@ -270,11 +285,7 @@ void testcase(const bitvector& bv, int iterations) {
 
         const auto t1 = clock::now();
         while (tmp--) {
-            uint64_t n = 0;
-            auto callback = [&n](size_t i) {
-                n += i;
-            };
-
+            n = 0;
             bv.iterate_better(callback);
             k += n;
         }
@@ -292,11 +303,7 @@ void testcase(const bitvector& bv, int iterations) {
 
         const auto t1 = clock::now();
         while (tmp--) {
-            uint64_t n = 0;
-            auto callback = [&n](size_t i) {
-                n += i;
-            };
-
+            n = 0;
             bv.iterate_block3(callback);
             k += n;
         }
@@ -307,18 +314,13 @@ void testcase(const bitvector& bv, int iterations) {
         printf(" (%0.2f)\n", ta/double(tb));
     }
 
-
     {
         int tmp = iterations;
         volatile uint64_t k = 0;
 
         const auto t1 = clock::now();
         while (tmp--) {
-            uint64_t n = 0;
-            auto callback = [&n](size_t i) {
-                n += i;
-            };
-
+            n = 0;
             bv.iterate_block4(callback);
             k += n;
         }
@@ -344,7 +346,7 @@ void test(const char* info, const std::vector<size_t>& sizes, int iterations, IN
         }
         printf("\tsize=%lu, cardinality=%lu\n", bv.size(), bv.cardinality());
 
-        testcase(bv, iterations);
+        testcase(bv, iterations, callback_function);
     }
 }
 
