@@ -2,16 +2,33 @@
              Iterate over bits of a large bit stream
 ================================================================================
 
-Comparison of two methods:
+.. contents::
+
+
+Introduction
+-----------------------------------------------------------
+
+Comparison of four methods:
 
 1. naive method --- test each bit of word, run a procedure if the bit is set;
 2. better method --- find the lowest bit set, determine its index and clear it;
+3. block-3 -- split a word into 3-bit subwords, for each subword unroll callback calls;
+4. block-4 -- as above, but subword size is 4 bits.
 
-In the naive method the number of iterations is fixed, number of calls is
-proportional to the number of set bits. In the better method both number of
-iterations and calls are proportional to the number of set bits.
+In all methods the number of callback call is the same and is equal the number
+of bits set in a word.  The methods differ in the number of iterations over
+a single word:
 
-Method 1::
+1. naive method -- the position of most significant bit set;
+2. better method -- the number of bits set;
+3. block-3 -- 3 * index of last non-zero block;
+4. block-4 -- 4 * index of last non-zero block.
+
+
+Implementations
+-----------------------------------------------------------
+
+Naive method::
 
     for (size_t i=0; i < n; i++) {
         uint64_t tmp = array[i];
@@ -27,7 +44,7 @@ Method 1::
         }
     }
 
-Method 2::
+Better method::
 
     for (size_t i=0; i < n; i++) {
         uint64_t tmp = array[i];
@@ -41,6 +58,53 @@ Method 2::
         }
     }
 
+Block-3 method::
+
+    for (size_t i=0; i < n; i++) {
+        uint64_t tmp = array[i];
+
+        size_t k = i * 64;
+        while (tmp) {
+            
+            switch (tmp & 0x7) {
+                case 0:
+                    break;
+
+                case 1:
+                    callback(k);
+                    break;
+
+                // inline callback calls for rest values 2..7
+            }
+
+            tmp >>= 3;
+            k += 3;
+        }
+    }
+
+Block-4 method::
+
+    for (size_t i=0; i < n; i++) {
+        uint64_t tmp = array[i];
+
+        size_t k = i * 64;
+        while (tmp) {
+            
+            switch (tmp & 0xf) {
+                case 0:
+                    break;
+
+                case 1:
+                    callback(k);
+                    break;
+
+                // inline callback calls for rest values 2..15
+            }
+
+            tmp >>= 4;
+            k += 4;
+        }
+    }
 
 Tests & results
 --------------------------------------------------------------------------------
@@ -48,8 +112,7 @@ Tests & results
 Tests check different vectors sizes (given in bits) and various fill factors.
 
 Below are unprocessed outputs from ``make``. The number in parentheses next
-to "better" timing is the speed-up factor: in most cases the naive version
-is 1.5 times faster.
+to "better" timing is the speed-up factor.
 
 
 Core i5 M 540  @ 2.53GHz
