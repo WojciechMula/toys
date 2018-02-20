@@ -19,8 +19,18 @@ size_t callback_function(size_t index) {
 class Application {
 
     const std::vector<size_t> sizes = {64, 256, 1024, 4096, 8192};
+    FILE* csv = nullptr;
 
 public:
+    Application() {
+        csv = fopen("out.csv", "wt");
+        assert(csv != nullptr);
+    }
+
+    ~Application() {
+        if (csv) fclose(csv);
+    }
+
     void run() {
         test("empty", 10000, [](bitvector& bv) {bv.fill(0);});
         test("1/4",    1000, [](bitvector& bv) {bv.fill(0x000000000000ffff);});
@@ -62,6 +72,7 @@ private:
             const auto t2 = clock::now();
 
             ta = duration_cast<microseconds>(t2 - t1).count();
+            fprintf(csv, ",%lu", ta);
             printf("\t\tnaive:  %10ld us [%ld]\n", ta, k);
         }
 
@@ -78,6 +89,7 @@ private:
             const auto t2 = clock::now();
 
             tb = duration_cast<microseconds>(t2 - t1).count();
+            fprintf(csv, ",%lu", tb);
             printf("\t\tbetter: %10ld us [%ld]", tb, k);
             printf(" (%0.2f)\n", ta/double(tb));
         }
@@ -96,6 +108,7 @@ private:
             const auto t2 = clock::now();
 
             tb = duration_cast<microseconds>(t2 - t1).count();
+            fprintf(csv, ",%lu", tb);
             printf("\t\tblock3: %10ld us [%ld]", tb, k);
             printf(" (%0.2f)\n", ta/double(tb));
         }
@@ -113,6 +126,7 @@ private:
             const auto t2 = clock::now();
 
             tb = duration_cast<microseconds>(t2 - t1).count();
+            fprintf(csv, ",%lu", tb);
             printf("\t\tblock4: %10ld us [%ld]", tb, k);
             printf(" (%0.2f)\n", ta/double(tb));
         }
@@ -132,7 +146,9 @@ private:
             }
             printf("\tsize=%lu, cardinality=%lu\n", bv.size(), bv.cardinality());
 
+            fprintf(csv, "%s,%lu,%lu", info, bv.size(), bv.cardinality());
             testcase(bv, iterations, callback_function);
+            fputc('\n', csv);
         }
     }
 
