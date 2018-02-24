@@ -26,22 +26,60 @@ public:
         delete[] data;
     }
 
+    bool set_unsafe(size_t index) {
+        const size_t n = index / 64;
+        const size_t k = index % 64;
+
+        const uint64_t tmp = data[n];
+        data[n] |= uint64_t(1) << k;
+
+        return tmp != data[n];
+    }
+
     void fill(uint64_t word) {
         for (size_t i=0; i < n; i++)
             data[i] = word;
     }
 
-    void fill_random(int threshold) {
-        assert(threshold >= 0);
-        assert(threshold <= 100);
-        
+    void fill_random() {
+        assert(RAND_MAX > 65535);
         for (size_t i=0; i < n; i++) {
-            if ((rand() % 100) > threshold) {
-                data[i] = -1;
-            } else {
-                data[i] = 0;
-            }
+            const uint64_t w0 = rand() % 65536;
+            const uint64_t w1 = rand() % 65536;
+            const uint64_t w2 = rand() % 65536;
+            const uint64_t w3 = rand() % 65536;
+
+            data[i] = (w3 << (3*16)) |
+                      (w2 << (1*16)) |
+                      (w1 << (1*16)) |
+                      (w0 << (0*16));
         }
+    }
+
+    void fill_random(double fillfactor) {
+        assert(fillfactor >= 0.0);
+        assert(fillfactor <= 1.0);
+
+        if (fillfactor == 0.0) {
+            fill(0);
+            return;
+        }
+
+        if (fillfactor == 1.0) {
+            fill(-1);
+            return;
+        }
+
+        const size_t n = size();
+        const size_t expected = n * fillfactor;
+        size_t k = expected;
+        fill(0);
+        srand(0);
+        while (k > 0) {
+            k -= size_t(set_unsafe(rand() % n));
+        }
+
+        assert(cardinality() == expected);
     }
 
     size_t size() const {
@@ -57,13 +95,13 @@ public:
         return k;
     }
 
-    void bitwise_and(const bitvector& v1, const bitvector& v2) {
+    void __attribute__ ((noinline)) bitwise_and(const bitvector& v1, const bitvector& v2) {
         for (size_t i=0; i < n; i++) {
             data[i] = v1.data[i] & v2.data[i];
         }
     }
 
-    void bitwise_and(const bitvector& v) {
+    void __attribute__ ((noinline)) bitwise_and(const bitvector& v) {
         for (size_t i=0; i < n; i++) {
             data[i] &= v.data[i];
         }

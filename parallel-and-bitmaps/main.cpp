@@ -27,26 +27,43 @@ void test(const char* info, MultipleAndInterface& ma, const std::vector<bitvecto
 int main() {
     
     const size_t bitmap_size = 1000000;
-    const size_t count = 100;
+    const size_t count = 10;
 
     std::vector<bitvector*> input;
     srand(0);
+    printf("preparing %d bitmap(s) ", count); fflush(stdout);
     for (size_t i=0; i < count; i++) {
         bitvector* bv = new bitvector(bitmap_size);
-        bv->fill_random(50);
+        bv->fill_random();
 
         input.push_back(bv);
+        putchar('.'); fflush(stdout);
     }
 
-    SequentialAnd seq(input);
-    test("SequentialAnd", seq, input);
+    putchar('\n');
 
-    SequentialAndZeroTracking seq2(input);
-    test("SequentialAndZeroTracking", seq2, input);
 
-    ParallelAndNaive par1(input, 4);
-    test("ParallelAndNaive", par1, input);
+    if (1) {
+        SequentialAnd seq(input);
+        test("SequentialAnd", seq, input);
+    }
 
-    ParallelAndSplit par2(input, 4);
-    test("ParallelAndSplit", par2, input);
+    if (1) {
+        SequentialAndZeroTracking seq2(input);
+        test("SequentialAndZeroTracking", seq2, input);
+    }
+
+    if (1) {
+        ParallelAndNaive par(input, 4);
+        test("ParallelAndNaive", par, input);
+    }
+
+    if (1) {
+        ParallelAndSplit par2(input, 4);
+        test("ParallelAndSplit", par2, input);
+    }
+
+    for (bitvector* bv: input) {
+        delete bv;
+    }
 }

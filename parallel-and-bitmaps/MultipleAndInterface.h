@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bitvector.h"
+#include "time.h"
 #include <memory>
 
 class MultipleAndInterface {

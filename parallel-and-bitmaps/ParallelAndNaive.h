@@ -48,21 +48,18 @@ public:
         }
 
         assert(queue.size() == 1);
+        bitvector* result = queue.front();
+        for (bitvector* bv: allocated_by_us) {
+            if (bv != result)
+                delete bv;
+        }
 
-        return std::unique_ptr<bitvector>(queue.front());
+        return std::unique_ptr<bitvector>(result);
     }
 
 private:
 
-    struct Statistics {
-        size_t processed_pairs = 0;
-
-        void print() {}
-    };
-
     void and_pair() {
-
-        Statistics stats;
 
         bitvector* v1;
         bitvector* v2;
@@ -74,7 +71,9 @@ private:
             new_vector
         };
 
+
         while (1) {
+            timepoint(t0);
             // 1. get two items
             Operation op;
             {
@@ -109,13 +108,7 @@ private:
             }
 
             // 2. perform and
-//#define TIME
-#ifdef TIME
-            using Clock = std::chrono::high_resolution_clock;
-            using std::chrono::duration_cast;
-            using std::chrono::microseconds;
-            const auto t1 = Clock::now();
-#endif
+            timepoint(t1);
             switch (op) {
                 case Operation::v1_inplace:
                     v1->bitwise_and(*v2);
@@ -129,11 +122,8 @@ private:
                     result->bitwise_and(*v1, *v2);
                     break;
             }
-#ifdef TIME
-            const auto t2 = Clock::now();
-            const auto t_us = duration_cast<microseconds>(t2 - t1).count();
-            printf("%d, %luus\n", std::this_thread::get_id(), t_us);
-#endif
+            timepoint(t2);
+
             // 3. store result
             {
                 std::lock_guard<std::mutex> lock(queue_lock);
@@ -148,9 +138,15 @@ private:
                 queue.push_back(result);
                 awaiting -= 1;
             }
-        }
+            timepoint(t3);
 
-        stats.print();
+#ifdef TIME
+            printf("thread %d\n", std::this_thread::get_id());
+            print_time("wait", t0, t1);
+            print_time("and", t1, t2);
+            print_time("save", t2, t3);
+#endif
+        }
     }
 
     bitvector* allocate(const bitvector& bv) {
