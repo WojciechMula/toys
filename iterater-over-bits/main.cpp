@@ -50,15 +50,17 @@ private:
         using std::chrono::duration_cast;
         using std::chrono::microseconds;
 
+        uint32_t* indices = new uint32_t[bv.size()];
+        uint32_t* output;
+
         uint64_t ta;
         uint64_t tb;
 
-        uint64_t n;
-        auto callback = [&n, cb_fun](size_t i) {
+        auto callback = [&output, cb_fun](size_t i) {
     #if 0
             n += cb_fun(i);
     #else
-            n += i;
+            *output++ = i;
     #endif
         };
 
@@ -68,9 +70,9 @@ private:
 
             const auto t1 = clock::now();
             while (tmp--) {
-                n = 0;
+                output = indices;
                 bv.iterate_naive(callback);
-                k += n;
+                k += (output - indices);
             }
             const auto t2 = clock::now();
 
@@ -85,9 +87,9 @@ private:
 
             const auto t1 = clock::now();
             while (tmp--) {
-                n = 0;
+                output = indices;
                 bv.iterate_better(callback);
-                k += n;
+                k += (output - indices);
             }
             const auto t2 = clock::now();
 
@@ -104,9 +106,9 @@ private:
 
             const auto t1 = clock::now();
             while (tmp--) {
-                n = 0;
+                output = indices;
                 bv.iterate_block3(callback);
-                k += n;
+                k += (output - indices);
             }
             const auto t2 = clock::now();
 
@@ -122,9 +124,9 @@ private:
 
             const auto t1 = clock::now();
             while (tmp--) {
-                n = 0;
+                output = indices;
                 bv.iterate_block4(callback);
-                k += n;
+                k += (output - indices);
             }
             const auto t2 = clock::now();
 
@@ -133,6 +135,8 @@ private:
             printf("\t\tblock4: %10ld us [%ld]", tb, k);
             printf(" (%0.2f)\n", ta/double(tb));
         }
+
+        delete[] indices;
     }
 
 
