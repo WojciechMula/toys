@@ -32,16 +32,16 @@ public:
     }
 
     void run() {
-        /*test("empty", 10000, [](bitvector& bv) {bv.fill(0);});
-        test("1/4",    1000, [](bitvector& bv) {bv.fill(0x000000000000ffff);});
-        test("1/2",    1000, [](bitvector& bv) {bv.fill(0x00000000ffffffff);});
-        test("3/4",    1000, [](bitvector& bv) {bv.fill(0x0000ffffffffffff);});
-        test("full",   1000, [](bitvector& bv) {bv.fill(0xffffffffffffffff);});*/
-        test("0.05",   1000, [](bitvector& bv) {bv.fill_random(0.05);});
-        test("0.25",   1000, [](bitvector& bv) {bv.fill_random(0.25);});
-        test("0.50",   1000, [](bitvector& bv) {bv.fill_random(0.50);});
-        test("0.75",   1000, [](bitvector& bv) {bv.fill_random(0.75);});
-        test("0.95",   1000, [](bitvector& bv) {bv.fill_random(0.95);});
+        test("0x0000000000000000",  1000, [](bitvector& bv) {bv.fill(0x0000000000000000);});
+        test("0x000000000000ffff",  1000, [](bitvector& bv) {bv.fill(0x000000000000ffff);});
+        test("0x00000000ffffffff",  1000, [](bitvector& bv) {bv.fill(0x00000000ffffffff);});
+        test("0x0000ffffffffffff",  1000, [](bitvector& bv) {bv.fill(0x0000ffffffffffff);});
+        test("0xffffffffffffffff",  1000, [](bitvector& bv) {bv.fill(0xffffffffffffffff);});
+        test("random 0.05",         1000, [](bitvector& bv) {bv.fill_random(0.05);});
+        test("random 0.25",         1000, [](bitvector& bv) {bv.fill_random(0.25);});
+        test("random 0.50",         1000, [](bitvector& bv) {bv.fill_random(0.50);});
+        test("random 0.75",         1000, [](bitvector& bv) {bv.fill_random(0.75);});
+        test("random 0.95",         1000, [](bitvector& bv) {bv.fill_random(0.95);});
     }
 
 private:
