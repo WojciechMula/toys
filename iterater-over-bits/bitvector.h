@@ -21,23 +21,45 @@ public:
         delete[] array;
     }
 
+    bool set_unsafe(size_t index) {
+        const size_t n = index / 64;
+        const size_t k = index % 64;
+
+        const uint64_t tmp = array[n];
+        array[n] |= uint64_t(1) << k;
+
+        return tmp != array[n];
+    }
+
     void fill(uint64_t word) {
         for (size_t i=0; i < n; i++)
             array[i] = word;
     }
 
-    void fill_random(int threshold) {
-        assert(threshold >= 0);
-        assert(threshold <= 100);
+    void fill_random(double fillfactor) {
+        assert(fillfactor >= 0.0);
+        assert(fillfactor <= 1.0);
 
-        srand(0);
-        for (size_t i=0; i < n; i++) {
-            if ((rand() % 100) > threshold) {
-                array[i] = -1;
-            } else {
-                array[i] = 0;
-            }
+        if (fillfactor == 0.0) {
+            fill(0);
+            return;
         }
+
+        if (fillfactor == 1.0) {
+            fill(-1);
+            return;
+        }
+
+        const size_t n = size();
+        const size_t expected = n * fillfactor;
+        size_t k = expected;
+        fill(0);
+        srand(0);
+        while (k > 0) {
+            k -= size_t(set_unsafe(rand() % n));
+        }
+
+        assert(cardinality() == expected);
     }
 
     size_t size() const {
