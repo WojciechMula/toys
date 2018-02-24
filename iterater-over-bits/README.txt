@@ -2,11 +2,24 @@
              Iterate over bits of a large bit stream
 ================================================================================
 
+:author: Wojciech Muła
+
 .. contents::
 
 
 Introduction
 -----------------------------------------------------------
+
+See also the `Daniel Lemire's article`__.
+
+__ https://lemire.me/blog/2018/02/21/iterating-over-set-bits-quickly/
+
+A "bitvecor" is an array of words; in the current implementation a word is
+``uint64_t``, however it might be any SIMD type.
+
+Iteration over a bitvector means that for each 1 bit an action is performed;
+in particular, the action has to know **the index** of the bit in the
+bitvector.
 
 Comparison of four methods:
 
@@ -15,7 +28,7 @@ Comparison of four methods:
 3. block-3 -- split a word into 3-bit subwords, for each subword unroll callback calls;
 4. block-4 -- as above, but subword size is 4 bits.
 
-In all methods the number of callback call is the same and is equal the number
+In all methods the number of callback call is the same and is equal to the number
 of bits set in a word.  The methods differ in the number of iterations over
 a single word:
 
@@ -23,6 +36,19 @@ a single word:
 2. better method -- the number of bits set;
 3. block-3 -- 3 * index of last non-zero block;
 4. block-4 -- 4 * index of last non-zero block.
+
+Discussion
+-----------------------------------------------------------
+
+The better method is indeed faster in an average case. However, for specific
+bit patterns other methods perform better.
+
+These patterns contain regular, long runs of 1, thanks to that a branch
+predictor is able to help. For instance, if all words in a bitvector are
+``0x00000000ffffffff`` (fill factor is 0.5), then the naive method is two
+times faster than the better method.  For bitvector having fill factor 0.5,
+but with randomly set bits, the naive method is 4-5 times slower than better
+one.
 
 
 Implementations
@@ -106,19 +132,20 @@ Block-4 method::
         }
     }
 
+
 Tests & results
 --------------------------------------------------------------------------------
 
-Tests check different vectors sizes (given in bits) and various fill factors.
-
-Below are unprocessed outputs from ``make``. The number in parentheses next
-to "better" timing is the speed-up factor.
+Tests check different vectors sizes (given in bits) and various fill
+factors.  The action which is performed for each bit is storing the index in
+an auxiliary table.
 
 
 Core i5 M540 @ 2.53GHz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 include core-i5-m540.txt
+
 
 Skylake Core i7-6700 CPU @ 3.40GHz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
