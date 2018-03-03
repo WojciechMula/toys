@@ -2,3 +2,5 @@
 *.out
 *.s
 *.pyc
+perf.data
+perf.data.old
