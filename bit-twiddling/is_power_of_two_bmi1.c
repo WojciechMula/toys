@@ -16,7 +16,7 @@
 int is_power_of_two(uint32_t x) {
     int32_t result = x;   
     __asm__ volatile (
-        "blsr %%eax, %%eax\n      \n" // ZF set when popcount(x) == 1, CF set when x == 0
+        "blsr %%eax, %%eax      \n" // ZF set when popcount(x) == 1, CF set when x == 0
 
         // result = (ZF == 1) and (CF == 0)
         "setz %%al              \n"
