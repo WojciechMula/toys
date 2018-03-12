@@ -22,20 +22,26 @@ class Application final {
     static constexpr size_t input_size = 1024*1024;
     static constexpr size_t iterations = 1000;
 
+    FILE* csv = nullptr;
+
 public:
     void run() {
+
+        csv = fopen("out.csv", "wt");
+        assert((csv != nullptr) && "can't open file");
 
         measure_time("create input table: ", [this]{
             input_vec = create_sorted(input_size);
         });
 
         for (size_t base_size: {128, 1024}) {
-            for (size_t factor: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) {
+            for (size_t factor: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 50}) {
                 const size_t size = base_size * factor;
                 test_all(size);
             }
         }
 
+        fclose(csv);
     }
 
 private:
@@ -67,6 +73,8 @@ private:
         }
 
         printf("%lu us (%d)\n", best_time, ref);
+
+        fprintf(csv, "%s,%lu,%lu,%lu\n", info, a.size(), b.size(), best_time);
     }
 
     void test_all(size_t size) {
