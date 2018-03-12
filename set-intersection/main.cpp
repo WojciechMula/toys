@@ -5,6 +5,7 @@
 #include <chrono>
 
 #include <cstdint>
+#include <cstdio>
 #include <cassert>
 
 #include <immintrin.h>
@@ -138,13 +139,38 @@ void test(const char* info, const vec& a, const vec& b, int k) {
     printf("%lu us (%d)\n", best_time, ref);
 }
 
+void test_all(const vec& larger, size_t size, int iterations) {
+
+    auto smaller = sample_sorted(larger, size);
+
+    test<STD>("std",          smaller, larger, iterations);
+    test<SSE>("SSE",          smaller, larger, iterations);
+    test<BINARY>("binsearch", smaller, larger, iterations);
+}
+
+template <typename FUN>
+void measure_time(const char* info, FUN fun) {
+    
+    printf("%s", info);
+    fflush(stdout);
+    const auto t1 = Clock::now();
+    fun();
+    const auto t2 = Clock::now();
+
+    printf("%lu us\n", elapsed(t1, t2));
+}
 
 int main() {
 
-    auto vec2 = create_sorted(1024*1024);
-    auto vec1 = sample_sorted(vec2, 1024);
+    vec input_vec;
+    measure_time("create input table: ", [&input_vec]{
+        input_vec = create_sorted(1024*1024);
+    });
 
-    test<STD>("std", vec1, vec2, 1000);
-    test<SSE>("SSE", vec1, vec2, 1000);
-    test<BINARY>("binsearch", vec1, vec2, 1000);
+    for (size_t base_size: {128, 1024}) {
+        for (size_t factor: {1,2,3,4,5,6,7,8,9,10}) {
+            const size_t size = base_size * factor;
+            test_all(input_vec, size, 1000);
+        }
+    }
 }
