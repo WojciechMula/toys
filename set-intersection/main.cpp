@@ -46,7 +46,7 @@ public:
 
 private:
     template <int version>
-    void test(const char* info, const vec& a, const vec& b, int k) {
+    int32_t test(const char* info, const vec& a, const vec& b, int k, int32_t valid_ref = 0) {
 
         vec result;
         volatile int32_t ref = 0;
@@ -72,18 +72,25 @@ private:
             ref += std::accumulate(result.begin(), result.end(), int32_t(0));
         }
 
-        printf("%lu us (%d)\n", best_time, ref);
+        printf("%lu us (%d)", best_time, ref);
+        if (valid_ref != 0 && valid_ref != ref) {
+            printf(" !!! ERROR !!!");
+        }
+
+        putchar('\n');
 
         fprintf(csv, "%s,%lu,%lu,%lu\n", info, a.size(), b.size(), best_time);
+
+        return ref;
     }
 
     void test_all(size_t size) {
 
         auto sampled = sample_sorted(input_vec, size);
 
-        test<STD>("std",          sampled, input_vec, iterations);
-        test<SSE>("SSE",          sampled, input_vec, iterations);
-        test<BINARY>("binsearch", sampled, input_vec, iterations);
+        const int32_t ref = test<STD>("std", sampled, input_vec, iterations);
+        test<SSE>("SSE",          sampled, input_vec, iterations, ref);
+        test<BINARY>("binsearch", sampled, input_vec, iterations, ref);
     }
 
 };
