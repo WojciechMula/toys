@@ -15,8 +15,8 @@ On my system the best speedup occured for third method.
 __ http://0x80.pl/notesen.html#stl-map-with-string-as-key-access-speedup-3-04-2010
 
 
-
-Type ``make`` to build a demo program. Sample results from my machine::
+Type ``make demo`` to build a demo program; the ``demo`` program reads the
+standard input.  Sample results from my machine (type ``make``)::
 
     $ ./demo < /usr/share/dict/words 
     loading words...
