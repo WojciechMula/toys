@@ -47,37 +47,21 @@ def main():
             '%d' % sse_time,
             '%d' % bs_time])
 
-        try:
-            sse_speedup = '%0.2f' % (std_time/float(sse_time))
-        except ZeroDivisionError:
-            sse_speedup = 'inf'
+        def speedup(base, new):
+            try:
+                coef = base/float(new)
+            except ZeroDivisionError:
+                coef = float(base)
 
-        try:
-            bs_speedup = '%0.2f' % (std_time/float(bs_time))
-        except ZeroDivisionError:
-            bs_speedup = 'inf'
-
-        table.add_row([
-            "",
-            "",
-            "",
-            ("%0.2f" % 1),
-            sse_speedup,
-            bs_speedup
-        ])
-
-        try:
-            bs_speedup = '%0.2f' % (sse_time/float(bs_time))
-        except ZeroDivisionError:
-            bs_speedup = 'inf'
+            return 'x %0.2f' % coef
 
         table.add_row([
             "",
             "",
             "",
             "",
-            ("%0.2f" % 1),
-            bs_speedup
+            speedup(std_time, sse_time),
+            speedup(std_time, bs_time),
         ])
 
     print table
