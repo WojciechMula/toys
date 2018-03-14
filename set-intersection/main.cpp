@@ -56,7 +56,7 @@ private:
         printf("%s [a.size = %lu, b.size = %lu, %d iterations] ", info, a.size(), b.size(), k);
         fflush(stdout);
 
-        Clock::rep best_time = 0;
+        Clock::rep best_time = std::numeric_limits<Clock::rep>::max();
         int tmp = k;
         while (tmp-- > 0) {
             result.clear();
@@ -71,7 +71,7 @@ private:
                 binsearch_set_intersection(a, b, std::back_inserter(result));
             }
             const auto t2 = Clock::now();
-            best_time += elapsed(t1, t2);
+            best_time = std::min(best_time, elapsed(t1, t2));
 
             ref += std::accumulate(result.begin(), result.end(), int32_t(0));
         }
