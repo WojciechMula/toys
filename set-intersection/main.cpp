@@ -9,12 +9,14 @@
 #include "vector_utils.cpp"
 #include "time_utils.cpp"
 
+#include "custom_set_intersection.cpp"
 #include "sse_set_intersection.cpp"
 #include "binarysearch_set_intersection.cpp"
 
 constexpr int STD = 0;
-constexpr int SSE = 1;
-constexpr int BINARY = 2;
+constexpr int CUSTOM = 1;
+constexpr int SSE = 2;
+constexpr int BINARY = 3;
 
 class Application final {
 
@@ -61,6 +63,8 @@ private:
             const auto t1 = Clock::now();
             if constexpr (version == STD) {
                 std::set_intersection(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(result));
+            } else if constexpr (version == CUSTOM) {
+                custom_set_intersection(a, b, std::back_inserter(result));
             } else if constexpr (version == SSE) {
                 sse_set_intersection(a, b, std::back_inserter(result));
             } else if constexpr (version == BINARY) {
@@ -89,6 +93,7 @@ private:
         auto sampled = sample_sorted(input_vec, size);
 
         const int32_t ref = test<STD>("std", sampled, input_vec, iterations);
+        //test<CUSTOM>("custom",          sampled, input_vec, iterations, ref);
         test<SSE>("SSE",          sampled, input_vec, iterations, ref);
         test<BINARY>("binsearch", sampled, input_vec, iterations, ref);
     }
