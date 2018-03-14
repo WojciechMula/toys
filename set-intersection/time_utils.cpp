@@ -4,7 +4,7 @@
 
 
 auto elapsed(const Clock::time_point& t1, const Clock::time_point& t2) {
-    return std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+    return std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
 }
 
 template <typename FUN>
