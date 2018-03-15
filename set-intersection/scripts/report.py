@@ -5,6 +5,7 @@ from table import Table
 def load(file):
 
     result = OrderedDict()
+    procedures = set()
 
     for line in file:
         tmp = line.split(',')
@@ -20,32 +21,40 @@ def load(file):
             result[key] = {}
 
         result[key][proc] = time_us
+        procedures.add(proc)
 
-    return result
+    return (procedures, result)
 
 
 def main():
 
     with open(sys.argv[1], 'rt') as f:
-        data = load(f)
+        available_procedures, data = load(f)
+   
+    procedures = ["std", "SSE", "AVX2", "binsearch"]
+
+    header = ["size A", "size B", "size ratio"]
+    for proc in procedures:
+        if proc in available_procedures:
+            header.append("%s [us]" % proc)
 
     table = Table()
-    table.set_header(["size A", "size B", "size ratio", "std [us]", "SSE [us]", "binsearch [us]"])
+    table.set_header(header)
 
     for key, values in data.iteritems():
         small_size, large_size = key
 
-        std_time = values["std"]
-        sse_time = values["SSE"]
-        bs_time  = values["binsearch"]
-
-        table.add_row([
+        row = [
             '%d' % small_size,
             '%d' % large_size,
             '%0.2f' % (large_size/float(small_size)),
-            '%d' % std_time,
-            '%d' % sse_time,
-            '%d' % bs_time])
+        ]
+
+        for proc in procedures:
+            if proc in available_procedures:
+                row.append('%d' % values[proc])
+
+        table.add_row(row)
 
         def speedup(base, new):
             try:
@@ -55,14 +64,12 @@ def main():
 
             return 'x %0.2f' % coef
 
-        table.add_row([
-            "",
-            "",
-            "",
-            "",
-            speedup(std_time, sse_time),
-            speedup(std_time, bs_time),
-        ])
+        row = ["", "", "", ""]
+        for proc in procedures:
+            if proc != 'std' and proc in available_procedures:
+                row.append(speedup(values['std'], values[proc]))
+
+        table.add_row(row)
 
     print table
 
