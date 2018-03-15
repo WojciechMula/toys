@@ -3,6 +3,7 @@
 
 #include <cstdio>
 
+#include "config.h"
 #include "vector_utils.h"
 #include "time_utils.h"
 
@@ -10,8 +11,12 @@
 #include "time_utils.cpp"
 
 #include "custom_set_intersection.cpp"
+#ifdef HAVE_SSE
 #include "sse_set_intersection.cpp"
+#endif
+#ifdef HAVE_AVX2
 #include "avx2_set_intersection.cpp"
+#endif
 #include "binarysearch_set_intersection.cpp"
 
 enum {
@@ -70,9 +75,13 @@ private:
             } else if constexpr (version == CUSTOM) {
                 custom_set_intersection(a, b, std::back_inserter(result));
             } else if constexpr (version == SSE) {
+#ifdef HAVE_SSE
                 sse_set_intersection(a, b, std::back_inserter(result));
+#endif
             } else if constexpr (version == AVX2) {
+#ifdef HAVE_AVX2
                 avx2_set_intersection(a, b, std::back_inserter(result));
+#endif
             } else if constexpr (version == BINARY) {
                 binsearch_set_intersection(a, b, std::back_inserter(result));
             }
@@ -99,9 +108,13 @@ private:
         auto sampled = sample_sorted(input_vec, size);
 
         const int32_t ref = test<STD>("std", sampled, input_vec, iterations);
-        //test<CUSTOM>("custom",          sampled, input_vec, iterations, ref);
-        test<SSE>("SSE",          sampled, input_vec, iterations, ref);
-        test<AVX2>("AVX2",        sampled, input_vec, iterations, ref);
+        //test<CUSTOM>("custom", sampled, input_vec, iterations, ref);
+#ifdef HAVE_SSE
+        test<SSE>("SSE", sampled, input_vec, iterations, ref);
+#endif
+#ifdef HAVE_AVX2
+        test<AVX2>("AVX2", sampled, input_vec, iterations, ref);
+#endif
         test<BINARY>("binsearch", sampled, input_vec, iterations, ref);
     }
 
