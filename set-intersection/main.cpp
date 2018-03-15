@@ -11,12 +11,16 @@
 
 #include "custom_set_intersection.cpp"
 #include "sse_set_intersection.cpp"
+#include "avx2_set_intersection.cpp"
 #include "binarysearch_set_intersection.cpp"
 
-constexpr int STD = 0;
-constexpr int CUSTOM = 1;
-constexpr int SSE = 2;
-constexpr int BINARY = 3;
+enum {
+    STD,
+    CUSTOM,
+    SSE,
+    AVX2,
+    BINARY
+};
 
 class Application final {
 
@@ -67,6 +71,8 @@ private:
                 custom_set_intersection(a, b, std::back_inserter(result));
             } else if constexpr (version == SSE) {
                 sse_set_intersection(a, b, std::back_inserter(result));
+            } else if constexpr (version == AVX2) {
+                avx2_set_intersection(a, b, std::back_inserter(result));
             } else if constexpr (version == BINARY) {
                 binsearch_set_intersection(a, b, std::back_inserter(result));
             }
@@ -95,6 +101,7 @@ private:
         const int32_t ref = test<STD>("std", sampled, input_vec, iterations);
         //test<CUSTOM>("custom",          sampled, input_vec, iterations, ref);
         test<SSE>("SSE",          sampled, input_vec, iterations, ref);
+        test<AVX2>("AVX2",        sampled, input_vec, iterations, ref);
         test<BINARY>("binsearch", sampled, input_vec, iterations, ref);
     }
 
