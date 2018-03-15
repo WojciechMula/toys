@@ -1,4 +1,5 @@
 import errno
+import sys
 
 class CPUFlags:
     def __init__(self):
@@ -40,7 +41,9 @@ def main():
     if len(sys.argv) == 2:
         if sys.argv[1] in flags:
             print "present"
-    
+            return 0
+
+    return 1
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
