@@ -35,7 +35,7 @@ __m512i _mm512_alignrvar_epi32(const __m512i hi, const __m512i lo, int shift) {
 }
 
 
-__m512i _mm512_alignr_epi8(const __m512i hi, const __m512i lo, unsigned shift) {
+__m512i _custom_mm512_alignr_epi8(const __m512i hi, const __m512i lo, unsigned shift) {
 
     assert(shift < 64);
 
@@ -74,7 +74,7 @@ void validate() {
         const __m512i lo = _mm512_loadu_si512((__m512i*)(input + 0));
         const __m512i hi = _mm512_loadu_si512((__m512i*)(input + 64));
 
-        const __m512i res = _mm512_alignr_epi8(hi, lo, shift);
+        const __m512i res = _custom_mm512_alignr_epi8(hi, lo, shift);
 
         _mm512_storeu_si512((__m512i*)output, res);
 

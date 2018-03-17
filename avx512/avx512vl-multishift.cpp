@@ -53,7 +53,7 @@ namespace internal {
                 const uint8_t result   = internal::getbyte(x, shift);
 
                 if (expected != result) {
-                    printf("failed for shift=%d, value=%016llx\n", shift, x);
+                    printf("failed for shift=%d, value=%016lx\n", shift, x);
                     printf("expected result is %x, function returned %x\n", expected, result);
                     assert(false);
                 }
