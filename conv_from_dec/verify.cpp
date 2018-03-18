@@ -1,49 +1,31 @@
 #include <cstdio>
 #include <cassert>
+#include <cstring>
 
 #include "procedures.cpp"
 
 void verify() {
     char buf[32];
 
-    for (unsigned i=0; i <= 9999; i++) {
-        std::sprintf(buf, "%04d", i);
-
-        const uint32_t result0 = naive_chunk(buf);
-        const uint32_t result1 = parse1_chunk(buf);
-        const uint32_t result2 = parse2_chunk(buf);
-        const uint32_t result3 = parse3_chunk(buf);
-
-        std::sprintf(buf, "%016d", i);
-
-        const uint32_t result_sse = parse_sse(buf);
-
-        assert(result0 == i);
-        assert(result1 == i);
-        assert(result2 == i);
-        assert(result3 == i);
-        assert(result_sse == i);
-    }
-}
-
-
-void verify_sse() {
-    char buf[32];
+    auto procedures = get_procedures();
 
     for (uint32_t shift=0; shift < 64 - 16; shift++) {
-        for (uint64_t i=0; i <= 9999; i++) {
+        for (uint64_t i=0; i <= 999999; i++) {
             uint64_t ref = i << shift;
 
-            if (std::sprintf(buf, "%016llu", ref) > 16) {
-                return;
+            if (std::sprintf(buf, "%016lu", ref) > 16) {
+                continue;
             }
 
-            const uint64_t result = parse1(buf);
+            for (auto& item: procedures) {
+                const uint64_t result = item.fun(buf);
 
-            if (result != ref)
-            printf("%s => %llu\n", buf, result);
+                if (result != ref) {
+                    printf("%s failed - %s => %lu\n", item.name.c_str(), buf, result);
+                    exit(2);
+                }
 
-            assert(result == ref);
+            }
         }
     }
 }
@@ -51,8 +33,7 @@ void verify_sse() {
 
 int main() {
 
+    puts("Verfication started, it might take a litte longer");
     verify();
-    verify_sse();
-
-    std::puts("all ok");
+    puts("All OK");
 }
