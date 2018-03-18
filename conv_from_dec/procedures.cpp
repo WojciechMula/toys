@@ -16,6 +16,7 @@ uint64_t convchunk_aux(FUN f, const char* s) {
 #include "parse.naive.cpp"
 #include "parse.swar.cpp"
 #include "parse.sse.cpp"
+#include "parse.ssse3.cpp"
 
 using convfun = uint64_t (*)(const char* s);
 
@@ -37,6 +38,7 @@ std::vector<Procedure> get_procedures() {
     p.emplace_back(parse2, "SWAR (2)");
     p.emplace_back(parse3, "SWAR (3)");
     p.emplace_back(parse_sse, "SSE");
+    p.emplace_back(parse_ssse3, "SSSE3");
 
     return p;
 }
