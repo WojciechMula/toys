@@ -66,7 +66,7 @@ char* utoa64_sse(uint64_t v) {
     uint32_t offset = __builtin_ctz(mask | 0x8000);
 
     // convert to ascii
-    tmp = _mm_add_epi8(tmp, _mm_set1_epi8('0'));
+    tmp = _mm_add_epi8(tmp, ascii0);
 
     // and save result
     _mm_storeu_si128((__m128i*)utoa_buffer, tmp);

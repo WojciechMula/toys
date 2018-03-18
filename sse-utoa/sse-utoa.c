@@ -96,8 +96,8 @@ void usage() {
 
 
 int main(int argc, char* argv[]) {
-	uint32_t min32, max32, i32;
-	uint64_t min64, max64, i64;
+	uint32_t min32 = 0, max32 = 0, i32 = 0;
+	uint64_t min64 = 0, max64 = 0, i64 = 0;
 	enum {
 		unknown,
 		naive_32,
@@ -178,7 +178,7 @@ int main(int argc, char* argv[]) {
 					}
 			else
 				for (i64 = min64; i64 <= max64; i64++)
-					printf("%llu = %s\n", i64, utoa64(i64));
+					printf("%lu = %s\n", i64, utoa64(i64));
 			break;
 
 		case sse_32:
@@ -223,7 +223,7 @@ int main(int argc, char* argv[]) {
 			}
 			else 
 				for (i64 = min64; i64 <= max64; i64++)
-					printf("%llu = %s\n", i64, utoa64_sse(i64));
+					printf("%lu = %s\n", i64, utoa64_sse(i64));
 
 			break;
 		
@@ -231,6 +231,6 @@ int main(int argc, char* argv[]) {
 			return EXIT_FAILURE;
 	}
 
-	return EXIT_SUCCESS;
+	return tmp ? EXIT_SUCCESS : EXIT_SUCCESS;
 }
 

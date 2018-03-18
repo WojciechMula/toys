@@ -8,7 +8,7 @@ char* utoa32_sse_2(uint32_t v) {
 
     const __m128i mul_10000_merge = _mm_set1_epi32(65536 - 10000);
 
-    const __m128i div_var = _mm_setr_epi16(
+    const __m128i div_var = _mm_setr_epu16(
         8389,	// div 10^3, shift = 23 + 2
         5243,	// div 10^2, shift = 19 + 2
        13108,	// div 10^1, shift = 17 + 2
@@ -18,7 +18,7 @@ char* utoa32_sse_2(uint32_t v) {
        13108,
       0x8000);
 
-    const __m128i shift_var = _mm_setr_epi16(
+    const __m128i shift_var = _mm_setr_epu16(
         1 << (16 - (23 + 2 - 16)),
         1 << (16 - (19 + 2 - 16)),
         1 << (16 - 1 - 2),

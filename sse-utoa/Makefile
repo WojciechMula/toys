@@ -1,8 +1,7 @@
 .SUFFIXES:
 .PHONY: all clean
 
-FLAGS=-O2 -Wall -Wextra -pedantic
-FLAGS=-O2 -std=c99 $(CXXFLAGS)
+FLAGS=-O2 -std=c99 -Wall -Wextra -pedantic $(CFLAGS)
 
 DEPS=procedures.c\
      *-intrin.c\

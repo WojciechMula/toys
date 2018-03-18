@@ -24,6 +24,7 @@ static char utoa_buffer[32] SIMD_ALIGN;
 #else
 
 #include <immintrin.h>
+#include "intrin-helpers.c"
 #include "sse32-intrin.c"
 #include "sse32_2-intrin.c"
 #include "sse64-intrin.c"
