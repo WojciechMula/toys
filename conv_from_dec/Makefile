@@ -1,7 +1,7 @@
 .SUFFIXES:
 .PHONY: all clean
 
-FLAGS=-std=c++11 -Wall -Wextra -pedantic
+FLAGS=-std=c++11 -Wall -Wextra -pedantic -march=native $(CXXFLAGS)
 DEPS=parse.*.cpp common.cpp
 
 ALL=verify benchmark
