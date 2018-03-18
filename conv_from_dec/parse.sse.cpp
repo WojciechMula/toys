@@ -73,7 +73,7 @@ uint64_t parse_sse(char* s) {
 #include <immintrin.h>
 
 
-uint64_t parse_sse(char* s) {
+uint64_t parse_sse(const char* s) {
     //assert(strlen(s) >= 16);
 
     const __m128i ascii0 = _mm_set1_epi8('0');
@@ -107,5 +107,6 @@ uint64_t parse_sse(char* s) {
 
     return uint64_t(p.element[0]) * uint64_t(100000000) + p.element[2];
 }
+
 #endif //defined(INLINE_ASM)
 

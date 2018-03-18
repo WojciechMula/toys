@@ -1,12 +1,7 @@
-#include <cstdint>
 
+uint32_t parse1_chunk(const char* s) {
 
-// ------------------------------------------------------------------------
-
-
-uint32_t parse1(char* s) {
-
-    const uint32_t input = *reinterpret_cast<uint32_t*>(s);
+    const uint32_t input = *reinterpret_cast<const uint32_t*>(s);
 
     const uint32_t t1 = input - packed32('0');
 
@@ -25,9 +20,9 @@ uint32_t parse1(char* s) {
 // ------------------------------------------------------------------------
 
 
-uint32_t parse2(char* s) {
+uint32_t parse2_chunk(const char* s) {
 
-    const uint32_t input = bswap(*reinterpret_cast<uint32_t*>(s));
+    const uint32_t input = bswap(*reinterpret_cast<const uint32_t*>(s));
 
     const uint32_t t1 = input - packed32('0');
     const uint32_t t2 = t1 & 0xff00ff00;
@@ -43,9 +38,9 @@ uint32_t parse2(char* s) {
 // ------------------------------------------------------------------------
 
 
-uint32_t parse3(char* s) {
+uint32_t parse3_chunk(const char* s) {
 
-    const uint32_t input = bswap(*reinterpret_cast<uint32_t*>(s));
+    const uint32_t input = bswap(*reinterpret_cast<const uint32_t*>(s));
 
     const uint32_t t1 = input - packed32('0');
     const uint32_t t2 = (t1 * 10) >> 8;
@@ -54,5 +49,18 @@ uint32_t parse3(char* s) {
     const uint32_t t4 = t3 & 0x00ff00ff;
 
     return (t4 * (100 + 65536)) >> 16;
+}
+
+
+uint64_t parse1(const char* s) {
+    return convchunk_aux(parse1_chunk, s);
+}
+
+uint64_t parse2(const char* s) {
+    return convchunk_aux(parse2_chunk, s);
+}
+
+uint64_t parse3(const char* s) {
+    return convchunk_aux(parse3_chunk, s);
 }
 

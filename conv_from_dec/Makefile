@@ -1,13 +1,18 @@
 .SUFFIXES:
+.PHONY: all clean
 
-CC=g++
 FLAGS=-std=c++11 -Wall -Wextra -pedantic
 DEPS=parse.*.cpp common.cpp
 
-all: verify
+ALL=verify benchmark
+
+all: $(ALL)
 
 verify: verify.cpp $(DEPS)
-	$(CC) $(FLAGS) $< -o $@
+	$(CXX) $(FLAGS) $< -o $@
+
+benchmark: benchmark.cpp $(DEPS)
+	$(CXX) $(FLAGS) $< -o $@
 
 clean:
-	rm -f verify
+	rm -f $(ALL)

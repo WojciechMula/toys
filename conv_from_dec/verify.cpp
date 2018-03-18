@@ -1,11 +1,7 @@
 #include <cstdio>
 #include <cassert>
 
-#include "common.cpp"
-#include "parse.naive.cpp"
-#include "parse.swar.cpp"
-#include "parse.sse.cpp"
-
+#include "procedures.cpp"
 
 void verify() {
     char buf[32];
@@ -13,10 +9,10 @@ void verify() {
     for (unsigned i=0; i <= 9999; i++) {
         std::sprintf(buf, "%04d", i);
 
-        const uint32_t result0 = naive(buf);
-        const uint32_t result1 = parse1(buf);
-        const uint32_t result2 = parse2(buf);
-        const uint32_t result3 = parse3(buf);
+        const uint32_t result0 = naive_chunk(buf);
+        const uint32_t result1 = parse1_chunk(buf);
+        const uint32_t result2 = parse2_chunk(buf);
+        const uint32_t result3 = parse3_chunk(buf);
 
         std::sprintf(buf, "%016d", i);
 
@@ -42,7 +38,7 @@ void verify_sse() {
                 return;
             }
 
-            const uint64_t result = parse_sse(buf);
+            const uint64_t result = parse1(buf);
 
             if (result != ref)
             printf("%s => %llu\n", buf, result);
