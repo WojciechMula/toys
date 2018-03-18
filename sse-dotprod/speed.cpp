@@ -1,13 +1,19 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
-#include <sys/time.h>
+#include <chrono>
+#include <limits>
 #include <immintrin.h>
 
 #include "scalar.c"
 #include "sse-naive.c"
 #include "sse-naive-unrolled.c"
 #include "sse-dpps.c"
+#include "sse-dpps-unrolled.c"
+
+using Clock = std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::microseconds;
 
 class TestCase {
 
@@ -35,42 +41,35 @@ public:
         const size_t ITERATIONS = 15;
 
         volatile float result = 0.0;
-        uint32_t best_time = UINT32_MAX;
+        Clock::rep best_time = std::numeric_limits<Clock::rep>::max();
         for (size_t i=0; i < ITERATIONS; i++) {
-            const uint32_t t1 = get_time();
+            const auto t1 = Clock::now();
             const float r = fun(input1, input2, SIZE);
-            const uint32_t t2 = get_time();
+            const auto t2 = Clock::now();
             result += r;
 
-            const uint32_t dt = t2 - t1;
+            const Clock::rep dt = duration_cast<microseconds>(t2 - t1).count();
             if (dt < best_time) {
                 best_time = dt;
             }
         }
 
-        printf("%-20s: %d ms (result = %0.5f)\n", name, best_time, result);
+        printf("%-20s: %lu us (result = %0.5f)\n", name, best_time, result);
     }
 
 private:
     float get_random() {
         return (rand()/float(RAND_MAX) - 0.5) * 1000;
     }
-
-    uint32_t get_time(void) {
-        static struct timeval T;
-        gettimeofday(&T, NULL);
-
-        return (T.tv_sec * 1000000) + T.tv_usec;
-    }
-    
 };
 
 
 int main() {
     TestCase test;
 
-    test.run("scalar",          scalar);
-    test.run("SSE (naive)",     sse_naive);
-    test.run("SSE (unrolled)",  sse_naive_unrolled);
-    test.run("SSE (DPPS)",      sse_dpps);
+    test.run("scalar",              scalar);
+    test.run("SSE (naive)",         sse_naive);
+    test.run("SSE (unrolled)",      sse_naive_unrolled);
+    test.run("SSE (DPPS)",          sse_dpps);
+    test.run("SSE (DPPS unrolled)", sse_dpps_unrolled);
 }
