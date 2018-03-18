@@ -1,17 +1,24 @@
 .SUFFIXES:
+.PHONY: all clean
 
-FLAGS=-O2 -Wall -Wextra -pedantic $(CXXFLAGS)
+FLAGS=-O2 -Wall -Wextra -pedantic
 FLAGS=-O2 $(CXXFLAGS)
 
-demo: sse-utoa.c
-	$(CC) $(FLAGS) $^ -o $@
+DEPS=procedures.c\
+     *-intrin.c\
+     *-asm.c
 
-verify: verify.sh demo
-	./verify.sh
+all: demo verify
+
+demo: sse-utoa.c $(DEPS)
+	$(CC) $(FLAGS) $< -o $@
+
+verify: verify.c $(DEPS)
+	$(CC) $(FLAGS) $< -o $@
  
 compare: experiment.sh demo
 	./experiment.sh
 
 clean:
-	rm -f demo
+	rm -f demo verify
 
