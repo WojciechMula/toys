@@ -7,25 +7,9 @@
 
 	License: BSD
 
-	initial release 2011-10-21
-	$Id$
-
 	----------------------------------------------------------------------
 
-	Max speedup: 3 times. See http://0x80.pl/articles/sse-itoa.html
-
-	Compilation:
-
-		$ gcc -Wall -std=c99 -O2 sse-utoa.c -o prog
-
-	Verify:
-
-		$ ./prog sse32 0 99999999 | awk '$1 != $3 {printf("ERROR >%s< >%s<\n", $1, $3)}'
-	
-	Usage:
-
-		run program without argument to read help
-
+	See http://0x80.pl/articles/sse-itoa.html
 */
 #include <stdint.h>
 #include <stdlib.h>
@@ -33,8 +17,9 @@
 #include <strings.h>
 
 //--- functions --------------------------------------------------------
-char* utoa32_sse(const uint32_t x);	// 0 .. 9999_9999 => ASCII
-char* utoa64_sse(const uint64_t x);	// 0 .. 9999_9999_9999_9999 => ASCII
+char* utoa32_sse(const uint32_t x);   // 0 .. 9999_9999 => ASCII
+char* utoa32_sse_2(const uint32_t x); // 0 .. 9999_9999 => ASCII
+char* utoa64_sse(const uint64_t x);   // 0 .. 9999_9999_9999_9999 => ASCII
 
 char* utoa32(const uint32_t x); // reference implementation
 char* utoa64(const uint64_t x); // reference implementation
@@ -87,13 +72,6 @@ char* utoa64(const uint64_t x) {
 //--- SSE implementations ----------------------------------------------
 //----------------------------------------------------------------------
 
-//--- defines ----------------------------------------------------------
-#define packed_byte(x)   {x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}
-#define packed_word(x)   {x, x, x, x, x, x, x, x}
-#define packed_dword(x)   {x, x, x, x}
-
-#define SIMD_ALIGN __attribute__((aligned(16)))
-
 // magick numbers for 16-bit division
 #define DIV_10		0x199a	// shift = 0 + 16
 #define DIV_100		0x147b	// shift = 3 + 16
@@ -101,262 +79,27 @@ char* utoa64(const uint64_t x) {
 // magic number for 32-bit division
 #define DIV_10000	0xd1b71759		// shift = 13 + 32
 
-//--- SSE helper vectors -----------------------------------------------
-uint16_t div_10[8] SIMD_ALIGN = packed_word(DIV_10);
-uint16_t mul_10[8] SIMD_ALIGN = packed_word(10);
-
-uint16_t div_100[8] SIMD_ALIGN = packed_word(DIV_100);
-uint16_t mul_100[8] SIMD_ALIGN = packed_word(100);
-
-uint32_t div_10000[4] SIMD_ALIGN = packed_dword(DIV_10000);
-uint32_t mul_10000[4] SIMD_ALIGN = packed_dword(10000);
-
-uint8_t  to_ascii[16] SIMD_ALIGN = packed_byte('0');
-
-// utoa32_sse_2 specific
-uint32_t mul_10000trick[4] SIMD_ALIGN = packed_dword(65536 - 10000);
-
-uint16_t	div_consts[8] SIMD_ALIGN = {
-				8389,	// div 10^3, shift = 23 + 2
-				5243,	// div 10^2, shift = 19 + 2
-			   13108,	// div 10^1, shift = 17 + 2
-			  0x8000,	// 
-				8389,
-				5243,
-			   13108,
-			  0x8000
-};
-
-uint16_t	shift_consts[8] SIMD_ALIGN = {
-				1 << (16 - (23 + 2 - 16)),
-				1 << (16 - (19 + 2 - 16)),
-				1 << (16 - 1 - 2),
-				1 << (15),
-				1 << (16 - (23 + 2 - 16)),
-				1 << (16 - (19 + 2 - 16)),
-				1 << (16 - 1 - 2),
-				1 << (15)
-};
+#define SIMD_ALIGN __attribute__((aligned(16)))
 
 //---- output buffer for SSE procedures --------------------------------
 static char utoa_buffer[32] SIMD_ALIGN;
 
+#ifdef USE_ASM
 
-char* utoa32_sse(uint32_t x) {
-	uint32_t offset = 0;
+#include "asm-helpers.c"
+#include "sse32-asm.c"
+#include "sse32_2-asm.c"
+#include "sse64-asm.c"
 
-	__asm__ __volatile__ (
-		// 1) x divmod 10^4
-		"movd		%%eax, %%xmm1					\n"
+#else
 
-		// xmm0 = eax div 10000
-		"movdqa		div_10000, %%xmm0				\n"
-		"pmuludq	%%xmm1, %%xmm0					\n"
-		"psrlq		$45, %%xmm0						\n"
+#include <immintrin.h>
+#include "sse32-intrin.c"
+#include "sse32_2-intrin.c"
+#include "sse64-intrin.c"
 
-		// xmm3 = (eax div 10000) * 10000
-		"movdqa		mul_10000, %%xmm3				\n"
-		"pmuludq	%%xmm0, %%xmm3					\n"
+#endif
 
-		// xmm1 = eax mod 10000
-		"psubd		%%xmm3, %%xmm1					\n"
-
-		// xmm0 = [ eax div 10000 | eax mod 10000 | ... ]
-		"punpcklwd	%%xmm1, %%xmm0					\n"
-		
-		// 2) x[i] divmod 10^2
-
-		// xmm0 = [ abcd | efgh | ijkl | mnop | ... ], [a..p] - decimal digits
-		"movdqa		div_100, %%xmm1					\n"
-		"movdqa		mul_100, %%xmm2					\n"
-
-		// xmm1 = [ 00ab | 00ef | 00ij | 00mn | ... ]
-		"pmulhuw	%%xmm0, %%xmm1					\n"
-		"psrlw		$3, %%xmm1						\n"
-
-		// xmm2 = [ ab00 | ef00 | ij00 | mn00 | ...]
-		"pmullw		%%xmm1, %%xmm2					\n"
-
-		// xmm0 = [ 00cd | 00gh | 00kl | 00op | ... ]
-		"psubw		%%xmm2, %%xmm0					\n"
-
-		// xmm1 = [ 00ab | 00cd | 00ef | 00gh | ... ]
-		"punpcklwd	%%xmm0, %%xmm1					\n"
-
-		// 3) x[i] divmod 10
-		"movdqa		div_10, %%xmm0					\n"
-		"movdqa		mul_10, %%xmm2					\n"
-
-		// xmm0 = x[i] div 10
-		"pmulhuw	%%xmm1, %%xmm0					\n"
-		
-		// xmm1 = x[i] mod 10
-		"pmullw		%%xmm0, %%xmm2					\n"
-		"psubw		%%xmm2, %%xmm1					\n"
-		
-		// result
-		"punpcklwd	%%xmm1, %%xmm0					\n"
-		"pxor		%%xmm2, %%xmm2					\n"
-		"packuswb	%%xmm0, %%xmm2					\n"
-
-		// 4) conversion to ASCII and skip leading zeros
-		"movdqa		to_ascii, %%xmm0				\n"
-		"paddb		%%xmm0, %%xmm2					\n"
-		// xmm2 - result
-		"pcmpeqb	%%xmm2, %%xmm0					\n"
-		"pmovmskb	%%xmm0, %%eax					\n"
-		"not		%%eax							\n"
-		"orl		$0x8000, %%eax					\n"
-		"bsf		%%eax, %%eax					\n"
-		// eax = position of first non-zero digit
-
-		// 5) save
-		"movdqa		%%xmm2, utoa_buffer				\n"
-		: "=a" (offset)
-		: "a" (x)
-	);
-
-	return &utoa_buffer[offset];
-}
-
-
-char* utoa32_sse_2(uint32_t x) {
-	uint32_t offset = 0;
-
-	__asm__ __volatile__ (
-		// 1) x divmod 10^4
-		"movd		%%eax, %%xmm1					\n"
-
-		// xmm0 = eax div 10000
-		"movdqa		div_10000, %%xmm0				\n"
-		"pmuludq	%%xmm1, %%xmm0					\n"
-		"psrlq		$45, %%xmm0						\n"
-
-		// xmm3 = (eax div 10000) * 10000
-		"movdqa		mul_10000trick, %%xmm3			\n"
-		"pmuludq	%%xmm3, %%xmm0					\n"
-
-		// xmm1 = eax mod 10000
-		// xmm0 = [ eax div 10000 | eax mod 10000 | ... ]
-		"paddd		%%xmm1, %%xmm0					\n"
-		"psllq		$2, %%xmm0						\n" // v[i] *= 4
-
-		// [   abcd  |  abcd    |  abcd     |   abcd | ... ]
-		"punpcklwd	%%xmm0, %%xmm0					\n"
-		"punpckldq	%%xmm0, %%xmm0					\n"
-
-		// [ a * 2^(7 + 2) | ab * 2^(3 + 2) | abc * 2^(1 + 2) |  abcd * 2^(0 + 2) | ... ] + garbages at lower bits!
-		"pmulhuw	div_consts, %%xmm0				\n"
-
-		"movdqa		mul_10, %%xmm7				\n"
-
-		// xmm0 = [     a |     ab |    abc |  abcd | ... ] -- variable shift right
-		"pmulhuw	shift_consts, %%xmm0			\n"
-		// xmm7 = [    a0 |    ab0 |   abc0 |     0 | ... ] -- v[i] *= 10
-		"pmullw		%%xmm0, %%xmm7					\n"
-		// xmm7 = [     0 |     a0 |    ab0 |  abc0 | ... ]
-		"psllq		$16, %%xmm7						\n"
-		// xmm0 = [     a |      b |      c |     d | ... ]
-		"psubw		%%xmm7, %%xmm0					\n"
-
-		// pack word => bytes
-		"pxor		%%xmm2, %%xmm2					\n"
-		"packuswb	%%xmm0, %%xmm2					\n"
-
-		// 4) conversion to ASCII and skip leading zeros
-		"movdqa		to_ascii, %%xmm7				\n"
-		"paddb		%%xmm7, %%xmm2					\n"
-		// xmm2 - result
-		"pcmpeqb	%%xmm2, %%xmm7					\n"
-		"pmovmskb	%%xmm7, %%eax					\n"
-		"not		%%eax							\n"
-		"orl		$0x8000, %%eax					\n"
-		"bsf		%%eax, %%eax					\n"
-		// eax = position of first non-zero digit
-
-		// 5) save
-		"L1:movdqa		%%xmm2, utoa_buffer			\n"
-		: "=a" (offset)
-		: "a" (x)
-	);
-
-	return &utoa_buffer[offset];
-}
-
-
-char* utoa64_sse(uint64_t x) {
-	uint32_t offset = 0;
-	uint32_t a, b;
-
-	// can't be easliy done in SSE
-	a = x / 100000000;
-	b = x % 100000000;
-
-	__asm__ __volatile__ (
-		"movd %%eax, %%xmm0							\n"
-		"movd %%ebx, %%xmm1							\n"
-		"punpckldq %%xmm1, %%xmm0					\n"
-		"pshufd $0b11001101, %%xmm0, %%xmm0			\n"	// prepare data for pmuludq
-
-		// 1) divmod 10^4
-
-		"movdqa	div_10000, %%xmm1					\n"
-		"movdqa mul_10000, %%xmm2					\n"
-
-		// xmm1 = x[i] div 1000
-		"pmuludq	%%xmm0, %%xmm1					\n"	// div
-		"psrlq		$45, %%xmm1						\n"
-
-		// xmm0 = x[i] mod 1000
-		"pmuludq	%%xmm1, %%xmm2					\n" // mod
-		"psubd		%%xmm2, %%xmm0					\n"
-
-		"pshufd		$0b10110011, %%xmm0, %%xmm0		\n" // join div & mod results
-		"por		%%xmm1, %%xmm0					\n"
-
-		// 2) divmod 10^2
-
-		"movdqa	div_100, %%xmm1						\n"
-		"movdqa	mul_100, %%xmm2						\n"
-		"											\n"
-		"pmulhuw %%xmm0, %%xmm1						\n"	// div
-		"psrlw       $3, %%xmm1						\n"
-		"pmullw  %%xmm1, %%xmm2						\n" // mod
-		"psubw	 %%xmm2, %%xmm0						\n"
-		
-		"pslld		$16, %%xmm0						\n"	// join div & mod results
-		"por 		%%xmm1, %%xmm0					\n"
-
-		// 3) divmod 10
-
-		"movdqa div_10, %%xmm1						\n"
-		"movdqa mul_10, %%xmm2						\n"
-		
-		"pmulhuw %%xmm0, %%xmm1						\n"	// div
-		"pmullw  %%xmm1, %%xmm2						\n"
-		"psubw	 %%xmm2, %%xmm0						\n"	// mod
-
-		"psllw		$8,		%%xmm0					\n"	// join div & mod result
-		"por		%%xmm1, %%xmm0					\n"
-		
-		// 4) convert to ASCII, count leading zeros and save result
-			
-		"movdqa		to_ascii, %%xmm2				\n"
-		"paddb		%%xmm2, %%xmm0					\n"
-		"pcmpeqb	%%xmm0, %%xmm2					\n"
-		"pmovmskb	%%xmm2, %%eax					\n"
-		"not		%%eax							\n"
-		"orl		$0x8000, %%eax					\n"
-		"bsf		%%eax, %%eax					\n"
-
-		"movdqa		%%xmm0, utoa_buffer				\n"
-		: "=a" (offset)
-		: "a" (b),
-		  "b" (a)
-	);
-
-	return &utoa_buffer[offset];
-}
 
 //----------------------------------------------------------------------
 
