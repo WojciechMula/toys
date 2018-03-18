@@ -28,7 +28,7 @@ void benchmark(const std::string& info, convfun fun, int count) {
     }
     const auto t1 = Clock::now();
 
-    printf("%u us\n", elapsed_time(t0, t1));
+    printf("%8u us\n", elapsed_time(t0, t1));
 }
 
 int main() {
