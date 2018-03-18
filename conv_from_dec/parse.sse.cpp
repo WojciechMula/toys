@@ -83,12 +83,13 @@ uint64_t parse_sse(const char* s) {
                                                 1000, 10, 1000, 10);
     const __m128i mul_1_10000 = _mm_setr_epi16(10000,  1,    0,  0,
                                                10000,  1,    0,  0);
+    const __m128i mask = _mm_set1_epi16(0xff);
 
     // =--------------
 
     const __m128i input   = _mm_sub_epi8(_mm_loadu_si128((__m128i*)s), ascii0);
 
-    const __m128i t2_even = _mm_srli_epi16(_mm_slli_epi16(input, 8), 8);
+    const __m128i t2_even = _mm_and_si128(input, mask);
     const __m128i t3_even = _mm_madd_epi16(t2_even, mul_10_1000);
 
     const __m128i t2_odd  = _mm_srli_epi16(input, 8);
