@@ -131,6 +131,44 @@ uint16_t	shift_consts[8] SIMD_ALIGN = {
 static char utoa_buffer[32] SIMD_ALIGN;
 
 
+
+void dump_epi32(__m128i x) {
+    uint32_t dump[4];
+
+    _mm_storeu_si128((__m128i*)dump, x);
+    putchar('[');
+    for (int i=0; i < 4; i++) {
+        if (i > 0) putchar('|');
+        printf(" %8d ", dump[i]);
+    }
+    printf("]\n");
+}
+
+void dump_epi16(__m128i x) {
+    uint16_t dump[8];
+
+    _mm_storeu_si128((__m128i*)dump, x);
+    putchar('[');
+    for (int i=0; i < 8; i++) {
+        if (i > 0) putchar('|');
+        printf(" %4d ", dump[i]);
+    }
+    printf("]\n");
+}
+
+void dump_epi8(__m128i x) {
+    uint8_t dump[16];
+
+    _mm_storeu_si128((__m128i*)dump, x);
+    putchar('[');
+    for (int i=0; i < 16; i++) {
+        if (i > 0) putchar('|');
+        printf(" %2d ", dump[i]);
+    }
+    printf("]\n");
+}
+
+
 char* utoa32_sse(uint32_t v) {
     // v is a 8-digit number: abcdefh (a..h are decimal digits)
     __m128i x = _mm_cvtsi32_si128(v);
@@ -205,106 +243,101 @@ char* utoa32_sse(uint32_t v) {
 	return &utoa_buffer[offset];
 }
 
+char* utoa32_sse_2(uint32_t v) {
 
-#if 0
-char* utoa32_sse_2(uint32_t x) {
-	uint32_t offset = 0;
+    // v is a 8-digit number: abcdefh (a..h are decimal digits)
+    __m128i x = _mm_cvtsi32_si128(v);
 
-	__asm__ __volatile__ (
-		// 1) x divmod 10^4
-		"movd		%%eax, %%xmm1					\n"
+    const __m128i div_10000 = _mm_set1_epi32(DIV_10000);
+    const int div_10000_shift = 45;
 
-		// xmm0 = eax div 10000
-		"movdqa		div_10000, %%xmm0				\n"
-		"pmuludq	%%xmm1, %%xmm0					\n"
-		"psrlq		$45, %%xmm0						\n"
+    const __m128i mul_10000_merge = _mm_set1_epi32(65536 - 10000);
 
-		// xmm3 = (eax div 10000) * 10000
-		"movdqa		mul_10000trick, %%xmm3			\n"
-		"pmuludq	%%xmm3, %%xmm0					\n"
+    const __m128i div_var = _mm_setr_epi16(
+        8389,	// div 10^3, shift = 23 + 2
+        5243,	// div 10^2, shift = 19 + 2
+       13108,	// div 10^1, shift = 17 + 2
+      0x8000,	// 
+        8389,
+        5243,
+       13108,
+      0x8000);
 
-		// xmm1 = eax mod 10000
-		// xmm0 = [ eax div 10000 | eax mod 10000 | ... ]
-		"paddd		%%xmm1, %%xmm0					\n"
-		"psllq		$2, %%xmm0						\n" // v[i] *= 4
+    const __m128i shift_var = _mm_setr_epi16(
+        1 << (16 - (23 + 2 - 16)),
+        1 << (16 - (19 + 2 - 16)),
+        1 << (16 - 1 - 2),
+        1 << (15),
+        1 << (16 - (23 + 2 - 16)),
+        1 << (16 - (19 + 2 - 16)),
+        1 << (16 - 1 - 2),
+        1 << (15)
+    );
 
-		// [   abcd  |  abcd    |  abcd     |   abcd | ... ]
-		"punpcklwd	%%xmm0, %%xmm0					\n"
-		"punpckldq	%%xmm0, %%xmm0					\n"
+    const __m128i mul_10    = _mm_set1_epi16(10);
+    const __m128i ascii0    = _mm_set1_epi8('0');
 
-		// [ a * 2^(7 + 2) | ab * 2^(3 + 2) | abc * 2^(1 + 2) |  abcd * 2^(0 + 2) | ... ] + garbages at lower bits!
-		"pmulhuw	div_consts, %%xmm0				\n"
+    //                [ 3 | 2 | 1 | 0 | 3 | 2 | 1 | 0 | 3 | 2 | 1 | 0 | 3 | 2 | 1 | 0 ]
+    // x            = [       0       |       0       |       0       |      abcdefgh ]
+	// x div 10^4   = [       0       |       0       |       0       |          abcd ]
+    __m128i x_div_10000;
+    x_div_10000 = _mm_mul_epu32(x, div_10000);
+    x_div_10000 = _mm_srli_epi64(x_div_10000, div_10000_shift);
 
-		"movdqa		mul_10, %%xmm7				\n"
+    // y            = [   0   |   0   |   0   |   0   |   0   |   0   |  abcd |  efgh ]
+    __m128i y;
+    y = _mm_mul_epu32(x_div_10000, mul_10000_merge);
+    y = _mm_add_epi32(x, y);
 
-		// xmm0 = [     a |     ab |    abc |  abcd | ... ] -- variable shift right
-		"pmulhuw	shift_consts, %%xmm0			\n"
-		// xmm7 = [    a0 |    ab0 |   abc0 |     0 | ... ] -- v[i] *= 10
-		"pmullw		%%xmm0, %%xmm7					\n"
-		// xmm7 = [     0 |     a0 |    ab0 |  abc0 | ... ]
-		"psllq		$16, %%xmm7						\n"
-		// xmm0 = [     a |      b |      c |     d | ... ]
-		"psubw		%%xmm7, %%xmm0					\n"
+    dump_epi16(y);
 
-		// pack word => bytes
-		"pxor		%%xmm2, %%xmm2					\n"
-		"packuswb	%%xmm0, %%xmm2					\n"
+    // t0           = [     0 |     0 |     0 |     0 |  abcd |  abcd |  efgh |  efgh ]
+    __m128i t0;
+    t0 = _mm_unpacklo_epi16(y, y);
+    // t0           = [  efgh |  efgh |  efgh |  efgh |  abcd |  abcd |  abcd |  abcd ]
+    t0 = _mm_shuffle_epi32(t0, 0x05); // order: 0, 0, 1, 1 = b000001010
 
-		// 4) conversion to ASCII and skip leading zeros
-		"movdqa		to_ascii, %%xmm7				\n"
-		"paddb		%%xmm7, %%xmm2					\n"
-		// xmm2 - result
-		"pcmpeqb	%%xmm2, %%xmm7					\n"
-		"pmovmskb	%%xmm7, %%eax					\n"
-		"not		%%eax							\n"
-		"orl		$0x8000, %%eax					\n"
-		"bsf		%%eax, %%eax					\n"
-		// eax = position of first non-zero digit
+    dump_epi16(t0);
 
-		// 5) save
-		"L1:movdqa		%%xmm2, utoa_buffer			\n"
-		: "=a" (offset)
-		: "a" (x)
-	);
+    // z * 4
+    t0 = _mm_slli_epi16(t0, 2);
 
-	return &utoa_buffer[offset];
-}
-#endif
+    // z divide by 10^3, 10^2, 10^1 and 10^0
+    // t1 = [ a << 9 | ab << 5 | abc << 3 | abcd << 2 | e << 9 | ef << 5 | efg << 3 | efgh << 2 ]
+    __m128i t1;
+    t1 = _mm_mulhi_epu16(t0, div_var);
 
-void dump_epi32(__m128i x) {
-    uint32_t dump[4];
+    // variable shift by 9, 5, 3, 2
+    // t2 = [ 000a | 00ab | 0abc | abcd | 000e | 00ef | 0efg | efgh ]
+    __m128i t2;
+    t2 = _mm_mulhi_epu16(t1, shift_var);
+    
+    // t3 = [ 0000 | 000a | 00ab | 0abc | 0000 | 000e | 00ef | 0efg ]
+    __m128i t3 = _mm_slli_epi64(t2, 16);
 
-    _mm_storeu_si128((__m128i*)dump, x);
-    putchar('[');
-    for (int i=3; i >= 0; i--) {
-        if (i < 3) putchar('|');
-        printf(" %8d ", dump[i]);
-    }
-    printf("]\n");
-}
+    // t4 = [ 0000 | 00a0 | 0ab0 | abc0 | 0000 | 00e0 | 0ef0 | efg0 ]
+    __m128i t4 = _mm_mullo_epi16(t3, mul_10);
 
-void dump_epi16(__m128i x) {
-    uint16_t dump[8];
+    // t5 = t2 - t4
+    // t5 = [    a |    b |    c |    d |    e |    f |    g |    h ]
+    __m128i t5 = _mm_sub_epi16(t2, t4);
 
-    _mm_storeu_si128((__m128i*)dump, x);
-    putchar('[');
-    for (int i=7; i >= 0; i--) {
-        if (i < 7) putchar('|');
-        printf(" %4d ", dump[i]);
-    }
-    printf("]\n");
-}
+    // t6 = [              0               | a | b | c| d | e | f | g | h ]
+    __m128i t6 = _mm_packus_epi16(_mm_setzero_si128(), t5);
 
-void dump_epi8(__m128i x) {
-    uint8_t dump[16];
+    dump_epi8(t6);
 
-    _mm_storeu_si128((__m128i*)dump, x);
-    putchar('[');
-    for (int i=15; i >= 0; i--) {
-        if (i < 15) putchar('|');
-        printf(" %2d ", dump[i]);
-    }
-    printf("]\n");
+    // determine number of leading zeros
+    uint16_t mask = ~_mm_movemask_epi8(_mm_cmpeq_epi8(t6, _mm_setzero_si128()));
+    uint32_t offset = __builtin_ctz(mask | 0x8000);
+
+    // convert to ascii
+    t6 = _mm_add_epi8(t6, ascii0);
+
+    // and save result
+    _mm_storeu_si128((__m128i*)utoa_buffer, t6);
+
+    return &utoa_buffer[offset];
 }
 
 char* utoa64_sse(uint64_t v) {
@@ -509,7 +542,6 @@ int main(int argc, char* argv[]) {
 					printf("%u = %s\n", i32, utoa32_sse(i32));
 			break;
 
-#if 0
 		case sse_32_2:
 			if (count > 0) {
 				while (count--)
@@ -524,7 +556,7 @@ int main(int argc, char* argv[]) {
 				for (i32 = min32; i32 <= max32; i32++)
 					printf("%u = %s\n", i32, utoa32_sse_2(i32));
 			break;
-#endif
+
 		case sse_64:
 			if (count > 0) {
 				while (count--)
