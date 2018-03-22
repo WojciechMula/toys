@@ -7,6 +7,6 @@
 
 - SSE version, see `full article`__.
 
-__ http://0x80.pl/notesen.html#note-2014-15
-__ http://0x80.pl/notesen.html#note-2014-16
+__ http://0x80.pl/notesen/2014-10-12-parsing-decimal-numbers-part-1-swar.html
+__ http://0x80.pl/notesen/2014-10-15-parsing-decimal-numbers-part-2-sse.html
 
