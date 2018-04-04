@@ -78,6 +78,9 @@ class TableValidator(object):
         return n
 
 
+ALIGN_RIGHT = '>'
+CENTER = '^'
+
 class RestructuredTextTableRenderer(object):
 
     def __init__(self, table):
@@ -165,6 +168,23 @@ class RestructuredTextTableRenderer(object):
         return result
 
 
+    def _render_row(self, row, align):
+
+        result = '|'
+        index = 0
+        for text, count in self.table.iter_spans(row):
+            width   = self._get_columns_width(index, count)
+            width  -= 2 * self.padding
+            result += ' ' * self.padding
+            result += '{:{align}{width}}'.format(text, align=align, width=width)
+            result += ' ' * self.padding
+            result += '|'
+
+            index  += count
+
+        return result
+
+
     def _merge_rendered_separators(self, sep1, sep2):
         # sep1 = '+-----+-----+------+'
         # sep2 = '+---+-----------+--+'
@@ -181,18 +201,6 @@ class RestructuredTextTableRenderer(object):
         return ''.join(merge(*pair) for pair in zip(sep1, sep2))
 
 
-    def _render_row(self, row):
-
-        result = '|'
-        index = 0
-        for text, count in self.table.iter_spans(row):
-            width   = self._get_columns_width(index, count)
-            result += '{:^{width}}|'.format(text, width=width)
-            index  += count
-
-        return result
-
-
     def get_image(self): # rest = RestructuredText
 
         lines = []
@@ -203,7 +211,7 @@ class RestructuredTextTableRenderer(object):
             curr = self._render_separator(header, '-');
             lines[-1] = self._merge_rendered_separators(prev, curr)
 
-            lines.append(self._render_row(header))
+            lines.append(self._render_row(header, CENTER))
             lines.append(self._render_separator(header, '-'))
 
         last_header_sep = len(lines) - 1
@@ -213,7 +221,7 @@ class RestructuredTextTableRenderer(object):
             curr = self._render_separator(header, '-');
             lines[-1] = self._merge_rendered_separators(prev, curr)
 
-            lines.append(self._render_row(row))
+            lines.append(self._render_row(row, ALIGN_RIGHT))
             lines.append(self._render_separator(row, '-'))
 
 
