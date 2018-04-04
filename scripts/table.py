@@ -62,12 +62,12 @@ class TableValidator(object):
         for i, header in enumerate(self.table.headers):
             n = self.get_columns_count(header)
             if n != self.columns:
-                raise ValueError("header #%d has number %d columns, expected %d: %s" % (i, n, self.columns, header))
+                raise ValueError("header #%d has %d column(s), expected %d: %s" % (i, n, self.columns, header))
 
         for i, row in enumerate(self.table.rows):
             n = self.get_columns_count(row)
             if n != self.columns:
-                raise ValueError("row #%d has number %d columns, expected %d: %s" % (i, n, self.columns, row))
+                raise ValueError("row #%d has %d column(s), expected %d: %s" % (i, n, self.columns, row))
 
 
     def get_columns_count(self, row):
