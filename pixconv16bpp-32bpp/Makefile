@@ -1,9 +1,15 @@
 .SUFFIXES:
 .PHONY: all measure clean
 
-FLAGS=-O3 -Wall -pedantic -std=c99 -m32
+FLAGS=-O3 -Wall -Wextra -pedantic -std=c99
 ALL=test320x200 test640x480 test800x600 test1024x768
 MEASURE=measure320x200 measure640x480 measure800x600 measure1024x768
+
+ifndef PLAINC
+FLAGS:=$(FLAGS) -m32
+else
+FLAGS:=$(FLAGS) -DPLAINC
+endif
 
 all: $(ALL) measure
 

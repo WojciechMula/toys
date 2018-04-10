@@ -128,6 +128,7 @@ void convert_naive() {
 
 
 
+#ifndef PLAINC
 static uint8_t convert_MMX_maskR[8];
 static uint8_t convert_MMX_maskG[8];
 static uint8_t convert_MMX_maskB[8];
@@ -180,7 +181,7 @@ void convert_MMX() {
 			);
 		}
 }
-
+#endif // PLAINC
 
 void fill_image_16bpp(unsigned int SEED) {
 	int x, y;
@@ -192,6 +193,7 @@ void fill_image_16bpp(unsigned int SEED) {
 }
 
 
+#ifndef PLAINC
 static uint8_t convert_SSE2_maskR[16] __attribute__((aligned(16)));
 static uint8_t convert_SSE2_maskG[16] __attribute__((aligned(16)));
 static uint8_t convert_SSE2_maskB[16] __attribute__((aligned(16)));
@@ -251,7 +253,6 @@ void convert_SSE2() {
 	__asm__ volatile ("sfence");
 #endif
 }
-
 
 void convert_SSE2_2() {
 	int x, y;
@@ -326,20 +327,27 @@ void convert_SSE2_2() {
 	
 	__asm__ volatile ("sfence");
 }
+#endif // PLAINC
 
 
 const int default_repeatcount = 100;
 
-#define OPT_COUNT 7
+#ifndef PLAINC
+    #define OPT_COUNT 7
+#else
+    #define OPT_COUNT 4
+#endif
 
 static char* opts[OPT_COUNT] = {
 	/* 0 */ "lookup8",
 	/* 1 */ "lookup82",
 	/* 2 */ "lookup16",
 	/* 3 */ "naive",
+#ifndef PLAINC
 	/* 4 */ "MMX",
 	/* 5 */ "SSE2",
 	/* 6 */ "SSE22"
+#endif
 };
 
 void help() {
@@ -428,6 +436,7 @@ int main(int argc, char* argv[]) {
 			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
 
+#ifndef PLAINC
 		case 4:
 			printf("running MMX %d times on image %d x %d\n", repeatcount, WIDTH, HEIGHT);
 			gettimeofday(&t1, NULL);
@@ -458,6 +467,7 @@ int main(int argc, char* argv[]) {
 
 			printf("time = %ld microseconds\n", timeval_sec(t2) - timeval_sec(t1));
 			break;
+#endif // PLAINC
 
 		default:
 			help();
