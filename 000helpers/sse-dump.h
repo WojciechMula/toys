@@ -1,6 +1,9 @@
 #pragma once
 
+#include <immintrin.h>
+
 #include <cstdio>
+#include <cstdint>
 #include <cctype>
 
 void dump_epi8(__m128i v) {
