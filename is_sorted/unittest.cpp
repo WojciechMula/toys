@@ -93,6 +93,9 @@ int main() {
     test.test("scalar",  is_sorted);
     test.test("SSE",     is_sorted_sse);
     test.test("SSE (2)", is_sorted_sse_2);
+#ifdef HAVE_AVX2
+    test.test("AVX2",    is_sorted_avx2);
+#endif // HAVE_AVX2
 
     if (test.all_ok()) {
         puts("All OK");

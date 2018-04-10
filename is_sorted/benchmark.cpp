@@ -29,6 +29,9 @@ public:
         measure_total_time("scalar  : ", [this]{return is_sorted(array, size);}, iterations);
         measure_total_time("SSE     : ", [this]{return is_sorted_sse(array, size);}, iterations);
         measure_total_time("SSE (2) : ", [this]{return is_sorted_sse_2(array, size);}, iterations);
+#ifdef HAVE_AVX2
+        measure_total_time("AVX2    : ", [this]{return is_sorted_avx2(array, size);}, iterations);
+#endif // HAVE_AVX2
     }
 
 private:
