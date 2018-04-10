@@ -87,11 +87,11 @@ void convert_lookup8() {
 
 
 void convert_lookup8_2() {
-	uint8_t tmp;
+	uint32_t tmp;
 	int x, y;
 	for (y=0; y < HEIGHT; y++)
 		for (x=0; x < WIDTH; x+=2) {
-			tmp = (uint32_t)&image_16bpp[y][x];
+			tmp = (((uint32_t)image_16bpp[y][x]) << 16) | image_16bpp[y][x+1];
 			image_32bpp[y][x] =
 				lookup8_lo[tmp & 0xff] |
 				lookup8_hi[(tmp >> 8) & 0xff];
