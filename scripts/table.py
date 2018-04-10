@@ -105,12 +105,15 @@ class RestructuredTextTableRenderer(object):
 
         # get width from fixed
         for row in self.get_headers() + self.get_rows():
-            if not self.table.is_raw(row):
-                continue
+            index = 0
+            for text, count in self.table.iter_spans(row):
+                if count > 1:
+                    index += count
+                    continue
 
-            for index, image in enumerate(row):
-                w = len(image)
+                w = len(text)
                 width[index] = max(w, width[index])
+                index += 1
 
         return width
 
