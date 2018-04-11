@@ -4,7 +4,7 @@ FLAGS_COMMON=-O3 -std=c++11 -Wall -Wextra -pedantic
 FLAGS=$(FLAGS_COMMON) -march=native
 FLAGS_AVX2=$(FLAGS_COMMON) -mavx2 -DHAVE_AVX2
 
-DEPS=scalar.cpp sse.cpp sse.2.cpp
+DEPS=scalar.cpp sse.cpp sse.simd-generic.cpp
 DEPS_AVX2=$(DEPS) avx2.cpp
 
 ALL=unittest benchmark unittest_avx2 benchmark_avx2

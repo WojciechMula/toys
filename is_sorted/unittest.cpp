@@ -90,11 +90,12 @@ void Test::test(const char* name, FUNCTION fun) {
 int main() {
     Test test(1024);
 
-    test.test("scalar",  is_sorted);
-    test.test("SSE",     is_sorted_sse);
-    test.test("SSE (2)", is_sorted_sse_2);
+    test.test("scalar",         is_sorted);
+    test.test("SSE (generic)",  is_sorted_sse_generic);
+    test.test("SSE",            is_sorted_sse);
 #ifdef HAVE_AVX2
-    test.test("AVX2",    is_sorted_avx2);
+    test.test("AVX2 (generic)", is_sorted_avx2_generic);
+    test.test("AVX2",           is_sorted_avx2);
 #endif // HAVE_AVX2
 
     if (test.all_ok()) {
