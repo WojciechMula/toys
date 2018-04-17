@@ -26,11 +26,11 @@ public:
         attribs.exclude_kernel  = 1;
         attribs.exclude_hv      = 1;
 
-        int pid = 0;    // the current process
-        int cpu = -1;   // all CPUs
-        int group = -1; // no group
-        unsigned long flags = 0;
-        fd = syscall(__NR_perf_event_open, &attribs, pid, cpu, -1, flags);
+        const int pid = 0;    // the current process
+        const int cpu = -1;   // all CPUs
+        const int group = -1; // no group
+        const unsigned long flags = 0;
+        fd = syscall(__NR_perf_event_open, &attribs, pid, cpu, group, flags);
         if (fd == -1) {
             report_error("perf_event_open");
         }
