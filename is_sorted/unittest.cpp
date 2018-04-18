@@ -101,8 +101,12 @@ int main() {
     test.test("SSE (unrolled 4 times)",
               is_sorted_sse_unrolled4);
 #ifdef HAVE_AVX2
-    test.test("AVX2 (generic)", is_sorted_avx2_generic);
-    test.test("AVX2",           is_sorted_avx2);
+    test.test("AVX2 (generic)",
+              is_sorted_avx2_generic);
+    test.test("AVX2 (generic, unrolled 4 times)",
+              is_sorted_avx2_generic_unrolled4);
+    test.test("AVX2",
+              is_sorted_avx2);
     test.test("AVX2 (unrolled 4 times)",
               is_sorted_avx2_unrolled4);
 #endif // HAVE_AVX2

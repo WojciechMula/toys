@@ -32,8 +32,8 @@ bool is_sorted_sse_generic_unrolled4(int32_t* a, size_t n) {
             const __m128i curr0 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 0*4 + i));
             const __m128i curr1 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 1*4 + i));
             const __m128i curr2 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 2*4 + i));
-            const __m128i next0 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 0*4 + i + 1));
             const __m128i curr3 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 3*4 + i));
+            const __m128i next0 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 0*4 + i + 1));
             const __m128i next1 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 1*4 + i + 1));
             const __m128i next2 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 2*4 + i + 1));
             const __m128i next3 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a + 3*4 + i + 1));
