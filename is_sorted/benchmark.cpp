@@ -14,7 +14,11 @@ class Benchmark {
     int32_t* array;
     size_t size;
     int iterations;
+
     bool csv;
+
+    double reference;
+    bool has_reference;
 
 public:
     Benchmark(size_t size_, int iterations_, bool csv_)
@@ -32,6 +36,8 @@ public:
         } else {
             printf("input size %lu, iterations %d\n", size, iterations);
         }
+
+        has_reference = false;
 
         measure("scalar",
                 [this]{return is_sorted(array, size);});
@@ -85,7 +91,15 @@ private:
         if (csv) {
             printf(", %lu", t);
         } else {
-            printf("%6lu us\n", t);
+            printf("%6lu us", t);
+            if (has_reference) {
+                printf(" (x %0.2f)", reference/t);
+            } else {
+                reference = t;
+                has_reference = true;
+            }
+
+            putchar('\n');
         }
     }
 };
