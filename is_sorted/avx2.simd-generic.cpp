@@ -2,10 +2,6 @@
 
 bool is_sorted_avx2_generic(int32_t* a, size_t n) {
 
-    if (n < 2) {
-        return true;
-    }
-
     size_t i = 0;
     if (n > 8) {
         for (/**/; i < n - 8; i += 8) {
@@ -19,7 +15,7 @@ bool is_sorted_avx2_generic(int32_t* a, size_t n) {
         }
     }
 
-    for (/**/; i < n - 1; i++) {
+    for (/**/; i + 1 < n; i++) {
         if (a[i] > a[i + 1])
             return false;
     }

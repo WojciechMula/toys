@@ -2,10 +2,6 @@
 
 bool is_sorted_sse(int32_t* a, size_t n) {
 
-    if (n < 2) {
-        return true;
-    }
-
     size_t i = 0;
     if (n >= 8) {
         __m128i chunk0 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(a));
@@ -24,7 +20,7 @@ bool is_sorted_sse(int32_t* a, size_t n) {
         } while (i < n - 4);
     }
 
-    for (/**/; i < n - 1; i++) {
+    for (/**/; i + 1 < n; i++) {
         if (a[i] > a[i + 1])
             return false;
     }

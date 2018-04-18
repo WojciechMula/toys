@@ -2,10 +2,6 @@
 
 bool is_sorted_avx2(int32_t* a, size_t n) {
 
-    if (n < 2) {
-        return true;
-    }
-
     const __m256i shuffle_pattern = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 7);
 
     size_t i = 0;
@@ -27,7 +23,7 @@ bool is_sorted_avx2(int32_t* a, size_t n) {
         i += 7;
     }
 
-    for (/**/; i < n - 1; i++) {
+    for (/**/; i + 1 < n; i++) {
         if (a[i] > a[i + 1])
             return false;
     }
