@@ -113,6 +113,8 @@ int main() {
 #ifdef HAVE_AVX512
     test.test("AVX512",
               is_sorted_avx512);
+    test.test("AVX512 (generic)",
+              is_sorted_avx512_generic);
 #endif // HAVE_AVX512
 
     if (test.all_ok()) {

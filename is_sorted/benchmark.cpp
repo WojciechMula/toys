@@ -47,6 +47,8 @@ public:
                            [this]{return is_sorted_avx2_unrolled4(array, size);}, iterations);
 #endif // HAVE_AVX2
 #ifdef HAVE_AVX512
+        measure_total_time("AVX512 (generic)                    : ",
+                           [this]{return is_sorted_avx512_generic(array, size);}, iterations);
         measure_total_time("AVX512                              : ",
                            [this]{return is_sorted_avx512(array, size);}, iterations);
 #endif // HAVE_AVX512

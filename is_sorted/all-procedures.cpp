@@ -7,4 +7,5 @@
 #endif // HAVE_AVX2
 #ifdef HAVE_AVX512
 #   include "avx512.cpp"
+#   include "avx512.simd-generic.cpp"
 #endif // HAVE_AVX512
