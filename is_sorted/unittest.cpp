@@ -110,6 +110,10 @@ int main() {
     test.test("AVX2 (unrolled 4 times)",
               is_sorted_avx2_unrolled4);
 #endif // HAVE_AVX2
+#ifdef HAVE_AVX512
+    test.test("AVX512",
+              is_sorted_avx512);
+#endif // HAVE_AVX512
 
     if (test.all_ok()) {
         puts("All OK");
