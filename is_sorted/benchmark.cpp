@@ -34,6 +34,8 @@ public:
                            [this]{return is_sorted_sse_generic_unrolled4(array, size);}, iterations);
         measure_total_time("SSE                                 : ",
                            [this]{return is_sorted_sse(array, size);}, iterations);
+        measure_total_time("SSE (unrolled 4 times)              : ",
+                           [this]{return is_sorted_sse_unrolled4(array, size);}, iterations);
 #ifdef HAVE_AVX2
         measure_total_time("AVX2 (generic) : ", [this]{return is_sorted_avx2_generic(array, size);}, iterations);
         measure_total_time("AVX2           : ", [this]{return is_sorted_avx2(array, size);}, iterations);
