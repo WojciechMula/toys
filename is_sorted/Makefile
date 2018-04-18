@@ -31,6 +31,30 @@ unittest_avx512: unittest.cpp $(DEPS_AVX512)
 benchmark_avx512: benchmark.cpp $(DEPS_AVX512) time_utils.h
 	$(CXX) $(FLAGS_AVX512) $< -o $@
 
+measurements.txt: benchmark scripts/performance_test.py
+	python scripts/performance_test.py ./$< > /tmp/$@
+	mv /tmp/$@ $@
+
+measurements_avx2.txt: benchmark_avx2 scripts/performance_test.py
+	python scripts/performance_test.py ./$< > /tmp/$@
+	mv /tmp/$@ $@
+
+measurements_avx512.txt: benchmark_avx512 scripts/performance_test.py
+	python scripts/performance_test.py ./$< > /tmp/$@
+	mv /tmp/$@ $@
+
+measurements.rst: measurements.txt scripts/performance_report.py
+	python scripts/performance_report.py ./$< > /tmp/$@
+	mv /tmp/$@ $@
+
+measurements_avx2.rst: measurements_avx2.txt scripts/performance_report.py
+	python scripts/performance_report.py ./$< > /tmp/$@
+	mv /tmp/$@ $@
+
+measurements_avx512.rst: measurements_avx512.txt scripts/performance_report.py
+	python scripts/performance_report.py ./$< > /tmp/$@
+	mv /tmp/$@ $@
+
 clean:
 	$(RM) $(ALL)
 
