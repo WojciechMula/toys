@@ -50,6 +50,17 @@ void dump_epu8_hex(__m128i v) {
     printf(" ]\n");
 }
 
+void dump_epu16_hex(__m128i v) {
+    uint16_t tmp[8];
+
+    _mm_storeu_si128((__m128i*)tmp, v);
+    printf("[ %04x ", tmp[0]);
+    for (int i=1; i < 8; i++)
+        printf("| %04x ", tmp[i]);
+
+    printf(" ]\n");
+}
+
 void dump_epu32_hex(__m128i v) {
     uint32_t tmp[4];
 
