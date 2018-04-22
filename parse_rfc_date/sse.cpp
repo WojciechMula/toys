@@ -41,25 +41,22 @@ int parse_rfc_date(const char* in) {
     }
 
     // 2. decode Weekday: "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-    const __m128i weekday_letter0 = _mm_setr_epi8('S', 'M', 'T', 'W', 'T', 'F', 'S', 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    const __m128i weekday_letter1 = _mm_setr_epi8('u', 'o', 'u', 'e', 'h', 'r', 'a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    const __m128i weekday_letter2 = _mm_setr_epi8('n', 'n', 'e', 'd', 'u', 'i', 't', 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    const __m128i weekday_letters01 = _mm_setr_epi8('S', 'u', 'M', 'o', 'T', 'u', 'W', 'e', 'T', 'h', 'F', 'r', 'S', 'a', 0, 0);
+    const __m128i weekday_letters22 = _mm_setr_epi8('n', 'n', 'n', 'n', 'e', 'e', 'd', 'd', 'u', 'u', 'i', 'i', 't', 't', 0, 0);
 
-    const __m128i w0 = _mm_shuffle_epi8(lo, _mm_set1_epi8(0));
-    const __m128i w1 = _mm_shuffle_epi8(lo, _mm_set1_epi8(1));
-    const __m128i w2 = _mm_shuffle_epi8(lo, _mm_set1_epi8(2));
+    const __m128i w01 = _mm_shuffle_epi8(lo, _mm_setr_epi8(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1)); 
+    const __m128i w22 = _mm_shuffle_epi8(lo, _mm_set1_epi8(2));
 
     const __m128i weekday_bytemask =
-        _mm_and_si128(_mm_cmpeq_epi8(w0, weekday_letter0),
-        _mm_and_si128(_mm_cmpeq_epi8(w1, weekday_letter1), _mm_cmpeq_epi8(w2, weekday_letter2)));
+        _mm_and_si128(_mm_cmpeq_epi8(w01, weekday_letters01), _mm_cmpeq_epi8(w22, weekday_letters22));
     
     const uint16_t weekday_mask = _mm_movemask_epi8(weekday_bytemask);
-    if (weekday_mask == 0) {
+    if ((weekday_mask & 0x7fff) == 0) {
         return -EINVAL;
     }
 
     struct tm fields;
-    fields.tm_wday = __builtin_ctz(weekday_mask);
+    fields.tm_wday = __builtin_ctz(weekday_mask)/2;
 
     // 3. decode month: "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     const __m128i month_letter0 = _mm_setr_epi8('J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D', 0, 0, 0, 0);
