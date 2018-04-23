@@ -1,4 +1,5 @@
 .PHONY: clean
+.PHONY: test
 
 FLAGS=$(CXXFLAGS) -Wall -Wextra -pedantic -std=c++11 -march=native -O3
 
@@ -8,6 +9,10 @@ all: $(ALL)
 
 benchmark: benchmark.cpp sse.cpp scalar.cpp benchmark.h
 	$(CXX) $(FLAGS) $< -o $@
+
+test: unittests unittests_scalar
+	./unittests
+	./unittests_scalar
 
 unittests: unittests.cpp sse.cpp
 	$(CXX) $(FLAGS) $< -o $@
