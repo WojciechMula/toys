@@ -2,8 +2,12 @@
 
 FLAGS=$(CXXFLAGS) -Wall -Wextra -pedantic -std=c++11 -march=native -O3
 
-demo: sse.cpp
+ALL=unittests
+
+all: $(ALL)
+
+unittests: unittests.cpp sse.cpp
 	$(CXX) $(FLAGS) $< -o $@
 
 clean:
-	$(RM) demo
+	$(RM) $(ALL)

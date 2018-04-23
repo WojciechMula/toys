@@ -4,8 +4,7 @@
 #include <errno.h>
 #include <immintrin.h>
 
-// Fri, 17 Apr 2015 16:14:11 GMT
-int parse_rfc_date(const char* in) {
+int parse_rfc_date(const char* in, tm* fields) {
     
     // lo = "Fri, 17 Apr 2015"
     //       0123456789abcdef
@@ -35,28 +34,27 @@ int parse_rfc_date(const char* in) {
     hi_check = _mm_and_si128 (hi_check, hi_valid_mask);
     hi_check = _mm_cmpeq_epi8(hi_check, hi_valid_mask);
 
-    const __m128i valid = _mm_or_si128(lo_check, hi_check);
+    const __m128i valid = _mm_and_si128(lo_check, hi_check);
     if (_mm_movemask_epi8(valid) != (uint16_t)(-1)) {
         return -EINVAL;
     }
 
     // 2. decode Weekday: "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-    const __m128i weekday_letters01 = _mm_setr_epi8('S', 'u', 'M', 'o', 'T', 'u', 'W', 'e', 'T', 'h', 'F', 'r', 'S', 'a', 0, 0);
-    const __m128i weekday_letters22 = _mm_setr_epi8('n', 'n', 'n', 'n', 'e', 'e', 'd', 'd', 'u', 'u', 'i', 'i', 't', 't', 0, 0);
+    const __m128i weekday_letters01 = _mm_setr_epi8('S', 'u', 'M', 'o', 'T', 'u', 'W', 'e', 'T', 'h', 'F', 'r', 'S', 'a', -1, -1);
+    const __m128i weekday_letters22 = _mm_setr_epi8('n', 'n', 'n', 'n', 'e', 'e', 'd', 'd', 'u', 'u', 'i', 'i', 't', 't', -1, -1);
 
-    const __m128i w01 = _mm_shuffle_epi8(lo, _mm_setr_epi8(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1)); 
+    const __m128i w01 = _mm_shuffle_epi8(lo, _mm_setr_epi8(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, -1, -1)); 
     const __m128i w22 = _mm_shuffle_epi8(lo, _mm_set1_epi8(2));
 
     const __m128i weekday_bytemask =
-        _mm_and_si128(_mm_cmpeq_epi8(w01, weekday_letters01), _mm_cmpeq_epi8(w22, weekday_letters22));
+        _mm_and_si128(_mm_cmpeq_epi16(w01, weekday_letters01), _mm_cmpeq_epi16(w22, weekday_letters22));
     
     const uint16_t weekday_mask = _mm_movemask_epi8(weekday_bytemask);
-    if ((weekday_mask & 0x7fff) == 0) {
+    if (weekday_mask == 0) {
         return -EINVAL;
     }
 
-    struct tm fields;
-    fields.tm_wday = __builtin_ctz(weekday_mask)/2;
+    fields->tm_wday = __builtin_ctz(weekday_mask)/2;
 
     // 3. decode month: "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     const __m128i month_letter0 = _mm_setr_epi8('J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D', 0, 0, 0, 0);
@@ -72,10 +70,10 @@ int parse_rfc_date(const char* in) {
         _mm_and_si128(_mm_cmpeq_epi8(m1, month_letter1), _mm_cmpeq_epi8(m2, month_letter2)));
     
     const uint16_t month_mask = _mm_movemask_epi8(month_bytemask);
-    if (month_mask == 0) {
+    if ((month_mask & 0x0fff) == 0) {
         return -EINVAL;
     }
-    fields.tm_mon = __builtin_ctz(month_mask);
+    fields->tm_mon = __builtin_ctz(month_mask);
 
     // 4. convert [almost] all numeric values at once
     //
@@ -96,8 +94,8 @@ int parse_rfc_date(const char* in) {
 
     // validate digits
     const __m128i digits = _mm_sub_epi8(ASCII_digits, _mm_set1_epi8('0'));
-    const __m128i less_ascii0    = _mm_cmplt_epi8(digits, _mm_set1_epi8(0));   // char < '0' <=> char - '0' < 0
-    const __m128i greater_ascii9 = _mm_cmplt_epi8(_mm_set1_epi8('9'), digits); // char > '9'
+    const __m128i less_ascii0    = _mm_cmplt_epi8(digits, _mm_set1_epi8(0)); // char < '0' <=> char - '0' < 0
+    const __m128i greater_ascii9 = _mm_cmplt_epi8(_mm_set1_epi8(9), digits); // char > '9'
     const __m128i wrong_digits   = _mm_or_si128(less_ascii0, greater_ascii9);
     if (_mm_movemask_epi8(wrong_digits) != 0) {
         return -EINVAL;
@@ -115,8 +113,8 @@ int parse_rfc_date(const char* in) {
     // hour   :  1 .. 24
     // min    :  1 .. 59
     // sec    :  1 .. 59
-    const __m128i numbers_lo_bound = _mm_setr_epi16(0, 0, 19,  0,  1,  1,  1,  1);
-    const __m128i numbers_hi_bound = _mm_setr_epi16(0, 0, 20, 99, 31, 24, 59, 29);
+    const __m128i numbers_lo_bound = _mm_setr_epi16(0, 0, 19,  0,  1,  1,  0,  0);
+    const __m128i numbers_hi_bound = _mm_setr_epi16(0, 0, 29, 99, 31, 24, 59, 59);
 
     const __m128i outside_bounds = _mm_or_si128(
                                     _mm_cmplt_epi16(numbers, numbers_lo_bound),
@@ -127,21 +125,19 @@ int parse_rfc_date(const char* in) {
     }
 
     // 2. copy numbers to strucut
-    fields.tm_mday = _mm_extract_epi16(numbers, 4);
-    fields.tm_hour = _mm_extract_epi16(numbers, 5);
-    fields.tm_min  = _mm_extract_epi16(numbers, 6);
-    fields.tm_sec  = _mm_extract_epi16(numbers, 7);
+    fields->tm_mday = _mm_extract_epi16(numbers, 4);
+    fields->tm_hour = _mm_extract_epi16(numbers, 5);
+    fields->tm_min  = _mm_extract_epi16(numbers, 6);
+    fields->tm_sec  = _mm_extract_epi16(numbers, 7);
 
-    fields.tm_year = (_mm_extract_epi16(numbers, 2) - 19) * 100 + _mm_extract_epi16(numbers, 3);
+    int tmp = _mm_extract_epi16(numbers, 2) * 100 + _mm_extract_epi16(numbers, 3);
+    tmp -= 1900;
+    if (tmp < 0 || tmp > 1000) {
+        return -EINVAL;
+    }
 
-    mktime(&fields);
-    printf("%s\n", asctime(&fields));
+    fields->tm_year = tmp;
 
     return 0;
 }
 
-int main() {
-    const char* input = "Fri, 17 Apr 2015 16:14:11 GMT";
-    puts(input);
-    parse_rfc_date(input);
-}
