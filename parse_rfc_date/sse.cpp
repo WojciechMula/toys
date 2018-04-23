@@ -124,7 +124,7 @@ int parse_rfc_date(const char* in, tm* fields) {
         return -EINVAL;
     }
 
-    // 2. copy numbers to strucut
+    // 2. copy numbers to struct
     fields->tm_mday = _mm_extract_epi16(numbers, 4);
     fields->tm_hour = _mm_extract_epi16(numbers, 5);
     fields->tm_min  = _mm_extract_epi16(numbers, 6);

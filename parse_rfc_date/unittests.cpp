@@ -4,7 +4,11 @@
 #include <cstdio>
 #include <cstring>
 
+#if TEST_SCALAR
+#include "scalar.cpp"
+#else
 #include "sse.cpp"
+#endif
 
 static const char* weekdays[] = {"Sun", "Mon", "Tue",
                                  "Wed", "Thu", "Fri",
@@ -99,14 +103,18 @@ private:
 
 
 int TestBase::invocation() {
+#ifdef TEST_SCALAR
+    return parse_rfc_date_reference(pattern.c_str(), &result);
+#else
     return parse_rfc_date(pattern.c_str(), &result);
+#endif
 }
 
 
 void TestBase::assume_valid_invocation() {
     const int ret = invocation();
     if (ret < 0) {
-        throw TestFailed{"Expected proper conversion"};
+        throw TestFailed{"Expected proper conversion, got " + std::to_string(ret)};
     }
 }
 
