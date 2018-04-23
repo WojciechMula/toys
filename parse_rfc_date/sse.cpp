@@ -57,9 +57,9 @@ int parse_rfc_date(const char* in, tm* fields) {
     fields->tm_wday = __builtin_ctz(weekday_mask)/2;
 
     // 3. decode month: "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    const __m128i month_letter0 = _mm_setr_epi8('J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D', 0, 0, 0, 0);
-    const __m128i month_letter1 = _mm_setr_epi8('a', 'e', 'a', 'p', 'a', 'u', 'u', 'u', 'e', 'c', 'o', 'e', 0, 0, 0, 0);
-    const __m128i month_letter2 = _mm_setr_epi8('n', 'b', 'r', 'r', 'y', 'n', 'l', 'g', 'p', 't', 'v', 'c', 0, 0, 0, 0);
+    const __m128i month_letter0 = _mm_setr_epi8('J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D', 'D', 'D', 'D', 'D');
+    const __m128i month_letter1 = _mm_setr_epi8('a', 'e', 'a', 'p', 'a', 'u', 'u', 'u', 'e', 'c', 'o', 'e', 'e', 'e', 'e', 'e');
+    const __m128i month_letter2 = _mm_setr_epi8('n', 'b', 'r', 'r', 'y', 'n', 'l', 'g', 'p', 't', 'v', 'c', 'c', 'c', 'c', 'c');
 
     const __m128i m0 = _mm_shuffle_epi8(lo, _mm_set1_epi8(8));
     const __m128i m1 = _mm_shuffle_epi8(lo, _mm_set1_epi8(9));
@@ -70,7 +70,7 @@ int parse_rfc_date(const char* in, tm* fields) {
         _mm_and_si128(_mm_cmpeq_epi8(m1, month_letter1), _mm_cmpeq_epi8(m2, month_letter2)));
     
     const uint16_t month_mask = _mm_movemask_epi8(month_bytemask);
-    if ((month_mask & 0x0fff) == 0) {
+    if ((month_mask) == 0) {
         return -EINVAL;
     }
     fields->tm_mon = __builtin_ctz(month_mask);

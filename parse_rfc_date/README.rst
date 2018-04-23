@@ -42,7 +42,7 @@ parallel, i.e.:
   is done in single step. Only the year requires more scalar code.
 
 
-Know problems
+Known problems
 --------------------------------------------------------------------------------
 
 * My translation of Leandro's code might not be perfect.
