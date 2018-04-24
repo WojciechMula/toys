@@ -5,6 +5,15 @@
 #include <immintrin.h>
 #include <cstddef> // for offsetof
 
+#define USE_PMOVMASKB
+#ifdef USE_PMOVMASKB
+#   define TEST_ALL_ZEROS(vector) (_mm_movemask_epi8(vector) == 0)
+#   define TEST_ALL_ONES(vector)  (_mm_movemask_epi8(vector) == uint16_t(-1))
+#else
+#   define TEST_ALL_ZEROS(vector) (_mm_test_all_zeros(vector, vector))
+#   define TEST_ALL_ONES(vector)  (_mm_test_all_ones(vector))
+#endif
+
 int parse_rfc_date(const char* in, tm* fields) {
 
     // lo = "Fri, 17 Apr 2015"
@@ -36,7 +45,7 @@ int parse_rfc_date(const char* in, tm* fields) {
     hi_check = _mm_cmpeq_epi8(hi_check, hi_valid_mask);
 
     const __m128i valid = _mm_and_si128(lo_check, hi_check);
-    if (_mm_movemask_epi8(valid) != (uint16_t)(-1)) {
+    if (!TEST_ALL_ONES(valid)) {
         return -EINVAL;
     }
 
@@ -71,9 +80,10 @@ int parse_rfc_date(const char* in, tm* fields) {
         _mm_and_si128(_mm_cmpeq_epi8(m1, month_letter1), _mm_cmpeq_epi8(m2, month_letter2)));
 
     const uint16_t month_mask = _mm_movemask_epi8(month_bytemask);
-    if ((month_mask) == 0) {
+    if (month_mask == 0) {
         return -EINVAL;
     }
+
     fields->tm_mon = __builtin_ctz(month_mask);
 
     // 4. convert [almost] all numeric values at once
@@ -98,7 +108,7 @@ int parse_rfc_date(const char* in, tm* fields) {
     const __m128i less_ascii0    = _mm_cmplt_epi8(digits, _mm_set1_epi8(0)); // char < '0' <=> char - '0' < 0
     const __m128i greater_ascii9 = _mm_cmplt_epi8(_mm_set1_epi8(9), digits); // char > '9'
     const __m128i wrong_digits   = _mm_or_si128(less_ascii0, greater_ascii9);
-    if (_mm_movemask_epi8(wrong_digits) != 0) {
+    if (!TEST_ALL_ZEROS(wrong_digits)) {
         return -EINVAL;
     }
 
@@ -121,7 +131,7 @@ int parse_rfc_date(const char* in, tm* fields) {
                                     _mm_cmplt_epi16(numbers, numbers_lo_bound),
                                     _mm_cmpgt_epi16(numbers, numbers_hi_bound));
 
-    if (_mm_movemask_epi8(outside_bounds) != 0) {
+    if (!TEST_ALL_ZEROS(outside_bounds)) {
         return -EINVAL;
     }
 
