@@ -47,11 +47,6 @@ Known problems
 
 * My translation of Leandro's code might not be perfect.
 
-* In SSE code I use ``_mm_extract_epi16`` (``pextract``) instruction to
-  store all numeric fields (month day, hour, minute, second). This could be
-  solved with **single store**, maybe masked one, if the layout of fields
-  in ``std::tm`` structure was considered.
-
 
 How to compile
 --------------------------------------------------------------------------------
