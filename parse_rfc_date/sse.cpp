@@ -3,9 +3,10 @@
 #include <time.h>
 #include <errno.h>
 #include <immintrin.h>
+#include <cstddef> // for offsetof
 
 int parse_rfc_date(const char* in, tm* fields) {
-    
+
     // lo = "Fri, 17 Apr 2015"
     //       0123456789abcdef
     __m128i lo = _mm_loadu_si128((const __m128i*)(in));
@@ -43,12 +44,12 @@ int parse_rfc_date(const char* in, tm* fields) {
     const __m128i weekday_letters01 = _mm_setr_epi8('S', 'u', 'M', 'o', 'T', 'u', 'W', 'e', 'T', 'h', 'F', 'r', 'S', 'a', -1, -1);
     const __m128i weekday_letters22 = _mm_setr_epi8('n', 'n', 'n', 'n', 'e', 'e', 'd', 'd', 'u', 'u', 'i', 'i', 't', 't', -1, -1);
 
-    const __m128i w01 = _mm_shuffle_epi8(lo, _mm_setr_epi8(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, -1, -1)); 
+    const __m128i w01 = _mm_shuffle_epi8(lo, _mm_setr_epi8(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, -1, -1));
     const __m128i w22 = _mm_shuffle_epi8(lo, _mm_set1_epi8(2));
 
     const __m128i weekday_bytemask =
         _mm_and_si128(_mm_cmpeq_epi16(w01, weekday_letters01), _mm_cmpeq_epi16(w22, weekday_letters22));
-    
+
     const uint16_t weekday_mask = _mm_movemask_epi8(weekday_bytemask);
     if (weekday_mask == 0) {
         return -EINVAL;
@@ -68,7 +69,7 @@ int parse_rfc_date(const char* in, tm* fields) {
     const __m128i month_bytemask =
         _mm_and_si128(_mm_cmpeq_epi8(m0, month_letter0),
         _mm_and_si128(_mm_cmpeq_epi8(m1, month_letter1), _mm_cmpeq_epi8(m2, month_letter2)));
-    
+
     const uint16_t month_mask = _mm_movemask_epi8(month_bytemask);
     if ((month_mask) == 0) {
         return -EINVAL;
@@ -124,11 +125,30 @@ int parse_rfc_date(const char* in, tm* fields) {
         return -EINVAL;
     }
 
-    // 2. copy numbers to struct
-    fields->tm_mday = _mm_extract_epi16(numbers, 4);
-    fields->tm_hour = _mm_extract_epi16(numbers, 5);
-    fields->tm_min  = _mm_extract_epi16(numbers, 6);
-    fields->tm_sec  = _mm_extract_epi16(numbers, 7);
+    constexpr bool known_layout = (offsetof(tm, tm_sec)  ==  0)
+                               && (offsetof(tm, tm_min)  ==  4)
+                               && (offsetof(tm, tm_hour) ==  8)
+                               && (offsetof(tm, tm_mday) == 12);
+
+    if (known_layout) {
+        //   index =    0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+        // numbers  = [00|00|00|00|C0|C1|Y0|Y1|D0|D1|H0|H1|M0|M1|S0|S1]
+        // shuffled = [S0|S1|00|00|M0|M1|00|00|H0|H1|00|00|D0|D1|00|00]
+        const __m128i shuffled = _mm_shuffle_epi8(numbers,
+                                 _mm_setr_epi8(14, 15, -1, -1,
+                                               12, 13, -1, -1,
+                                               10, 11, -1, -1,
+                                                8,  9, -1, -1));
+
+        _mm_storeu_si128((__m128i*)(fields), shuffled);
+    } else {
+        // 2. copy numbers to struct
+        fields->tm_mday = _mm_extract_epi16(numbers, 4);
+        fields->tm_hour = _mm_extract_epi16(numbers, 5);
+        fields->tm_min  = _mm_extract_epi16(numbers, 6);
+        fields->tm_sec  = _mm_extract_epi16(numbers, 7);
+    }
+
 
     int tmp = _mm_extract_epi16(numbers, 2) * 100 + _mm_extract_epi16(numbers, 3);
     tmp -= 1900;
