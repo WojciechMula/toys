@@ -67,6 +67,8 @@ int parse_rfc_date(const char* in, tm* fields) {
     fields->tm_wday = __builtin_ctz(weekday_mask)/2;
 
     // 3. decode month: "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+#define METHOD 2
+#if METHOD == 1
     const __m128i month_letter0 = _mm_setr_epi8('J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D', 'D', 'D', 'D', 'D');
     const __m128i month_letter1 = _mm_setr_epi8('a', 'e', 'a', 'p', 'a', 'u', 'u', 'u', 'e', 'c', 'o', 'e', 'e', 'e', 'e', 'e');
     const __m128i month_letter2 = _mm_setr_epi8('n', 'b', 'r', 'r', 'y', 'n', 'l', 'g', 'p', 't', 'v', 'c', 'c', 'c', 'c', 'c');
@@ -85,6 +87,38 @@ int parse_rfc_date(const char* in, tm* fields) {
     }
 
     fields->tm_mon = __builtin_ctz(month_mask);
+#elif METHOD == 2
+    const __m128i month0 = _mm_setr_epi8('J', 'a', 'n', 0,
+                                         'F', 'e', 'b', 0,
+                                         'M', 'a', 'r', 0,
+                                         'A', 'p', 'r', 0);
+    const __m128i month1 = _mm_setr_epi8('M', 'a', 'y', 0,
+                                         'J', 'u', 'n', 0,
+                                         'J', 'u', 'l', 0,
+                                         'A', 'u', 'g', 0);
+    const __m128i month2 = _mm_setr_epi8('S', 'e', 'p', 0,
+                                         'O', 'c', 't', 0,
+                                         'N', 'o', 'v', 0,
+                                         'D', 'e', 'c', 0);
+    const __m128i month = _mm_shuffle_epi8(lo, _mm_setr_epi8(8, 9, 10, -1, 8, 9, 10, -1, 8, 9, 10, -1, 8, 9, 10, -1));
+
+    const __m128i eq0 = _mm_cmpeq_epi32(month, month0);
+    const __m128i eq1 = _mm_cmpeq_epi32(month, month1);
+    const __m128i eq2 = _mm_cmpeq_epi32(month, month2);
+
+    const __m128i p01 = _mm_packs_epi32(eq0, eq1);
+    const __m128i p22 = _mm_packs_epi32(eq2, eq2);
+    const __m128i p   = _mm_packs_epi16(p01, p22);
+
+    const uint16_t month_mask = _mm_movemask_epi8(p);
+    if (month_mask == 0) {
+        return -EINVAL;
+    }
+
+    fields->tm_mon = __builtin_ctz(month_mask);
+#else
+#   error "Wrong METHOD"
+#endif
 
     // 4. convert [almost] all numeric values at once
     //
