@@ -28,24 +28,17 @@ int parse_rfc_date(const char* in, tm* fields) {
     // lo       = "Fri, 17 Apr 2015"
     // lo_valid = "???, ?? ??? ????"
     const __m128i lo_valid      = _mm_setr_epi8(0, 0, 0, ',', ' ', 0, 0, ' ', 0, 0, 0, ' ', 0, 0, 0, 0);
-    const __m128i lo_valid_mask = _mm_setr_epi8(0, 0, 0,  -1,  -1, 0, 0,  -1, 0, 0, 0,  -1, 0, 0, 0, 0);
     // hi       = "015 16:14:11 GMT"
     // hi_valid = "??? ??:??:?? GMT"
     const __m128i hi_valid      = _mm_setr_epi8(0, 0, 0, ' ', 0, 0, ':', 0, 0, ':', 0, 0, ' ', 'G', 'M', 'T');
-    const __m128i hi_valid_mask = _mm_setr_epi8(0, 0, 0,  -1, 0, 0,  -1, 0, 0,  -1, 0, 0,  -1,  -1,  -1,  -1);
 
-    __m128i lo_check;
-    lo_check = _mm_cmpeq_epi8(lo, lo_valid);
-    lo_check = _mm_and_si128 (lo_check, lo_valid_mask);
-    lo_check = _mm_cmpeq_epi8(lo_check, lo_valid_mask);
+    const __m128i lo_check = _mm_cmpeq_epi8(lo, lo_valid);
+    if (_mm_movemask_epi8(lo_check) != 0x0898) {
+        return -EINVAL;
+    }
 
-    __m128i hi_check;
-    hi_check = _mm_cmpeq_epi8(hi, hi_valid);
-    hi_check = _mm_and_si128 (hi_check, hi_valid_mask);
-    hi_check = _mm_cmpeq_epi8(hi_check, hi_valid_mask);
-
-    const __m128i valid = _mm_and_si128(lo_check, hi_check);
-    if (!TEST_ALL_ONES(valid)) {
+    const __m128i hi_check = _mm_cmpeq_epi8(hi, hi_valid);
+    if (_mm_movemask_epi8(hi_check) != 0xf248) {
         return -EINVAL;
     }
 
