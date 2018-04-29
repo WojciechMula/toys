@@ -13,5 +13,5 @@ Following procedures are available:
 
 For details see `full article`__.
 
-__ http://0x80.pl/notesen.html#note-2014-14
+__ http://0x80.pl/notesen/2014-10-22-sse-convert-hex-to-ascii.html
 
