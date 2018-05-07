@@ -149,8 +149,8 @@ int parse_rfc_date(const char* in, tm* fields) {
     // year   :  0 .. 99 -- always valid if letters were digits
     // day    :  1 .. 31
     // hour   :  1 .. 24
-    // min    :  1 .. 59
-    // sec    :  1 .. 59
+    // min    :  0 .. 59
+    // sec    :  0 .. 59
     const __m128i numbers_lo_bound = _mm_setr_epi16(0, 0, 19,  0,  1,  1,  0,  0);
     const __m128i numbers_hi_bound = _mm_setr_epi16(0, 0, 29, 99, 31, 24, 59, 59);
 

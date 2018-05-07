@@ -20,5 +20,8 @@ unittests: unittests.cpp sse.cpp
 unittests_scalar: unittests.cpp scalar.cpp
 	$(CXX) $(FLAGS) -DTEST_SCALAR -DUNITTESTS $< -o $@
 
+unittests_kendall: unittests.cpp sse_kendall.cpp
+	$(CXX) $(FLAGS) -DTEST_KENDALL -DUNITTESTS $< -o $@
+
 clean:
 	$(RM) $(ALL)

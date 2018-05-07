@@ -5,9 +5,13 @@
 #include <cstring>
 
 #if TEST_SCALAR
-#include "scalar.cpp"
+#   include "scalar.cpp"
 #else
-#include "sse.cpp"
+    #if TEST_KENDALL
+    #   include "sse_kendall.cpp"
+    #else
+    #   include "sse.cpp"
+    #endif
 #endif
 
 static const char* weekdays[] = {"Sun", "Mon", "Tue",
@@ -106,7 +110,11 @@ int TestBase::invocation() {
 #ifdef TEST_SCALAR
     return parse_rfc_date_reference(pattern.c_str(), &result);
 #else
+#ifdef TEST_KENDALL
+    return parse_rfc_date_kendall(pattern.c_str(), &result);
+#else
     return parse_rfc_date(pattern.c_str(), &result);
+#endif
 #endif
 }
 

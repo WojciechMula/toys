@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <time.h>
 
+// comment out to measure bare-metal peformance
+#define INPUT_VALIDATION
+
 int parse_rfc_date_kendall(const char *in, struct tm *fields) {
 
   // magic=7596 0x1DAC
@@ -49,6 +52,26 @@ int parse_rfc_date_kendall(const char *in, struct tm *fields) {
   __m128i lo = _mm_loadu_si128((const __m128i*)(in));
   __m128i hi = _mm_loadu_si128((const __m128i*)(in + 13));
 
+  #ifdef INPUT_VALIDATION
+    // 1. validate constant characters
+    // lo       = "Fri, 17 Apr 2015"
+    // lo_valid = "???, ?? ??? ????"
+    const __m128i lo_valid      = _mm_setr_epi8(0, 0, 0, ',', ' ', 0, 0, ' ', 0, 0, 0, ' ', 0, 0, 0, 0);
+    // hi       = "015 16:14:11 GMT"
+    // hi_valid = "??? ??:??:?? GMT"
+    const __m128i hi_valid      = _mm_setr_epi8(0, 0, 0, ' ', 0, 0, ':', 0, 0, ':', 0, 0, ' ', 'G', 'M', 'T');
+
+    const __m128i lo_check = _mm_cmpeq_epi8(lo, lo_valid);
+    if (_mm_movemask_epi8(lo_check) != 0x0898) {
+        return -EINVAL;
+    }
+
+    const __m128i hi_check = _mm_cmpeq_epi8(hi, hi_valid);
+    if (_mm_movemask_epi8(hi_check) != 0xf248) {
+        return -EINVAL;
+    }
+  #endif // INPUT_VALIDATION
+
   // lo_digits = ['p'|'r'| 0 | 0 |'2'|'0'| 0 | 0 |'F'|'r'| 0 | 0 |'1'|'5'|'1'|'7']
   const __m128i lo_digits = _mm_shuffle_epi8(lo, _mm_setr_epi8( 9, 10, -1, -1,
                                                                12, 13, -1, -1,
@@ -70,27 +93,82 @@ int parse_rfc_date_kendall(const char *in, struct tm *fields) {
                                                                   '0', '0', '0', '0',
                                                                     0,   0, '0', '0',
                                                                   '0', '0', '0', '0'));
+#ifdef INPUT_VALIDATION
+    const __m128i less_ascii0    = _mm_cmplt_epi8(digits, _mm_set1_epi8(0)); // char < '0' <=> char - '0' < 0
+    const __m128i greater_ascii9 = _mm_cmplt_epi8(_mm_set1_epi8(9), digits); // char > '9'
+    const __m128i wrong_digits   = _mm_or_si128(less_ascii0, greater_ascii9);
+    if ((_mm_movemask_epi8(wrong_digits) & 0xfcfc) != 0x0000) {
+        return -EINVAL;
+    }
+#endif // INPUT_VALIDATION
 
   const __m128i converters = _mm_setr_epi8(0xA2, 0x59, 10, 1, 10, 1, 10, 1, 0xAC, 0x1D, 10, 1, 10, 1, 10, 1);
   
   // numbers -- hashed month/weekday and converted numeric 2-digit fields
   // numbers = [ month |   11  |   20  |   14  | w-day |   16  |   15  |   17  ]
+  //             HASH      sec  century    min   HASH     hour    year    day
   const __m128i numbers = _mm_maddubs_epi16(digits, converters);
 
-  // sec, min, hour, mday,  32-bit aligned
-  // numbers >> 16 = [ 11 | 14 | 16 | 17 ]
-  _mm_storeu_si128( (__m128i*) &fields->tm_sec, _mm_srli_epi32(numbers, 16));
+#ifdef INPUT_VALIDATION
+    const __m128i numbers1_lo_bound = _mm_setr_epi16(0,  0, 19,  0,  0,  1,  0,  1);
+    const __m128i numbers1_hi_bound = _mm_setr_epi16(0, 59, 29, 59,  0, 24, 99, 31);
+
+    const __m128i outside_bounds1 = _mm_or_si128(
+                                    _mm_cmplt_epi16(numbers, numbers1_lo_bound),
+                                    _mm_cmpgt_epi16(numbers, numbers1_hi_bound));
+
+    if (_mm_movemask_epi8(outside_bounds1) & 0xfcfc) {
+        return -EINVAL;
+    }
+#endif // INPUT_VALIDATION
+
+  constexpr bool known_layout = (offsetof(tm, tm_sec)  ==  0)
+                             && (offsetof(tm, tm_min)  ==  4)
+                             && (offsetof(tm, tm_hour) ==  8)
+                             && (offsetof(tm, tm_mday) == 12);
+  if (known_layout) {
+      // sec, min, hour, mday,  32-bit aligned
+      // numbers >> 16 = [ 11 | 14 | 16 | 17 ]
+      _mm_storeu_si128( (__m128i*) &fields->tm_sec, _mm_srli_epi32(numbers, 16));
+  } else {
+      // 2. copy numbers to struct
+      fields->tm_mday = _mm_extract_epi16(numbers, 7);
+      fields->tm_hour = _mm_extract_epi16(numbers, 5);
+      fields->tm_min  = _mm_extract_epi16(numbers, 3);
+      fields->tm_sec  = _mm_extract_epi16(numbers, 1);
+  }
 
   // mon, century, wday, year
   __m128i others = _mm_and_si128(numbers, _mm_setr_epi16(0x0F00, 0, 0xFFFF, 0, 0x0700, 0, 0xFFFF, 0));
 
-  char ctmp[16];
-  _mm_storeu_si128((__m128i*)ctmp, others);
-  const uint32_t *atmp = (uint32_t *) ctmp;
-  int year = 100 * atmp[1] + atmp[3] - 1900;
+  union {
+    uint8_t bytes[16];
+    uint32_t dwords[4];
+  };
 
-  fields->tm_mon = months_inv[ctmp[1]];
-  fields->tm_wday = days_inv[ctmp[9]];
+  _mm_storeu_si128((__m128i*)bytes, others);
+
+#ifdef INPUT_VALIDATION
+    if (months[bytes[1]] != *(uint32_t*)(in + 8)) {
+        return -EINVAL;
+    }
+#endif
+
+  fields->tm_mon  = months_inv[bytes[1]];
+
+#ifdef INPUT_VALIDATION
+    if (days[bytes[9]] != *(uint32_t*)(in + 0)) {
+        return -EINVAL;
+    }
+#endif
+  fields->tm_wday = days_inv[bytes[9]];
+
+  const int year = 100 * dwords[1] + dwords[3] - 1900;
+#ifdef INPUT_VALIDATION
+    if (year < 0 || year > 1000) {
+        return -EINVAL;
+    }
+#endif
   fields->tm_year = year;
 
   return 0;
