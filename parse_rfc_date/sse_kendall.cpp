@@ -102,7 +102,7 @@ int parse_rfc_date_kendall(const char *in, struct tm *fields) {
     }
 #endif // INPUT_VALIDATION
 
-  const __m128i converters = _mm_setr_epi8(0xA2, 0x59, 10, 1, 10, 1, 10, 1, 0xAC, 0x1D, 10, 1, 10, 1, 10, 1);
+  const __m128i converters = _mm_setr_epi8(char(0xA2), 0x59, 10, 1, 10, 1, 10, 1, char(0xAC), 0x1D, 10, 1, 10, 1, 10, 1);
   
   // numbers -- hashed month/weekday and converted numeric 2-digit fields
   // numbers = [ month |   11  |   20  |   14  | w-day |   16  |   15  |   17  ]
@@ -139,7 +139,9 @@ int parse_rfc_date_kendall(const char *in, struct tm *fields) {
   }
 
   // mon, century, wday, year
-  __m128i others = _mm_and_si128(numbers, _mm_setr_epi16(0x0F00, 0, 0xFFFF, 0, 0x0700, 0, 0xFFFF, 0));
+  __m128i others = _mm_and_si128(numbers, _mm_setr_epi16(
+                                    0x0F00, 0x0000, int16_t(0xFFFF), 0x0000,
+                                    0x0700, 0x0000, int16_t(0xFFFF), 0x0000));
 
   union {
     uint8_t bytes[16];
