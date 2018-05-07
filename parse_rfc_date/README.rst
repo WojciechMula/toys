@@ -52,16 +52,15 @@ __ https://twitter.com/kendallwillets
 One of the most difficult part in parsing is conversion from four-character
 abbreviations of month and weekday into numbers. Kendall observed that this
 transformation might be done by **multiplication by a magic constant** and then
-extract a few bits of the result word.
+extraction of a few bits from the result word.
 
 Moreover, hash values are not calculated for whole 32-bit values, but 16-bit
 subwords. Thanks to that multiplication can be done alongside other
 multiplications needed to convert from ASCII to numeric values.
 
 Although the conversion itself can be done **extremely fast** -- approximately
-4 cycles per input string! (SSE variant works at 27 cycles) -- but the input
+4 cycles per input string! (SSE variant works at 27 cycles) -- the input
 validation kills the performance.
-
 
 
 Known problems
