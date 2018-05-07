@@ -5,6 +5,9 @@
 #include <immintrin.h>
 #include <cstddef> // for offsetof
 
+// comment out to measure bare-metal peformance
+#define INPUT_VALIDATION
+
 #define USE_PMOVMASKB
 #ifdef USE_PMOVMASKB
 #   define TEST_ALL_ZEROS(vector) (_mm_movemask_epi8(vector) == 0)
@@ -24,6 +27,7 @@ int parse_rfc_date(const char* in, tm* fields) {
     //       0123456789abcdef
     __m128i hi = _mm_loadu_si128((const __m128i*)(in + 13));
 
+#ifdef INPUT_VALIDATION
     // 1. validate constant characters
     // lo       = "Fri, 17 Apr 2015"
     // lo_valid = "???, ?? ??? ????"
@@ -41,6 +45,7 @@ int parse_rfc_date(const char* in, tm* fields) {
     if (_mm_movemask_epi8(hi_check) != 0xf248) {
         return -EINVAL;
     }
+#endif // INPUT_VALIDATION
 
     // 2. decode Weekday: "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
     const __m128i weekday_letters01 = _mm_setr_epi8('S', 'u', 'M', 'o', 'T', 'u', 'W', 'e', 'T', 'h', 'F', 'r', 'S', 'a', -1, -1);
@@ -53,9 +58,11 @@ int parse_rfc_date(const char* in, tm* fields) {
         _mm_and_si128(_mm_cmpeq_epi16(w01, weekday_letters01), _mm_cmpeq_epi16(w22, weekday_letters22));
 
     const uint16_t weekday_mask = _mm_movemask_epi8(weekday_bytemask);
+#ifdef INPUT_VALIDATION
     if (weekday_mask == 0) {
         return -EINVAL;
     }
+#endif // INPUT_VALIDATION
 
     fields->tm_wday = __builtin_ctz(weekday_mask)/2;
 
@@ -75,9 +82,11 @@ int parse_rfc_date(const char* in, tm* fields) {
         _mm_and_si128(_mm_cmpeq_epi8(m1, month_letter1), _mm_cmpeq_epi8(m2, month_letter2)));
 
     const uint16_t month_mask = _mm_movemask_epi8(month_bytemask);
+#ifdef INPUT_VALIDATION
     if (month_mask == 0) {
         return -EINVAL;
     }
+#endif // INPUT_VALIDATION
 
     fields->tm_mon = __builtin_ctz(month_mask);
 #elif METHOD == 2
@@ -104,9 +113,11 @@ int parse_rfc_date(const char* in, tm* fields) {
     const __m128i p   = _mm_packs_epi16(p01, p22);
 
     const uint16_t month_mask = _mm_movemask_epi8(p);
+#ifdef INPUT_VALIDATION
     if (month_mask == 0) {
         return -EINVAL;
     }
+#endif // INPUT_VALIDATION
 
     fields->tm_mon = __builtin_ctz(month_mask);
 #else
@@ -129,21 +140,24 @@ int parse_rfc_date(const char* in, tm* fields) {
 
     // digits    = "2222201517161411"
     const __m128i ASCII_digits = _mm_or_si128(lo_digits, hi_digits);
-
-    // validate digits
     const __m128i digits = _mm_sub_epi8(ASCII_digits, _mm_set1_epi8('0'));
+
+#ifdef INPUT_VALIDATION
+    // validate digits
     const __m128i less_ascii0    = _mm_cmplt_epi8(digits, _mm_set1_epi8(0)); // char < '0' <=> char - '0' < 0
     const __m128i greater_ascii9 = _mm_cmplt_epi8(_mm_set1_epi8(9), digits); // char > '9'
     const __m128i wrong_digits   = _mm_or_si128(less_ascii0, greater_ascii9);
     if (!TEST_ALL_ZEROS(wrong_digits)) {
         return -EINVAL;
     }
+#endif // INPUT_VALIDATION
 
     // convert numbers, the vector contains following 2-digit numbers:
     // [0, 0, century, year, day, hour, min, sec]
     const __m128i numbers = _mm_maddubs_epi16(digits,
                             _mm_set_epi8(1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0));
 
+#ifdef INPUT_VALIDATION
     // 5. validate numeric ranges
     // century: 19 .. 20
     // year   :  0 .. 99 -- always valid if letters were digits
@@ -161,6 +175,7 @@ int parse_rfc_date(const char* in, tm* fields) {
     if (!TEST_ALL_ZEROS(outside_bounds)) {
         return -EINVAL;
     }
+#endif
 
     constexpr bool known_layout = (offsetof(tm, tm_sec)  ==  0)
                                && (offsetof(tm, tm_min)  ==  4)
@@ -189,12 +204,17 @@ int parse_rfc_date(const char* in, tm* fields) {
 
     int tmp = _mm_extract_epi16(numbers, 2) * 100 + _mm_extract_epi16(numbers, 3);
     tmp -= 1900;
+#ifdef INPUT_VALIDATION
     if (tmp < 0 || tmp > 1000) {
         return -EINVAL;
     }
+#endif
 
     fields->tm_year = tmp;
 
     return 0;
 }
 
+#ifdef INPUT_VALIDATION
+#   undef INPUT_VALIDATION
+#endif

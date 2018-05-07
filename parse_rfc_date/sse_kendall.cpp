@@ -173,3 +173,7 @@ int parse_rfc_date_kendall(const char *in, struct tm *fields) {
 
   return 0;
 }
+
+#ifdef INPUT_VALIDATION
+#   undef INPUT_VALIDATION
+#endif
