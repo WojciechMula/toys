@@ -1,5 +1,6 @@
 #include "benchmark.h"
 #include "sse.cpp"
+#include "sse_kendall.cpp"
 #include "scalar.cpp"
 
 #include <ctime>
@@ -54,6 +55,15 @@ void benchmark_SSE() {
 }
 
 
+void benchmark_SSE_kendall() {
+    std::tm fields;
+    global_result = 0;
+    for (size_t i=0; i < SIZE; i++) {
+        global_result += parse_rfc_date_kendall(input[i], &fields);
+    }
+}
+
+
 int main() {
 
     std::srand(0);
@@ -62,6 +72,7 @@ int main() {
     const size_t iterations = 1000;
     const size_t size = SIZE;
 
-    BEST_TIME(/**/, benchmark_scalar(), "scalar", iterations, size);
-    BEST_TIME(/**/, benchmark_SSE(),    "SSE",    iterations, size); 
+    BEST_TIME(/**/, benchmark_scalar(),         "scalar",           iterations, size);
+    BEST_TIME(/**/, benchmark_SSE(),            "SSE",              iterations, size); 
+    BEST_TIME(/**/, benchmark_SSE_kendall(),    "SSE (Kendall)",    iterations, size); 
 }
