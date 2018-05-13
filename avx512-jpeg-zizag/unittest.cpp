@@ -19,6 +19,9 @@ public:
         try {
             test("scalar",      jpeg_zigzag_scalar);
             test("SSE",         jpeg_zigzag_sse);
+#ifdef HAVE_AVX512BW
+            test("AVX512VBMI",  jpeg_zigzag_avx512bw);
+#endif
 #ifdef HAVE_AVX512VBMI
             test("AVX512VBMI",  jpeg_zigzag_avx512vbmi);
 #endif

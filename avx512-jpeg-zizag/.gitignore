@@ -1,3 +1,4 @@
 unittest
+unittest_avx512bw
 unittest_avx512vbmi
 
