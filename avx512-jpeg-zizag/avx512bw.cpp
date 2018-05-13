@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <immintrin.h>
-#include "avx512-dump.h"
 
 void jpeg_zigzag_avx512bw(const uint8_t* in, uint8_t* out) {
     

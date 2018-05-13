@@ -2,3 +2,7 @@ unittest
 unittest_avx512bw
 unittest_avx512vbmi
 
+benchmark
+benchmark_avx512bw
+benchmark_avx512vbmi
+
