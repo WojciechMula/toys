@@ -1,9 +1,9 @@
-// this is translation of SSE code
+// copy of avx512bw.cpp, but use masked writes instead of explicit bit-or operations
 
 #include <cstdint>
 #include <immintrin.h>
 
-void jpeg_zigzag_avx512bw(const uint8_t* in, uint8_t* out) {
+void jpeg_zigzag_avx512bw_masks(const uint8_t* in, uint8_t* out) {
     
     const __m512i v = _mm512_loadu_si512((const __m512i*)in);
 
@@ -46,15 +46,13 @@ void jpeg_zigzag_avx512bw(const uint8_t* in, uint8_t* out) {
         10, 11,  4, -1, -1, -1, -1, -1,  5, 12, 13,  6, -1,  7, 14, 15
     };
 
-    const __m512i shufA = _mm512_shuffle_epi8(A, _mm512_load_si512((const __m512i*)shuffle_A));
-    const __m512i shufB = _mm512_shuffle_epi8(B, _mm512_load_si512((const __m512i*)shuffle_B));
-    const __m512i shufC = _mm512_shuffle_epi8(C, _mm512_load_si512((const __m512i*)shuffle_C));
-    const __m512i shufD = _mm512_shuffle_epi8(D, _mm512_load_si512((const __m512i*)shuffle_D));
+    __m512i result = _mm512_shuffle_epi8(A, _mm512_load_si512((const __m512i*)shuffle_A));
+    result = _mm512_mask_shuffle_epi8(result, 0x00201b00c3061b08lu,
+                                      B, _mm512_load_si512((const __m512i*)shuffle_B));
+    result = _mm512_mask_shuffle_epi8(result, 0x10d860c300d80400lu,
+                                      C, _mm512_load_si512((const __m512i*)shuffle_C));
+    result = _mm512_mask_shuffle_epi8(result, 0xef07803c00200000lu,
+                                      D, _mm512_load_si512((const __m512i*)shuffle_D));
 
-    // merge all shufX vectors
-    const uint8_t OR_ALL = 0xfe;
-    const __m512i res = _mm512_or_si512(shufD,
-                        _mm512_ternarylogic_epi32(shufA, shufB, shufC, OR_ALL));
-
-    _mm512_storeu_si512((__m512i*)out, res);
+    _mm512_storeu_si512((__m512i*)out, result);
 }

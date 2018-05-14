@@ -9,6 +9,7 @@ DEPS=common.cpp\
      scalar.cpp\
      sse.cpp\
      avx512bw.cpp\
+     avx512bw_masks.cpp\
      avx512vbmi.cpp
 
 ALL=unittest\

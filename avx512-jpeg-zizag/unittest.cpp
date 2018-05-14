@@ -20,7 +20,8 @@ public:
             test("scalar",      jpeg_zigzag_scalar);
             test("SSE",         jpeg_zigzag_sse);
 #ifdef HAVE_AVX512BW
-            test("AVX512BW",    jpeg_zigzag_avx512bw);
+            test("AVX512BW",            jpeg_zigzag_avx512bw);
+            test("AVX512BW (masks)",    jpeg_zigzag_avx512bw_masks);
 #endif
 #ifdef HAVE_AVX512VBMI
             test("AVX512VBMI",  jpeg_zigzag_avx512vbmi);
@@ -33,7 +34,7 @@ public:
 private:
     template <typename FUN>
     void test(const char* name, FUN jpeg_zigzag_fun) {
-        printf("%15s... ", name);
+        printf("%20s... ", name);
         fflush(stdout);
 
         jpeg_zigzag_fun(in, out);
