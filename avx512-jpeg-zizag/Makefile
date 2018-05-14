@@ -10,6 +10,7 @@ DEPS=common.cpp\
      sse.cpp\
      avx512bw.cpp\
      avx512bw_masks.cpp\
+     avx512bw_permute16.cpp\
      avx512vbmi.cpp
 
 ALL=unittest\

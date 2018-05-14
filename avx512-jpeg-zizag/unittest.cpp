@@ -22,6 +22,7 @@ public:
 #ifdef HAVE_AVX512BW
             test("AVX512BW",            jpeg_zigzag_avx512bw);
             test("AVX512BW (masks)",    jpeg_zigzag_avx512bw_masks);
+            test("AVX512BW (perm16)",   jpeg_zigzag_avx512bw_permute16);
 #endif
 #ifdef HAVE_AVX512VBMI
             test("AVX512VBMI",  jpeg_zigzag_avx512vbmi);
