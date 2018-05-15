@@ -5,9 +5,18 @@
 
 void jpeg_zigzag_avx512bw(const uint8_t* in, uint8_t* out) {
     
-    const __m512i v = _mm512_loadu_si512((const __m512i*)in);
 
     // populate lanes -- each lane represents pair of output rows
+#if 1
+    // as proposed by InstLatX64
+    // https://twitter.com/InstLatX64/status/996370932238307329
+    const __m512i A = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 0 * 16)));
+    const __m512i B = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 1 * 16)));
+    const __m512i C = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 2 * 16)));
+    const __m512i D = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 3 * 16)));
+#else
+    const __m512i v = _mm512_loadu_si512((const __m512i*)in);
+
     const __m512i A = _mm512_permutexvar_epi32(
                       _mm512_setr_epi32(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3), v);
     const __m512i B = _mm512_permutexvar_epi32(
@@ -16,7 +25,8 @@ void jpeg_zigzag_avx512bw(const uint8_t* in, uint8_t* out) {
                       _mm512_setr_epi32(8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11), v);
     const __m512i D = _mm512_permutexvar_epi32(
                       _mm512_setr_epi32(12, 13, 14, 15, 12, 13, 14, 15, 12, 13, 14, 15, 12, 13, 14, 15), v);
-    
+#endif
+
     // perform shuffling within lanes
     static const int8_t shuffle_A[64] __attribute__((aligned(64))) = {
          0,  1,  8, -1,  9,  2,  3, 10, -1, -1, -1, -1, -1, 11,  4,  5,
