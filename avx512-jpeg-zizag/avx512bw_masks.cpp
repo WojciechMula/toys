@@ -4,18 +4,12 @@
 #include <immintrin.h>
 
 void jpeg_zigzag_avx512bw_masks(const uint8_t* in, uint8_t* out) {
-    
-    const __m512i v = _mm512_loadu_si512((const __m512i*)in);
-
+ 
     // populate lanes -- each lane represents pair of output rows
-    const __m512i A = _mm512_permutexvar_epi32(
-                      _mm512_setr_epi32(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3), v);
-    const __m512i B = _mm512_permutexvar_epi32(
-                      _mm512_setr_epi32(4, 5, 6, 7, 4, 5, 6, 7, 4, 5, 6, 7, 4, 5, 6, 7), v);
-    const __m512i C = _mm512_permutexvar_epi32(
-                      _mm512_setr_epi32(8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11), v);
-    const __m512i D = _mm512_permutexvar_epi32(
-                      _mm512_setr_epi32(12, 13, 14, 15, 12, 13, 14, 15, 12, 13, 14, 15, 12, 13, 14, 15), v);
+    const __m512i A = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 0 * 16)));
+    const __m512i B = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 1 * 16)));
+    const __m512i C = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 2 * 16)));
+    const __m512i D = _mm512_broadcast_i32x4(_mm_loadu_si128((const __m128i*)(in + 3 * 16)));
     
     // perform shuffling within lanes
     static const int8_t shuffle_A[64] __attribute__((aligned(64))) = {
