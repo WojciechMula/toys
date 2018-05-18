@@ -2,7 +2,7 @@
 
 bool is_sorted_avx512(int32_t* a, size_t n) {
 
-    const __m512i shuffle_pattern = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15);
+    static const __m512i shuffle_pattern = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15);
 
     size_t i = 0;
     while (i < n - 16) {
