@@ -1,3 +1,4 @@
 avx512f-alignr
 avx512cd-conflict-demo
 avx512vl-multishift
+avx512-ktest

@@ -1,7 +1,10 @@
 .PHONY: clean
 
 FLAGS=-std=c++11 -O3 -Wall -Wextra -pedantic
-ALL=avx512f-alignr avx512cd-conflict-demo avx512vl-multishift
+ALL=avx512f-alignr\
+    avx512cd-conflict-demo\
+    avx512vl-multishift\
+    avx512-ktest
 
 all: $(ALL)
 
@@ -13,6 +16,9 @@ avx512cd-conflict-demo: avx512cd-conflict-demo.cpp
 
 avx512vl-multishift: avx512vl-multishift.cpp
 	$(CXX) $(FLAGS) -mavx512f $^ -o $@
+
+avx512-ktest: avx512-ktest.c
+	$(CC) -mavx512f $^ -o $@
 
 run: avx512f-alignr
 	sde -cnl -- ./$^
