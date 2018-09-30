@@ -18,6 +18,13 @@ public:
 #ifdef HAVE_AVX2
             test_case1("AVX2",          min_index_avx2);
 #endif
+
+            test_case2("scalar",        min_index_scalar);
+            test_case2("SSE",           min_index_sse);
+            test_case2("SSE unrolled",  min_index_sse_unrolled);
+#ifdef HAVE_AVX2
+            test_case2("AVX2",          min_index_avx2);
+#endif
         } catch (TestFailed&) {
             return false;
         }
@@ -39,6 +46,27 @@ private:
                 print_ansi("failed\n", ANSI_RED);
                 printf("expected %lu, result %lu\n", i, result);
                 throw TestFailed();
+            }
+        }
+
+        print_ansi("OK\n", ANSI_GREEN);
+    }
+
+    template <typename FUN>
+    void test_case2(const char* name, FUN f) {
+
+        printf("Testing %15s [case 2]... ", name); fflush(stdout);
+
+        size_t result;
+        for (size_t i = 0; i < size; i++) {
+            for (size_t j = i + 1; j < size; j++) {
+                prepare(i, j);
+                f(array, size, &result);
+                if (result != i) {
+                    print_ansi("failed\n", ANSI_RED);
+                    printf("expected %lu, result %lu\n", i, result);
+                    throw TestFailed();
+                }
             }
         }
 
