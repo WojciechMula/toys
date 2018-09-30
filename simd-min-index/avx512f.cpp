@@ -14,7 +14,7 @@ void min_index_avx512f(int32_t* array, size_t size, size_t* result) {
         const __m512i values        = _mm512_loadu_si512((__m512i*)(array + i));
         const __mmask16 lt          = _mm512_cmplt_epi32_mask(values, minvalues);
         minindices = _mm512_mask_blend_epi32(lt, minindices, indices);
-        minvalues  = _mm512_mask_blend_epi32(lt, minvalues, values);
+        minvalues  = _mm512_min_epi32(minvalues, values);
     }
 
     // find min index in vector result (in an extremely naive way)
