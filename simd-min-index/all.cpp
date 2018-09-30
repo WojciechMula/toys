@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cassert>
+#include <algorithm> // std::min
 
 #include <immintrin.h>
 

@@ -30,6 +30,8 @@ void min_index_avx2(int32_t* array, size_t size, size_t* result) {
         if (values_array[i] < minvalue) {
             minvalue = values_array[i];
             minindex = indices_array[i];
+        } else if (values_array[i] == minvalue) {
+            minindex = std::min(minindex, size_t(indices_array[i]));
         }
     }
 
