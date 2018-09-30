@@ -15,3 +15,6 @@
 #include "scalar.cpp"
 #include "sse.cpp"
 #include "sse_unrolled.cpp"
+#ifdef HAVE_AVX2
+#include "avx2.cpp"
+#endif

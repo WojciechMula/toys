@@ -16,6 +16,9 @@ public:
         test("scalar",       min_index_scalar);
         test("SSE",          min_index_sse);
         test("SSE unrolled", min_index_sse_unrolled);
+#ifdef HAVE_AVX2
+        test("AVX2",         min_index_avx2);
+#endif
     }
 
 private:
@@ -35,7 +38,7 @@ int main() {
     std::vector<size_t> sizes = {1024*4, 1024*16, 1024*32};
 
     for (size_t size: sizes) {
-        printf("element count %d\n", size);
+        printf("element count %lu\n", size);
         Benchmark bench(size);
         bench.run();
     }

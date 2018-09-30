@@ -15,6 +15,9 @@ public:
             test_case1("scalar",        min_index_scalar);
             test_case1("SSE",           min_index_sse);
             test_case1("SSE unrolled",  min_index_sse_unrolled);
+#ifdef HAVE_AVX2
+            test_case1("AVX2",          min_index_avx2);
+#endif
         } catch (TestFailed&) {
             return false;
         }
@@ -26,7 +29,7 @@ private:
     template <typename FUN>
     void test_case1(const char* name, FUN f) {
 
-        printf("Testing %10s [case 1]... ", name); fflush(stdout);
+        printf("Testing %15s [case 1]... ", name); fflush(stdout);
 
         size_t result;
         for (size_t i = 0; i < size; i++) {

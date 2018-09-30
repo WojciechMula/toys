@@ -1,2 +1,4 @@
 benchmark
 unittest
+benchmark_avx2
+unittest_avx2
