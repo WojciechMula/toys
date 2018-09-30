@@ -19,3 +19,6 @@
 #ifdef HAVE_AVX2
 #include "avx2.cpp"
 #endif
+#ifdef HAVE_AVX512
+#include "avx512f.cpp"
+#endif

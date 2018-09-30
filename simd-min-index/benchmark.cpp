@@ -19,6 +19,9 @@ public:
 #ifdef HAVE_AVX2
         test("AVX2",         min_index_avx2);
 #endif
+#ifdef HAVE_AVX512
+        test("AVX512F",      min_index_avx512f);
+#endif
     }
 
 private:

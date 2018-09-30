@@ -18,12 +18,18 @@ public:
 #ifdef HAVE_AVX2
             test_case1("AVX2",          min_index_avx2);
 #endif
+#ifdef HAVE_AVX512
+            test_case1("AVX512F",       min_index_avx512f);
+#endif
 
             test_case2("scalar",        min_index_scalar);
             test_case2("SSE",           min_index_sse);
             test_case2("SSE unrolled",  min_index_sse_unrolled);
 #ifdef HAVE_AVX2
             test_case2("AVX2",          min_index_avx2);
+#endif
+#ifdef HAVE_AVX512
+            test_case2("AVX512F",       min_index_avx512f);
 #endif
         } catch (TestFailed&) {
             return false;
