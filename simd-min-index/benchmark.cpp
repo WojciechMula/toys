@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "benchmark.h"
-#include "all.cpp"
+#include "all.h"
 
 class Benchmark {
     std::vector<int32_t> input;
@@ -31,7 +31,11 @@ private:
         const size_t repeat = 10000;
         const size_t size = input.size();
 
-        BEST_TIME(/**/, function(&input[0], input.size(), &result), name, repeat, size);
+        auto wrapper = [this, function]() {
+            result = function(&input[0], input.size());
+        };
+
+        BEST_TIME(/**/, wrapper(), name, repeat, size);
     }
 
 };

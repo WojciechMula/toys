@@ -28,24 +28,37 @@ avx2: $(AVX2)
 
 avx512: $(AVX512)
 
-benchmark: benchmark.cpp $(PROCEDURES)
-	$(CXX) $(FLAGS) $< -o $@
 
-unittest: unittest.cpp $(PROCEDURES)
-	$(CXX) $(FLAGS) $< -o $@
+procedures.o: all.cpp all.h $(PROCEDURES)
+	$(CXX) $(FLAGS) -c $< -o $@
 
-benchmark_avx2: benchmark.cpp $(PROCEDURES_AVX2)
-	$(CXX) $(FLAGS_AVX2) $< -o $@
+procedures_avx2.o: all.cpp all.h $(PROCEDURES_AVX2)
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
-unittest_avx2: unittest.cpp $(PROCEDURES_AVX2)
-	$(CXX) $(FLAGS_AVX2) $< -o $@
+procedures_avx512.o: all.cpp all.h $(PROCEDURES_AVX512)
+	$(CXX) $(FLAGS_AVX512) -c $< -o $@
 
-benchmark_avx512: benchmark.cpp $(PROCEDURES_AVX512)
-	$(CXX) $(FLAGS_AVX512) $< -o $@
 
-unittest_avx512: unittest.cpp $(PROCEDURES_AVX512)
-	$(CXX) $(FLAGS_AVX512) $< -o $@
+benchmark: benchmark.cpp procedures.o
+	$(CXX) $(FLAGS) $^ -o $@
+
+unittest: unittest.cpp procedures.o
+	$(CXX) $(FLAGS) $^ -o $@
+
+
+benchmark_avx2: benchmark.cpp procedures_avx2.o
+	$(CXX) $(FLAGS_AVX2) $^ -o $@
+
+unittest_avx2: unittest.cpp procedures_avx2.o
+	$(CXX) $(FLAGS_AVX2) $^ -o $@
+
+
+benchmark_avx512: benchmark.cpp procedures_avx512.o
+	$(CXX) $(FLAGS_AVX512) $^ -o $@
+
+unittest_avx512: unittest.cpp procedures_avx512.o
+	$(CXX) $(FLAGS_AVX512) $^ -o $@
 
 
 clean:
-	$(RM) $(ALL)
+	$(RM) $(ALL) *.o

@@ -1,6 +1,7 @@
 #include <cstdio>
+#include <cassert>
 
-#include "all.cpp"
+#include "all.h"
 
 class Unittest {
     
@@ -54,10 +55,9 @@ private:
 
         printf("Testing %15s [case 1]... ", name); fflush(stdout);
 
-        size_t result;
         for (size_t i = 0; i < size; i++) {
             prepare(i);
-            f(array, size, &result);
+            const size_t result = f(array, size);
             if (result != i) {
                 print_ansi("failed\n", ANSI_RED);
                 printf("expected %lu, result %lu\n", i, result);
@@ -73,11 +73,10 @@ private:
 
         printf("Testing %15s [case 2]... ", name); fflush(stdout);
 
-        size_t result;
         for (size_t i = 0; i < size; i++) {
             for (size_t j = i + 1; j < size; j++) {
                 prepare(i, j);
-                f(array, size, &result);
+                const size_t result = f(array, size);
                 if (result != i) {
                     print_ansi("failed\n", ANSI_RED);
                     printf("expected %lu, result %lu\n", i, result);
@@ -94,10 +93,9 @@ private:
 
         printf("Testing %15s [case 3]... ", name); fflush(stdout);
 
-        size_t result;
         fill(-1);
         const size_t expected = 0;
-        f(array, size, &result);
+        const size_t result = f(array, size);
         if (result != expected) {
             print_ansi("failed\n", ANSI_RED);
             printf("expected %lu, result %lu\n", expected, result);

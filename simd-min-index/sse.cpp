@@ -1,4 +1,4 @@
-void min_index_sse(int32_t* array, size_t size, size_t* result) {
+size_t min_index_sse(int32_t* array, size_t size) {
 
     common_assertions;
 
@@ -35,5 +35,5 @@ void min_index_sse(int32_t* array, size_t size, size_t* result) {
         }
     }
 
-    *result = minindex;
+    return minindex;
 }

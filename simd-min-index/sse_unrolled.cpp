@@ -1,5 +1,5 @@
-void min_index_sse_unrolled(int32_t* array, size_t size, size_t* result)
-{
+size_t min_index_sse_unrolled(int32_t* array, size_t size) {
+
     common_assertions;
 
     const __m128i increment = _mm_set1_epi32(4);
@@ -49,5 +49,5 @@ void min_index_sse_unrolled(int32_t* array, size_t size, size_t* result)
         }
     }
 
-    *result = minindex;
+    return minindex;
 }
