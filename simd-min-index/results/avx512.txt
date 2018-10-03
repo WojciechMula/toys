@@ -1,0 +1,57 @@
+element count 4096
+rdtsc_overhead set to 29
+scalar                        	:     2.994 cycle/op (best)    3.508 cycle/op (avg)
+SSE                           	:     1.726 cycle/op (best)    1.831 cycle/op (avg)
+SSE unrolled                  	:     0.652 cycle/op (best)    0.659 cycle/op (avg)
+AVX2                          	:     0.269 cycle/op (best)    0.276 cycle/op (avg)
+AVX512F                       	:     0.164 cycle/op (best)    0.175 cycle/op (avg)
+element count 16384
+scalar                        	:     2.996 cycle/op (best)    3.437 cycle/op (avg)
+SSE                           	:     1.612 cycle/op (best)    1.688 cycle/op (avg)
+SSE unrolled                  	:     0.564 cycle/op (best)    0.568 cycle/op (avg)
+AVX2                          	:     0.322 cycle/op (best)    0.331 cycle/op (avg)
+AVX512F                       	:     0.208 cycle/op (best)    0.214 cycle/op (avg)
+element count 32768
+scalar                        	:     3.000 cycle/op (best)    3.548 cycle/op (avg)
+SSE                           	:     1.625 cycle/op (best)    1.686 cycle/op (avg)
+SSE unrolled                  	:     0.563 cycle/op (best)    0.567 cycle/op (avg)
+AVX2                          	:     0.322 cycle/op (best)    0.326 cycle/op (avg)
+AVX512F                       	:     0.207 cycle/op (best)    0.211 cycle/op (avg)
+element count 4096
+rdtsc_overhead set to 29
+scalar                        	:     2.994 cycle/op (best)    3.420 cycle/op (avg)
+SSE                           	:     1.721 cycle/op (best)    1.823 cycle/op (avg)
+SSE unrolled                  	:     0.652 cycle/op (best)    0.658 cycle/op (avg)
+AVX2                          	:     0.265 cycle/op (best)    0.273 cycle/op (avg)
+AVX512F                       	:     0.167 cycle/op (best)    0.173 cycle/op (avg)
+element count 16384
+scalar                        	:     2.997 cycle/op (best)    3.437 cycle/op (avg)
+SSE                           	:     1.618 cycle/op (best)    1.688 cycle/op (avg)
+SSE unrolled                  	:     0.565 cycle/op (best)    0.570 cycle/op (avg)
+AVX2                          	:     0.322 cycle/op (best)    0.330 cycle/op (avg)
+AVX512F                       	:     0.209 cycle/op (best)    0.213 cycle/op (avg)
+element count 32768
+scalar                        	:     3.000 cycle/op (best)    3.575 cycle/op (avg)
+SSE                           	:     1.622 cycle/op (best)    1.685 cycle/op (avg)
+SSE unrolled                  	:     0.564 cycle/op (best)    0.569 cycle/op (avg)
+AVX2                          	:     0.322 cycle/op (best)    0.325 cycle/op (avg)
+AVX512F                       	:     0.207 cycle/op (best)    0.211 cycle/op (avg)
+element count 4096
+rdtsc_overhead set to 29
+scalar                        	:     2.994 cycle/op (best)    3.408 cycle/op (avg)
+SSE                           	:     1.722 cycle/op (best)    1.814 cycle/op (avg)
+SSE unrolled                  	:     0.652 cycle/op (best)    0.656 cycle/op (avg)
+AVX2                          	:     0.265 cycle/op (best)    0.273 cycle/op (avg)
+AVX512F                       	:     0.166 cycle/op (best)    0.173 cycle/op (avg)
+element count 16384
+scalar                        	:     2.996 cycle/op (best)    3.430 cycle/op (avg)
+SSE                           	:     1.605 cycle/op (best)    1.681 cycle/op (avg)
+SSE unrolled                  	:     0.565 cycle/op (best)    0.569 cycle/op (avg)
+AVX2                          	:     0.322 cycle/op (best)    0.326 cycle/op (avg)
+AVX512F                       	:     0.208 cycle/op (best)    0.213 cycle/op (avg)
+element count 32768
+scalar                        	:     3.000 cycle/op (best)    3.625 cycle/op (avg)
+SSE                           	:     1.632 cycle/op (best)    1.681 cycle/op (avg)
+SSE unrolled                  	:     0.564 cycle/op (best)    0.568 cycle/op (avg)
+AVX2                          	:     0.321 cycle/op (best)    0.325 cycle/op (avg)
+AVX512F                       	:     0.206 cycle/op (best)    0.210 cycle/op (avg)
