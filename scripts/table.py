@@ -179,7 +179,7 @@ class RestructuredTextTableRenderer(object):
             width   = self._get_columns_width(index, count)
             width  -= 2 * self.padding
             result += ' ' * self.padding
-            result += '{:{align}{width}}'.format(text, align=align, width=width)
+            result += u'{:{align}{width}}'.format(text, align=align, width=width)
             result += ' ' * self.padding
             result += '|'
 
