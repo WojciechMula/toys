@@ -7,7 +7,11 @@ OBJ=scalar.o\
     sse.o\
     sse_sadbw.o
  
-ALL=unittest $(OBJ)
+EXE=unittest benchmark
+
+ALL=$(EXE) $(OBJ)
+
+all: $(EXE)
 
 unittest: unittest.cpp $(OBJ) 
 	$(CXX) $(FLAGS) $^ -o $@

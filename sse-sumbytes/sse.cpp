@@ -2,7 +2,7 @@
 
 #include <immintrin.h>
 
-uint32_t sse_sumbytes_naive(uint8_t* array, size_t size) {
+uint32_t sse_sumbytes(uint8_t* array, size_t size) {
 
     __m128i accumulator = _mm_setzero_si128();
 
