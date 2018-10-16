@@ -12,6 +12,10 @@ ALL=unittest $(OBJ)
 unittest: unittest.cpp $(OBJ) 
 	$(CXX) $(FLAGS) $^ -o $@
 
+benchmark: benchmark.cpp $(OBJ) 
+	$(CXX) $(FLAGS) $^ -o $@
+
+
 scalar.o: scalar.cpp scalar.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
