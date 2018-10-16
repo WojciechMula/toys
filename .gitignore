@@ -1,6 +1,7 @@
 *.swp
 *.out
 *.s
+*.o
 *.pyc
 perf.data
 perf.data.old
