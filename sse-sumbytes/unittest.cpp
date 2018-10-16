@@ -4,7 +4,7 @@
 
 class UnitTest {
 
-    static const size_t size = 256;
+    static const size_t size = 1024 * 8;
     uint8_t array[size];
     uint32_t expected;
     bool failed;
@@ -12,7 +12,7 @@ class UnitTest {
 public:
     UnitTest() {
         for (size_t i=0; i < size; i++) {
-            array[i] = i & 0xff;
+            array[i] = (i * 33 + i) & 0xff;
         }
         
         expected = scalar_sumbytes(array, size);
