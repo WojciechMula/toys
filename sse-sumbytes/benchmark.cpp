@@ -14,9 +14,10 @@ public:
 
 public:
     void run() {
-        test("scalar",      scalar_sumbytes);
-        test("SSE",         sse_sumbytes);
-        test("SSE (sadbw)", sse_sadbw_sumbytes);
+        test("scalar",           scalar_sumbytes);
+        test("SSE",              sse_sumbytes);
+        test("SSE (sadbw)",      sse_sadbw_sumbytes);
+        test("SSE (16bit accu)", sse_16bit_sumbytes);
     }
 
 private:
