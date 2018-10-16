@@ -4,7 +4,8 @@
 FLAGS=$(CXXFLAGS) -std=c++11 -Wall -Wextra -pedantic -O3 -march=native
 
 OBJ=scalar.o\
-    sse.o
+    sse.o\
+    sse_sadbw.o
  
 ALL=unittest $(OBJ)
 
@@ -15,6 +16,9 @@ scalar.o: scalar.cpp scalar.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 sse.o: sse.cpp sse.h
+	$(CXX) $(FLAGS) -c $< -o $@
+
+sse_sadbw.o: sse_sadbw.cpp sse_sadbw.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 clean:

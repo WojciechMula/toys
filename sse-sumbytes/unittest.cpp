@@ -20,7 +20,8 @@ public:
     }
 
     bool run() {
-        test("SSE", sse_sumbytes_naive);
+        test("SSE (naive)", sse_sumbytes_naive);
+        test("SSE (sadbw)", sse_sadbw_sumbytes);
 
         return failed;
     }
