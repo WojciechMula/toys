@@ -6,7 +6,8 @@ FLAGS=$(CXXFLAGS) -std=c++11 -Wall -Wextra -pedantic -O3 -march=native
 OBJ=scalar.o\
     sse.o\
     sse_sadbw.o\
-    sse_16bit.o
+    sse_16bit.o\
+    sse_8bit.o
  
 EXE=unittest benchmark
 
@@ -31,6 +32,9 @@ sse_sadbw.o: sse_sadbw.cpp sse_sadbw.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 sse_16bit.o: sse_16bit.cpp sse_16bit.h
+	$(CXX) $(FLAGS) -c $< -o $@
+
+sse_8bit.o: sse_8bit.cpp sse_8bit.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 clean:

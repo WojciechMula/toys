@@ -18,6 +18,7 @@ public:
         test("SSE",              sse_sumbytes);
         test("SSE (sadbw)",      sse_sadbw_sumbytes);
         test("SSE (16bit accu)", sse_16bit_sumbytes);
+        test("SSE (8bit accu)",  sse_8bit_sumbytes);
     }
 
 private:
