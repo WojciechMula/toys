@@ -50,7 +50,7 @@ uint32_t sse_16bit_sumbytes_variant2(uint8_t* array, size_t size) {
             const __m128i v = _mm_loadu_si128((__m128i*)(array + i + j));
 
             const __m128i t0 = _mm_and_si128(v, mask_lobytes);
-            const __m128i t1 = _mm_and_si128(_mm_srli_epi16(v, 8), mask_lobytes);
+            const __m128i t1 = _mm_srli_epi16(v, 8);
 
             accu_16bit = _mm_add_epi16(accu_16bit, t0);
             accu_16bit = _mm_add_epi16(accu_16bit, t1);
