@@ -14,7 +14,8 @@ public:
 
 public:
     void run() {
-        test("scalar",           scalar_sumbytes);
+        test("scalar",                   scalar_sumbytes);
+        test("scalar (C++)",             scalar_cpp_sumbytes);
         test("SSE",                      sse_sumbytes);
         test("SSE (sadbw)",              sse_sadbw_sumbytes);
         test("SSE (sadbw 4 x unrolled)", sse_sadbw_sumbytes);

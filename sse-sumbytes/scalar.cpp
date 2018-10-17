@@ -1,4 +1,5 @@
 #include "scalar.h"
+#include <numeric>
 
 uint32_t scalar_sumbytes(uint8_t* array, size_t size)
 {
@@ -8,4 +9,9 @@ uint32_t scalar_sumbytes(uint8_t* array, size_t size)
         sum += array[i];
 
     return sum;
+}
+
+uint32_t scalar_cpp_sumbytes(uint8_t* array, size_t size)
+{
+    return std::accumulate(array, array + size, uint32_t(0));
 }

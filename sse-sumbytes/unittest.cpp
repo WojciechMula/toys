@@ -20,6 +20,7 @@ public:
     }
 
     bool run() {
+        test("scalar (C++)",             scalar_cpp_sumbytes);
         test("SSE",                      sse_sumbytes);
         test("SSE (sadbw)",              sse_sadbw_sumbytes);
         test("SSE (sadbw 4 x unrolled)", sse_sadbw_unrolled4_sumbytes);
