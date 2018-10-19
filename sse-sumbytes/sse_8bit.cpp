@@ -9,7 +9,7 @@ uint32_t sse_8bit_sumbytes(uint8_t* array, size_t size) {
     for (size_t i=0; i < size; i += 256) {
 
         __m128i accu_8bit_lo = _mm_setzero_si128();
-        __m128i accu_8bit_hi = _mm_setzero_si128();
+        __m128i accu_8bit_hi = _mm_set1_epi8(16);
 
         for (size_t j=0; j < 256; j += 16) {
             const __m128i v = _mm_loadu_si128((__m128i*)(array + i + j));
@@ -20,7 +20,7 @@ uint32_t sse_8bit_sumbytes(uint8_t* array, size_t size) {
             const __m128i not_carry = _mm_cmpeq_epi8(t0, t1);
 
             accu_8bit_lo = t0;
-            accu_8bit_hi = _mm_sub_epi8(accu_8bit_hi, _mm_xor_si128(not_carry, _mm_set1_epi8(-1)));
+            accu_8bit_hi = _mm_add_epi8(accu_8bit_hi, not_carry);
         }
  
         const __m128i t0 = _mm_unpacklo_epi8(accu_8bit_lo, accu_8bit_hi);
