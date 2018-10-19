@@ -39,6 +39,17 @@ void dump_epi16(__m128i v) {
     printf(" ]\n");
 }
 
+void dump_epu16(__m128i v) {
+    uint16_t tmp[8];
+
+    _mm_storeu_si128((__m128i*)tmp, v);
+    printf("[ %5u ", tmp[0]);
+    for (int i=1; i < 8; i++)
+        printf("| %5u ", tmp[i]);
+
+    printf(" ]\n");
+}
+
 void dump_epi32(__m128i v) {
     int32_t tmp[4];
 
