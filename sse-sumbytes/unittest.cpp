@@ -4,22 +4,34 @@
 
 class UnitTest {
 
-    static const size_t size = 1024 * 8;
+    static const size_t size = 256;//1024 * 8;
     uint8_t array[size];
     uint32_t expected;
     bool failed;
 
 public:
-    UnitTest() {
-        for (size_t i=0; i < size; i++) {
-            array[i] = (i * 33 + i) & 0xff;
-        }
-        
-        expected = scalar_sumbytes(array, size);
-        failed = false;
+    UnitTest() : failed(false) {}
+    
+    bool run() {
+
+        puts("Fill array with 0x00");
+        init(0x00);
+        run_all();
+
+        puts("Fill array with 0xff");
+        init(0xff);
+        run_all();
+
+        puts("Fill array with pseudo-random values");
+        init_pseudorandom();
+        run_all();
+
+        return failed;
     }
 
-    bool run() {
+private:
+    void run_all() {
+        expected = scalar_sumbytes(array, size);
         test("scalar (C++)",             scalar_cpp_sumbytes);
         test("SSE",                      sse_sumbytes);
         test("SSE (v2)",                 sse_sumbytes_variant2);
@@ -28,11 +40,20 @@ public:
         test("SSE (16bit accu)",         sse_16bit_sumbytes);
         test("SSE (16bit accu, v2)",     sse_16bit_sumbytes_variant2);
         test("SSE (8bit accu)",          sse_8bit_sumbytes);
-
-        return failed;
     }
 
-private:
+    void init(uint8_t v) {
+        for (size_t i=0; i < size; i++) {
+            array[i] = v;
+        }
+    }
+
+    void init_pseudorandom() {
+        for (size_t i=0; i < size; i++) {
+            array[i] = (i * 33 + i) & 0xff;
+        }
+    }
+
     template <typename Function>
     void test(const char* name, Function fun) {
 
