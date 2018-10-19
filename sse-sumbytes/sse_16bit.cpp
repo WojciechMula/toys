@@ -56,8 +56,8 @@ uint32_t sse_16bit_sumbytes_variant2(uint8_t* array, size_t size) {
             accu_16bit = _mm_add_epi16(accu_16bit, t1);
         }
         
-        const __m128i t0 = _mm_cvtepu16_epi32(accu_16bit);
-        const __m128i t1 = _mm_cvtepu16_epi32(_mm_bsrli_si128(accu_16bit, 8));
+        const __m128i t0 = _mm_and_si128(accu_16bit, _mm_set1_epi32(0x0000ffff));
+        const __m128i t1 = _mm_srli_epi32(accu_16bit, 16);
 
         accumulator = _mm_add_epi32(accumulator, t0);
         accumulator = _mm_add_epi32(accumulator, t1);

@@ -23,13 +23,11 @@ uint32_t sse_8bit_sumbytes(uint8_t* array, size_t size) {
             accu_8bit_hi = _mm_add_epi8(accu_8bit_hi, not_carry);
         }
  
-        const __m128i t0 = _mm_unpacklo_epi8(accu_8bit_lo, accu_8bit_hi);
-        const __m128i t1 = _mm_unpackhi_epi8(accu_8bit_lo, accu_8bit_hi);
+        const __m128i sum_lo = _mm_sad_epu8(accu_8bit_lo, _mm_setzero_si128());
+        const __m128i sum_hi = _mm_slli_epi32(_mm_sad_epu8(accu_8bit_hi, _mm_setzero_si128()), 8);
 
-        accumulator = _mm_add_epi32(accumulator, _mm_cvtepu16_epi32(t0));
-        accumulator = _mm_add_epi32(accumulator, _mm_cvtepu16_epi32(t1));
-        accumulator = _mm_add_epi32(accumulator, _mm_cvtepu16_epi32(_mm_bsrli_si128(t0, 8)));
-        accumulator = _mm_add_epi32(accumulator, _mm_cvtepu16_epi32(_mm_bsrli_si128(t1, 8)));
+        accumulator = _mm_add_epi32(accumulator, sum_lo);
+        accumulator = _mm_add_epi32(accumulator, sum_hi);
     }
 
     return uint32_t(_mm_extract_epi32(accumulator, 0)) +
