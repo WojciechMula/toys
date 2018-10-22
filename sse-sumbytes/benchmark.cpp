@@ -22,6 +22,8 @@ public:
         test("SSE (sadbw 4 x unrolled)", sse_sadbw_sumbytes);
         test("SSE (16bit accu)",         sse_16bit_sumbytes);
         test("SSE (16bit accu, v2)",     sse_16bit_sumbytes_variant2);
+        test("SSE (16bit accu, v2, unrl",
+                                         sse_16bit_sumbytes_variant2_unrolled4);
         test("SSE (8bit accu)",          sse_8bit_sumbytes);
     }
 

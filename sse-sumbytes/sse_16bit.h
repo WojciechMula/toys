@@ -5,4 +5,5 @@
 
 uint32_t sse_16bit_sumbytes(uint8_t* array, size_t size);
 uint32_t sse_16bit_sumbytes_variant2(uint8_t* array, size_t size);
+uint32_t sse_16bit_sumbytes_variant2_unrolled4(uint8_t* array, size_t size);
 

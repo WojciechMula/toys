@@ -4,7 +4,7 @@
 
 class UnitTest {
 
-    static const size_t size = 256;//1024 * 8;
+    static const size_t size = 1024 * 8;
     uint8_t array[size];
     uint32_t expected;
     bool failed;
@@ -39,6 +39,8 @@ private:
         test("SSE (sadbw 4 x unrolled)", sse_sadbw_unrolled4_sumbytes);
         test("SSE (16bit accu)",         sse_16bit_sumbytes);
         test("SSE (16bit accu, v2)",     sse_16bit_sumbytes_variant2);
+        test("SSE (16bit accu, v2, 4 x unrolled)",
+                                         sse_16bit_sumbytes_variant2_unrolled4);
         test("SSE (8bit accu)",          sse_8bit_sumbytes);
     }
 
