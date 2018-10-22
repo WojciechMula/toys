@@ -1,9 +1,15 @@
 #!/bin/bash
 
 BASENAME=results
+if [[ $1 != "" ]]
+then
+    BASENAME=$1
+fi
+
 RESULTS_PATH=${BASENAME}.txt
 META_PATH=${BASENAME}.meta
 TABLE_PATH=${BASENAME}.table
+ARCHIVE_PATH=${BASENAME}.tgz
 
 function run_benchmark
 {
@@ -14,8 +20,6 @@ function run_benchmark
     do
         ./benchmark >> ${RESULTS_PATH}
     done
-
-    echo "File '${RESULTS_PATH}' was created"
 }
 
 
@@ -34,17 +38,22 @@ function get_metadata
     rm -f ${META_PATH}
     echo "CPU: ${CPUINFO}" >> ${META_PATH}
     echo "GCC: ${GCCVERSION}" >> ${META_PATH}
-
-    echo "File '${META_PATH}' was created"
 }
 
 
 function create_table
 {
     python scripts/format.py ${RESULTS_PATH} > ${TABLE_PATH}
-    echo "File '${TABLE_PATH}' was created"
+}
+
+
+function create_archive
+{
+    tar --remove-files -czf ${ARCHIVE_PATH} ${RESULTS_PATH} ${META_PATH} ${TABLE_PATH}
+    echo "File '${ARCHIVE_PATH}' was created"
 }
 
 run_benchmark
 create_table
 get_metadata
+create_archive
