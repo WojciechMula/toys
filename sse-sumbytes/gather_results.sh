@@ -1,15 +1,49 @@
 #!/bin/bash
 
+function usage
+{
+    echo "$0 [-a sse|avx2] [-n name]"
+}
+
 BASENAME=results
-if [[ $1 != "" ]]
-then
-    BASENAME=$1
-fi
+ARCHITECTURE=sse
+TARGET=benchmark
+
+while getopts ":a:n:h" o
+do
+    case "${o}" in
+        a)
+            ARCHITECTURE=${OPTARG}
+            if [[ ${ARCHITECTURE} == "sse" ]]
+            then
+                TARGET=benchmark
+            elif [[ ${ARCHITECTURE} == "avx2" ]]
+            then
+                TARGET=benchmark_avx2
+            else
+                usage
+                exit 1
+            fi
+            ;;
+        n)
+            BASENAME=${OPTARG}
+            ;;
+        h)
+            usage
+            exit 0
+            ;;
+    esac
+done
 
 RESULTS_PATH=${BASENAME}.txt
 META_PATH=${BASENAME}.meta
 TABLE_PATH=${BASENAME}.table
 ARCHIVE_PATH=${BASENAME}.tgz
+
+function build_benchmark
+{
+    make ${TARGET}
+}
 
 function run_benchmark
 {
@@ -18,7 +52,7 @@ function run_benchmark
     rm -f ${RESULTS_PATH}
     for i in `seq ${LOOPS}`
     do
-        ./benchmark >> ${RESULTS_PATH}
+        ./${TARGET} >> ${RESULTS_PATH}
     done
 }
 
@@ -53,6 +87,7 @@ function create_archive
     echo "File '${ARCHIVE_PATH}' was created"
 }
 
+build_benchmark
 run_benchmark
 create_table
 get_metadata
