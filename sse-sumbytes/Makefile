@@ -13,7 +13,8 @@ OBJ=scalar.o\
     sse_8bit.o
 
 OBJ_AVX2=\
-    avx2.o
+    avx2.o\
+    avx2_sadbw.o
 
  
 EXE=unittest benchmark
@@ -52,6 +53,9 @@ sse_8bit.o: sse_8bit.cpp sse_8bit.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 avx2.o: avx2.cpp avx2.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+avx2_sadbw.o: avx2_sadbw.cpp avx2_sadbw.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 clean:
