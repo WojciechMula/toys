@@ -46,6 +46,9 @@ private:
         test("AVX2 (v2)",                avx2_sumbytes_variant2);
         test("AVX2 (sadbw)",             avx2_sadbw_sumbytes);
         test("AVX2 (sadbw, unrolled)",   avx2_sadbw_unrolled4_sumbytes);
+        test("AVX2 (16bit accu, v2)",    avx2_16bit_sumbytes_variant2);
+        test("AVX2 (16bit accu, v2, unrolled)",
+                                         avx2_16bit_sumbytes_variant2_unrolled4);
 #endif
     }
 

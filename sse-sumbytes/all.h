@@ -9,4 +9,5 @@
 #ifdef HAVE_AVX2
 #include "avx2.h"
 #include "avx2_sadbw.h"
+#include "avx2_16bit.h"
 #endif

@@ -15,6 +15,7 @@ OBJ=scalar.o\
 OBJ_AVX2=\
     avx2.o\
     avx2_sadbw.o\
+    avx2_16bit.o\
     scalar_avx2.o\
     sse_avx2.o\
     sse_sadbw_avx2.o\
@@ -65,6 +66,9 @@ avx2.o: avx2.cpp avx2.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 avx2_sadbw.o: avx2_sadbw.cpp avx2_sadbw.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+avx2_16bit.o: avx2_16bit.cpp avx2_16bit.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 scalar_avx2.o: scalar.cpp scalar.h
