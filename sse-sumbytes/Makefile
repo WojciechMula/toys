@@ -14,7 +14,12 @@ OBJ=scalar.o\
 
 OBJ_AVX2=\
     avx2.o\
-    avx2_sadbw.o
+    avx2_sadbw.o\
+    scalar_avx2.o\
+    sse_avx2.o\
+    sse_sadbw_avx2.o\
+    sse_16bit_avx2.o\
+    sse_8bit_avx2.o
 
  
 EXE=unittest benchmark
@@ -31,11 +36,13 @@ unittest: unittest.cpp $(OBJ)
 benchmark: benchmark.cpp $(OBJ) 
 	$(CXX) $(FLAGS) $^ -o $@
 
-unittest_avx2: unittest.cpp $(OBJ) $(OBJ_AVX2)
+unittest_avx2: unittest.cpp $(OBJ_AVX2)
 	$(CXX) $(FLAGS_AVX2) $^ -o $@
 
-benchmark_avx2: benchmark.cpp $(OBJ) $(OBJ_AVX2)
+benchmark_avx2: benchmark.cpp $(OBJ_AVX2)
 	$(CXX) $(FLAGS_AVX2) $^ -o $@
+
+################################################################################
 
 scalar.o: scalar.cpp scalar.h
 	$(CXX) $(FLAGS) -c $< -o $@
@@ -52,10 +59,27 @@ sse_16bit.o: sse_16bit.cpp sse_16bit.h
 sse_8bit.o: sse_8bit.cpp sse_8bit.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
+################################################################################
+
 avx2.o: avx2.cpp avx2.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 avx2_sadbw.o: avx2_sadbw.cpp avx2_sadbw.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+scalar_avx2.o: scalar.cpp scalar.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+sse_avx2.o: sse.cpp sse.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+sse_sadbw_avx2.o: sse_sadbw.cpp sse_sadbw.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+sse_16bit_avx2.o: sse_16bit.cpp sse_16bit.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+sse_8bit_avx2.o: sse_8bit.cpp sse_8bit.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 clean:
