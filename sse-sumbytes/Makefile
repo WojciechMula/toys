@@ -1,19 +1,28 @@
+.SUFFIXES:
 .PHONY: all
 .PHONY: clean
 
-FLAGS=$(CXXFLAGS) -std=c++11 -Wall -Wextra -pedantic -O3 -march=native
+FLAGS_COMMON=$(CXXFLAGS) -std=c++11 -Wall -Wextra -pedantic -O3
+FLAGS=$(FLAGS_COMMON) -march=native
+FLAGS_AVX2=$(FLAGS_COMMON) -DHAVE_AVX2 -mavx2
 
 OBJ=scalar.o\
     sse.o\
     sse_sadbw.o\
     sse_16bit.o\
     sse_8bit.o
+
+OBJ_AVX2=\
+    avx2.o
+
  
 EXE=unittest benchmark
 
-ALL=$(EXE) $(OBJ)
+EXE_AVX2=unittest_avx2 benchmark_avx2
 
 all: $(EXE)
+
+avx2: $(EXE_AVX2)
 
 unittest: unittest.cpp $(OBJ) 
 	$(CXX) $(FLAGS) $^ -o $@
@@ -21,6 +30,11 @@ unittest: unittest.cpp $(OBJ)
 benchmark: benchmark.cpp $(OBJ) 
 	$(CXX) $(FLAGS) $^ -o $@
 
+unittest_avx2: unittest.cpp $(OBJ) $(OBJ_AVX2)
+	$(CXX) $(FLAGS_AVX2) $^ -o $@
+
+benchmark_avx2: benchmark.cpp $(OBJ) $(OBJ_AVX2)
+	$(CXX) $(FLAGS_AVX2) $^ -o $@
 
 scalar.o: scalar.cpp scalar.h
 	$(CXX) $(FLAGS) -c $< -o $@
@@ -36,6 +50,9 @@ sse_16bit.o: sse_16bit.cpp sse_16bit.h
 
 sse_8bit.o: sse_8bit.cpp sse_8bit.h
 	$(CXX) $(FLAGS) -c $< -o $@
+
+avx2.o: avx2.cpp avx2.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 clean:
 	$(RM) $(ALL)

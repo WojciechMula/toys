@@ -5,3 +5,7 @@
 #include "sse_sadbw.h"
 #include "sse_16bit.h"
 #include "sse_8bit.h"
+
+#ifdef HAVE_AVX2
+#include "avx2.h"
+#endif

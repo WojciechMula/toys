@@ -42,6 +42,9 @@ private:
         test("SSE (16bit accu, v2, unrolled)",
                                          sse_16bit_sumbytes_variant2_unrolled4);
         test("SSE (8bit accu)",          sse_8bit_sumbytes);
+#ifdef HAVE_AVX2
+        test("AVX2 (v2)",                avx2_sumbytes_variant2);
+#endif
     }
 
     void init(uint8_t v) {
