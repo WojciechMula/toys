@@ -2,3 +2,6 @@ unittest
 benchmark
 unittest_avx2
 benchmark_avx2
+
+*.tgz
+*.table
