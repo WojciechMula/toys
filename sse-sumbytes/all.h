@@ -10,4 +10,5 @@
 #include "avx2.h"
 #include "avx2_sadbw.h"
 #include "avx2_16bit.h"
+#include "avx2_8bit.h"
 #endif
