@@ -2,14 +2,15 @@
 
 function usage
 {
-    echo "$0 [-a sse|avx2] [-n name]"
+    echo "$0 [-a sse|avx2] [-n name] [-k]"
 }
 
 BASENAME=results
 ARCHITECTURE=sse
 TARGET=benchmark
+KEEP=0
 
-while getopts ":a:n:h" o
+while getopts ":a:n:hk" o
 do
     case "${o}" in
         a)
@@ -27,6 +28,9 @@ do
             ;;
         n)
             BASENAME=${OPTARG}
+            ;;
+        k)
+            KEEP=1
             ;;
         h)
             usage
@@ -83,8 +87,14 @@ function create_table
 
 function create_archive
 {
-    tar --remove-files -czf ${ARCHIVE_PATH} ${RESULTS_PATH} ${META_PATH} ${TABLE_PATH}
-    echo "File '${ARCHIVE_PATH}' was created"
+    if [[ ${KEEP} == 1 ]]
+    then
+        tar -czf ${ARCHIVE_PATH} ${RESULTS_PATH} ${META_PATH} ${TABLE_PATH}
+        echo "Files '${ARCHIVE_PATH}', '${RESULTS_PATH}', '${META_PATH}' and '${TABLE_PATH}' were created"
+    else
+        tar --remove-files -czf ${ARCHIVE_PATH} ${RESULTS_PATH} ${META_PATH} ${TABLE_PATH}
+        echo "File '${ARCHIVE_PATH}' was created"
+    fi
 }
 
 build_benchmark
