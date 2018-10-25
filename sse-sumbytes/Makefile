@@ -28,7 +28,11 @@ EXE=unittest benchmark
 
 EXE_AVX2=unittest_avx2 benchmark_avx2
 
+ALL=$(OBJ) $(EXE) $(OBJ_AVX2) $(EXE_AVX2)
+
 all: $(EXE)
+
+sse: $(EXE)
 
 avx2: $(EXE_AVX2)
 
