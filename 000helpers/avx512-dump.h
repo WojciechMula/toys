@@ -35,3 +35,14 @@ void dump_epu8_ascii(__m512i v) {
 
     printf("]\n");
 }
+
+void dump_epu16(__m512i v) {
+    uint16_t tmp[32];
+
+    _mm512_storeu_si512((__m512i*)tmp, v);
+    printf("[ %5d", tmp[0]);
+    for (int i=1; i < 32; i++)
+        printf(" | %5d", tmp[i]);
+
+    printf(" ]\n");
+}
