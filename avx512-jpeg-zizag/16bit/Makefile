@@ -19,6 +19,12 @@ unittest: unittest.cpp $(DEPS)
 unittest_avx512bw: unittest.cpp $(DEPS)
 	$(CXX) $(FLAGS_AVX512BW) $< -o $@
 
+benchmark: benchmark.cpp $(DEPS)
+	$(CXX) $(FLAGS_SSE4) $< -o $@
+
+benchmark_avx512bw: benchmark.cpp $(DEPS)
+	$(CXX) $(FLAGS_AVX512BW) $< -o $@
+
 sse.inl: sse_generate.py
 	python $< $@
 
