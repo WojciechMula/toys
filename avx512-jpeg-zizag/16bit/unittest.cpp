@@ -20,6 +20,9 @@ public:
         try {
             test("scalar",      jpeg_zigzag_scalar);
             test("SSE",         jpeg_zigzag_sse);
+#ifdef HAVE_AVX512BW
+            test("AVX512BW",    jpeg_zigzag_avx512bw);
+#endif
         } catch (TestFailed&) {
             return;
         }
