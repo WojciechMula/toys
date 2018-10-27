@@ -6,7 +6,7 @@
 void jpeg_zigzag_avx512bw(const uint8_t* in, uint8_t* out) {
     
 
-    // populate lanes -- each lane represents pair of output rows
+    // populate lanes -- each lane represents a pair of output rows
 #if 1
     // as proposed by InstLatX64
     // https://twitter.com/InstLatX64/status/996370932238307329
