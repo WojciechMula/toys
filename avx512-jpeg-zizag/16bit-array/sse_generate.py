@@ -72,7 +72,7 @@ def generate_code(copy_single_item):
 
             pshufb_fmt    = ', '.join(map(str, pshufb_input))
 
-            lines.append('static const __m128i %s = _mm_setr_epi8(%s);' % (shuf_name, pshufb_fmt))
+            lines.append('const __m128i %s = _mm_setr_epi8(%s);' % (shuf_name, pshufb_fmt))
             lines.append('const __m128i %s = _mm_shuffle_epi8(%s, %s);' % (tmp_name, register_name, shuf_name))
 
             return tmp_name
