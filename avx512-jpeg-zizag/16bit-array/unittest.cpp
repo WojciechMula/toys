@@ -11,7 +11,7 @@ class Test {
 public:
     Test() {
         for (int i=0; i < 64; i++) {
-            in[i] = zigzag_reference[i];
+            in[i] = index_to_value(zigzag_reference[i]);
         }
     }
 
@@ -37,7 +37,7 @@ private:
         memset(out, 0, sizeof(out));
         jpeg_zigzag_fun(in, out);
         for (int i=0; i < 64; i++) {
-            if (i != out[i]) {
+            if (index_to_value(i) != out[i]) {
                 printf("failed at %d\n", i);
                 throw TestFailed();
             }
@@ -46,6 +46,13 @@ private:
         puts("OK");
     }
 
+    
+    uint16_t index_to_value(uint16_t v) const {
+        // since we work at words level, but might shuffle bytes, it's
+        // wort to set also the higher byte of input words
+
+        return v | ~(v << 8);
+    }
 };
 
 int main() {
