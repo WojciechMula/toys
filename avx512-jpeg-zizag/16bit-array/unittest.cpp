@@ -21,6 +21,9 @@ public:
             test("scalar",              jpeg_zigzag_scalar);
             test("SSE",                 jpeg_zigzag_sse);
             test("SSE (copy single)",   jpeg_zigzag_sse_copy_single);
+#ifdef HAVE_AVX512F
+            test("AVX512F",             jpeg_zigzag_avx512f);
+#endif
 #ifdef HAVE_AVX512BW
             test("AVX512BW",            jpeg_zigzag_avx512bw);
 #endif

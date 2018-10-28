@@ -1,8 +1,6 @@
 unittest
-unittest_avx512bw
-unittest_avx512vbmi
+unittest_*
 
 benchmark
-benchmark_avx512bw
-benchmark_avx512vbmi
+benchmark_*
 
