@@ -16,14 +16,26 @@ target_reg_name = ['row%d' % k for k in range(8)]
 
 
 def main():
-    lines = generate_code()
+    try:
+        idx = sys.argv.index('--copy-single')
+        del sys.argv[idx]
+        copy_single_item = True
+    except ValueError:
+        copy_single_item = False
+    
+    lines = generate_code(copy_single_item)
     indent = ' ' * 8
     output = '\n'.join(indent + line for line in lines)
-    with open(sys.argv[1], 'wt') as f:
-        f.write(output)
+    
+    try:
+        file = open(sys.argv[1], 'wt')
+    except IndexError:
+        file = sys.stdout
+
+    file.write(output)
 
 
-def generate_code():
+def generate_code(copy_single_item):
     lines = []
 
     for rowid, row in enumerate(order):
@@ -36,26 +48,60 @@ def generate_code():
         indices, used_registers = get_target_order(row)
 
         target_name = target_reg_name[rowid]
-        
-        # generate partial results for given row
+
+        # 1. generate partial results for given row
+        copy_item = []
+        shuffle   = []
         for register in used_registers:
 
+            single_item = get_single_item_indices(register, indices)
+
+            if copy_single_item and single_item is not None:
+                target_index, source_index = single_item
+                copy_item.append((register, source_index, target_index))
+            else:
+                pshufb_input = get_pshufb_bytes(register, indices)
+                shuffle.append((register, pshufb_input))
+
+        # 2. generate C++ code
+        
+        def generate_shuffle(register, pshufb_input):
             register_name = source_reg_name[register]
             tmp_name      = get_tmp_name(register)
-            shuf_name  = '%s_shuf' % tmp_name
-            pshufb_fmt = ', '.join(map(str, get_pshufb_bytes(register, indices)))
+            shuf_name     = '%s_shuf' % tmp_name
+
+            pshufb_fmt    = ', '.join(map(str, pshufb_input))
 
             lines.append('static const __m128i %s = _mm_setr_epi8(%s);' % (shuf_name, pshufb_fmt))
             lines.append('const __m128i %s = _mm_shuffle_epi8(%s, %s);' % (tmp_name, register_name, shuf_name))
 
-        # merge vectors
-        lines.append("")
-        lines.append("__m128i %s;" % target_name)
-        src1 = get_tmp_name(used_registers[0])
-        src2 = get_tmp_name(used_registers[1])
-        lines.append("%s = _mm_or_si128(%s, %s);" % (target_name, src1, src2))
-        for register in used_registers[2:]:
-            lines.append("%s = _mm_or_si128(%s, %s);" % (target_name, target_name, get_tmp_name(register)))
+            return tmp_name
+
+
+        def generate_copy_item(register, source_index, target_index):
+            register_name   = source_reg_name[register]
+            extract         = '_mm_extract_epi16(%s, %d)' % (register_name, source_index)
+
+            lines.append('%s = _mm_insert_epi16(%s, %s, %d);' % (target_name, target_name, extract, target_index))
+
+
+        assert len(shuffle) >= 2
+
+        # 2a. initalize row register
+        t0 = generate_shuffle(*shuffle[0])
+        del shuffle[0]
+        t1 = generate_shuffle(*shuffle[0])
+        del shuffle[0]
+        lines.append('__m128i %s = _mm_or_si128(%s, %s);' % (target_name, t0, t1))
+
+        # 2b. update row register with shuffled registers
+        for instr in shuffle:
+            tk = generate_shuffle(*instr)
+            lines.append('%s = _mm_or_si128(%s, %s);' % (target_name, target_name, tk))
+
+        # 2c. copy individual items
+        for instr in copy_item:
+            generate_copy_item(*instr)
 
     return lines
 
@@ -86,6 +132,22 @@ def get_pshufb_bytes(shuffled_register, indices):
             res.append(-1)
 
     return res
+
+
+def get_single_item_indices(source_register, indices):
+
+    res = None
+
+    for target_index, (register, source_index) in enumerate(indices):
+        if register != source_register:
+            continue
+
+        if res is None:
+            res = (target_index, source_index)
+        else:
+            return None
+
+    return res;
 
 
 if __name__ == '__main__':
