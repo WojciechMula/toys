@@ -52,8 +52,8 @@ private:
 
     
     uint16_t index_to_value(uint16_t v) const {
-        // since we work at words level, but might shuffle bytes, it's
-        // wort to set also the higher byte of input words
+        // Since we work at words level, but might shuffle bytes, it's
+        // worth to set also the higher byte of input words.
 
         return v | ~(v << 8);
     }
