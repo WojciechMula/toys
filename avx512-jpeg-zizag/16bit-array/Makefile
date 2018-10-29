@@ -12,6 +12,11 @@ DEPS=common.cpp\
      avx512bw.cpp
 
 ALL=unittest\
+    unittest_avx512f\
+    unittest_avx512bw\
+    benchmark\
+    benchmark_avx512f\
+    benchmark_avx512bw
 
 all: $(ALL)
 
