@@ -19,6 +19,7 @@ public:
     void run() {
         try {
             test("scalar",              jpeg_zigzag_scalar);
+            test("scalar (unrolled)",   jpeg_zigzag_scalar_unrolled4);
             test("SSE",                 jpeg_zigzag_sse);
             test("SSE (copy single)",   jpeg_zigzag_sse_copy_single);
 #ifdef HAVE_AVX512F

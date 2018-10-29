@@ -17,8 +17,9 @@ public:
 public:
     void run() {
         try {
-            test("scalar",      jpeg_zigzag_scalar);
-            test("SSE",         jpeg_zigzag_sse);
+            test("scalar",              jpeg_zigzag_scalar);
+            test("scalar (unrolled)",   jpeg_zigzag_scalar_unrolled4);
+            test("SSE",                 jpeg_zigzag_sse);
 #ifdef HAVE_AVX512BW
             test("AVX512BW",            jpeg_zigzag_avx512bw);
             test("AVX512BW (masks)",    jpeg_zigzag_avx512bw_masks);
