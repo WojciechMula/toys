@@ -17,11 +17,18 @@ target_reg_name = ['row0', 'row1']
 
 
 def main():
-    lines = generate_code()
+    try:
+        idx = sys.argv.index('--copy-single')
+        del sys.argv[idx]
+        copy_single_item = True
+    except ValueError:
+        copy_single_item = False
+
+    lines = generate_code(copy_single_item)
     indent = ' ' * 8
     tmp = []
     for line in lines:
-        if line.startswith('//') or line == '':
+        if line.startswith('//') or line in ['', '{', '}']:
             tmp.append(indent + line)
         else:
             tmp.append(indent + line + ';')
@@ -39,7 +46,7 @@ def main():
 LO_WORD = 0
 HI_WORD = 1
 
-def generate_code():
+def generate_code(copy_single_item):
 
     lines = []
 
@@ -55,9 +62,16 @@ def generate_code():
             for target_helve in [LO_WORD, HI_WORD]:
                 for source_helve in [LO_WORD, HI_WORD]:
 
-                    shuffle  = generate_shuffle(indices, target_helve, source_helve, register)
+                    shuffle = generate_shuffle(indices, target_helve, source_helve, register)
+                    single_item = get_single_item_indices(shuffle)
+                    if copy_single_item and single_item is not None:
+                        source_index, target_index = single_item
+                        source_index = 2 * source_index + source_helve
+                        target_index = 2 * target_index + target_helve
+                        ret = generate_copy_item_code(rowid, register, source_index, target_index)
+                    else:
+                        ret = generate_permute_code(shuffle, rowid, target_helve, source_helve, register)
 
-                    ret = generate_permute_code(shuffle, rowid, target_helve, source_helve, register)
                     lines.extend(ret)
 
     return lines
@@ -108,6 +122,31 @@ def generate_permute_code(shuffle, rowid, target_helve, source_helve, register):
     return lines
 
 
+def generate_copy_item_code(rowid, register, source_word_index, target_word_index):
+    
+    lines = []
+
+    source_lane      = source_word_index / 8
+    source_lane_word = source_word_index % 8
+    target_lane      = target_word_index / 8
+    target_lane_word = target_word_index % 8
+
+    source_name = source_reg_name[register]
+    target_name = target_reg_name[rowid]
+
+    lines.append('// %s[%d] := %s[%d]' % (target_name, target_word_index, source_name, source_word_index))
+    lines.append('{')
+    lines.append('const __m128i   src = _mm512_extracti32x4_epi32(%s, %d)' % (source_name, source_lane))
+    lines.append('const __m128i   trg = _mm512_extracti32x4_epi32(%s, %d)' % (target_name, target_lane))
+    lines.append('const uint16_t word = _mm_extract_epi16(src, %d)' % (source_lane_word))
+    lines.append('const __m128i   mod = _mm_insert_epi16(trg, word, %d)' % (target_lane_word))
+    lines.append('%s = _mm512_inserti32x4(%s, mod, %d)' % (target_name, target_name, target_lane))
+    lines.append('}')
+
+
+    return lines
+
+
 def generate_shuffle(indices, target_helve, source_helve, source_reg):
 
     assert target_helve in [0, 1]
@@ -126,6 +165,19 @@ def generate_shuffle(indices, target_helve, source_helve, source_reg):
 
     assert shuffle.count(-1) != len(shuffle)
     return shuffle
+
+
+def get_single_item_indices(shuffle):
+
+    if shuffle.count(-1) != len(shuffle) - 1:
+        # more than one source item referenced
+        return
+
+    for target_index, source_index in enumerate(shuffle):
+        if source_index == -1:
+            continue
+
+        return (source_index, target_index)
 
 
 def get_target_register(word):

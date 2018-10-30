@@ -8,7 +8,7 @@ FLAGS_AVX512BW=$(FLAGS_COMMON) -mavx512bw -DHAVE_AVX512F -DHAVE_AVX512BW
 DEPS=common.cpp\
      scalar.cpp\
      sse.cpp sse.inl sse-copy-single.inl sse_generate.py\
-     avx512f.cpp avx512f.inl avx512f_generate.py\
+     avx512f.cpp avx512f.inl avx512f-copy-single.inl avx512f_generate.py\
      avx512bw.cpp
 
 ALL=unittest\
@@ -46,6 +46,9 @@ sse-copy-single.inl: sse_generate.py
 
 avx512f.inl: avx512f_generate.py
 	python $< $@
+
+avx512f-copy-single.inl: avx512f_generate.py
+	python $< --copy-single $@
 
 clean:
 	$(RM) $(ALL)

@@ -16,15 +16,16 @@ public:
 
 public:
     void run() {
-        test("scalar",              jpeg_zigzag_scalar);
-        test("scalar (unrolled)",   jpeg_zigzag_scalar_unrolled4);
-        test("SSE",                 jpeg_zigzag_sse);
-        test("SSE (copy single)",   jpeg_zigzag_sse_copy_single);
+        test("scalar",                  jpeg_zigzag_scalar);
+        test("scalar (unrolled)",       jpeg_zigzag_scalar_unrolled4);
+        test("SSE",                     jpeg_zigzag_sse);
+        test("SSE (copy single)",       jpeg_zigzag_sse_copy_single);
 #ifdef HAVE_AVX512F
-        test("AVX512F",             jpeg_zigzag_avx512f);
+        test("AVX512F",                 jpeg_zigzag_avx512f);
+        test("AVX512F (copy single)",   jpeg_zigzag_avx512f_copy_single);
 #endif
 #ifdef HAVE_AVX512BW
-        test("AVX512BW",            jpeg_zigzag_avx512bw);
+        test("AVX512BW",                jpeg_zigzag_avx512bw);
 #endif
     }
 

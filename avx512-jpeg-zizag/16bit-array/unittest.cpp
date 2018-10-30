@@ -18,15 +18,16 @@ public:
 public:
     void run() {
         try {
-            test("scalar",              jpeg_zigzag_scalar);
-            test("scalar (unrolled)",   jpeg_zigzag_scalar_unrolled4);
-            test("SSE",                 jpeg_zigzag_sse);
-            test("SSE (copy single)",   jpeg_zigzag_sse_copy_single);
+            test("scalar",                  jpeg_zigzag_scalar);
+            test("scalar (unrolled)",       jpeg_zigzag_scalar_unrolled4);
+            test("SSE",                     jpeg_zigzag_sse);
+            test("SSE (copy single)",       jpeg_zigzag_sse_copy_single);
 #ifdef HAVE_AVX512F
-            test("AVX512F",             jpeg_zigzag_avx512f);
+            test("AVX512F",                 jpeg_zigzag_avx512f);
+            test("AVX512F (copy single)",   jpeg_zigzag_avx512f_copy_single);
 #endif
 #ifdef HAVE_AVX512BW
-            test("AVX512BW",            jpeg_zigzag_avx512bw);
+            test("AVX512BW",                jpeg_zigzag_avx512bw);
 #endif
         } catch (TestFailed&) {
             return;
@@ -36,7 +37,7 @@ public:
 private:
     template <typename FUN>
     void test(const char* name, FUN jpeg_zigzag_fun) {
-        printf("%20s... ", name);
+        printf("%32s ... ", name);
         fflush(stdout);
 
         memset(out, 0, sizeof(out));
