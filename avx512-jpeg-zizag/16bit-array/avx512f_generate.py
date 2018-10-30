@@ -43,9 +43,6 @@ def generate_code():
 
     lines = []
 
-    lines.append('const __m512i mask_lo = _mm512_set1_epi32(0x0000ffff)')
-    lines.append('const __m512i mask_hi = _mm512_set1_epi32(0xffff0000)')
-
     for rowid, row in enumerate(order):
         indices = [get_target_register(index) for index in row]
         lines.append('')
@@ -61,15 +58,6 @@ def generate_code():
                 for source_helve in [LO_WORD, HI_WORD]:
                     shuffle  = generate_shuffle(indices, target_helve, source_helve, register)
                     shuffle_fmt = ', '.join(map(str, shuffle)) 
-            
-                    tmp = []
-                    for index in shuffle:
-                        if index == -1:
-                            tmp.append('0')
-                        else:
-                            tmp.append('-1')
-
-                    mask_fmt = ', '.join(tmp)
 
                     assert shuffle.count(-1) != len(shuffle)
 
@@ -78,17 +66,18 @@ def generate_code():
                     mask_name     = '%s_mask' % prefix
                     permuted_name = '%s_perm' % prefix
 
-                    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % (shuffle_name, shuffle_fmt))
-                    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % (mask_name, mask_fmt))
-                    lines.append('const __m512i %s = _mm512_permutexvar_epi32(%s, %s)' % (permuted_name, shuffle_name, register_name))
+                    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % \
+                                 (shuffle_name, shuffle_fmt))
+                    lines.append('const __m512i %s = _mm512_permutexvar_epi32(%s, %s)' % \
+                                 (permuted_name, shuffle_name, register_name))
+
                     if target_helve == source_helve:
                         # simple mask is needed
                         if target_helve == LO_WORD:
-                            mask = 'mask_lo'
+                            mask_fmt = format_mask(shuffle, '0x0000ffff')
                         else:
-                            mask = 'mask_hi'
+                            mask_fmt = format_mask(shuffle, '0xffff0000')
 
-                        masked_expr   = '_mm512_and_si512(%s, %s)' % (mask, mask_name)
                         permuted_expr = permuted_name
 
                     else:
@@ -99,10 +88,13 @@ def generate_code():
                             shifted_expr = '_mm512_srli_epi32(%s, 16)' % permuted_name
 
                         permuted_expr = shifted_expr
-                        masked_expr = mask_name
+                        mask_fmt = format_mask(shuffle, '-1')
+
+                    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % (mask_name, mask_fmt))
 
                     # target = target | (permuted & mask)
-                    lines.append('%s = _mm512_ternarylogic_epi32(%s, %s, %s, 0xf8)' % (target_name, target_name, permuted_expr, masked_expr))
+                    lines.append('%s = _mm512_ternarylogic_epi32(%s, %s, %s, 0xf8)' % \
+                                 (target_name, target_name, permuted_expr, mask_name))
 
     return lines
 
@@ -133,6 +125,18 @@ def get_target_register(word):
 
     return register, index, helve
 
+
+def format_mask(shuffle, dword_mask):
+    assert type(dword_mask) is str
+
+    tmp = []
+    for index in shuffle:
+        if index == -1:
+            tmp.append('0')
+        else:
+            tmp.append(dword_mask)
+
+    return ', '.join(tmp)
 
 
 if __name__ == '__main__':
