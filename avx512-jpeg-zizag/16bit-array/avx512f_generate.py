@@ -52,50 +52,59 @@ def generate_code():
         lines.append('__m512i %s = _mm512_setzero_si512()' % target_name)
 
         for register in [0, 1]:
-            register_name = source_reg_name[register]
-
             for target_helve in [LO_WORD, HI_WORD]:
                 for source_helve in [LO_WORD, HI_WORD]:
+
                     shuffle  = generate_shuffle(indices, target_helve, source_helve, register)
-                    shuffle_fmt = ', '.join(map(str, shuffle)) 
 
-                    assert shuffle.count(-1) != len(shuffle)
+                    ret = generate_permute_code(shuffle, rowid, target_helve, source_helve, register)
+                    lines.extend(ret)
 
-                    prefix = '%s%d_%d%d' % (register_name, rowid, source_helve, target_helve)
-                    shuffle_name  = '%s_shuf' % prefix
-                    mask_name     = '%s_mask' % prefix
-                    permuted_name = '%s_perm' % prefix
+    return lines
 
-                    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % \
-                                 (shuffle_name, shuffle_fmt))
-                    lines.append('const __m512i %s = _mm512_permutexvar_epi32(%s, %s)' % \
-                                 (permuted_name, shuffle_name, register_name))
 
-                    if target_helve == source_helve:
-                        # simple mask is needed
-                        if target_helve == LO_WORD:
-                            mask_fmt = format_mask(shuffle, '0x0000ffff')
-                        else:
-                            mask_fmt = format_mask(shuffle, '0xffff0000')
+def generate_permute_code(shuffle, rowid, target_helve, source_helve, register):
 
-                        permuted_expr = permuted_name
+    register_name = source_reg_name[register]
+    target_name   = target_reg_name[rowid]
 
-                    else:
-                        # map lo helves into hi helves or vice versa
-                        if source_helve == LO_WORD and target_helve == HI_WORD:
-                            shifted_expr = '_mm512_slli_epi32(%s, 16)' % permuted_name
-                        elif source_helve == HI_WORD and target_helve == LO_WORD:
-                            shifted_expr = '_mm512_srli_epi32(%s, 16)' % permuted_name
+    prefix        = '%s%d_%d%d' % (register_name, rowid, source_helve, target_helve)
+    shuffle_name  = '%s_shuf' % prefix
+    mask_name     = '%s_mask' % prefix
+    permuted_name = '%s_perm' % prefix
 
-                        permuted_expr = shifted_expr
-                        mask_fmt = format_mask(shuffle, '-1')
+    lines = []
+    shuffle_fmt   = ', '.join(map(str, shuffle)) 
+    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % \
+                 (shuffle_name, shuffle_fmt))
+    lines.append('const __m512i %s = _mm512_permutexvar_epi32(%s, %s)' % \
+                 (permuted_name, shuffle_name, register_name))
 
-                    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % (mask_name, mask_fmt))
+    if target_helve == source_helve:
+        # simple mask is needed
+        if target_helve == LO_WORD:
+            mask_fmt = format_mask(shuffle, '0x0000ffff')
+        else:
+            mask_fmt = format_mask(shuffle, '0xffff0000')
 
-                    # target = target | (permuted & mask)
-                    lines.append('%s = _mm512_ternarylogic_epi32(%s, %s, %s, 0xf8)' % \
-                                 (target_name, target_name, permuted_expr, mask_name))
+        permuted_expr = permuted_name
 
+    else:
+        # map lo helves into hi helves or vice versa
+        if source_helve == LO_WORD and target_helve == HI_WORD:
+            shifted_expr = '_mm512_slli_epi32(%s, 16)' % permuted_name
+        elif source_helve == HI_WORD and target_helve == LO_WORD:
+            shifted_expr = '_mm512_srli_epi32(%s, 16)' % permuted_name
+
+        permuted_expr = shifted_expr
+        mask_fmt = format_mask(shuffle, '-1')
+
+    lines.append('const __m512i %s = _mm512_setr_epi32(%s)' % (mask_name, mask_fmt))
+
+    # target = target | (permuted & mask)
+    lines.append('%s = _mm512_ternarylogic_epi32(%s, %s, %s, 0xf8)' % \
+                 (target_name, target_name, permuted_expr, mask_name))
+    
     return lines
 
 
@@ -115,6 +124,7 @@ def generate_shuffle(indices, target_helve, source_helve, source_reg):
         else:
             shuffle.append(-1)
 
+    assert shuffle.count(-1) != len(shuffle)
     return shuffle
 
 
