@@ -79,6 +79,7 @@ class TableValidator(object):
 
 
 ALIGN_RIGHT = '>'
+ALIGN_LEFT = '<'
 CENTER = '^'
 
 class RestructuredTextTableRenderer(object):
@@ -171,7 +172,17 @@ class RestructuredTextTableRenderer(object):
         return result
 
 
-    def _render_row(self, row, align):
+    def _render_row(self, row, align = None):
+
+        if align is not None:
+            def get_align(text):
+                return align
+        else:
+            def get_align(text):
+                if is_float_or_int(text):
+                    return ALIGN_RIGHT
+                else:
+                    return ALIGN_LEFT
 
         result = '|'
         index = 0
@@ -179,7 +190,7 @@ class RestructuredTextTableRenderer(object):
             width   = self._get_columns_width(index, count)
             width  -= 2 * self.padding
             result += ' ' * self.padding
-            result += u'{:{align}{width}}'.format(text, align=align, width=width)
+            result += u'{:{align}{width}}'.format(text, align=get_align(text), width=width)
             result += ' ' * self.padding
             result += '|'
 
@@ -224,7 +235,7 @@ class RestructuredTextTableRenderer(object):
             curr = self._render_separator(header, '-');
             lines[-1] = self._merge_rendered_separators(prev, curr)
 
-            lines.append(self._render_row(row, ALIGN_RIGHT))
+            lines.append(self._render_row(row))
             lines.append(self._render_separator(row, '-'))
 
 
@@ -244,6 +255,14 @@ class Table(TableBase):
 
         renderer = RestructuredTextTableRenderer(self)
         return renderer.get_image()
+
+
+def is_float_or_int(text):
+    try:
+        float(text)
+        return True
+    except ValueError:
+        return False
 
 
 if __name__ == '__main__':
