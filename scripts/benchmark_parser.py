@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-__all__ = ['parse', 'calculate_speedup']
+__all__ = ['parse', 'update_speedup', 'get_maximum_speedup']
 
 class Measurement(object):
     __slots__ = ['best', 'avg', 'speedup']
@@ -9,6 +9,15 @@ class Measurement(object):
         self.best    = best
         self.avg     = avg
         self.speedup = None
+
+
+    def min(self, x):
+        assert type(x) is Measurement
+
+        self.best    = min(self.best, x.best)
+        self.avg     = min(self.avg, x.avg)
+        self.speedup = None
+
 
     def __str__(self):
         if self.speedup is None:
@@ -39,13 +48,24 @@ def parse(file):
                 dict = None
 
             result.append(line)
-        else:
-            name, measurement = parse_line(line)
+            continue
 
-            if dict is None:
-                dict = OrderedDict()
+        try:
+            tmp = parse_line(line)
+        except IndexError:
+            if dict is not None:
+                result.append(dict)
+                dict = None
 
-            dict[name] = measurement
+            result.append(line)
+            continue
+
+        name, measurement = tmp
+
+        if dict is None:
+            dict = OrderedDict()
+
+        dict[name] = measurement
     else:
         if dict is not None:
             result.append(dict)
@@ -65,17 +85,47 @@ def parse_line(line):
     return name, Measurement(best, avg)
 
 
-def calculate_speedup(measurements, reference_key = None):
-    if not measurements:
-        return
+def update_speedup_aux(measurements, reference_key = None, field = None):
+    assert type(measurements) is OrderedDict
 
     if reference_key is None:
         reference_key = measurements.keys()[0]
 
-    reference_value = measurements[reference_key].best
+    if field is None:
+        field = 'best'
+    else:
+        assert field in ('avg', 'best')
+
+    reference_value = getattr(measurements[reference_key], field)
 
     for m in measurements.itervalues():
-        m.speedup = reference_value / m.best
+        m.speedup = reference_value / getattr(m, field)
+
+
+def update_speedup(x, reference_key = None, field = None):
+    if type(x) is OrderedDict:
+        update_speedup_aux(x)
+    else:
+        for item in array:
+            if type(item) is OrderedDict:
+                update_speedup_aux(item)
+
+
+def get_maximum_speedup(x):
+
+    def maximum_speedup(measurement):
+        return max(m.speedup for m in measurement.itervalues())
+
+    if type(x) is OrderedDict:
+        return maximum_speedup(x)
+    else:
+        tmp = []
+        for item in x:
+            if type(item) is OrderedDict:
+                tmp.append(maximum_speedup(item))
+
+        if tmp:
+            return max(tmp)
 
 
 ################################################################################
@@ -110,7 +160,7 @@ def test():
     for v in m.values():
         assert v.speedup is None
 
-    calculate_speedup(m, 'AVX2')
+    update_speedup(m, 'AVX2')
     for v in m.values():
         assert v.speedup is not None
 
