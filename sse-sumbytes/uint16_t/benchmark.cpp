@@ -19,6 +19,7 @@ public:
         test("SSE",                   sse_sumwords);
         test("SSE (v2)",              sse_sumwords_variant2);
         test("SSE (sadbw)",           sse_sadbw_sumwords);
+        test("SSE (sadbw, v2)",       sse_sadbw_sumwords_variant2);
         test("SSE (sadbw, unrolled)", sse_sadbw_unrolled4_sumwords);
     }
 

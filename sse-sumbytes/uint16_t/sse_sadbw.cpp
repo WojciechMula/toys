@@ -31,6 +31,43 @@ uint32_t sse_sadbw_sumwords(uint16_t* array, size_t size) {
            uint32_t(_mm_extract_epi32(accumulator, 2));
 }
 
+uint32_t sse_sadbw_sumwords_variant2(uint16_t* array, size_t size) {
+
+    const __m128i zero = _mm_setzero_si128();
+    const __m128i lo_byte = _mm_set1_epi16(0x00ff);
+    const __m128i hi_byte = _mm_set1_epi16(-256); // 0xff00
+
+    __m128i accumulator_lo = zero;
+    __m128i accumulator_hi = zero;
+
+    for (size_t i=0; i < size; i += 16) {
+        const __m128i v0 = _mm_loadu_si128((__m128i*)(array + i + 0*8));
+        const __m128i v1 = _mm_loadu_si128((__m128i*)(array + i + 1*8));
+
+        const __m128i v0_lo = _mm_and_si128(v0, lo_byte);
+        const __m128i v1_lo = _mm_slli_epi16(v1, 8);
+        const __m128i lo    = _mm_or_si128(v0_lo, v1_lo);
+
+        const __m128i v0_hi = _mm_and_si128(v0, hi_byte);
+        const __m128i v1_hi = _mm_srli_epi16(v1, 8);
+        const __m128i hi    = _mm_or_si128(v0_hi, v1_hi);
+
+        const __m128i sum_lo = _mm_sad_epu8(lo, zero);
+        const __m128i sum_hi = _mm_sad_epu8(hi, zero);
+        
+        accumulator_lo = _mm_add_epi32(accumulator_lo, sum_lo);
+        accumulator_hi = _mm_add_epi32(accumulator_hi, sum_hi);
+    }
+
+    accumulator_hi = _mm_slli_epi32(accumulator_hi, 8);
+
+    const __m128i accumulator = _mm_add_epi32(accumulator_lo, accumulator_hi);
+    
+
+    return uint32_t(_mm_extract_epi32(accumulator, 0)) +
+           uint32_t(_mm_extract_epi32(accumulator, 2));
+}
+
 uint32_t sse_sadbw_unrolled4_sumwords(uint16_t* array, size_t size) {
 
     const __m128i zero = _mm_setzero_si128();
