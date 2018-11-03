@@ -1,39 +1,49 @@
 #include "algorithm.h"
 #include "all.h"
 
-#include <cstdio>
 #include "benchmark.h"
 
+#include <vector>
 #include <cstdlib>
+#include <cstdio>
+#include <cassert>
 
 
 class Test {
 
-    static const size_t size = 1024 * 4;
-    static const size_t n = 16;
+    const size_t size;
+    const size_t count;
 
     const size_t iterations = 10;
 
-    float* input[n];
-    float  output[n];
-    float* const_vector;
+    float** input;
+    float*  output;
+    float*  const_vector;
 
 public:
-    Test() {
-        for (size_t i=0; i < n; i++) {
+    Test(size_t size_, size_t count_) : size(size_), count(count_) {
+
+        assert(size  % 64 == 0);
+        assert(count %  4 == 0);
+
+        input = new float*[count];
+        for (size_t i=0; i < count; i++) {
             input[i] = new float[size];
             initialize_vector(input[i]);
         }
 
+        output = new float[count];
         const_vector = new float[size];
         initialize_vector(const_vector);
     }
 
     ~Test() {
-        for (size_t i=0; i < n; i++) {
+        for (size_t i=0; i < count; i++) {
             delete[] input[i];
         }
 
+        delete[] input;
+        delete[] output;
         delete[] const_vector;
     }
 
@@ -56,7 +66,7 @@ private:
     void test_scalar(const char* name, FUNCTION function) {
         
         auto fn = [this, function]() {
-            dist_vector_many(function, size, const_vector, n, input, output);
+            dist_vector_many(function, size, const_vector, count, input, output);
         };
 
         BEST_TIME(/**/, fn(), name, iterations, size);
@@ -66,7 +76,7 @@ private:
     void test(const char* name, FUNCTION dist_vector_many) {
         
         auto fn = [this, dist_vector_many]() {
-            dist_vector_many(size, const_vector, n, input, output);
+            dist_vector_many(size, const_vector, count, input, output);
         };
 
         BEST_TIME(/**/, fn(), name, iterations, size);
@@ -74,10 +84,18 @@ private:
 };
 
 int main() {
-    
-    Test test;
+ 
+    size_t vector_count[] = {8, 16, 32, 64, 128, 256};
+    size_t vector_size[] = {64, 128, 256, 512, 1024, 1024*4, 1024*8};
 
-    test.run();
+    for (size_t count: vector_count) {
+        for (size_t size: vector_size) {
+            printf("vector size=%lu, count=%lu\n", size, count);
+            Test test(size, count);
+
+            test.run();
+        }
+    }
 
     return EXIT_SUCCESS;
 }
