@@ -104,11 +104,11 @@ def update_speedup_aux(measurements, reference_key = None, field = None):
 
 def update_speedup(x, reference_key = None, field = None):
     if type(x) is OrderedDict:
-        update_speedup_aux(x)
+        update_speedup_aux(x, reference_key, field)
     else:
-        for item in array:
+        for item in x:
             if type(item) is OrderedDict:
-                update_speedup_aux(item)
+                update_speedup_aux(item, reference_key, field)
 
 
 def get_maximum_speedup(x):
