@@ -37,6 +37,10 @@ private:
         test("SSE (v2)",                 sse_sumsignedbytes_variant2);
         test("SSE (sadbw)",              sse_sadbw_sumsignedbytes);
         test("SSE (sadbw, unrolled)",    sse_sadbw_unrolled4_sumsignedbytes);
+#ifdef HAVE_AVX2
+        test("AVX2",                     avx2_sumsignedbytes);
+        test("AVX2 (v2)",                avx2_sumsignedbytes_variant2);
+#endif
     }
 
     void init(int8_t v) {
