@@ -13,7 +13,8 @@ OBJ=scalar.o\
 OBJ_AVX2=scalar_avx2.o\
          sse_avx2.o\
          sse_sadbw_avx2.o\
-         avx2.o
+         avx2.o\
+         avx2_sadbw.o
  
 EXE=unittest benchmark
 EXE_AVX2=unittest_avx2 benchmark_avx2
@@ -52,6 +53,9 @@ sse_sadbw.o: sse_sadbw.cpp sse_sadbw.h
 ################################################################################
 
 avx2.o: avx2.cpp avx2.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+avx2_sadbw.o: avx2_sadbw.cpp avx2_sadbw.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 scalar_avx2.o: scalar.cpp scalar.h
