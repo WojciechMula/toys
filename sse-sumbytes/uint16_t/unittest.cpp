@@ -38,6 +38,10 @@ private:
         test("SSE (sadbw)",           sse_sadbw_sumwords);
         test("SSE (sadbw-v2)",        sse_sadbw_sumwords_variant2);
         test("SSE (sadbw, unrolled)", sse_sadbw_unrolled4_sumwords);
+#ifdef HAVE_AVX2
+        test("AVX2",                  avx2_sumwords);
+        test("AVX2 (v2)",             avx2_sumwords_variant2);
+#endif
     }
 
     void init(uint16_t v) {
