@@ -29,48 +29,52 @@ class Measurement(object):
     __repr__ = __str__
 
 
+class struct(object):
+    pass
+
+
 def parse(file):
     
-    result = []
-    dict   = None
+    d = struct()
+    d.result = []
+    d.dict   = None
+
+    def append_dict():
+        if d.dict is not None:
+            d.result.append(d.dict)
+            d.dict = None
 
     for line in file:
         line = line.strip()
         if line.startswith('rdtsc_overhead'):
+            append_dict()
             continue
 
         if not line:
             continue
         
         if ':' not in line:
-            if dict is not None:
-                result.append(dict)
-                dict = None
-
-            result.append(line)
+            append_dict()
+            d.result.append(line)
             continue
 
         try:
             tmp = parse_line(line)
         except IndexError:
-            if dict is not None:
-                result.append(dict)
-                dict = None
-
-            result.append(line)
+            append_dict()
+            d.result.append(line)
             continue
 
         name, measurement = tmp
 
-        if dict is None:
-            dict = OrderedDict()
+        if d.dict is None:
+            d.dict = OrderedDict()
 
-        dict[name] = measurement
+        d.dict[name] = measurement
     else:
-        if dict is not None:
-            result.append(dict)
+        append_dict()
 
-    return result
+    return d.result
 
 
 def parse_line(line):
