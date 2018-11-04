@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-__all__ = ['parse', 'update_speedup', 'get_maximum_speedup']
+__all__ = ['parse', 'update_speedup', 'get_maximum_speedup', 'merge_many']
 
 class Measurement(object):
     __slots__ = ['best', 'avg', 'speedup']
@@ -87,6 +87,17 @@ def parse_line(line):
     avg  = float(tmp[3])
 
     return name, Measurement(best, avg)
+
+
+def merge_many(measurements):
+    m1 = measurements[0]
+    assert type(m1) is OrderedDict
+    for m2 in measurements[1:]:
+        assert type(m2) is OrderedDict
+        for key in m2:
+            m1[key].min(m2[key])
+
+    return m1
 
 
 def update_speedup_aux(measurements, reference_key = None, field = None):
