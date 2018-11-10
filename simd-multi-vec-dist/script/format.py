@@ -58,7 +58,7 @@ def format_table(data):
     
     # prepare data
     for size in vector_size:
-        table.add_row([("size %d" % size, len(vector_count)*3 + 1)])
+        table.add_row([("*size %d*" % size, len(vector_count)*3 + 1)])
         for procedure in procedures:
             row = []
             row.append(procedure)

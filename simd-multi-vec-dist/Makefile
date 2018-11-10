@@ -1,7 +1,7 @@
 .PHONY: clean
 .PHONY: report
 
-FLAGS=$(CXXFLAGS) -Wall -Wextra -pedantic -std=c++11 -ggdb3 -O3 -ffast-math
+FLAGS=$(CXXFLAGS) -Wall -Wextra -pedantic -std=c++11 -O3 -ffast-math
 
 DEPS=algorithm.h \
      all.h\
