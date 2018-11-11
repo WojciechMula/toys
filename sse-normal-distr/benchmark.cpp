@@ -60,6 +60,13 @@ public:
 
             test("SSE (Box-Muller)", function);
         }
+        {
+            auto function = [this]() {
+                sse_normal_distr_boxmuller_variant2(random, output.size(), &output[0]);
+            };
+
+            test("SSE (Box-Muller, v2)", function);
+        }
     }
 
 protected:
@@ -74,7 +81,8 @@ protected:
 
 int main() {
     
-    for (size_t size: {1024*10}) {
+    for (size_t size: {1024, 1024*4, 1024*8, 1024*16}) {
+        printf("size %lu\n", size);
         Benchmark test(size);
         test.run();
     }
