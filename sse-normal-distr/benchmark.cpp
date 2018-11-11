@@ -67,6 +67,13 @@ public:
 
             test("SSE (Box-Muller, v2)", function);
         }
+        {
+            auto function = [this]() {
+                sse_normal_distr_boxmuller_variant3(random, output.size(), &output[0]);
+            };
+
+            test("SSE (Box-Muller, v3)", function);
+        }
     }
 
 protected:
