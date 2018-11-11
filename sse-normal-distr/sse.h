@@ -5,6 +5,8 @@
 
 #include "sse_fun.h"
 
+#define _mm_sqr_ps(x) _mm_mul_ps((x), (x))
+
 template <typename Random>
 void sse_normal_distr_boxmuller(Random random, size_t size, float* output) {
     for (size_t i=0; i < size; i += 8) {
@@ -117,6 +119,59 @@ void sse_normal_distr_boxmuller_variant3(Random random, size_t size, float* outp
 
         const __m128 V1 = _mm_mul_ps(B, sinA);
         const __m128 V2 = _mm_mul_ps(B, cosA);
+
+        _mm_storeu_ps((output + i + 0*4), V1);
+        _mm_storeu_ps((output + i + 1*4), V2);
+    }
+}
+
+
+template <typename Random>
+void sse_normal_distr_marsaglia(Random random, size_t size, float* output) {
+    for (size_t i=0; i < size; i += 8) {
+
+        __m128 r1;
+        __m128 r2;
+        __m128 S = _mm_setzero_ps();
+
+        do {
+            const float a0 = random();
+            const float b0 = random();
+            const float a1 = random();
+            const float b1 = random();
+            const float a2 = random();
+            const float b2 = random();
+            const float a3 = random();
+            const float b3 = random();
+
+            r1 = _mm_set_ps(a0, a1, a2, a3);
+            r1 = _mm_mul_ps(r1, _mm_set1_ps(2.0f));
+            r1 = _mm_sub_ps(r1, _mm_set1_ps(1.0f));
+
+            r2 = _mm_set_ps(b0, b1, b2, b3);
+            r2 = _mm_mul_ps(r2, _mm_set1_ps(2.0f));
+            r2 = _mm_sub_ps(r2, _mm_set1_ps(1.0f));
+
+            // S = r1^2 + r2^2
+            const __m128 S = _mm_add_ps(_mm_mul_ps(r1, r1), _mm_mul_ps(r2, r2));
+            
+            // S < 1 (point (r1, r2) within a unit disc)
+            const __m128 mask = _mm_cmplt_ps(S, _mm_set1_ps(1.0f));
+            if (_mm_movemask_ps(mask) == 0xf) {
+                break;
+            }
+
+        } while (true);
+
+        __m128 scale;
+
+        scale = sse_math::log_4terms(S);
+        scale = _mm_mul_ps(scale, _mm_set1_ps(-2.0f));
+        scale = _mm_div_ps(scale, S);
+        scale = _mm_sqrt_ps(scale);
+
+        const __m128 V1 = _mm_mul_ps(scale, r1);
+        const __m128 V2 = _mm_mul_ps(scale, r2);
 
         _mm_storeu_ps((output + i + 0*4), V1);
         _mm_storeu_ps((output + i + 1*4), V2);

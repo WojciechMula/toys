@@ -15,7 +15,7 @@
 
 struct StdRand {
     float operator()() const {
-        return rand() % 10000;
+        return float(rand()) / RAND_MAX;
     }
 };
 
@@ -73,6 +73,13 @@ public:
             };
 
             test("SSE (Box-Muller, v3)", function);
+        }
+        {
+            auto function = [this]() {
+                sse_normal_distr_marsaglia(random, output.size(), &output[0]);
+            };
+
+            test("SSE (Marsaglia)", function);
         }
     }
 
