@@ -81,6 +81,13 @@ public:
 
             test("SSE (Marsaglia)", function);
         }
+        {
+            auto function = [this]() {
+                sse_normal_distr_marsaglia_variant2(random, output.size(), &output[0]);
+            };
+
+            test("SSE (Marsaglia, v2)", function);
+        }
     }
 
 protected:

@@ -3,10 +3,14 @@ from math import log, sqrt
 import sys
 
 def f1(x):
-    return sqrt(-2.0 * log(x))   
+    return sqrt(-2.0 * log(x))
+
+def f2(x):
+    return sqrt(-2.0 * log(x)/x)
 
 functions = {
-    'f1': f1
+    'f1': f1,
+    'f2': f2,
 }
 
 
