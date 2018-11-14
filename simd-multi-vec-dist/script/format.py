@@ -14,7 +14,7 @@ def main():
 
 def load(file):
     data = parse(file)
-    update_speedup(data, reference_key='SSE')
+    update_speedup(data, reference_key='SSE', field='avg')
 
     d = {}
     for item in data:
@@ -49,16 +49,16 @@ def format_table(data):
 
     # prepare header
     table = Table()
-    table.add_header(["procedure"] + [("%d vectors" % c, 3) for c in vector_count])
+    table.add_header(["procedure"] + [("%d vectors" % c, 2) for c in vector_count])
     h = [""]
-    t = ["best", "avg", "speedup"]
+    t = ["avg cycles", "speedup"]
     for _ in vector_count:
         h.extend(t)
     table.add_header(h)
     
     # prepare data
     for size in vector_size:
-        table.add_row([("*size %d*" % size, len(vector_count)*3 + 1)])
+        table.add_row([("*vector size %d*" % size, len(vector_count)*2 + 1)])
         for procedure in procedures:
             row = []
             row.append(procedure)
@@ -66,7 +66,6 @@ def format_table(data):
             for count in vector_count:
                 key = (size, count)
                 measurement = data[key]
-                row.append('%0.3f' % measurement[procedure].best)
                 row.append('%0.3f' % measurement[procedure].avg)
                 row.append('%0.2f' % measurement[procedure].speedup)
 

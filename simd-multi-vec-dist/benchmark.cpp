@@ -14,7 +14,7 @@ class Test {
     const size_t size;
     const size_t count;
 
-    const size_t iterations = 10;
+    const size_t iterations = 100;
 
     float** input;
     float*  output;
