@@ -30,7 +30,7 @@ void test(const char* msg, const uint32_t flags) {
 	uint32_t mxcsr;
 	uint32_t t1, t2;
 
-	printf("%s ...", msg);
+	printf("%-20s", msg);
 	fflush(stdout);
 
 	mxcsr = get_mxcsr();
@@ -41,7 +41,7 @@ void test(const char* msg, const uint32_t flags) {
 	test_loop();
 	t2 = get_time();
 
-	printf("%0.3fs\n", (t2-t1)/1000000.0);
+	printf("%8.3fs ", (t2-t1)/1000000.0);
 
 	printf(
 		"final value: %e, type: %s\n",
@@ -59,9 +59,11 @@ void test_loop() {
 	const int32_t iterations = 10000000;
 	uint32_t dummy;
 	__asm__ __volatile__(
+		"movups %2, %%xmm3\n" // tiny_value
+		"movups	%3, %%xmm4\n" // large_divisor
 		"1:\n"
-		"movups %2, %%xmm0\n" // tiny_value
-		"movups	%3, %%xmm1\n" // large_divisor
+		"movaps %%xmm3, %%xmm0\n"
+		"movaps %%xmm4, %%xmm1\n"
 		"pxor   %%xmm2, %%xmm2\n"
 		"mulps  %%xmm1, %%xmm0\n" // FLT_MIN * 0.5 => denormalized number
 		"addps	%%xmm2, %%xmm0\n" // denormalized + 0.0 => denormal exception
@@ -72,6 +74,7 @@ void test_loop() {
 		, "m" (tiny_value)
 		, "m" (large_divisor)
 		, "m" (final_value)
+		: "xmm0", "xmm1", "xmm2", "xmm3", "xmm4"
 		
 	);
 }
