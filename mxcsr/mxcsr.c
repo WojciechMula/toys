@@ -22,7 +22,7 @@
 
 
 uint32_t get_mxcsr() {
-	uint32_t result;
+	uint32_t result = 0;
 	__asm__ __volatile__("stmxcsr %0": :"m" (result));
 
 	return result;
