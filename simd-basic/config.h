@@ -12,9 +12,14 @@
 
 #if defined(HAVE_AVX2) && !defined(HAVE_SSSE3)
 #   define HAVE_SSSE3 1
+#   define HAVE_SSE41 1
+#   define HAVE_SSE42 1
+#endif
+
+#if (defined(HAVE_SSE41) || defined(HAVE_SSE42)) && !defined(HAVE_SSSE3)
+#   define HAVE_SSSE3 1
 #endif
 
 #if defined(HAVE_SSSE3) && !defined(HAVE_SSE2)
 #   define HAVE_SSE2 1
 #endif
-
