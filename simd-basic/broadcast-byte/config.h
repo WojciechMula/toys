@@ -1,1 +1,1 @@
-../reverse-bytes/config.h
+../config.h
