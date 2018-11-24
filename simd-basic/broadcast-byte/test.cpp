@@ -21,9 +21,6 @@
 #ifdef HAVE_AVX512BW
 #   include "broadcast.avx512bw.cpp"
 #endif
-#ifdef HAVE_AVX512VBMI
-#   include "broadcast.avx512vbmi.cpp"
-#endif
 
 
 #include "testbase.h"
@@ -70,17 +67,16 @@ public:
 #endif
 
 
-#if defined(HAVE_AVX512F) || defined(HAVE_AVX512BW) || defined(HAVE_AVX512VBMI)
+#if defined(HAVE_AVX512F) || defined(HAVE_AVX512BW)
 #   define TEST_AVX512
 class TestAVX512 : public TestBase<TestAVX512, 64> {
 public:
     void run() {
-        test("AVX512F", broadcast_avx512f);
+        test("AVX512F [1]", broadcast_avx512f__version_1);
+        test("AVX512F [2]", broadcast_avx512f__version_2);
 #if defined(HAVE_AVX512BW)
-        test("AVX512BW", broadcast_avx512bw);
-#endif
-#if defined(HAVE_AVX512VBMI)
-        test("AVX512VBMI", broadcast_avx512vbmi);
+        test("AVX512BW [1]", broadcast_avx512bw__version_1);
+        test("AVX512BW [2]", broadcast_avx512bw__version_2);
 #endif
     }
 

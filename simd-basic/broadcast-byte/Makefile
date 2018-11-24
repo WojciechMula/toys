@@ -6,8 +6,7 @@ ALL=test-sse2\
     test-ssse3\
     test-avx2\
     test-avx512f\
-    test-avx512bw\
-    test-avx512vbmi
+    test-avx512bw
 
 all: $(ALL)
 
@@ -25,9 +24,6 @@ test-avx512f: *.cpp *.h
 
 test-avx512bw: *.cpp *.h
 	$(CXX) $(FLAGS) -mavx512bw test.cpp -DHAVE_AVX512BW -o $@
-
-test-avx512vbmi: *.cpp *.h
-	$(CXX) $(FLAGS) -mavx512vbmi test.cpp -DHAVE_AVX512VBMI -o $@
 
 clean:
 	$(RM) $(ALL)
