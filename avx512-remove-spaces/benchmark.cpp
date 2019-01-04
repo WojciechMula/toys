@@ -12,70 +12,35 @@ class Benchmark {
 
 public:
     void run() {
-        test_1_gap();
-        test_2_gaps();
-        test_3_gaps();
-        //test_4_gaps();
+        for (int cardinality=1; cardinality <= 64; cardinality++) {
+            for (int k=0; k < 10; k++) {
+                printf("cardinality=%d, run=%d\n", cardinality, k);
+                test(random(cardinality));
+            }
+        }
     }
 
 private:
-    void test_1_gap() {
-        puts("test 1 gap");
-        for (size_t i=0; i < size; i++) {
-            init_input();
-            input[i] = ' ';
-            compare();
+    void test(uint64_t v) {
+        init_input();
+        while (v) {
+            const int k = __builtin_ctzll(v);
+            input[k] = ' ';
+
+            v ^= (v & -v);
         }
+
+        compare();
     }
 
-
-    void test_2_gaps() {
-        puts("test 2 gaps");
-        for (size_t i=0; i < size; i++) {
-            for (size_t j=i + 1; j < size; j++) {
-                init_input();
-                input[i] = ' ';
-                input[j] = ' ';
-                compare();
-            }
+    uint64_t random(int cardinality) {
+        uint64_t v = 0;
+        while (__builtin_popcountll(v) != cardinality) {
+            v |= uint64_t(1) << (rand() % 64);
         }
+
+        return v;
     }
-
-
-    void test_3_gaps() {
-        puts("test 3 gaps");
-        for (size_t i=0; i < size; i++) {
-            for (size_t j=i + 1; j < size; j++) {
-                for (size_t k=j + 1; k < size; k++) {
-                    init_input();
-                    input[i] = ' ';
-                    input[j] = ' ';
-                    input[k] = ' ';
-                    compare();
-                }
-            }
-        }
-    }
-
-
-    void test_4_gaps() {
-        puts("test 4 gaps");
-        for (size_t i=0; i < size; i++) {
-            for (size_t j=i + 1; j < size; j++) {
-                for (size_t k=j + 1; k < size; k++) {
-                    for (size_t l=k + 1; l < size; l++) {
-                        init_input();
-                        input[i] = ' ';
-                        input[j] = ' ';
-                        input[k] = ' ';
-                        input[l] = ' ';
-                        compare();
-                    }
-                }
-            }
-        }
-    }
-
 
     void init_input() {
         int i=0;

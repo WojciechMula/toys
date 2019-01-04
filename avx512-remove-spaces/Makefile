@@ -1,8 +1,12 @@
+.SUFFIXES:
+
 FLAGS=$(CXXFLAGS) -mavx512vbmi -Wall -Wextra -pedantic -std=c++11
 
 DEPS=all.cpp scalar.cpp avx512vbmi.cpp
 
 ALL=unittest benchmark
+
+all: $(ALL)
 
 unittest: unittest.cpp $(DEPS)
 	$(CXX) $(FLAGS) $< -o $@
