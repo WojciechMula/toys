@@ -1,7 +1,6 @@
 #include <immintrin.h>
 #include <cstdint>
-
-#include "avx512-dump.h"
+#include <cassert>
 
 void dump(const char* s, uint64_t x) {
     printf("%s = ", s);
