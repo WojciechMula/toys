@@ -4,12 +4,15 @@ FLAGS=$(CXXFLAGS) -mavx512vbmi -Wall -Wextra -pedantic -std=c++11
 
 DEPS=all.cpp scalar.cpp avx512vbmi.cpp application_base.cpp
 
-ALL=unittest benchmark speed
+ALL=unittest test benchmark speed
 
 all: $(ALL)
 
 unittest: unittest.cpp $(DEPS)
 	$(CXX) $(FLAGS) $< -o $@
+
+test: test.cpp $(DEPS)
+	$(CXX) $(FLAGS) -O3 $< -o $@
 
 benchmark: benchmark.cpp $(DEPS)
 	$(CXX) $(FLAGS) -O3 $< -o $@
@@ -21,8 +24,12 @@ speed: speed.cpp $(DEPS)
 tom-sawyer.txt:
 	wget http://www.gutenberg.org/files/74/74-0.txt -O $@
 
-run: speed tom-sawyer.txt
+run_speed: speed tom-sawyer.txt
 	./speed tom-sawyer.txt
+
+run_test: test tom-sawyer.txt
+	./test tom-sawyer.txt
+	@cmp scalar.out avx512.out
 
 clean:
 	$(RM) $(ALL)
