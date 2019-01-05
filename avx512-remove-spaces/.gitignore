@@ -2,3 +2,7 @@ unittest
 benchmark
 speed
 test
+
+cnl.png
+cnl.gnuplot
+cnl.data
