@@ -2,7 +2,7 @@
 
 FLAGS=$(CXXFLAGS) -mavx512vbmi -Wall -Wextra -pedantic -std=c++11
 
-DEPS=all.cpp scalar.cpp avx512vbmi.cpp
+DEPS=all.cpp scalar.cpp avx512vbmi.cpp application_base.cpp
 
 ALL=unittest benchmark speed
 

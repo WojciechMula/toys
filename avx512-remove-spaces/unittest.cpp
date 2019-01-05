@@ -5,14 +5,12 @@
 
 #include "all.cpp"
 #include "ansi.cpp"
+#include "application_base.cpp"
 
-class Test {
+class UnitTests: public ApplicationBase {
 
-    struct TestFailed{};
+    struct UnitTestsFailed{};
 
-    static const size_t size = 64;
-    char input[size];
-    char output[size];
     char output_ref[size];
 
 public:
@@ -25,14 +23,13 @@ public:
             puts(ansi::seq("All OK", ansi::GREEN).c_str());
 
             return true;
-        } catch (TestFailed&) {
+        } catch (UnitTestsFailed&) {
             return false;
         }
     }
 
 private:
     void test_1_gap() {
-
         puts("test 1 gap");
         for (size_t i=0; i < size; i++) {
             init_input();
@@ -42,7 +39,6 @@ private:
     }
 
     void test_2_gaps() {
-
         puts("test 2 gaps");
         for (size_t i=0; i < size; i++) {
             for (size_t j=i + 5; j < size; j++) {
@@ -78,16 +74,6 @@ private:
     }
 
 
-    uint64_t random(int cardinality) {
-        uint64_t v = 0;
-        while (__builtin_popcountll(v) != cardinality) {
-            v |= uint64_t(1) << (rand() % 64);
-        }
-
-        return v;
-    }
-
-
     void compare() {
 
         const char* ret_ref = remove_spaces__scalar    (input, output_ref, size);
@@ -102,25 +88,8 @@ private:
             printf("   ref: "); dump(output_ref, len_ref);
             printf("result: "); dump(output, len);
 
-            throw TestFailed{};
+            throw UnitTestsFailed{};
         }
-    }
-
-    void init_input() {
-        int i=0;
-        for (int j='a'; j <= 'z'; j++)
-            input[i++] = j;
-
-        for (int j='A'; j <= 'Z'; j++)
-            input[i++] = j;
-
-        for (int j='0'; j <= '9'; j++)
-            input[i++] = j;
-
-        input[i++] = '#';
-        input[i++] = '@';
-
-        assert(i == size);
     }
 
     bool output_prefixes_equal(size_t k) {
@@ -148,7 +117,6 @@ int main() {
 
     srand(0);
 
-    Test test;
-
-    test.run();
+    UnitTests test;
+    return test.run() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
