@@ -1,0 +1,1921 @@
+cardinality=1, run=0
+rdtsc_overhead set to 30
+scalar                        	:     2.156 cycle/op (best)    2.245 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.264 cycle/op (avg)
+cardinality=1, run=1
+scalar                        	:     1.719 cycle/op (best)    1.813 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.270 cycle/op (avg)
+cardinality=1, run=2
+scalar                        	:     2.125 cycle/op (best)    2.236 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.268 cycle/op (avg)
+cardinality=1, run=3
+scalar                        	:     1.844 cycle/op (best)    1.951 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.267 cycle/op (avg)
+cardinality=1, run=4
+scalar                        	:     1.531 cycle/op (best)    1.626 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.269 cycle/op (avg)
+cardinality=1, run=5
+scalar                        	:     1.719 cycle/op (best)    1.973 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.269 cycle/op (avg)
+cardinality=1, run=6
+scalar                        	:     1.688 cycle/op (best)    1.777 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.276 cycle/op (avg)
+cardinality=1, run=7
+scalar                        	:     1.844 cycle/op (best)    1.951 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.268 cycle/op (avg)
+cardinality=1, run=8
+scalar                        	:     2.156 cycle/op (best)    2.234 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.270 cycle/op (avg)
+cardinality=1, run=9
+scalar                        	:     1.688 cycle/op (best)    1.781 cycle/op (avg)
+AVX512VBMI                    	:     0.188 cycle/op (best)    0.269 cycle/op (avg)
+cardinality=2, run=0
+scalar                        	:     1.938 cycle/op (best)    2.026 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.385 cycle/op (avg)
+cardinality=2, run=1
+scalar                        	:     1.844 cycle/op (best)    1.999 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.381 cycle/op (avg)
+cardinality=2, run=2
+scalar                        	:     2.062 cycle/op (best)    2.229 cycle/op (avg)
+AVX512VBMI                    	:     0.312 cycle/op (best)    0.382 cycle/op (avg)
+cardinality=2, run=3
+scalar                        	:     1.969 cycle/op (best)    2.073 cycle/op (avg)
+AVX512VBMI                    	:     0.312 cycle/op (best)    0.380 cycle/op (avg)
+cardinality=2, run=4
+scalar                        	:     1.531 cycle/op (best)    1.619 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.383 cycle/op (avg)
+cardinality=2, run=5
+scalar                        	:     1.531 cycle/op (best)    1.629 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.382 cycle/op (avg)
+cardinality=2, run=6
+scalar                        	:     2.125 cycle/op (best)    2.230 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.383 cycle/op (avg)
+cardinality=2, run=7
+scalar                        	:     1.531 cycle/op (best)    1.613 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.380 cycle/op (avg)
+cardinality=2, run=8
+scalar                        	:     1.938 cycle/op (best)    2.101 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.381 cycle/op (avg)
+cardinality=2, run=9
+scalar                        	:     1.938 cycle/op (best)    2.043 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.385 cycle/op (avg)
+cardinality=3, run=0
+scalar                        	:     1.625 cycle/op (best)    1.719 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.451 cycle/op (avg)
+cardinality=3, run=1
+scalar                        	:     1.844 cycle/op (best)    1.946 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.526 cycle/op (avg)
+cardinality=3, run=2
+scalar                        	:     1.531 cycle/op (best)    1.632 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.448 cycle/op (avg)
+cardinality=3, run=3
+scalar                        	:     2.156 cycle/op (best)    2.251 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.452 cycle/op (avg)
+cardinality=3, run=4
+scalar                        	:     1.562 cycle/op (best)    2.291 cycle/op (avg)
+AVX512VBMI                    	:     0.312 cycle/op (best)    0.418 cycle/op (avg)
+cardinality=3, run=5
+scalar                        	:     1.531 cycle/op (best)    1.713 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.450 cycle/op (avg)
+cardinality=3, run=6
+scalar                        	:     1.969 cycle/op (best)    2.045 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.446 cycle/op (avg)
+cardinality=3, run=7
+scalar                        	:     1.906 cycle/op (best)    2.026 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.445 cycle/op (avg)
+cardinality=3, run=8
+scalar                        	:     1.719 cycle/op (best)    1.824 cycle/op (avg)
+AVX512VBMI                    	:     0.344 cycle/op (best)    0.449 cycle/op (avg)
+cardinality=3, run=9
+scalar                        	:     1.875 cycle/op (best)    2.126 cycle/op (avg)
+AVX512VBMI                    	:     0.312 cycle/op (best)    0.437 cycle/op (avg)
+cardinality=4, run=0
+scalar                        	:     2.281 cycle/op (best)    2.469 cycle/op (avg)
+AVX512VBMI                    	:     0.438 cycle/op (best)    0.535 cycle/op (avg)
+cardinality=4, run=1
+scalar                        	:     1.938 cycle/op (best)    2.042 cycle/op (avg)
+AVX512VBMI                    	:     0.438 cycle/op (best)    0.605 cycle/op (avg)
+cardinality=4, run=2
+scalar                        	:     2.312 cycle/op (best)    2.451 cycle/op (avg)
+AVX512VBMI                    	:     0.406 cycle/op (best)    0.528 cycle/op (avg)
+cardinality=4, run=3
+scalar                        	:     1.531 cycle/op (best)    1.639 cycle/op (avg)
+AVX512VBMI                    	:     0.438 cycle/op (best)    0.533 cycle/op (avg)
+cardinality=4, run=4
+scalar                        	:     1.531 cycle/op (best)    1.646 cycle/op (avg)
+AVX512VBMI                    	:     0.438 cycle/op (best)    0.532 cycle/op (avg)
+cardinality=4, run=5
+scalar                        	:     1.938 cycle/op (best)    2.032 cycle/op (avg)
+AVX512VBMI                    	:     0.438 cycle/op (best)    0.534 cycle/op (avg)
+cardinality=4, run=6
+scalar                        	:     1.875 cycle/op (best)    2.064 cycle/op (avg)
+AVX512VBMI                    	:     0.375 cycle/op (best)    0.504 cycle/op (avg)
+cardinality=4, run=7
+scalar                        	:     1.531 cycle/op (best)    1.625 cycle/op (avg)
+AVX512VBMI                    	:     0.406 cycle/op (best)    0.533 cycle/op (avg)
+cardinality=4, run=8
+scalar                        	:     2.219 cycle/op (best)    2.334 cycle/op (avg)
+AVX512VBMI                    	:     0.281 cycle/op (best)    0.437 cycle/op (avg)
+cardinality=4, run=9
+scalar                        	:     1.906 cycle/op (best)    2.066 cycle/op (avg)
+AVX512VBMI                    	:     0.375 cycle/op (best)    0.498 cycle/op (avg)
+cardinality=5, run=0
+scalar                        	:     1.531 cycle/op (best)    1.654 cycle/op (avg)
+AVX512VBMI                    	:     0.406 cycle/op (best)    0.540 cycle/op (avg)
+cardinality=5, run=1
+scalar                        	:     1.562 cycle/op (best)    1.654 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.599 cycle/op (avg)
+cardinality=5, run=2
+scalar                        	:     1.906 cycle/op (best)    2.004 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.597 cycle/op (avg)
+cardinality=5, run=3
+scalar                        	:     1.562 cycle/op (best)    1.716 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.595 cycle/op (avg)
+cardinality=5, run=4
+scalar                        	:     1.531 cycle/op (best)    1.636 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.664 cycle/op (avg)
+cardinality=5, run=5
+scalar                        	:     1.938 cycle/op (best)    2.035 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.599 cycle/op (avg)
+cardinality=5, run=6
+scalar                        	:     1.562 cycle/op (best)    1.653 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.617 cycle/op (avg)
+cardinality=5, run=7
+scalar                        	:     1.562 cycle/op (best)    1.680 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.601 cycle/op (avg)
+cardinality=5, run=8
+scalar                        	:     1.969 cycle/op (best)    2.071 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.596 cycle/op (avg)
+cardinality=5, run=9
+scalar                        	:     1.562 cycle/op (best)    1.653 cycle/op (avg)
+AVX512VBMI                    	:     0.469 cycle/op (best)    0.596 cycle/op (avg)
+cardinality=6, run=0
+scalar                        	:     1.531 cycle/op (best)    1.640 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.680 cycle/op (avg)
+cardinality=6, run=1
+scalar                        	:     1.531 cycle/op (best)    1.628 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.690 cycle/op (avg)
+cardinality=6, run=2
+scalar                        	:     1.531 cycle/op (best)    1.636 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.684 cycle/op (avg)
+cardinality=6, run=3
+scalar                        	:     1.562 cycle/op (best)    1.643 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.685 cycle/op (avg)
+cardinality=6, run=4
+scalar                        	:     1.562 cycle/op (best)    1.660 cycle/op (avg)
+AVX512VBMI                    	:     0.531 cycle/op (best)    0.731 cycle/op (avg)
+cardinality=6, run=5
+scalar                        	:     1.562 cycle/op (best)    1.664 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.681 cycle/op (avg)
+cardinality=6, run=6
+scalar                        	:     1.531 cycle/op (best)    1.637 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.678 cycle/op (avg)
+cardinality=6, run=7
+scalar                        	:     1.562 cycle/op (best)    1.648 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.681 cycle/op (avg)
+cardinality=6, run=8
+scalar                        	:     1.531 cycle/op (best)    1.622 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.682 cycle/op (avg)
+cardinality=6, run=9
+scalar                        	:     1.562 cycle/op (best)    1.688 cycle/op (avg)
+AVX512VBMI                    	:     0.500 cycle/op (best)    0.634 cycle/op (avg)
+cardinality=7, run=0
+scalar                        	:     1.562 cycle/op (best)    1.664 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.761 cycle/op (avg)
+cardinality=7, run=1
+scalar                        	:     1.562 cycle/op (best)    1.932 cycle/op (avg)
+AVX512VBMI                    	:     0.562 cycle/op (best)    0.678 cycle/op (avg)
+cardinality=7, run=2
+scalar                        	:     1.875 cycle/op (best)    1.982 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.761 cycle/op (avg)
+cardinality=7, run=3
+scalar                        	:     1.562 cycle/op (best)    1.723 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.743 cycle/op (avg)
+cardinality=7, run=4
+scalar                        	:     1.531 cycle/op (best)    1.630 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.757 cycle/op (avg)
+cardinality=7, run=5
+scalar                        	:     1.562 cycle/op (best)    1.679 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.750 cycle/op (avg)
+cardinality=7, run=6
+scalar                        	:     1.875 cycle/op (best)    1.987 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.752 cycle/op (avg)
+cardinality=7, run=7
+scalar                        	:     1.562 cycle/op (best)    1.668 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.767 cycle/op (avg)
+cardinality=7, run=8
+scalar                        	:     1.531 cycle/op (best)    1.650 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.756 cycle/op (avg)
+cardinality=7, run=9
+scalar                        	:     1.531 cycle/op (best)    1.645 cycle/op (avg)
+AVX512VBMI                    	:     0.625 cycle/op (best)    0.757 cycle/op (avg)
+cardinality=8, run=0
+scalar                        	:     1.562 cycle/op (best)    1.660 cycle/op (avg)
+AVX512VBMI                    	:     0.688 cycle/op (best)    0.809 cycle/op (avg)
+cardinality=8, run=1
+scalar                        	:     1.531 cycle/op (best)    1.627 cycle/op (avg)
+AVX512VBMI                    	:     0.688 cycle/op (best)    0.808 cycle/op (avg)
+cardinality=8, run=2
+scalar                        	:     1.562 cycle/op (best)    1.724 cycle/op (avg)
+AVX512VBMI                    	:     0.688 cycle/op (best)    0.826 cycle/op (avg)
+cardinality=8, run=3
+scalar                        	:     1.562 cycle/op (best)    1.670 cycle/op (avg)
+AVX512VBMI                    	:     0.656 cycle/op (best)    0.789 cycle/op (avg)
+cardinality=8, run=4
+scalar                        	:     1.562 cycle/op (best)    1.674 cycle/op (avg)
+AVX512VBMI                    	:     0.688 cycle/op (best)    0.823 cycle/op (avg)
+cardinality=8, run=5
+scalar                        	:     1.562 cycle/op (best)    1.681 cycle/op (avg)
+AVX512VBMI                    	:     0.688 cycle/op (best)    0.834 cycle/op (avg)
+cardinality=8, run=6
+scalar                        	:     1.531 cycle/op (best)    1.646 cycle/op (avg)
+AVX512VBMI                    	:     0.688 cycle/op (best)    0.810 cycle/op (avg)
+cardinality=8, run=7
+scalar                        	:     1.562 cycle/op (best)    1.657 cycle/op (avg)
+AVX512VBMI                    	:     0.688 cycle/op (best)    0.809 cycle/op (avg)
+cardinality=8, run=8
+scalar                        	:     1.562 cycle/op (best)    1.656 cycle/op (avg)
+AVX512VBMI                    	:     0.656 cycle/op (best)    0.796 cycle/op (avg)
+cardinality=8, run=9
+scalar                        	:     1.562 cycle/op (best)    1.739 cycle/op (avg)
+AVX512VBMI                    	:     0.656 cycle/op (best)    0.786 cycle/op (avg)
+cardinality=9, run=0
+scalar                        	:     1.562 cycle/op (best)    1.666 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.871 cycle/op (avg)
+cardinality=9, run=1
+scalar                        	:     1.562 cycle/op (best)    1.656 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.902 cycle/op (avg)
+cardinality=9, run=2
+scalar                        	:     1.531 cycle/op (best)    1.656 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.891 cycle/op (avg)
+cardinality=9, run=3
+scalar                        	:     1.562 cycle/op (best)    1.669 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.914 cycle/op (avg)
+cardinality=9, run=4
+scalar                        	:     1.531 cycle/op (best)    1.640 cycle/op (avg)
+AVX512VBMI                    	:     0.781 cycle/op (best)    0.898 cycle/op (avg)
+cardinality=9, run=5
+scalar                        	:     1.594 cycle/op (best)    1.704 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.897 cycle/op (avg)
+cardinality=9, run=6
+scalar                        	:     1.562 cycle/op (best)    1.683 cycle/op (avg)
+AVX512VBMI                    	:     0.719 cycle/op (best)    0.874 cycle/op (avg)
+cardinality=9, run=7
+scalar                        	:     1.531 cycle/op (best)    1.646 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.868 cycle/op (avg)
+cardinality=9, run=8
+scalar                        	:     1.562 cycle/op (best)    1.662 cycle/op (avg)
+AVX512VBMI                    	:     0.719 cycle/op (best)    0.900 cycle/op (avg)
+cardinality=9, run=9
+scalar                        	:     1.562 cycle/op (best)    1.675 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.895 cycle/op (avg)
+cardinality=10, run=0
+scalar                        	:     1.906 cycle/op (best)    2.027 cycle/op (avg)
+AVX512VBMI                    	:     0.844 cycle/op (best)    0.985 cycle/op (avg)
+cardinality=10, run=1
+scalar                        	:     1.562 cycle/op (best)    1.674 cycle/op (avg)
+AVX512VBMI                    	:     0.812 cycle/op (best)    0.956 cycle/op (avg)
+cardinality=10, run=2
+scalar                        	:     1.562 cycle/op (best)    1.693 cycle/op (avg)
+AVX512VBMI                    	:     0.812 cycle/op (best)    0.967 cycle/op (avg)
+cardinality=10, run=3
+scalar                        	:     1.562 cycle/op (best)    1.664 cycle/op (avg)
+AVX512VBMI                    	:     0.812 cycle/op (best)    0.970 cycle/op (avg)
+cardinality=10, run=4
+scalar                        	:     1.562 cycle/op (best)    1.669 cycle/op (avg)
+AVX512VBMI                    	:     0.812 cycle/op (best)    0.950 cycle/op (avg)
+cardinality=10, run=5
+scalar                        	:     1.562 cycle/op (best)    1.670 cycle/op (avg)
+AVX512VBMI                    	:     0.844 cycle/op (best)    0.983 cycle/op (avg)
+cardinality=10, run=6
+scalar                        	:     1.562 cycle/op (best)    1.682 cycle/op (avg)
+AVX512VBMI                    	:     0.812 cycle/op (best)    0.977 cycle/op (avg)
+cardinality=10, run=7
+scalar                        	:     1.562 cycle/op (best)    1.691 cycle/op (avg)
+AVX512VBMI                    	:     0.812 cycle/op (best)    0.955 cycle/op (avg)
+cardinality=10, run=8
+scalar                        	:     1.875 cycle/op (best)    2.095 cycle/op (avg)
+AVX512VBMI                    	:     0.781 cycle/op (best)    0.944 cycle/op (avg)
+cardinality=10, run=9
+scalar                        	:     1.531 cycle/op (best)    1.645 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.899 cycle/op (avg)
+cardinality=11, run=0
+scalar                        	:     1.562 cycle/op (best)    1.683 cycle/op (avg)
+AVX512VBMI                    	:     0.844 cycle/op (best)    0.976 cycle/op (avg)
+cardinality=11, run=1
+scalar                        	:     1.562 cycle/op (best)    1.668 cycle/op (avg)
+AVX512VBMI                    	:     0.875 cycle/op (best)    1.024 cycle/op (avg)
+cardinality=11, run=2
+scalar                        	:     1.875 cycle/op (best)    1.994 cycle/op (avg)
+AVX512VBMI                    	:     0.875 cycle/op (best)    1.051 cycle/op (avg)
+cardinality=11, run=3
+scalar                        	:     2.438 cycle/op (best)    2.580 cycle/op (avg)
+AVX512VBMI                    	:     0.875 cycle/op (best)    0.990 cycle/op (avg)
+cardinality=11, run=4
+scalar                        	:     1.656 cycle/op (best)    1.995 cycle/op (avg)
+AVX512VBMI                    	:     0.750 cycle/op (best)    0.908 cycle/op (avg)
+cardinality=11, run=5
+scalar                        	:     1.594 cycle/op (best)    1.684 cycle/op (avg)
+AVX512VBMI                    	:     0.844 cycle/op (best)    0.988 cycle/op (avg)
+cardinality=11, run=6
+scalar                        	:     1.531 cycle/op (best)    1.666 cycle/op (avg)
+AVX512VBMI                    	:     0.875 cycle/op (best)    1.040 cycle/op (avg)
+cardinality=11, run=7
+scalar                        	:     2.156 cycle/op (best)    2.381 cycle/op (avg)
+AVX512VBMI                    	:     0.906 cycle/op (best)    1.053 cycle/op (avg)
+cardinality=11, run=8
+scalar                        	:     1.562 cycle/op (best)    1.739 cycle/op (avg)
+AVX512VBMI                    	:     0.875 cycle/op (best)    1.034 cycle/op (avg)
+cardinality=11, run=9
+scalar                        	:     1.594 cycle/op (best)    1.691 cycle/op (avg)
+AVX512VBMI                    	:     0.844 cycle/op (best)    1.000 cycle/op (avg)
+cardinality=12, run=0
+scalar                        	:     1.594 cycle/op (best)    1.699 cycle/op (avg)
+AVX512VBMI                    	:     0.938 cycle/op (best)    1.087 cycle/op (avg)
+cardinality=12, run=1
+scalar                        	:     1.719 cycle/op (best)    1.843 cycle/op (avg)
+AVX512VBMI                    	:     0.969 cycle/op (best)    1.107 cycle/op (avg)
+cardinality=12, run=2
+scalar                        	:     1.562 cycle/op (best)    1.691 cycle/op (avg)
+AVX512VBMI                    	:     1.000 cycle/op (best)    1.131 cycle/op (avg)
+cardinality=12, run=3
+scalar                        	:     1.562 cycle/op (best)    1.669 cycle/op (avg)
+AVX512VBMI                    	:     1.000 cycle/op (best)    1.151 cycle/op (avg)
+cardinality=12, run=4
+scalar                        	:     1.625 cycle/op (best)    1.761 cycle/op (avg)
+AVX512VBMI                    	:     0.938 cycle/op (best)    1.123 cycle/op (avg)
+cardinality=12, run=5
+scalar                        	:     2.125 cycle/op (best)    2.256 cycle/op (avg)
+AVX512VBMI                    	:     0.938 cycle/op (best)    1.152 cycle/op (avg)
+cardinality=12, run=6
+scalar                        	:     1.594 cycle/op (best)    1.771 cycle/op (avg)
+AVX512VBMI                    	:     0.906 cycle/op (best)    1.058 cycle/op (avg)
+cardinality=12, run=7
+scalar                        	:     1.562 cycle/op (best)    1.691 cycle/op (avg)
+AVX512VBMI                    	:     0.969 cycle/op (best)    1.112 cycle/op (avg)
+cardinality=12, run=8
+scalar                        	:     1.594 cycle/op (best)    1.712 cycle/op (avg)
+AVX512VBMI                    	:     0.969 cycle/op (best)    1.117 cycle/op (avg)
+cardinality=12, run=9
+scalar                        	:     1.656 cycle/op (best)    1.746 cycle/op (avg)
+AVX512VBMI                    	:     0.875 cycle/op (best)    1.038 cycle/op (avg)
+cardinality=13, run=0
+scalar                        	:     1.625 cycle/op (best)    1.720 cycle/op (avg)
+AVX512VBMI                    	:     1.031 cycle/op (best)    1.208 cycle/op (avg)
+cardinality=13, run=1
+scalar                        	:     1.594 cycle/op (best)    1.694 cycle/op (avg)
+AVX512VBMI                    	:     1.062 cycle/op (best)    1.210 cycle/op (avg)
+cardinality=13, run=2
+scalar                        	:     1.562 cycle/op (best)    1.688 cycle/op (avg)
+AVX512VBMI                    	:     1.000 cycle/op (best)    1.163 cycle/op (avg)
+cardinality=13, run=3
+scalar                        	:     2.094 cycle/op (best)    2.653 cycle/op (avg)
+AVX512VBMI                    	:     1.062 cycle/op (best)    1.210 cycle/op (avg)
+cardinality=13, run=4
+scalar                        	:     1.531 cycle/op (best)    1.657 cycle/op (avg)
+AVX512VBMI                    	:     1.062 cycle/op (best)    1.204 cycle/op (avg)
+cardinality=13, run=5
+scalar                        	:     1.969 cycle/op (best)    2.130 cycle/op (avg)
+AVX512VBMI                    	:     0.969 cycle/op (best)    1.128 cycle/op (avg)
+cardinality=13, run=6
+scalar                        	:     1.562 cycle/op (best)    1.663 cycle/op (avg)
+AVX512VBMI                    	:     1.062 cycle/op (best)    1.205 cycle/op (avg)
+cardinality=13, run=7
+scalar                        	:     1.562 cycle/op (best)    1.677 cycle/op (avg)
+AVX512VBMI                    	:     1.031 cycle/op (best)    1.198 cycle/op (avg)
+cardinality=13, run=8
+scalar                        	:     1.750 cycle/op (best)    1.859 cycle/op (avg)
+AVX512VBMI                    	:     1.000 cycle/op (best)    1.161 cycle/op (avg)
+cardinality=13, run=9
+scalar                        	:     1.594 cycle/op (best)    1.693 cycle/op (avg)
+AVX512VBMI                    	:     1.031 cycle/op (best)    1.197 cycle/op (avg)
+cardinality=14, run=0
+scalar                        	:     1.656 cycle/op (best)    1.765 cycle/op (avg)
+AVX512VBMI                    	:     1.125 cycle/op (best)    1.292 cycle/op (avg)
+cardinality=14, run=1
+scalar                        	:     1.594 cycle/op (best)    1.743 cycle/op (avg)
+AVX512VBMI                    	:     1.062 cycle/op (best)    1.197 cycle/op (avg)
+cardinality=14, run=2
+scalar                        	:     1.562 cycle/op (best)    1.680 cycle/op (avg)
+AVX512VBMI                    	:     1.094 cycle/op (best)    1.298 cycle/op (avg)
+cardinality=14, run=3
+scalar                        	:     1.688 cycle/op (best)    1.956 cycle/op (avg)
+AVX512VBMI                    	:     1.094 cycle/op (best)    1.259 cycle/op (avg)
+cardinality=14, run=4
+scalar                        	:     1.688 cycle/op (best)    1.800 cycle/op (avg)
+AVX512VBMI                    	:     1.094 cycle/op (best)    1.276 cycle/op (avg)
+cardinality=14, run=5
+scalar                        	:     1.781 cycle/op (best)    2.050 cycle/op (avg)
+AVX512VBMI                    	:     1.125 cycle/op (best)    1.296 cycle/op (avg)
+cardinality=14, run=6
+scalar                        	:     1.688 cycle/op (best)    1.807 cycle/op (avg)
+AVX512VBMI                    	:     1.062 cycle/op (best)    1.255 cycle/op (avg)
+cardinality=14, run=7
+scalar                        	:     1.688 cycle/op (best)    2.105 cycle/op (avg)
+AVX512VBMI                    	:     1.094 cycle/op (best)    1.276 cycle/op (avg)
+cardinality=14, run=8
+scalar                        	:     1.844 cycle/op (best)    1.969 cycle/op (avg)
+AVX512VBMI                    	:     1.031 cycle/op (best)    1.206 cycle/op (avg)
+cardinality=14, run=9
+scalar                        	:     1.688 cycle/op (best)    1.791 cycle/op (avg)
+AVX512VBMI                    	:     1.094 cycle/op (best)    1.250 cycle/op (avg)
+cardinality=15, run=0
+scalar                        	:     2.188 cycle/op (best)    2.316 cycle/op (avg)
+AVX512VBMI                    	:     1.094 cycle/op (best)    1.272 cycle/op (avg)
+cardinality=15, run=1
+scalar                        	:     1.594 cycle/op (best)    2.145 cycle/op (avg)
+AVX512VBMI                    	:     1.219 cycle/op (best)    1.376 cycle/op (avg)
+cardinality=15, run=2
+scalar                        	:     1.750 cycle/op (best)    1.886 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.351 cycle/op (avg)
+cardinality=15, run=3
+scalar                        	:     1.656 cycle/op (best)    1.846 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.337 cycle/op (avg)
+cardinality=15, run=4
+scalar                        	:     1.562 cycle/op (best)    1.691 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.361 cycle/op (avg)
+cardinality=15, run=5
+scalar                        	:     1.562 cycle/op (best)    1.698 cycle/op (avg)
+AVX512VBMI                    	:     1.156 cycle/op (best)    1.318 cycle/op (avg)
+cardinality=15, run=6
+scalar                        	:     2.219 cycle/op (best)    2.335 cycle/op (avg)
+AVX512VBMI                    	:     1.031 cycle/op (best)    1.279 cycle/op (avg)
+cardinality=15, run=7
+scalar                        	:     1.594 cycle/op (best)    1.825 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.334 cycle/op (avg)
+cardinality=15, run=8
+scalar                        	:     1.594 cycle/op (best)    1.711 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.401 cycle/op (avg)
+cardinality=15, run=9
+scalar                        	:     1.750 cycle/op (best)    1.847 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.346 cycle/op (avg)
+cardinality=16, run=0
+scalar                        	:     1.750 cycle/op (best)    1.869 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.374 cycle/op (avg)
+cardinality=16, run=1
+scalar                        	:     1.781 cycle/op (best)    1.917 cycle/op (avg)
+AVX512VBMI                    	:     1.281 cycle/op (best)    1.427 cycle/op (avg)
+cardinality=16, run=2
+scalar                        	:     1.719 cycle/op (best)    1.867 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.472 cycle/op (avg)
+cardinality=16, run=3
+scalar                        	:     2.031 cycle/op (best)    2.142 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.399 cycle/op (avg)
+cardinality=16, run=4
+scalar                        	:     1.625 cycle/op (best)    2.021 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.442 cycle/op (avg)
+cardinality=16, run=5
+scalar                        	:     1.625 cycle/op (best)    2.021 cycle/op (avg)
+AVX512VBMI                    	:     1.281 cycle/op (best)    1.420 cycle/op (avg)
+cardinality=16, run=6
+scalar                        	:     1.625 cycle/op (best)    1.741 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.413 cycle/op (avg)
+cardinality=16, run=7
+scalar                        	:     1.656 cycle/op (best)    1.754 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.437 cycle/op (avg)
+cardinality=16, run=8
+scalar                        	:     1.625 cycle/op (best)    1.751 cycle/op (avg)
+AVX512VBMI                    	:     1.281 cycle/op (best)    1.443 cycle/op (avg)
+cardinality=16, run=9
+scalar                        	:     1.594 cycle/op (best)    1.694 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.417 cycle/op (avg)
+cardinality=17, run=0
+scalar                        	:     1.750 cycle/op (best)    1.865 cycle/op (avg)
+AVX512VBMI                    	:     1.281 cycle/op (best)    1.469 cycle/op (avg)
+cardinality=17, run=1
+scalar                        	:     1.938 cycle/op (best)    2.078 cycle/op (avg)
+AVX512VBMI                    	:     1.312 cycle/op (best)    1.462 cycle/op (avg)
+cardinality=17, run=2
+scalar                        	:     1.719 cycle/op (best)    1.815 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.413 cycle/op (avg)
+cardinality=17, run=3
+scalar                        	:     1.688 cycle/op (best)    1.788 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.398 cycle/op (avg)
+cardinality=17, run=4
+scalar                        	:     1.969 cycle/op (best)    2.083 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.420 cycle/op (avg)
+cardinality=17, run=5
+scalar                        	:     1.625 cycle/op (best)    1.720 cycle/op (avg)
+AVX512VBMI                    	:     1.344 cycle/op (best)    1.486 cycle/op (avg)
+cardinality=17, run=6
+scalar                        	:     1.875 cycle/op (best)    1.980 cycle/op (avg)
+AVX512VBMI                    	:     1.281 cycle/op (best)    1.473 cycle/op (avg)
+cardinality=17, run=7
+scalar                        	:     1.844 cycle/op (best)    1.970 cycle/op (avg)
+AVX512VBMI                    	:     1.250 cycle/op (best)    1.434 cycle/op (avg)
+cardinality=17, run=8
+scalar                        	:     1.719 cycle/op (best)    1.943 cycle/op (avg)
+AVX512VBMI                    	:     1.281 cycle/op (best)    1.452 cycle/op (avg)
+cardinality=17, run=9
+scalar                        	:     1.812 cycle/op (best)    1.940 cycle/op (avg)
+AVX512VBMI                    	:     1.188 cycle/op (best)    1.384 cycle/op (avg)
+cardinality=18, run=0
+scalar                        	:     1.875 cycle/op (best)    1.982 cycle/op (avg)
+AVX512VBMI                    	:     1.406 cycle/op (best)    1.585 cycle/op (avg)
+cardinality=18, run=1
+scalar                        	:     1.719 cycle/op (best)    1.871 cycle/op (avg)
+AVX512VBMI                    	:     1.344 cycle/op (best)    1.532 cycle/op (avg)
+cardinality=18, run=2
+scalar                        	:     1.906 cycle/op (best)    2.013 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.558 cycle/op (avg)
+cardinality=18, run=3
+scalar                        	:     1.750 cycle/op (best)    1.946 cycle/op (avg)
+AVX512VBMI                    	:     1.312 cycle/op (best)    1.519 cycle/op (avg)
+cardinality=18, run=4
+scalar                        	:     1.906 cycle/op (best)    2.008 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.536 cycle/op (avg)
+cardinality=18, run=5
+scalar                        	:     1.594 cycle/op (best)    1.720 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.553 cycle/op (avg)
+cardinality=18, run=6
+scalar                        	:     1.875 cycle/op (best)    1.993 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.679 cycle/op (avg)
+cardinality=18, run=7
+scalar                        	:     1.906 cycle/op (best)    2.026 cycle/op (avg)
+AVX512VBMI                    	:     1.281 cycle/op (best)    1.447 cycle/op (avg)
+cardinality=18, run=8
+scalar                        	:     1.719 cycle/op (best)    1.839 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.557 cycle/op (avg)
+cardinality=18, run=9
+scalar                        	:     1.781 cycle/op (best)    1.971 cycle/op (avg)
+AVX512VBMI                    	:     1.406 cycle/op (best)    1.583 cycle/op (avg)
+cardinality=19, run=0
+scalar                        	:     1.625 cycle/op (best)    1.736 cycle/op (avg)
+AVX512VBMI                    	:     1.406 cycle/op (best)    1.596 cycle/op (avg)
+cardinality=19, run=1
+scalar                        	:     1.938 cycle/op (best)    2.060 cycle/op (avg)
+AVX512VBMI                    	:     1.469 cycle/op (best)    1.659 cycle/op (avg)
+cardinality=19, run=2
+scalar                        	:     1.781 cycle/op (best)    1.942 cycle/op (avg)
+AVX512VBMI                    	:     1.406 cycle/op (best)    1.590 cycle/op (avg)
+cardinality=19, run=3
+scalar                        	:     1.906 cycle/op (best)    2.038 cycle/op (avg)
+AVX512VBMI                    	:     1.406 cycle/op (best)    1.585 cycle/op (avg)
+cardinality=19, run=4
+scalar                        	:     1.906 cycle/op (best)    2.137 cycle/op (avg)
+AVX512VBMI                    	:     1.469 cycle/op (best)    1.630 cycle/op (avg)
+cardinality=19, run=5
+scalar                        	:     1.719 cycle/op (best)    1.852 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.566 cycle/op (avg)
+cardinality=19, run=6
+scalar                        	:     2.156 cycle/op (best)    2.274 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.542 cycle/op (avg)
+cardinality=19, run=7
+scalar                        	:     2.031 cycle/op (best)    2.171 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.574 cycle/op (avg)
+cardinality=19, run=8
+scalar                        	:     1.844 cycle/op (best)    1.964 cycle/op (avg)
+AVX512VBMI                    	:     1.438 cycle/op (best)    1.627 cycle/op (avg)
+cardinality=19, run=9
+scalar                        	:     1.781 cycle/op (best)    2.078 cycle/op (avg)
+AVX512VBMI                    	:     1.344 cycle/op (best)    1.520 cycle/op (avg)
+cardinality=20, run=0
+scalar                        	:     2.000 cycle/op (best)    3.003 cycle/op (avg)
+AVX512VBMI                    	:     1.531 cycle/op (best)    1.779 cycle/op (avg)
+cardinality=20, run=1
+scalar                        	:     2.156 cycle/op (best)    2.277 cycle/op (avg)
+AVX512VBMI                    	:     1.438 cycle/op (best)    1.626 cycle/op (avg)
+cardinality=20, run=2
+scalar                        	:     1.906 cycle/op (best)    2.005 cycle/op (avg)
+AVX512VBMI                    	:     1.469 cycle/op (best)    1.650 cycle/op (avg)
+cardinality=20, run=3
+scalar                        	:     2.219 cycle/op (best)    2.320 cycle/op (avg)
+AVX512VBMI                    	:     1.500 cycle/op (best)    1.683 cycle/op (avg)
+cardinality=20, run=4
+scalar                        	:     2.094 cycle/op (best)    2.193 cycle/op (avg)
+AVX512VBMI                    	:     1.375 cycle/op (best)    1.608 cycle/op (avg)
+cardinality=20, run=5
+scalar                        	:     2.312 cycle/op (best)    2.426 cycle/op (avg)
+AVX512VBMI                    	:     1.500 cycle/op (best)    1.669 cycle/op (avg)
+cardinality=20, run=6
+scalar                        	:     2.031 cycle/op (best)    2.120 cycle/op (avg)
+AVX512VBMI                    	:     1.438 cycle/op (best)    1.627 cycle/op (avg)
+cardinality=20, run=7
+scalar                        	:     2.000 cycle/op (best)    2.134 cycle/op (avg)
+AVX512VBMI                    	:     1.500 cycle/op (best)    1.717 cycle/op (avg)
+cardinality=20, run=8
+scalar                        	:     2.188 cycle/op (best)    2.446 cycle/op (avg)
+AVX512VBMI                    	:     1.438 cycle/op (best)    1.679 cycle/op (avg)
+cardinality=20, run=9
+scalar                        	:     2.000 cycle/op (best)    2.112 cycle/op (avg)
+AVX512VBMI                    	:     1.500 cycle/op (best)    1.682 cycle/op (avg)
+cardinality=21, run=0
+scalar                        	:     2.000 cycle/op (best)    2.116 cycle/op (avg)
+AVX512VBMI                    	:     1.531 cycle/op (best)    1.763 cycle/op (avg)
+cardinality=21, run=1
+scalar                        	:     2.031 cycle/op (best)    2.209 cycle/op (avg)
+AVX512VBMI                    	:     1.531 cycle/op (best)    1.728 cycle/op (avg)
+cardinality=21, run=2
+scalar                        	:     1.969 cycle/op (best)    2.091 cycle/op (avg)
+AVX512VBMI                    	:     1.562 cycle/op (best)    1.751 cycle/op (avg)
+cardinality=21, run=3
+scalar                        	:     2.062 cycle/op (best)    2.280 cycle/op (avg)
+AVX512VBMI                    	:     1.562 cycle/op (best)    1.822 cycle/op (avg)
+cardinality=21, run=4
+scalar                        	:     1.844 cycle/op (best)    1.965 cycle/op (avg)
+AVX512VBMI                    	:     1.531 cycle/op (best)    1.716 cycle/op (avg)
+cardinality=21, run=5
+scalar                        	:     1.781 cycle/op (best)    1.904 cycle/op (avg)
+AVX512VBMI                    	:     1.500 cycle/op (best)    1.705 cycle/op (avg)
+cardinality=21, run=6
+scalar                        	:     1.938 cycle/op (best)    2.053 cycle/op (avg)
+AVX512VBMI                    	:     1.594 cycle/op (best)    1.802 cycle/op (avg)
+cardinality=21, run=7
+scalar                        	:     1.875 cycle/op (best)    1.992 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.792 cycle/op (avg)
+cardinality=21, run=8
+scalar                        	:     1.938 cycle/op (best)    2.068 cycle/op (avg)
+AVX512VBMI                    	:     1.562 cycle/op (best)    1.748 cycle/op (avg)
+cardinality=21, run=9
+scalar                        	:     1.844 cycle/op (best)    2.219 cycle/op (avg)
+AVX512VBMI                    	:     1.562 cycle/op (best)    1.775 cycle/op (avg)
+cardinality=22, run=0
+scalar                        	:     1.844 cycle/op (best)    2.024 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.829 cycle/op (avg)
+cardinality=22, run=1
+scalar                        	:     1.875 cycle/op (best)    1.998 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.848 cycle/op (avg)
+cardinality=22, run=2
+scalar                        	:     2.000 cycle/op (best)    2.140 cycle/op (avg)
+AVX512VBMI                    	:     1.594 cycle/op (best)    1.789 cycle/op (avg)
+cardinality=22, run=3
+scalar                        	:     1.969 cycle/op (best)    2.102 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.894 cycle/op (avg)
+cardinality=22, run=4
+scalar                        	:     2.156 cycle/op (best)    2.321 cycle/op (avg)
+AVX512VBMI                    	:     1.594 cycle/op (best)    1.814 cycle/op (avg)
+cardinality=22, run=5
+scalar                        	:     2.219 cycle/op (best)    2.339 cycle/op (avg)
+AVX512VBMI                    	:     1.594 cycle/op (best)    1.773 cycle/op (avg)
+cardinality=22, run=6
+scalar                        	:     2.094 cycle/op (best)    2.210 cycle/op (avg)
+AVX512VBMI                    	:     1.688 cycle/op (best)    1.867 cycle/op (avg)
+cardinality=22, run=7
+scalar                        	:     2.062 cycle/op (best)    2.169 cycle/op (avg)
+AVX512VBMI                    	:     1.656 cycle/op (best)    1.878 cycle/op (avg)
+cardinality=22, run=8
+scalar                        	:     1.625 cycle/op (best)    1.743 cycle/op (avg)
+AVX512VBMI                    	:     1.500 cycle/op (best)    1.728 cycle/op (avg)
+cardinality=22, run=9
+scalar                        	:     2.156 cycle/op (best)    2.282 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.806 cycle/op (avg)
+cardinality=23, run=0
+scalar                        	:     2.031 cycle/op (best)    2.148 cycle/op (avg)
+AVX512VBMI                    	:     1.719 cycle/op (best)    1.902 cycle/op (avg)
+cardinality=23, run=1
+scalar                        	:     1.875 cycle/op (best)    1.991 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.831 cycle/op (avg)
+cardinality=23, run=2
+scalar                        	:     2.250 cycle/op (best)    2.369 cycle/op (avg)
+AVX512VBMI                    	:     1.656 cycle/op (best)    1.842 cycle/op (avg)
+cardinality=23, run=3
+scalar                        	:     1.844 cycle/op (best)    1.999 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.852 cycle/op (avg)
+cardinality=23, run=4
+scalar                        	:     2.125 cycle/op (best)    2.242 cycle/op (avg)
+AVX512VBMI                    	:     1.625 cycle/op (best)    1.819 cycle/op (avg)
+cardinality=23, run=5
+scalar                        	:     2.062 cycle/op (best)    2.183 cycle/op (avg)
+AVX512VBMI                    	:     1.688 cycle/op (best)    1.900 cycle/op (avg)
+cardinality=23, run=6
+scalar                        	:     2.219 cycle/op (best)    2.353 cycle/op (avg)
+AVX512VBMI                    	:     1.719 cycle/op (best)    1.938 cycle/op (avg)
+cardinality=23, run=7
+scalar                        	:     2.188 cycle/op (best)    2.315 cycle/op (avg)
+AVX512VBMI                    	:     1.656 cycle/op (best)    1.848 cycle/op (avg)
+cardinality=23, run=8
+scalar                        	:     2.125 cycle/op (best)    2.235 cycle/op (avg)
+AVX512VBMI                    	:     1.594 cycle/op (best)    1.835 cycle/op (avg)
+cardinality=23, run=9
+scalar                        	:     2.125 cycle/op (best)    2.248 cycle/op (avg)
+AVX512VBMI                    	:     1.688 cycle/op (best)    1.890 cycle/op (avg)
+cardinality=24, run=0
+scalar                        	:     2.000 cycle/op (best)    2.118 cycle/op (avg)
+AVX512VBMI                    	:     1.750 cycle/op (best)    1.930 cycle/op (avg)
+cardinality=24, run=1
+scalar                        	:     1.969 cycle/op (best)    2.096 cycle/op (avg)
+AVX512VBMI                    	:     1.719 cycle/op (best)    1.944 cycle/op (avg)
+cardinality=24, run=2
+scalar                        	:     2.125 cycle/op (best)    2.246 cycle/op (avg)
+AVX512VBMI                    	:     1.688 cycle/op (best)    1.891 cycle/op (avg)
+cardinality=24, run=3
+scalar                        	:     2.000 cycle/op (best)    2.140 cycle/op (avg)
+AVX512VBMI                    	:     1.719 cycle/op (best)    2.012 cycle/op (avg)
+cardinality=24, run=4
+scalar                        	:     2.094 cycle/op (best)    2.203 cycle/op (avg)
+AVX512VBMI                    	:     1.688 cycle/op (best)    1.884 cycle/op (avg)
+cardinality=24, run=5
+scalar                        	:     2.406 cycle/op (best)    2.575 cycle/op (avg)
+AVX512VBMI                    	:     1.688 cycle/op (best)    1.905 cycle/op (avg)
+cardinality=24, run=6
+scalar                        	:     2.031 cycle/op (best)    2.140 cycle/op (avg)
+AVX512VBMI                    	:     1.750 cycle/op (best)    1.962 cycle/op (avg)
+cardinality=24, run=7
+scalar                        	:     2.156 cycle/op (best)    2.346 cycle/op (avg)
+AVX512VBMI                    	:     1.750 cycle/op (best)    1.986 cycle/op (avg)
+cardinality=24, run=8
+scalar                        	:     2.000 cycle/op (best)    2.127 cycle/op (avg)
+AVX512VBMI                    	:     1.719 cycle/op (best)    1.957 cycle/op (avg)
+cardinality=24, run=9
+scalar                        	:     2.094 cycle/op (best)    2.200 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.034 cycle/op (avg)
+cardinality=25, run=0
+scalar                        	:     2.000 cycle/op (best)    2.116 cycle/op (avg)
+AVX512VBMI                    	:     1.781 cycle/op (best)    1.981 cycle/op (avg)
+cardinality=25, run=1
+scalar                        	:     2.031 cycle/op (best)    2.156 cycle/op (avg)
+AVX512VBMI                    	:     1.719 cycle/op (best)    1.926 cycle/op (avg)
+cardinality=25, run=2
+scalar                        	:     2.188 cycle/op (best)    2.301 cycle/op (avg)
+AVX512VBMI                    	:     1.812 cycle/op (best)    2.014 cycle/op (avg)
+cardinality=25, run=3
+scalar                        	:     2.125 cycle/op (best)    2.254 cycle/op (avg)
+AVX512VBMI                    	:     1.781 cycle/op (best)    1.979 cycle/op (avg)
+cardinality=25, run=4
+scalar                        	:     1.938 cycle/op (best)    2.059 cycle/op (avg)
+AVX512VBMI                    	:     1.812 cycle/op (best)    2.060 cycle/op (avg)
+cardinality=25, run=5
+scalar                        	:     2.000 cycle/op (best)    2.116 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.060 cycle/op (avg)
+cardinality=25, run=6
+scalar                        	:     2.094 cycle/op (best)    2.243 cycle/op (avg)
+AVX512VBMI                    	:     1.688 cycle/op (best)    1.892 cycle/op (avg)
+cardinality=25, run=7
+scalar                        	:     2.312 cycle/op (best)    2.434 cycle/op (avg)
+AVX512VBMI                    	:     1.750 cycle/op (best)    1.961 cycle/op (avg)
+cardinality=25, run=8
+scalar                        	:     1.969 cycle/op (best)    2.136 cycle/op (avg)
+AVX512VBMI                    	:     1.750 cycle/op (best)    1.946 cycle/op (avg)
+cardinality=25, run=9
+scalar                        	:     2.281 cycle/op (best)    2.378 cycle/op (avg)
+AVX512VBMI                    	:     1.750 cycle/op (best)    1.953 cycle/op (avg)
+cardinality=26, run=0
+scalar                        	:     1.969 cycle/op (best)    2.103 cycle/op (avg)
+AVX512VBMI                    	:     1.875 cycle/op (best)    2.089 cycle/op (avg)
+cardinality=26, run=1
+scalar                        	:     2.312 cycle/op (best)    2.435 cycle/op (avg)
+AVX512VBMI                    	:     1.812 cycle/op (best)    2.092 cycle/op (avg)
+cardinality=26, run=2
+scalar                        	:     2.531 cycle/op (best)    2.661 cycle/op (avg)
+AVX512VBMI                    	:     1.812 cycle/op (best)    2.038 cycle/op (avg)
+cardinality=26, run=3
+scalar                        	:     2.344 cycle/op (best)    2.526 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.054 cycle/op (avg)
+cardinality=26, run=4
+scalar                        	:     1.938 cycle/op (best)    2.040 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.062 cycle/op (avg)
+cardinality=26, run=5
+scalar                        	:     2.156 cycle/op (best)    2.282 cycle/op (avg)
+AVX512VBMI                    	:     1.812 cycle/op (best)    2.021 cycle/op (avg)
+cardinality=26, run=6
+scalar                        	:     2.156 cycle/op (best)    2.275 cycle/op (avg)
+AVX512VBMI                    	:     1.875 cycle/op (best)    2.162 cycle/op (avg)
+cardinality=26, run=7
+scalar                        	:     2.094 cycle/op (best)    2.207 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.021 cycle/op (avg)
+cardinality=26, run=8
+scalar                        	:     2.125 cycle/op (best)    2.240 cycle/op (avg)
+AVX512VBMI                    	:     1.875 cycle/op (best)    2.080 cycle/op (avg)
+cardinality=26, run=9
+scalar                        	:     2.188 cycle/op (best)    2.308 cycle/op (avg)
+AVX512VBMI                    	:     1.875 cycle/op (best)    2.077 cycle/op (avg)
+cardinality=27, run=0
+scalar                        	:     2.375 cycle/op (best)    2.587 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.153 cycle/op (avg)
+cardinality=27, run=1
+scalar                        	:     2.156 cycle/op (best)    2.276 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.128 cycle/op (avg)
+cardinality=27, run=2
+scalar                        	:     1.938 cycle/op (best)    2.069 cycle/op (avg)
+AVX512VBMI                    	:     1.906 cycle/op (best)    2.147 cycle/op (avg)
+cardinality=27, run=3
+scalar                        	:     2.125 cycle/op (best)    2.251 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.103 cycle/op (avg)
+cardinality=27, run=4
+scalar                        	:     2.469 cycle/op (best)    2.595 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.154 cycle/op (avg)
+cardinality=27, run=5
+scalar                        	:     2.094 cycle/op (best)    2.234 cycle/op (avg)
+AVX512VBMI                    	:     1.969 cycle/op (best)    2.177 cycle/op (avg)
+cardinality=27, run=6
+scalar                        	:     2.188 cycle/op (best)    2.283 cycle/op (avg)
+AVX512VBMI                    	:     1.875 cycle/op (best)    2.149 cycle/op (avg)
+cardinality=27, run=7
+scalar                        	:     2.312 cycle/op (best)    2.510 cycle/op (avg)
+AVX512VBMI                    	:     1.875 cycle/op (best)    2.111 cycle/op (avg)
+cardinality=27, run=8
+scalar                        	:     2.125 cycle/op (best)    2.288 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.164 cycle/op (avg)
+cardinality=27, run=9
+scalar                        	:     2.094 cycle/op (best)    2.255 cycle/op (avg)
+AVX512VBMI                    	:     1.844 cycle/op (best)    2.041 cycle/op (avg)
+cardinality=28, run=0
+scalar                        	:     2.188 cycle/op (best)    2.318 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.169 cycle/op (avg)
+cardinality=28, run=1
+scalar                        	:     2.312 cycle/op (best)    2.403 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.203 cycle/op (avg)
+cardinality=28, run=2
+scalar                        	:     2.312 cycle/op (best)    2.425 cycle/op (avg)
+AVX512VBMI                    	:     2.031 cycle/op (best)    2.231 cycle/op (avg)
+cardinality=28, run=3
+scalar                        	:     2.188 cycle/op (best)    2.307 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.193 cycle/op (avg)
+cardinality=28, run=4
+scalar                        	:     2.281 cycle/op (best)    2.408 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.185 cycle/op (avg)
+cardinality=28, run=5
+scalar                        	:     2.094 cycle/op (best)    2.220 cycle/op (avg)
+AVX512VBMI                    	:     1.906 cycle/op (best)    2.115 cycle/op (avg)
+cardinality=28, run=6
+scalar                        	:     2.281 cycle/op (best)    2.403 cycle/op (avg)
+AVX512VBMI                    	:     2.031 cycle/op (best)    2.270 cycle/op (avg)
+cardinality=28, run=7
+scalar                        	:     2.250 cycle/op (best)    2.780 cycle/op (avg)
+AVX512VBMI                    	:     2.000 cycle/op (best)    2.268 cycle/op (avg)
+cardinality=28, run=8
+scalar                        	:     2.281 cycle/op (best)    2.408 cycle/op (avg)
+AVX512VBMI                    	:     2.000 cycle/op (best)    2.204 cycle/op (avg)
+cardinality=28, run=9
+scalar                        	:     2.094 cycle/op (best)    2.293 cycle/op (avg)
+AVX512VBMI                    	:     1.938 cycle/op (best)    2.168 cycle/op (avg)
+cardinality=29, run=0
+scalar                        	:     2.094 cycle/op (best)    2.210 cycle/op (avg)
+AVX512VBMI                    	:     2.062 cycle/op (best)    2.307 cycle/op (avg)
+cardinality=29, run=1
+scalar                        	:     2.500 cycle/op (best)    2.610 cycle/op (avg)
+AVX512VBMI                    	:     1.969 cycle/op (best)    2.196 cycle/op (avg)
+cardinality=29, run=2
+scalar                        	:     2.312 cycle/op (best)    2.455 cycle/op (avg)
+AVX512VBMI                    	:     2.062 cycle/op (best)    2.316 cycle/op (avg)
+cardinality=29, run=3
+scalar                        	:     2.250 cycle/op (best)    2.363 cycle/op (avg)
+AVX512VBMI                    	:     2.031 cycle/op (best)    2.280 cycle/op (avg)
+cardinality=29, run=4
+scalar                        	:     2.250 cycle/op (best)    2.353 cycle/op (avg)
+AVX512VBMI                    	:     2.031 cycle/op (best)    2.253 cycle/op (avg)
+cardinality=29, run=5
+scalar                        	:     2.531 cycle/op (best)    2.638 cycle/op (avg)
+AVX512VBMI                    	:     2.000 cycle/op (best)    2.239 cycle/op (avg)
+cardinality=29, run=6
+scalar                        	:     2.281 cycle/op (best)    2.400 cycle/op (avg)
+AVX512VBMI                    	:     2.000 cycle/op (best)    2.238 cycle/op (avg)
+cardinality=29, run=7
+scalar                        	:     2.219 cycle/op (best)    2.346 cycle/op (avg)
+AVX512VBMI                    	:     2.031 cycle/op (best)    2.302 cycle/op (avg)
+cardinality=29, run=8
+scalar                        	:     2.438 cycle/op (best)    2.564 cycle/op (avg)
+AVX512VBMI                    	:     1.969 cycle/op (best)    2.206 cycle/op (avg)
+cardinality=29, run=9
+scalar                        	:     2.281 cycle/op (best)    2.421 cycle/op (avg)
+AVX512VBMI                    	:     2.031 cycle/op (best)    2.246 cycle/op (avg)
+cardinality=30, run=0
+scalar                        	:     2.469 cycle/op (best)    2.589 cycle/op (avg)
+AVX512VBMI                    	:     1.969 cycle/op (best)    2.230 cycle/op (avg)
+cardinality=30, run=1
+scalar                        	:     2.312 cycle/op (best)    2.422 cycle/op (avg)
+AVX512VBMI                    	:     2.031 cycle/op (best)    2.281 cycle/op (avg)
+cardinality=30, run=2
+scalar                        	:     2.219 cycle/op (best)    2.334 cycle/op (avg)
+AVX512VBMI                    	:     2.125 cycle/op (best)    2.379 cycle/op (avg)
+cardinality=30, run=3
+scalar                        	:     2.250 cycle/op (best)    2.347 cycle/op (avg)
+AVX512VBMI                    	:     2.094 cycle/op (best)    2.361 cycle/op (avg)
+cardinality=30, run=4
+scalar                        	:     2.344 cycle/op (best)    2.482 cycle/op (avg)
+AVX512VBMI                    	:     2.000 cycle/op (best)    2.282 cycle/op (avg)
+cardinality=30, run=5
+scalar                        	:     2.281 cycle/op (best)    2.412 cycle/op (avg)
+AVX512VBMI                    	:     2.125 cycle/op (best)    2.484 cycle/op (avg)
+cardinality=30, run=6
+scalar                        	:     2.438 cycle/op (best)    2.549 cycle/op (avg)
+AVX512VBMI                    	:     2.062 cycle/op (best)    2.318 cycle/op (avg)
+cardinality=30, run=7
+scalar                        	:     2.125 cycle/op (best)    2.583 cycle/op (avg)
+AVX512VBMI                    	:     2.188 cycle/op (best)    2.400 cycle/op (avg)
+cardinality=30, run=8
+scalar                        	:     2.219 cycle/op (best)    2.410 cycle/op (avg)
+AVX512VBMI                    	:     2.094 cycle/op (best)    2.333 cycle/op (avg)
+cardinality=30, run=9
+scalar                        	:     2.406 cycle/op (best)    2.531 cycle/op (avg)
+AVX512VBMI                    	:     2.094 cycle/op (best)    2.306 cycle/op (avg)
+cardinality=31, run=0
+scalar                        	:     2.125 cycle/op (best)    2.243 cycle/op (avg)
+AVX512VBMI                    	:     2.250 cycle/op (best)    2.575 cycle/op (avg)
+cardinality=31, run=1
+scalar                        	:     2.406 cycle/op (best)    2.536 cycle/op (avg)
+AVX512VBMI                    	:     2.125 cycle/op (best)    2.389 cycle/op (avg)
+cardinality=31, run=2
+scalar                        	:     2.438 cycle/op (best)    2.639 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.474 cycle/op (avg)
+cardinality=31, run=3
+scalar                        	:     2.500 cycle/op (best)    2.618 cycle/op (avg)
+AVX512VBMI                    	:     2.125 cycle/op (best)    2.349 cycle/op (avg)
+cardinality=31, run=4
+scalar                        	:     2.156 cycle/op (best)    2.289 cycle/op (avg)
+AVX512VBMI                    	:     2.125 cycle/op (best)    2.340 cycle/op (avg)
+cardinality=31, run=5
+scalar                        	:     2.250 cycle/op (best)    2.374 cycle/op (avg)
+AVX512VBMI                    	:     2.094 cycle/op (best)    2.352 cycle/op (avg)
+cardinality=31, run=6
+scalar                        	:     2.406 cycle/op (best)    2.531 cycle/op (avg)
+AVX512VBMI                    	:     2.156 cycle/op (best)    2.410 cycle/op (avg)
+cardinality=31, run=7
+scalar                        	:     2.188 cycle/op (best)    2.315 cycle/op (avg)
+AVX512VBMI                    	:     2.094 cycle/op (best)    2.374 cycle/op (avg)
+cardinality=31, run=8
+scalar                        	:     2.312 cycle/op (best)    2.424 cycle/op (avg)
+AVX512VBMI                    	:     2.062 cycle/op (best)    2.366 cycle/op (avg)
+cardinality=31, run=9
+scalar                        	:     2.500 cycle/op (best)    2.744 cycle/op (avg)
+AVX512VBMI                    	:     2.062 cycle/op (best)    2.388 cycle/op (avg)
+cardinality=32, run=0
+scalar                        	:     2.406 cycle/op (best)    2.539 cycle/op (avg)
+AVX512VBMI                    	:     2.156 cycle/op (best)    2.458 cycle/op (avg)
+cardinality=32, run=1
+scalar                        	:     2.312 cycle/op (best)    2.455 cycle/op (avg)
+AVX512VBMI                    	:     2.125 cycle/op (best)    2.419 cycle/op (avg)
+cardinality=32, run=2
+scalar                        	:     2.312 cycle/op (best)    2.446 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.466 cycle/op (avg)
+cardinality=32, run=3
+scalar                        	:     2.562 cycle/op (best)    2.673 cycle/op (avg)
+AVX512VBMI                    	:     2.125 cycle/op (best)    2.365 cycle/op (avg)
+cardinality=32, run=4
+scalar                        	:     2.312 cycle/op (best)    2.437 cycle/op (avg)
+AVX512VBMI                    	:     2.188 cycle/op (best)    2.447 cycle/op (avg)
+cardinality=32, run=5
+scalar                        	:     2.312 cycle/op (best)    2.423 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.477 cycle/op (avg)
+cardinality=32, run=6
+scalar                        	:     2.375 cycle/op (best)    2.507 cycle/op (avg)
+AVX512VBMI                    	:     2.156 cycle/op (best)    2.389 cycle/op (avg)
+cardinality=32, run=7
+scalar                        	:     2.344 cycle/op (best)    2.474 cycle/op (avg)
+AVX512VBMI                    	:     2.094 cycle/op (best)    2.342 cycle/op (avg)
+cardinality=32, run=8
+scalar                        	:     2.531 cycle/op (best)    2.637 cycle/op (avg)
+AVX512VBMI                    	:     2.188 cycle/op (best)    2.408 cycle/op (avg)
+cardinality=32, run=9
+scalar                        	:     2.312 cycle/op (best)    2.446 cycle/op (avg)
+AVX512VBMI                    	:     2.188 cycle/op (best)    2.431 cycle/op (avg)
+cardinality=33, run=0
+scalar                        	:     2.406 cycle/op (best)    2.518 cycle/op (avg)
+AVX512VBMI                    	:     2.250 cycle/op (best)    2.515 cycle/op (avg)
+cardinality=33, run=1
+scalar                        	:     2.531 cycle/op (best)    2.649 cycle/op (avg)
+AVX512VBMI                    	:     2.188 cycle/op (best)    2.464 cycle/op (avg)
+cardinality=33, run=2
+scalar                        	:     2.156 cycle/op (best)    2.379 cycle/op (avg)
+AVX512VBMI                    	:     2.281 cycle/op (best)    2.520 cycle/op (avg)
+cardinality=33, run=3
+scalar                        	:     2.000 cycle/op (best)    2.227 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.496 cycle/op (avg)
+cardinality=33, run=4
+scalar                        	:     2.375 cycle/op (best)    2.487 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.497 cycle/op (avg)
+cardinality=33, run=5
+scalar                        	:     2.250 cycle/op (best)    2.379 cycle/op (avg)
+AVX512VBMI                    	:     2.250 cycle/op (best)    2.512 cycle/op (avg)
+cardinality=33, run=6
+scalar                        	:     2.375 cycle/op (best)    2.508 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.494 cycle/op (avg)
+cardinality=33, run=7
+scalar                        	:     2.531 cycle/op (best)    2.728 cycle/op (avg)
+AVX512VBMI                    	:     2.188 cycle/op (best)    2.482 cycle/op (avg)
+cardinality=33, run=8
+scalar                        	:     2.406 cycle/op (best)    2.532 cycle/op (avg)
+AVX512VBMI                    	:     2.250 cycle/op (best)    2.482 cycle/op (avg)
+cardinality=33, run=9
+scalar                        	:     2.375 cycle/op (best)    2.506 cycle/op (avg)
+AVX512VBMI                    	:     2.250 cycle/op (best)    2.481 cycle/op (avg)
+cardinality=34, run=0
+scalar                        	:     2.281 cycle/op (best)    2.408 cycle/op (avg)
+AVX512VBMI                    	:     2.312 cycle/op (best)    2.539 cycle/op (avg)
+cardinality=34, run=1
+scalar                        	:     2.406 cycle/op (best)    2.518 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.598 cycle/op (avg)
+cardinality=34, run=2
+scalar                        	:     2.406 cycle/op (best)    2.524 cycle/op (avg)
+AVX512VBMI                    	:     2.312 cycle/op (best)    2.552 cycle/op (avg)
+cardinality=34, run=3
+scalar                        	:     2.906 cycle/op (best)    3.024 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.577 cycle/op (avg)
+cardinality=34, run=4
+scalar                        	:     2.219 cycle/op (best)    2.333 cycle/op (avg)
+AVX512VBMI                    	:     2.188 cycle/op (best)    2.502 cycle/op (avg)
+cardinality=34, run=5
+scalar                        	:     2.562 cycle/op (best)    2.683 cycle/op (avg)
+AVX512VBMI                    	:     2.250 cycle/op (best)    2.505 cycle/op (avg)
+cardinality=34, run=6
+scalar                        	:     2.281 cycle/op (best)    2.459 cycle/op (avg)
+AVX512VBMI                    	:     2.281 cycle/op (best)    2.577 cycle/op (avg)
+cardinality=34, run=7
+scalar                        	:     2.312 cycle/op (best)    2.397 cycle/op (avg)
+AVX512VBMI                    	:     2.312 cycle/op (best)    2.559 cycle/op (avg)
+cardinality=34, run=8
+scalar                        	:     2.375 cycle/op (best)    2.497 cycle/op (avg)
+AVX512VBMI                    	:     2.344 cycle/op (best)    2.588 cycle/op (avg)
+cardinality=34, run=9
+scalar                        	:     2.281 cycle/op (best)    2.405 cycle/op (avg)
+AVX512VBMI                    	:     2.281 cycle/op (best)    2.529 cycle/op (avg)
+cardinality=35, run=0
+scalar                        	:     2.469 cycle/op (best)    2.592 cycle/op (avg)
+AVX512VBMI                    	:     2.406 cycle/op (best)    2.634 cycle/op (avg)
+cardinality=35, run=1
+scalar                        	:     2.188 cycle/op (best)    2.292 cycle/op (avg)
+AVX512VBMI                    	:     2.438 cycle/op (best)    2.684 cycle/op (avg)
+cardinality=35, run=2
+scalar                        	:     2.344 cycle/op (best)    2.456 cycle/op (avg)
+AVX512VBMI                    	:     2.281 cycle/op (best)    2.556 cycle/op (avg)
+cardinality=35, run=3
+scalar                        	:     2.375 cycle/op (best)    2.472 cycle/op (avg)
+AVX512VBMI                    	:     2.406 cycle/op (best)    2.747 cycle/op (avg)
+cardinality=35, run=4
+scalar                        	:     2.500 cycle/op (best)    2.599 cycle/op (avg)
+AVX512VBMI                    	:     2.250 cycle/op (best)    2.545 cycle/op (avg)
+cardinality=35, run=5
+scalar                        	:     2.312 cycle/op (best)    2.422 cycle/op (avg)
+AVX512VBMI                    	:     2.281 cycle/op (best)    2.589 cycle/op (avg)
+cardinality=35, run=6
+scalar                        	:     2.500 cycle/op (best)    2.626 cycle/op (avg)
+AVX512VBMI                    	:     2.375 cycle/op (best)    2.636 cycle/op (avg)
+cardinality=35, run=7
+scalar                        	:     2.250 cycle/op (best)    2.386 cycle/op (avg)
+AVX512VBMI                    	:     2.438 cycle/op (best)    2.793 cycle/op (avg)
+cardinality=35, run=8
+scalar                        	:     2.375 cycle/op (best)    2.477 cycle/op (avg)
+AVX512VBMI                    	:     2.219 cycle/op (best)    2.520 cycle/op (avg)
+cardinality=35, run=9
+scalar                        	:     2.500 cycle/op (best)    2.653 cycle/op (avg)
+AVX512VBMI                    	:     2.344 cycle/op (best)    2.633 cycle/op (avg)
+cardinality=36, run=0
+scalar                        	:     2.500 cycle/op (best)    2.718 cycle/op (avg)
+AVX512VBMI                    	:     2.438 cycle/op (best)    2.692 cycle/op (avg)
+cardinality=36, run=1
+scalar                        	:     2.188 cycle/op (best)    2.323 cycle/op (avg)
+AVX512VBMI                    	:     2.406 cycle/op (best)    2.668 cycle/op (avg)
+cardinality=36, run=2
+scalar                        	:     2.469 cycle/op (best)    2.586 cycle/op (avg)
+AVX512VBMI                    	:     2.375 cycle/op (best)    2.687 cycle/op (avg)
+cardinality=36, run=3
+scalar                        	:     2.438 cycle/op (best)    2.590 cycle/op (avg)
+AVX512VBMI                    	:     2.438 cycle/op (best)    2.756 cycle/op (avg)
+cardinality=36, run=4
+scalar                        	:     2.312 cycle/op (best)    2.427 cycle/op (avg)
+AVX512VBMI                    	:     2.438 cycle/op (best)    2.737 cycle/op (avg)
+cardinality=36, run=5
+scalar                        	:     2.344 cycle/op (best)    2.467 cycle/op (avg)
+AVX512VBMI                    	:     2.375 cycle/op (best)    2.634 cycle/op (avg)
+cardinality=36, run=6
+scalar                        	:     2.562 cycle/op (best)    2.695 cycle/op (avg)
+AVX512VBMI                    	:     2.406 cycle/op (best)    2.745 cycle/op (avg)
+cardinality=36, run=7
+scalar                        	:     2.219 cycle/op (best)    2.322 cycle/op (avg)
+AVX512VBMI                    	:     2.375 cycle/op (best)    2.663 cycle/op (avg)
+cardinality=36, run=8
+scalar                        	:     2.531 cycle/op (best)    2.639 cycle/op (avg)
+AVX512VBMI                    	:     2.438 cycle/op (best)    2.688 cycle/op (avg)
+cardinality=36, run=9
+scalar                        	:     2.406 cycle/op (best)    2.531 cycle/op (avg)
+AVX512VBMI                    	:     2.375 cycle/op (best)    2.666 cycle/op (avg)
+cardinality=37, run=0
+scalar                        	:     2.438 cycle/op (best)    2.565 cycle/op (avg)
+AVX512VBMI                    	:     2.500 cycle/op (best)    2.893 cycle/op (avg)
+cardinality=37, run=1
+scalar                        	:     2.438 cycle/op (best)    2.542 cycle/op (avg)
+AVX512VBMI                    	:     2.406 cycle/op (best)    2.660 cycle/op (avg)
+cardinality=37, run=2
+scalar                        	:     2.469 cycle/op (best)    2.596 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.789 cycle/op (avg)
+cardinality=37, run=3
+scalar                        	:     2.594 cycle/op (best)    2.722 cycle/op (avg)
+AVX512VBMI                    	:     2.469 cycle/op (best)    2.754 cycle/op (avg)
+cardinality=37, run=4
+scalar                        	:     2.562 cycle/op (best)    2.676 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.160 cycle/op (avg)
+cardinality=37, run=5
+scalar                        	:     2.344 cycle/op (best)    2.474 cycle/op (avg)
+AVX512VBMI                    	:     2.469 cycle/op (best)    2.710 cycle/op (avg)
+cardinality=37, run=6
+scalar                        	:     2.219 cycle/op (best)    2.349 cycle/op (avg)
+AVX512VBMI                    	:     2.500 cycle/op (best)    2.760 cycle/op (avg)
+cardinality=37, run=7
+scalar                        	:     2.406 cycle/op (best)    2.596 cycle/op (avg)
+AVX512VBMI                    	:     2.469 cycle/op (best)    2.757 cycle/op (avg)
+cardinality=37, run=8
+scalar                        	:     2.750 cycle/op (best)    2.865 cycle/op (avg)
+AVX512VBMI                    	:     2.438 cycle/op (best)    2.749 cycle/op (avg)
+cardinality=37, run=9
+scalar                        	:     2.531 cycle/op (best)    2.640 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.822 cycle/op (avg)
+cardinality=38, run=0
+scalar                        	:     2.594 cycle/op (best)    2.714 cycle/op (avg)
+AVX512VBMI                    	:     2.562 cycle/op (best)    2.810 cycle/op (avg)
+cardinality=38, run=1
+scalar                        	:     2.375 cycle/op (best)    2.490 cycle/op (avg)
+AVX512VBMI                    	:     2.594 cycle/op (best)    2.861 cycle/op (avg)
+cardinality=38, run=2
+scalar                        	:     2.500 cycle/op (best)    2.693 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.833 cycle/op (avg)
+cardinality=38, run=3
+scalar                        	:     2.594 cycle/op (best)    2.698 cycle/op (avg)
+AVX512VBMI                    	:     2.469 cycle/op (best)    2.791 cycle/op (avg)
+cardinality=38, run=4
+scalar                        	:     2.531 cycle/op (best)    2.638 cycle/op (avg)
+AVX512VBMI                    	:     2.406 cycle/op (best)    2.720 cycle/op (avg)
+cardinality=38, run=5
+scalar                        	:     2.594 cycle/op (best)    2.702 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.798 cycle/op (avg)
+cardinality=38, run=6
+scalar                        	:     2.531 cycle/op (best)    2.651 cycle/op (avg)
+AVX512VBMI                    	:     2.500 cycle/op (best)    2.840 cycle/op (avg)
+cardinality=38, run=7
+scalar                        	:     2.469 cycle/op (best)    2.586 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.787 cycle/op (avg)
+cardinality=38, run=8
+scalar                        	:     2.469 cycle/op (best)    2.663 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.809 cycle/op (avg)
+cardinality=38, run=9
+scalar                        	:     2.531 cycle/op (best)    2.635 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.790 cycle/op (avg)
+cardinality=39, run=0
+scalar                        	:     2.688 cycle/op (best)    2.776 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.804 cycle/op (avg)
+cardinality=39, run=1
+scalar                        	:     2.406 cycle/op (best)    2.532 cycle/op (avg)
+AVX512VBMI                    	:     2.688 cycle/op (best)    3.002 cycle/op (avg)
+cardinality=39, run=2
+scalar                        	:     2.375 cycle/op (best)    2.504 cycle/op (avg)
+AVX512VBMI                    	:     2.500 cycle/op (best)    2.771 cycle/op (avg)
+cardinality=39, run=3
+scalar                        	:     2.500 cycle/op (best)    2.626 cycle/op (avg)
+AVX512VBMI                    	:     2.469 cycle/op (best)    2.816 cycle/op (avg)
+cardinality=39, run=4
+scalar                        	:     2.594 cycle/op (best)    2.722 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.926 cycle/op (avg)
+cardinality=39, run=5
+scalar                        	:     2.625 cycle/op (best)    2.870 cycle/op (avg)
+AVX512VBMI                    	:     2.500 cycle/op (best)    2.942 cycle/op (avg)
+cardinality=39, run=6
+scalar                        	:     2.500 cycle/op (best)    2.621 cycle/op (avg)
+AVX512VBMI                    	:     2.500 cycle/op (best)    2.799 cycle/op (avg)
+cardinality=39, run=7
+scalar                        	:     2.438 cycle/op (best)    2.540 cycle/op (avg)
+AVX512VBMI                    	:     2.562 cycle/op (best)    2.869 cycle/op (avg)
+cardinality=39, run=8
+scalar                        	:     2.500 cycle/op (best)    2.622 cycle/op (avg)
+AVX512VBMI                    	:     2.500 cycle/op (best)    2.799 cycle/op (avg)
+cardinality=39, run=9
+scalar                        	:     2.500 cycle/op (best)    2.669 cycle/op (avg)
+AVX512VBMI                    	:     2.594 cycle/op (best)    2.870 cycle/op (avg)
+cardinality=40, run=0
+scalar                        	:     2.969 cycle/op (best)    3.185 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    3.001 cycle/op (avg)
+cardinality=40, run=1
+scalar                        	:     2.625 cycle/op (best)    2.733 cycle/op (avg)
+AVX512VBMI                    	:     2.594 cycle/op (best)    2.887 cycle/op (avg)
+cardinality=40, run=2
+scalar                        	:     2.594 cycle/op (best)    2.710 cycle/op (avg)
+AVX512VBMI                    	:     2.750 cycle/op (best)    2.990 cycle/op (avg)
+cardinality=40, run=3
+scalar                        	:     2.625 cycle/op (best)    2.729 cycle/op (avg)
+AVX512VBMI                    	:     2.719 cycle/op (best)    2.980 cycle/op (avg)
+cardinality=40, run=4
+scalar                        	:     2.375 cycle/op (best)    2.553 cycle/op (avg)
+AVX512VBMI                    	:     2.594 cycle/op (best)    2.871 cycle/op (avg)
+cardinality=40, run=5
+scalar                        	:     2.594 cycle/op (best)    2.714 cycle/op (avg)
+AVX512VBMI                    	:     2.531 cycle/op (best)    2.835 cycle/op (avg)
+cardinality=40, run=6
+scalar                        	:     2.500 cycle/op (best)    2.671 cycle/op (avg)
+AVX512VBMI                    	:     2.688 cycle/op (best)    3.011 cycle/op (avg)
+cardinality=40, run=7
+scalar                        	:     2.531 cycle/op (best)    2.664 cycle/op (avg)
+AVX512VBMI                    	:     2.625 cycle/op (best)    3.003 cycle/op (avg)
+cardinality=40, run=8
+scalar                        	:     2.344 cycle/op (best)    2.445 cycle/op (avg)
+AVX512VBMI                    	:     2.656 cycle/op (best)    2.924 cycle/op (avg)
+cardinality=40, run=9
+scalar                        	:     2.406 cycle/op (best)    2.528 cycle/op (avg)
+AVX512VBMI                    	:     2.594 cycle/op (best)    2.895 cycle/op (avg)
+cardinality=41, run=0
+scalar                        	:     2.906 cycle/op (best)    3.044 cycle/op (avg)
+AVX512VBMI                    	:     2.719 cycle/op (best)    3.103 cycle/op (avg)
+cardinality=41, run=1
+scalar                        	:     2.625 cycle/op (best)    2.737 cycle/op (avg)
+AVX512VBMI                    	:     2.656 cycle/op (best)    2.942 cycle/op (avg)
+cardinality=41, run=2
+scalar                        	:     2.406 cycle/op (best)    2.503 cycle/op (avg)
+AVX512VBMI                    	:     2.719 cycle/op (best)    2.948 cycle/op (avg)
+cardinality=41, run=3
+scalar                        	:     2.594 cycle/op (best)    2.711 cycle/op (avg)
+AVX512VBMI                    	:     2.719 cycle/op (best)    2.975 cycle/op (avg)
+cardinality=41, run=4
+scalar                        	:     2.688 cycle/op (best)    2.758 cycle/op (avg)
+AVX512VBMI                    	:     2.656 cycle/op (best)    2.976 cycle/op (avg)
+cardinality=41, run=5
+scalar                        	:     2.719 cycle/op (best)    2.868 cycle/op (avg)
+AVX512VBMI                    	:     2.625 cycle/op (best)    2.912 cycle/op (avg)
+cardinality=41, run=6
+scalar                        	:     2.531 cycle/op (best)    2.640 cycle/op (avg)
+AVX512VBMI                    	:     2.688 cycle/op (best)    2.970 cycle/op (avg)
+cardinality=41, run=7
+scalar                        	:     2.531 cycle/op (best)    2.669 cycle/op (avg)
+AVX512VBMI                    	:     2.688 cycle/op (best)    2.968 cycle/op (avg)
+cardinality=41, run=8
+scalar                        	:     2.562 cycle/op (best)    2.673 cycle/op (avg)
+AVX512VBMI                    	:     2.625 cycle/op (best)    2.946 cycle/op (avg)
+cardinality=41, run=9
+scalar                        	:     2.562 cycle/op (best)    2.662 cycle/op (avg)
+AVX512VBMI                    	:     2.719 cycle/op (best)    2.967 cycle/op (avg)
+cardinality=42, run=0
+scalar                        	:     2.719 cycle/op (best)    2.850 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.035 cycle/op (avg)
+cardinality=42, run=1
+scalar                        	:     2.719 cycle/op (best)    2.843 cycle/op (avg)
+AVX512VBMI                    	:     2.750 cycle/op (best)    3.084 cycle/op (avg)
+cardinality=42, run=2
+scalar                        	:     2.625 cycle/op (best)    2.777 cycle/op (avg)
+AVX512VBMI                    	:     2.750 cycle/op (best)    3.039 cycle/op (avg)
+cardinality=42, run=3
+scalar                        	:     2.562 cycle/op (best)    2.784 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.051 cycle/op (avg)
+cardinality=42, run=4
+scalar                        	:     2.594 cycle/op (best)    2.692 cycle/op (avg)
+AVX512VBMI                    	:     2.656 cycle/op (best)    2.963 cycle/op (avg)
+cardinality=42, run=5
+scalar                        	:     2.531 cycle/op (best)    2.636 cycle/op (avg)
+AVX512VBMI                    	:     2.688 cycle/op (best)    2.951 cycle/op (avg)
+cardinality=42, run=6
+scalar                        	:     2.594 cycle/op (best)    2.905 cycle/op (avg)
+AVX512VBMI                    	:     2.750 cycle/op (best)    3.049 cycle/op (avg)
+cardinality=42, run=7
+scalar                        	:     2.531 cycle/op (best)    2.617 cycle/op (avg)
+AVX512VBMI                    	:     2.844 cycle/op (best)    3.104 cycle/op (avg)
+cardinality=42, run=8
+scalar                        	:     2.750 cycle/op (best)    2.940 cycle/op (avg)
+AVX512VBMI                    	:     2.719 cycle/op (best)    3.060 cycle/op (avg)
+cardinality=42, run=9
+scalar                        	:     2.812 cycle/op (best)    3.010 cycle/op (avg)
+AVX512VBMI                    	:     2.688 cycle/op (best)    3.022 cycle/op (avg)
+cardinality=43, run=0
+scalar                        	:     2.688 cycle/op (best)    2.815 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.093 cycle/op (avg)
+cardinality=43, run=1
+scalar                        	:     2.688 cycle/op (best)    2.760 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.064 cycle/op (avg)
+cardinality=43, run=2
+scalar                        	:     2.469 cycle/op (best)    2.577 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.169 cycle/op (avg)
+cardinality=43, run=3
+scalar                        	:     2.688 cycle/op (best)    2.809 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.081 cycle/op (avg)
+cardinality=43, run=4
+scalar                        	:     2.531 cycle/op (best)    2.656 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.093 cycle/op (avg)
+cardinality=43, run=5
+scalar                        	:     2.656 cycle/op (best)    2.762 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.107 cycle/op (avg)
+cardinality=43, run=6
+scalar                        	:     2.625 cycle/op (best)    2.807 cycle/op (avg)
+AVX512VBMI                    	:     2.844 cycle/op (best)    3.200 cycle/op (avg)
+cardinality=43, run=7
+scalar                        	:     2.688 cycle/op (best)    2.768 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.125 cycle/op (avg)
+cardinality=43, run=8
+scalar                        	:     2.688 cycle/op (best)    2.810 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.148 cycle/op (avg)
+cardinality=43, run=9
+scalar                        	:     2.750 cycle/op (best)    2.943 cycle/op (avg)
+AVX512VBMI                    	:     2.750 cycle/op (best)    3.042 cycle/op (avg)
+cardinality=44, run=0
+scalar                        	:     2.469 cycle/op (best)    2.592 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.111 cycle/op (avg)
+cardinality=44, run=1
+scalar                        	:     2.688 cycle/op (best)    2.792 cycle/op (avg)
+AVX512VBMI                    	:     2.906 cycle/op (best)    3.181 cycle/op (avg)
+cardinality=44, run=2
+scalar                        	:     2.531 cycle/op (best)    2.626 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.121 cycle/op (avg)
+cardinality=44, run=3
+scalar                        	:     2.531 cycle/op (best)    2.666 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.123 cycle/op (avg)
+cardinality=44, run=4
+scalar                        	:     2.781 cycle/op (best)    2.900 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.129 cycle/op (avg)
+cardinality=44, run=5
+scalar                        	:     2.719 cycle/op (best)    2.821 cycle/op (avg)
+AVX512VBMI                    	:     2.844 cycle/op (best)    3.091 cycle/op (avg)
+cardinality=44, run=6
+scalar                        	:     2.594 cycle/op (best)    2.714 cycle/op (avg)
+AVX512VBMI                    	:     2.812 cycle/op (best)    3.154 cycle/op (avg)
+cardinality=44, run=7
+scalar                        	:     2.406 cycle/op (best)    2.533 cycle/op (avg)
+AVX512VBMI                    	:     2.844 cycle/op (best)    3.152 cycle/op (avg)
+cardinality=44, run=8
+scalar                        	:     2.688 cycle/op (best)    2.771 cycle/op (avg)
+AVX512VBMI                    	:     2.906 cycle/op (best)    3.203 cycle/op (avg)
+cardinality=44, run=9
+scalar                        	:     2.625 cycle/op (best)    2.744 cycle/op (avg)
+AVX512VBMI                    	:     2.750 cycle/op (best)    3.086 cycle/op (avg)
+cardinality=45, run=0
+scalar                        	:     2.688 cycle/op (best)    2.762 cycle/op (avg)
+AVX512VBMI                    	:     2.844 cycle/op (best)    3.196 cycle/op (avg)
+cardinality=45, run=1
+scalar                        	:     2.688 cycle/op (best)    2.775 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.245 cycle/op (avg)
+cardinality=45, run=2
+scalar                        	:     2.719 cycle/op (best)    2.808 cycle/op (avg)
+AVX512VBMI                    	:     2.906 cycle/op (best)    3.203 cycle/op (avg)
+cardinality=45, run=3
+scalar                        	:     2.656 cycle/op (best)    2.814 cycle/op (avg)
+AVX512VBMI                    	:     2.781 cycle/op (best)    3.111 cycle/op (avg)
+cardinality=45, run=4
+scalar                        	:     2.688 cycle/op (best)    2.762 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.239 cycle/op (avg)
+cardinality=45, run=5
+scalar                        	:     2.688 cycle/op (best)    2.915 cycle/op (avg)
+AVX512VBMI                    	:     2.875 cycle/op (best)    3.203 cycle/op (avg)
+cardinality=45, run=6
+scalar                        	:     2.750 cycle/op (best)    2.854 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.265 cycle/op (avg)
+cardinality=45, run=7
+scalar                        	:     2.719 cycle/op (best)    2.838 cycle/op (avg)
+AVX512VBMI                    	:     2.875 cycle/op (best)    3.167 cycle/op (avg)
+cardinality=45, run=8
+scalar                        	:     2.562 cycle/op (best)    2.759 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.271 cycle/op (avg)
+cardinality=45, run=9
+scalar                        	:     2.688 cycle/op (best)    2.850 cycle/op (avg)
+AVX512VBMI                    	:     2.969 cycle/op (best)    3.354 cycle/op (avg)
+cardinality=46, run=0
+scalar                        	:     2.688 cycle/op (best)    2.763 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.232 cycle/op (avg)
+cardinality=46, run=1
+scalar                        	:     2.750 cycle/op (best)    2.875 cycle/op (avg)
+AVX512VBMI                    	:     2.906 cycle/op (best)    3.195 cycle/op (avg)
+cardinality=46, run=2
+scalar                        	:     2.688 cycle/op (best)    2.806 cycle/op (avg)
+AVX512VBMI                    	:     2.844 cycle/op (best)    3.251 cycle/op (avg)
+cardinality=46, run=3
+scalar                        	:     2.781 cycle/op (best)    2.883 cycle/op (avg)
+AVX512VBMI                    	:     2.844 cycle/op (best)    3.259 cycle/op (avg)
+cardinality=46, run=4
+scalar                        	:     2.688 cycle/op (best)    2.806 cycle/op (avg)
+AVX512VBMI                    	:     3.000 cycle/op (best)    3.339 cycle/op (avg)
+cardinality=46, run=5
+scalar                        	:     3.375 cycle/op (best)    3.490 cycle/op (avg)
+AVX512VBMI                    	:     2.969 cycle/op (best)    3.311 cycle/op (avg)
+cardinality=46, run=6
+scalar                        	:     2.781 cycle/op (best)    2.931 cycle/op (avg)
+AVX512VBMI                    	:     2.969 cycle/op (best)    3.307 cycle/op (avg)
+cardinality=46, run=7
+scalar                        	:     2.688 cycle/op (best)    2.964 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.255 cycle/op (avg)
+cardinality=46, run=8
+scalar                        	:     2.656 cycle/op (best)    2.829 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.275 cycle/op (avg)
+cardinality=46, run=9
+scalar                        	:     2.719 cycle/op (best)    2.826 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.636 cycle/op (avg)
+cardinality=47, run=0
+scalar                        	:     2.719 cycle/op (best)    2.830 cycle/op (avg)
+AVX512VBMI                    	:     3.000 cycle/op (best)    3.254 cycle/op (avg)
+cardinality=47, run=1
+scalar                        	:     2.750 cycle/op (best)    2.848 cycle/op (avg)
+AVX512VBMI                    	:     3.000 cycle/op (best)    3.349 cycle/op (avg)
+cardinality=47, run=2
+scalar                        	:     2.906 cycle/op (best)    2.998 cycle/op (avg)
+AVX512VBMI                    	:     2.906 cycle/op (best)    3.281 cycle/op (avg)
+cardinality=47, run=3
+scalar                        	:     2.781 cycle/op (best)    2.869 cycle/op (avg)
+AVX512VBMI                    	:     2.969 cycle/op (best)    3.319 cycle/op (avg)
+cardinality=47, run=4
+scalar                        	:     2.781 cycle/op (best)    2.897 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.407 cycle/op (avg)
+cardinality=47, run=5
+scalar                        	:     2.969 cycle/op (best)    3.083 cycle/op (avg)
+AVX512VBMI                    	:     2.938 cycle/op (best)    3.229 cycle/op (avg)
+cardinality=47, run=6
+scalar                        	:     2.688 cycle/op (best)    2.803 cycle/op (avg)
+AVX512VBMI                    	:     3.062 cycle/op (best)    3.516 cycle/op (avg)
+cardinality=47, run=7
+scalar                        	:     2.625 cycle/op (best)    2.743 cycle/op (avg)
+AVX512VBMI                    	:     3.094 cycle/op (best)    3.408 cycle/op (avg)
+cardinality=47, run=8
+scalar                        	:     2.812 cycle/op (best)    2.911 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.298 cycle/op (avg)
+cardinality=47, run=9
+scalar                        	:     2.562 cycle/op (best)    2.672 cycle/op (avg)
+AVX512VBMI                    	:     3.125 cycle/op (best)    3.364 cycle/op (avg)
+cardinality=48, run=0
+scalar                        	:     3.062 cycle/op (best)    3.808 cycle/op (avg)
+AVX512VBMI                    	:     3.062 cycle/op (best)    3.381 cycle/op (avg)
+cardinality=48, run=1
+scalar                        	:     2.594 cycle/op (best)    2.744 cycle/op (avg)
+AVX512VBMI                    	:     3.125 cycle/op (best)    3.433 cycle/op (avg)
+cardinality=48, run=2
+scalar                        	:     2.750 cycle/op (best)    2.854 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.322 cycle/op (avg)
+cardinality=48, run=3
+scalar                        	:     2.719 cycle/op (best)    2.787 cycle/op (avg)
+AVX512VBMI                    	:     3.062 cycle/op (best)    3.319 cycle/op (avg)
+cardinality=48, run=4
+scalar                        	:     2.781 cycle/op (best)    2.881 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.348 cycle/op (avg)
+cardinality=48, run=5
+scalar                        	:     3.156 cycle/op (best)    3.355 cycle/op (avg)
+AVX512VBMI                    	:     3.094 cycle/op (best)    3.408 cycle/op (avg)
+cardinality=48, run=6
+scalar                        	:     2.750 cycle/op (best)    2.853 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.381 cycle/op (avg)
+cardinality=48, run=7
+scalar                        	:     2.750 cycle/op (best)    2.851 cycle/op (avg)
+AVX512VBMI                    	:     3.062 cycle/op (best)    3.390 cycle/op (avg)
+cardinality=48, run=8
+scalar                        	:     2.625 cycle/op (best)    2.744 cycle/op (avg)
+AVX512VBMI                    	:     3.125 cycle/op (best)    3.515 cycle/op (avg)
+cardinality=48, run=9
+scalar                        	:     2.688 cycle/op (best)    2.768 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.303 cycle/op (avg)
+cardinality=49, run=0
+scalar                        	:     2.812 cycle/op (best)    2.928 cycle/op (avg)
+AVX512VBMI                    	:     3.062 cycle/op (best)    3.388 cycle/op (avg)
+cardinality=49, run=1
+scalar                        	:     3.062 cycle/op (best)    3.209 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.524 cycle/op (avg)
+cardinality=49, run=2
+scalar                        	:     2.719 cycle/op (best)    2.901 cycle/op (avg)
+AVX512VBMI                    	:     3.094 cycle/op (best)    3.411 cycle/op (avg)
+cardinality=49, run=3
+scalar                        	:     3.219 cycle/op (best)    3.345 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.407 cycle/op (avg)
+cardinality=49, run=4
+scalar                        	:     2.969 cycle/op (best)    3.064 cycle/op (avg)
+AVX512VBMI                    	:     3.438 cycle/op (best)    3.757 cycle/op (avg)
+cardinality=49, run=5
+scalar                        	:     2.781 cycle/op (best)    2.919 cycle/op (avg)
+AVX512VBMI                    	:     3.094 cycle/op (best)    3.353 cycle/op (avg)
+cardinality=49, run=6
+scalar                        	:     2.875 cycle/op (best)    2.987 cycle/op (avg)
+AVX512VBMI                    	:     3.156 cycle/op (best)    3.499 cycle/op (avg)
+cardinality=49, run=7
+scalar                        	:     2.750 cycle/op (best)    2.841 cycle/op (avg)
+AVX512VBMI                    	:     3.156 cycle/op (best)    3.430 cycle/op (avg)
+cardinality=49, run=8
+scalar                        	:     2.906 cycle/op (best)    3.005 cycle/op (avg)
+AVX512VBMI                    	:     3.031 cycle/op (best)    3.349 cycle/op (avg)
+cardinality=49, run=9
+scalar                        	:     2.781 cycle/op (best)    2.901 cycle/op (avg)
+AVX512VBMI                    	:     3.094 cycle/op (best)    3.418 cycle/op (avg)
+cardinality=50, run=0
+scalar                        	:     3.406 cycle/op (best)    3.534 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.469 cycle/op (avg)
+cardinality=50, run=1
+scalar                        	:     2.719 cycle/op (best)    2.821 cycle/op (avg)
+AVX512VBMI                    	:     3.188 cycle/op (best)    3.530 cycle/op (avg)
+cardinality=50, run=2
+scalar                        	:     2.781 cycle/op (best)    2.890 cycle/op (avg)
+AVX512VBMI                    	:     3.406 cycle/op (best)    3.769 cycle/op (avg)
+cardinality=50, run=3
+scalar                        	:     2.844 cycle/op (best)    2.960 cycle/op (avg)
+AVX512VBMI                    	:     3.156 cycle/op (best)    3.475 cycle/op (avg)
+cardinality=50, run=4
+scalar                        	:     2.781 cycle/op (best)    2.955 cycle/op (avg)
+AVX512VBMI                    	:     3.125 cycle/op (best)    3.451 cycle/op (avg)
+cardinality=50, run=5
+scalar                        	:     2.844 cycle/op (best)    2.968 cycle/op (avg)
+AVX512VBMI                    	:     3.156 cycle/op (best)    3.499 cycle/op (avg)
+cardinality=50, run=6
+scalar                        	:     2.719 cycle/op (best)    2.879 cycle/op (avg)
+AVX512VBMI                    	:     3.062 cycle/op (best)    3.439 cycle/op (avg)
+cardinality=50, run=7
+scalar                        	:     2.906 cycle/op (best)    3.004 cycle/op (avg)
+AVX512VBMI                    	:     3.156 cycle/op (best)    3.531 cycle/op (avg)
+cardinality=50, run=8
+scalar                        	:     2.906 cycle/op (best)    3.083 cycle/op (avg)
+AVX512VBMI                    	:     3.094 cycle/op (best)    3.411 cycle/op (avg)
+cardinality=50, run=9
+scalar                        	:     2.750 cycle/op (best)    2.868 cycle/op (avg)
+AVX512VBMI                    	:     3.125 cycle/op (best)    3.447 cycle/op (avg)
+cardinality=51, run=0
+scalar                        	:     2.844 cycle/op (best)    2.948 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.534 cycle/op (avg)
+cardinality=51, run=1
+scalar                        	:     2.906 cycle/op (best)    3.002 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.647 cycle/op (avg)
+cardinality=51, run=2
+scalar                        	:     2.781 cycle/op (best)    2.844 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.612 cycle/op (avg)
+cardinality=51, run=3
+scalar                        	:     2.781 cycle/op (best)    2.895 cycle/op (avg)
+AVX512VBMI                    	:     3.281 cycle/op (best)    3.611 cycle/op (avg)
+cardinality=51, run=4
+scalar                        	:     2.750 cycle/op (best)    2.861 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.530 cycle/op (avg)
+cardinality=51, run=5
+scalar                        	:     2.750 cycle/op (best)    2.849 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.582 cycle/op (avg)
+cardinality=51, run=6
+scalar                        	:     2.781 cycle/op (best)    2.884 cycle/op (avg)
+AVX512VBMI                    	:     3.188 cycle/op (best)    3.600 cycle/op (avg)
+cardinality=51, run=7
+scalar                        	:     2.688 cycle/op (best)    2.806 cycle/op (avg)
+AVX512VBMI                    	:     3.156 cycle/op (best)    3.534 cycle/op (avg)
+cardinality=51, run=8
+scalar                        	:     2.875 cycle/op (best)    2.977 cycle/op (avg)
+AVX512VBMI                    	:     3.250 cycle/op (best)    3.565 cycle/op (avg)
+cardinality=51, run=9
+scalar                        	:     2.750 cycle/op (best)    2.851 cycle/op (avg)
+AVX512VBMI                    	:     3.188 cycle/op (best)    3.606 cycle/op (avg)
+cardinality=52, run=0
+scalar                        	:     3.438 cycle/op (best)    3.567 cycle/op (avg)
+AVX512VBMI                    	:     3.188 cycle/op (best)    3.588 cycle/op (avg)
+cardinality=52, run=1
+scalar                        	:     3.000 cycle/op (best)    3.282 cycle/op (avg)
+AVX512VBMI                    	:     3.281 cycle/op (best)    3.647 cycle/op (avg)
+cardinality=52, run=2
+scalar                        	:     2.719 cycle/op (best)    2.834 cycle/op (avg)
+AVX512VBMI                    	:     3.688 cycle/op (best)    3.960 cycle/op (avg)
+cardinality=52, run=3
+scalar                        	:     2.875 cycle/op (best)    3.073 cycle/op (avg)
+AVX512VBMI                    	:     3.188 cycle/op (best)    3.551 cycle/op (avg)
+cardinality=52, run=4
+scalar                        	:     2.812 cycle/op (best)    2.916 cycle/op (avg)
+AVX512VBMI                    	:     3.344 cycle/op (best)    3.620 cycle/op (avg)
+cardinality=52, run=5
+scalar                        	:     2.875 cycle/op (best)    2.974 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.574 cycle/op (avg)
+cardinality=52, run=6
+scalar                        	:     2.875 cycle/op (best)    3.106 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.603 cycle/op (avg)
+cardinality=52, run=7
+scalar                        	:     2.781 cycle/op (best)    2.884 cycle/op (avg)
+AVX512VBMI                    	:     3.281 cycle/op (best)    3.699 cycle/op (avg)
+cardinality=52, run=8
+scalar                        	:     2.938 cycle/op (best)    3.041 cycle/op (avg)
+AVX512VBMI                    	:     3.375 cycle/op (best)    3.703 cycle/op (avg)
+cardinality=52, run=9
+scalar                        	:     2.781 cycle/op (best)    2.902 cycle/op (avg)
+AVX512VBMI                    	:     3.188 cycle/op (best)    3.561 cycle/op (avg)
+cardinality=53, run=0
+scalar                        	:     3.156 cycle/op (best)    3.233 cycle/op (avg)
+AVX512VBMI                    	:     3.250 cycle/op (best)    3.627 cycle/op (avg)
+cardinality=53, run=1
+scalar                        	:     3.438 cycle/op (best)    3.544 cycle/op (avg)
+AVX512VBMI                    	:     3.250 cycle/op (best)    3.653 cycle/op (avg)
+cardinality=53, run=2
+scalar                        	:     2.938 cycle/op (best)    3.129 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.601 cycle/op (avg)
+cardinality=53, run=3
+scalar                        	:     3.188 cycle/op (best)    3.380 cycle/op (avg)
+AVX512VBMI                    	:     3.219 cycle/op (best)    3.664 cycle/op (avg)
+cardinality=53, run=4
+scalar                        	:     2.875 cycle/op (best)    2.969 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.639 cycle/op (avg)
+cardinality=53, run=5
+scalar                        	:     3.125 cycle/op (best)    3.403 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.669 cycle/op (avg)
+cardinality=53, run=6
+scalar                        	:     2.812 cycle/op (best)    2.931 cycle/op (avg)
+AVX512VBMI                    	:     3.281 cycle/op (best)    3.624 cycle/op (avg)
+cardinality=53, run=7
+scalar                        	:     2.906 cycle/op (best)    2.991 cycle/op (avg)
+AVX512VBMI                    	:     3.250 cycle/op (best)    3.659 cycle/op (avg)
+cardinality=53, run=8
+scalar                        	:     2.906 cycle/op (best)    3.054 cycle/op (avg)
+AVX512VBMI                    	:     3.406 cycle/op (best)    3.706 cycle/op (avg)
+cardinality=53, run=9
+scalar                        	:     2.906 cycle/op (best)    2.989 cycle/op (avg)
+AVX512VBMI                    	:     3.188 cycle/op (best)    3.594 cycle/op (avg)
+cardinality=54, run=0
+scalar                        	:     3.094 cycle/op (best)    3.190 cycle/op (avg)
+AVX512VBMI                    	:     3.781 cycle/op (best)    4.076 cycle/op (avg)
+cardinality=54, run=1
+scalar                        	:     2.781 cycle/op (best)    2.889 cycle/op (avg)
+AVX512VBMI                    	:     3.281 cycle/op (best)    3.606 cycle/op (avg)
+cardinality=54, run=2
+scalar                        	:     2.875 cycle/op (best)    2.978 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.659 cycle/op (avg)
+cardinality=54, run=3
+scalar                        	:     2.938 cycle/op (best)    3.038 cycle/op (avg)
+AVX512VBMI                    	:     3.406 cycle/op (best)    3.703 cycle/op (avg)
+cardinality=54, run=4
+scalar                        	:     2.844 cycle/op (best)    3.017 cycle/op (avg)
+AVX512VBMI                    	:     3.344 cycle/op (best)    3.736 cycle/op (avg)
+cardinality=54, run=5
+scalar                        	:     3.469 cycle/op (best)    3.753 cycle/op (avg)
+AVX512VBMI                    	:     3.656 cycle/op (best)    4.060 cycle/op (avg)
+cardinality=54, run=6
+scalar                        	:     3.531 cycle/op (best)    3.653 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.739 cycle/op (avg)
+cardinality=54, run=7
+scalar                        	:     2.938 cycle/op (best)    3.037 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.674 cycle/op (avg)
+cardinality=54, run=8
+scalar                        	:     2.844 cycle/op (best)    2.957 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.763 cycle/op (avg)
+cardinality=54, run=9
+scalar                        	:     3.250 cycle/op (best)    3.352 cycle/op (avg)
+AVX512VBMI                    	:     3.750 cycle/op (best)    4.095 cycle/op (avg)
+cardinality=55, run=0
+scalar                        	:     3.875 cycle/op (best)    3.999 cycle/op (avg)
+AVX512VBMI                    	:     3.406 cycle/op (best)    3.732 cycle/op (avg)
+cardinality=55, run=1
+scalar                        	:     3.594 cycle/op (best)    3.879 cycle/op (avg)
+AVX512VBMI                    	:     3.375 cycle/op (best)    3.674 cycle/op (avg)
+cardinality=55, run=2
+scalar                        	:     2.938 cycle/op (best)    3.037 cycle/op (avg)
+AVX512VBMI                    	:     3.344 cycle/op (best)    3.733 cycle/op (avg)
+cardinality=55, run=3
+scalar                        	:     2.969 cycle/op (best)    3.069 cycle/op (avg)
+AVX512VBMI                    	:     3.438 cycle/op (best)    3.781 cycle/op (avg)
+cardinality=55, run=4
+scalar                        	:     2.875 cycle/op (best)    2.991 cycle/op (avg)
+AVX512VBMI                    	:     3.438 cycle/op (best)    3.823 cycle/op (avg)
+cardinality=55, run=5
+scalar                        	:     2.875 cycle/op (best)    2.973 cycle/op (avg)
+AVX512VBMI                    	:     3.500 cycle/op (best)    3.809 cycle/op (avg)
+cardinality=55, run=6
+scalar                        	:     3.250 cycle/op (best)    3.446 cycle/op (avg)
+AVX512VBMI                    	:     3.812 cycle/op (best)    4.188 cycle/op (avg)
+cardinality=55, run=7
+scalar                        	:     2.875 cycle/op (best)    2.971 cycle/op (avg)
+AVX512VBMI                    	:     3.469 cycle/op (best)    3.857 cycle/op (avg)
+cardinality=55, run=8
+scalar                        	:     2.906 cycle/op (best)    3.016 cycle/op (avg)
+AVX512VBMI                    	:     3.562 cycle/op (best)    3.938 cycle/op (avg)
+cardinality=55, run=9
+scalar                        	:     2.906 cycle/op (best)    3.008 cycle/op (avg)
+AVX512VBMI                    	:     3.312 cycle/op (best)    3.676 cycle/op (avg)
+cardinality=56, run=0
+scalar                        	:     2.844 cycle/op (best)    2.969 cycle/op (avg)
+AVX512VBMI                    	:     3.438 cycle/op (best)    3.874 cycle/op (avg)
+cardinality=56, run=1
+scalar                        	:     2.844 cycle/op (best)    2.945 cycle/op (avg)
+AVX512VBMI                    	:     3.438 cycle/op (best)    3.772 cycle/op (avg)
+cardinality=56, run=2
+scalar                        	:     2.938 cycle/op (best)    3.040 cycle/op (avg)
+AVX512VBMI                    	:     3.844 cycle/op (best)    4.246 cycle/op (avg)
+cardinality=56, run=3
+scalar                        	:     2.969 cycle/op (best)    3.062 cycle/op (avg)
+AVX512VBMI                    	:     3.562 cycle/op (best)    3.852 cycle/op (avg)
+cardinality=56, run=4
+scalar                        	:     3.375 cycle/op (best)    3.677 cycle/op (avg)
+AVX512VBMI                    	:     3.500 cycle/op (best)    3.873 cycle/op (avg)
+cardinality=56, run=5
+scalar                        	:     2.969 cycle/op (best)    3.051 cycle/op (avg)
+AVX512VBMI                    	:     3.469 cycle/op (best)    3.853 cycle/op (avg)
+cardinality=56, run=6
+scalar                        	:     3.219 cycle/op (best)    3.357 cycle/op (avg)
+AVX512VBMI                    	:     3.812 cycle/op (best)    4.205 cycle/op (avg)
+cardinality=56, run=7
+scalar                        	:     2.969 cycle/op (best)    3.083 cycle/op (avg)
+AVX512VBMI                    	:     3.750 cycle/op (best)    4.307 cycle/op (avg)
+cardinality=56, run=8
+scalar                        	:     3.156 cycle/op (best)    3.262 cycle/op (avg)
+AVX512VBMI                    	:     3.562 cycle/op (best)    4.047 cycle/op (avg)
+cardinality=56, run=9
+scalar                        	:     3.031 cycle/op (best)    3.131 cycle/op (avg)
+AVX512VBMI                    	:     3.812 cycle/op (best)    4.207 cycle/op (avg)
+cardinality=57, run=0
+scalar                        	:     3.281 cycle/op (best)    3.463 cycle/op (avg)
+AVX512VBMI                    	:     3.469 cycle/op (best)    3.819 cycle/op (avg)
+cardinality=57, run=1
+scalar                        	:     3.219 cycle/op (best)    3.313 cycle/op (avg)
+AVX512VBMI                    	:     3.812 cycle/op (best)    4.131 cycle/op (avg)
+cardinality=57, run=2
+scalar                        	:     2.906 cycle/op (best)    3.024 cycle/op (avg)
+AVX512VBMI                    	:     3.625 cycle/op (best)    4.016 cycle/op (avg)
+cardinality=57, run=3
+scalar                        	:     3.469 cycle/op (best)    4.239 cycle/op (avg)
+AVX512VBMI                    	:     3.531 cycle/op (best)    3.849 cycle/op (avg)
+cardinality=57, run=4
+scalar                        	:     3.000 cycle/op (best)    3.085 cycle/op (avg)
+AVX512VBMI                    	:     3.938 cycle/op (best)    4.451 cycle/op (avg)
+cardinality=57, run=5
+scalar                        	:     2.938 cycle/op (best)    3.129 cycle/op (avg)
+AVX512VBMI                    	:     3.562 cycle/op (best)    3.964 cycle/op (avg)
+cardinality=57, run=6
+scalar                        	:     2.938 cycle/op (best)    3.038 cycle/op (avg)
+AVX512VBMI                    	:     3.469 cycle/op (best)    3.814 cycle/op (avg)
+cardinality=57, run=7
+scalar                        	:     2.938 cycle/op (best)    3.028 cycle/op (avg)
+AVX512VBMI                    	:     3.469 cycle/op (best)    3.822 cycle/op (avg)
+cardinality=57, run=8
+scalar                        	:     3.156 cycle/op (best)    3.378 cycle/op (avg)
+AVX512VBMI                    	:     3.844 cycle/op (best)    4.213 cycle/op (avg)
+cardinality=57, run=9
+scalar                        	:     3.000 cycle/op (best)    3.078 cycle/op (avg)
+AVX512VBMI                    	:     3.531 cycle/op (best)    3.915 cycle/op (avg)
+cardinality=58, run=0
+scalar                        	:     2.906 cycle/op (best)    3.114 cycle/op (avg)
+AVX512VBMI                    	:     3.875 cycle/op (best)    4.336 cycle/op (avg)
+cardinality=58, run=1
+scalar                        	:     3.750 cycle/op (best)    3.864 cycle/op (avg)
+AVX512VBMI                    	:     3.500 cycle/op (best)    3.931 cycle/op (avg)
+cardinality=58, run=2
+scalar                        	:     3.281 cycle/op (best)    3.371 cycle/op (avg)
+AVX512VBMI                    	:     4.250 cycle/op (best)    4.586 cycle/op (avg)
+cardinality=58, run=3
+scalar                        	:     3.375 cycle/op (best)    4.089 cycle/op (avg)
+AVX512VBMI                    	:     4.219 cycle/op (best)    4.645 cycle/op (avg)
+cardinality=58, run=4
+scalar                        	:     2.969 cycle/op (best)    3.066 cycle/op (avg)
+AVX512VBMI                    	:     3.469 cycle/op (best)    3.999 cycle/op (avg)
+cardinality=58, run=5
+scalar                        	:     3.531 cycle/op (best)    3.649 cycle/op (avg)
+AVX512VBMI                    	:     3.594 cycle/op (best)    3.936 cycle/op (avg)
+cardinality=58, run=6
+scalar                        	:     3.250 cycle/op (best)    3.413 cycle/op (avg)
+AVX512VBMI                    	:     3.812 cycle/op (best)    4.022 cycle/op (avg)
+cardinality=58, run=7
+scalar                        	:     2.969 cycle/op (best)    3.092 cycle/op (avg)
+AVX512VBMI                    	:     3.938 cycle/op (best)    4.352 cycle/op (avg)
+cardinality=58, run=8
+scalar                        	:     2.938 cycle/op (best)    3.051 cycle/op (avg)
+AVX512VBMI                    	:     3.531 cycle/op (best)    3.895 cycle/op (avg)
+cardinality=58, run=9
+scalar                        	:     3.062 cycle/op (best)    3.192 cycle/op (avg)
+AVX512VBMI                    	:     3.562 cycle/op (best)    3.951 cycle/op (avg)
+cardinality=59, run=0
+scalar                        	:     3.094 cycle/op (best)    3.190 cycle/op (avg)
+AVX512VBMI                    	:     3.906 cycle/op (best)    4.261 cycle/op (avg)
+cardinality=59, run=1
+scalar                        	:     3.156 cycle/op (best)    3.255 cycle/op (avg)
+AVX512VBMI                    	:     3.938 cycle/op (best)    4.329 cycle/op (avg)
+cardinality=59, run=2
+scalar                        	:     3.312 cycle/op (best)    3.433 cycle/op (avg)
+AVX512VBMI                    	:     3.875 cycle/op (best)    4.266 cycle/op (avg)
+cardinality=59, run=3
+scalar                        	:     2.844 cycle/op (best)    2.960 cycle/op (avg)
+AVX512VBMI                    	:     3.938 cycle/op (best)    4.392 cycle/op (avg)
+cardinality=59, run=4
+scalar                        	:     3.375 cycle/op (best)    3.560 cycle/op (avg)
+AVX512VBMI                    	:     3.938 cycle/op (best)    4.339 cycle/op (avg)
+cardinality=59, run=5
+scalar                        	:     3.312 cycle/op (best)    3.425 cycle/op (avg)
+AVX512VBMI                    	:     3.656 cycle/op (best)    4.024 cycle/op (avg)
+cardinality=59, run=6
+scalar                        	:     3.500 cycle/op (best)    3.606 cycle/op (avg)
+AVX512VBMI                    	:     3.938 cycle/op (best)    4.343 cycle/op (avg)
+cardinality=59, run=7
+scalar                        	:     3.031 cycle/op (best)    3.201 cycle/op (avg)
+AVX512VBMI                    	:     3.625 cycle/op (best)    4.029 cycle/op (avg)
+cardinality=59, run=8
+scalar                        	:     3.344 cycle/op (best)    3.517 cycle/op (avg)
+AVX512VBMI                    	:     3.594 cycle/op (best)    3.948 cycle/op (avg)
+cardinality=59, run=9
+scalar                        	:     3.344 cycle/op (best)    3.455 cycle/op (avg)
+AVX512VBMI                    	:     3.594 cycle/op (best)    3.967 cycle/op (avg)
+cardinality=60, run=0
+scalar                        	:     2.781 cycle/op (best)    2.901 cycle/op (avg)
+AVX512VBMI                    	:     4.062 cycle/op (best)    4.538 cycle/op (avg)
+cardinality=60, run=1
+scalar                        	:     3.031 cycle/op (best)    3.315 cycle/op (avg)
+AVX512VBMI                    	:     4.094 cycle/op (best)    4.490 cycle/op (avg)
+cardinality=60, run=2
+scalar                        	:     3.594 cycle/op (best)    3.688 cycle/op (avg)
+AVX512VBMI                    	:     4.062 cycle/op (best)    4.439 cycle/op (avg)
+cardinality=60, run=3
+scalar                        	:     3.750 cycle/op (best)    3.918 cycle/op (avg)
+AVX512VBMI                    	:     3.969 cycle/op (best)    4.353 cycle/op (avg)
+cardinality=60, run=4
+scalar                        	:     3.281 cycle/op (best)    3.379 cycle/op (avg)
+AVX512VBMI                    	:     4.375 cycle/op (best)    4.695 cycle/op (avg)
+cardinality=60, run=5
+scalar                        	:     3.125 cycle/op (best)    3.233 cycle/op (avg)
+AVX512VBMI                    	:     4.000 cycle/op (best)    4.413 cycle/op (avg)
+cardinality=60, run=6
+scalar                        	:     3.906 cycle/op (best)    4.093 cycle/op (avg)
+AVX512VBMI                    	:     4.031 cycle/op (best)    4.359 cycle/op (avg)
+cardinality=60, run=7
+scalar                        	:     3.062 cycle/op (best)    3.176 cycle/op (avg)
+AVX512VBMI                    	:     3.969 cycle/op (best)    4.424 cycle/op (avg)
+cardinality=60, run=8
+scalar                        	:     2.844 cycle/op (best)    2.943 cycle/op (avg)
+AVX512VBMI                    	:     4.000 cycle/op (best)    4.402 cycle/op (avg)
+cardinality=60, run=9
+scalar                        	:     3.094 cycle/op (best)    3.217 cycle/op (avg)
+AVX512VBMI                    	:     3.719 cycle/op (best)    4.051 cycle/op (avg)
+cardinality=61, run=0
+scalar                        	:     3.688 cycle/op (best)    3.946 cycle/op (avg)
+AVX512VBMI                    	:     4.406 cycle/op (best)    4.840 cycle/op (avg)
+cardinality=61, run=1
+scalar                        	:     2.719 cycle/op (best)    2.855 cycle/op (avg)
+AVX512VBMI                    	:     4.125 cycle/op (best)    4.490 cycle/op (avg)
+cardinality=61, run=2
+scalar                        	:     3.031 cycle/op (best)    3.144 cycle/op (avg)
+AVX512VBMI                    	:     4.094 cycle/op (best)    4.543 cycle/op (avg)
+cardinality=61, run=3
+scalar                        	:     3.031 cycle/op (best)    3.129 cycle/op (avg)
+AVX512VBMI                    	:     4.062 cycle/op (best)    4.491 cycle/op (avg)
+cardinality=61, run=4
+scalar                        	:     3.281 cycle/op (best)    3.384 cycle/op (avg)
+AVX512VBMI                    	:     4.094 cycle/op (best)    4.448 cycle/op (avg)
+cardinality=61, run=5
+scalar                        	:     2.969 cycle/op (best)    3.081 cycle/op (avg)
+AVX512VBMI                    	:     4.125 cycle/op (best)    4.497 cycle/op (avg)
+cardinality=61, run=6
+scalar                        	:     3.344 cycle/op (best)    3.442 cycle/op (avg)
+AVX512VBMI                    	:     4.156 cycle/op (best)    4.482 cycle/op (avg)
+cardinality=61, run=7
+scalar                        	:     2.719 cycle/op (best)    2.809 cycle/op (avg)
+AVX512VBMI                    	:     4.156 cycle/op (best)    4.540 cycle/op (avg)
+cardinality=61, run=8
+scalar                        	:     3.156 cycle/op (best)    3.253 cycle/op (avg)
+AVX512VBMI                    	:     4.094 cycle/op (best)    4.444 cycle/op (avg)
+cardinality=61, run=9
+scalar                        	:     3.938 cycle/op (best)    4.109 cycle/op (avg)
+AVX512VBMI                    	:     4.094 cycle/op (best)    4.479 cycle/op (avg)
+cardinality=62, run=0
+scalar                        	:     3.062 cycle/op (best)    3.345 cycle/op (avg)
+AVX512VBMI                    	:     4.594 cycle/op (best)    4.930 cycle/op (avg)
+cardinality=62, run=1
+scalar                        	:     3.156 cycle/op (best)    3.315 cycle/op (avg)
+AVX512VBMI                    	:     4.156 cycle/op (best)    4.542 cycle/op (avg)
+cardinality=62, run=2
+scalar                        	:     2.500 cycle/op (best)    2.607 cycle/op (avg)
+AVX512VBMI                    	:     4.062 cycle/op (best)    4.537 cycle/op (avg)
+cardinality=62, run=3
+scalar                        	:     2.906 cycle/op (best)    3.012 cycle/op (avg)
+AVX512VBMI                    	:     4.250 cycle/op (best)    4.684 cycle/op (avg)
+cardinality=62, run=4
+scalar                        	:     2.688 cycle/op (best)    2.785 cycle/op (avg)
+AVX512VBMI                    	:     4.125 cycle/op (best)    4.489 cycle/op (avg)
+cardinality=62, run=5
+scalar                        	:     2.750 cycle/op (best)    2.946 cycle/op (avg)
+AVX512VBMI                    	:     4.156 cycle/op (best)    4.551 cycle/op (avg)
+cardinality=62, run=6
+scalar                        	:     2.625 cycle/op (best)    2.740 cycle/op (avg)
+AVX512VBMI                    	:     4.188 cycle/op (best)    4.637 cycle/op (avg)
+cardinality=62, run=7
+scalar                        	:     3.188 cycle/op (best)    3.380 cycle/op (avg)
+AVX512VBMI                    	:     4.469 cycle/op (best)    4.859 cycle/op (avg)
+cardinality=62, run=8
+scalar                        	:     3.125 cycle/op (best)    3.225 cycle/op (avg)
+AVX512VBMI                    	:     4.344 cycle/op (best)    4.846 cycle/op (avg)
+cardinality=62, run=9
+scalar                        	:     2.688 cycle/op (best)    2.760 cycle/op (avg)
+AVX512VBMI                    	:     4.188 cycle/op (best)    4.483 cycle/op (avg)
+cardinality=63, run=0
+scalar                        	:     2.500 cycle/op (best)    2.574 cycle/op (avg)
+AVX512VBMI                    	:     4.156 cycle/op (best)    4.642 cycle/op (avg)
+cardinality=63, run=1
+scalar                        	:     2.906 cycle/op (best)    3.051 cycle/op (avg)
+AVX512VBMI                    	:     4.156 cycle/op (best)    4.563 cycle/op (avg)
+cardinality=63, run=2
+scalar                        	:     2.438 cycle/op (best)    2.582 cycle/op (avg)
+AVX512VBMI                    	:     4.344 cycle/op (best)    4.749 cycle/op (avg)
+cardinality=63, run=3
+scalar                        	:     2.281 cycle/op (best)    2.410 cycle/op (avg)
+AVX512VBMI                    	:     4.250 cycle/op (best)    4.556 cycle/op (avg)
+cardinality=63, run=4
+scalar                        	:     2.969 cycle/op (best)    3.243 cycle/op (avg)
+AVX512VBMI                    	:     3.812 cycle/op (best)    4.545 cycle/op (avg)
+cardinality=63, run=5
+scalar                        	:     2.906 cycle/op (best)    3.059 cycle/op (avg)
+AVX512VBMI                    	:     4.531 cycle/op (best)    4.897 cycle/op (avg)
+cardinality=63, run=6
+scalar                        	:     2.375 cycle/op (best)    2.563 cycle/op (avg)
+AVX512VBMI                    	:     4.312 cycle/op (best)    4.657 cycle/op (avg)
+cardinality=63, run=7
+scalar                        	:     2.469 cycle/op (best)    2.585 cycle/op (avg)
+AVX512VBMI                    	:     4.219 cycle/op (best)    4.642 cycle/op (avg)
+cardinality=63, run=8
+scalar                        	:     2.594 cycle/op (best)    2.736 cycle/op (avg)
+AVX512VBMI                    	:     4.188 cycle/op (best)    4.597 cycle/op (avg)
+cardinality=63, run=9
+scalar                        	:     2.625 cycle/op (best)    2.816 cycle/op (avg)
+AVX512VBMI                    	:     4.219 cycle/op (best)    4.627 cycle/op (avg)
+cardinality=64, run=0
+scalar                        	:     2.281 cycle/op (best)    2.400 cycle/op (avg)
+AVX512VBMI                    	:     4.344 cycle/op (best)    4.756 cycle/op (avg)
+cardinality=64, run=1
+scalar                        	:     2.312 cycle/op (best)    2.395 cycle/op (avg)
+AVX512VBMI                    	:     4.344 cycle/op (best)    4.735 cycle/op (avg)
+cardinality=64, run=2
+scalar                        	:     2.281 cycle/op (best)    2.395 cycle/op (avg)
+AVX512VBMI                    	:     4.344 cycle/op (best)    4.689 cycle/op (avg)
+cardinality=64, run=3
+scalar                        	:     2.281 cycle/op (best)    2.396 cycle/op (avg)
+AVX512VBMI                    	:     4.312 cycle/op (best)    4.733 cycle/op (avg)
+cardinality=64, run=4
+scalar                        	:     2.281 cycle/op (best)    2.396 cycle/op (avg)
+AVX512VBMI                    	:     4.312 cycle/op (best)    4.715 cycle/op (avg)
+cardinality=64, run=5
+scalar                        	:     2.250 cycle/op (best)    2.402 cycle/op (avg)
+AVX512VBMI                    	:     4.312 cycle/op (best)    4.842 cycle/op (avg)
+cardinality=64, run=6
+scalar                        	:     2.281 cycle/op (best)    2.397 cycle/op (avg)
+AVX512VBMI                    	:     4.312 cycle/op (best)    4.711 cycle/op (avg)
+cardinality=64, run=7
+scalar                        	:     2.281 cycle/op (best)    2.399 cycle/op (avg)
+AVX512VBMI                    	:     4.312 cycle/op (best)    4.717 cycle/op (avg)
+cardinality=64, run=8
+scalar                        	:     2.281 cycle/op (best)    2.396 cycle/op (avg)
+AVX512VBMI                    	:     4.312 cycle/op (best)    4.681 cycle/op (avg)
+cardinality=64, run=9
+scalar                        	:     2.281 cycle/op (best)    2.406 cycle/op (avg)
+AVX512VBMI                    	:     4.344 cycle/op (best)    4.683 cycle/op (avg)
