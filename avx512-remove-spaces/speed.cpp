@@ -24,11 +24,20 @@ void measure(const char* name, FUNCTION fun, const char* input, char* output, si
 
     printf("%-11s: ", name); fflush(stdout);
 
-    const auto ts = high_resolution_clock::now();
-    fun(input, output, size);
-    const auto te = high_resolution_clock::now();
+    const int runs = 10;
+    uint64_t best_time = -1;
 
-    printf("%lu ms\n", duration_cast<milliseconds>(te - ts).count());
+    for (int i=0; i < runs; i++) {
+        putchar('.'); fflush(stdout);
+        const auto ts = high_resolution_clock::now();
+        fun(input, output, size);
+        const auto te = high_resolution_clock::now();
+
+        const uint64_t d = duration_cast<microseconds>(te - ts).count();
+        best_time = std::min(best_time, d);
+    }
+
+    printf(" %10lu us\n", best_time);
 }
 
 
