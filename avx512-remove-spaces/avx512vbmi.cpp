@@ -15,6 +15,8 @@ char* remove_spaces__avx512vbmi(const char* src, char* dst, size_t n) {
     );
 
     const __m512i ones   = _mm512_set1_epi8(1);
+    const __m512i NL     = _mm512_set1_epi8('\n');
+    const __m512i CR     = _mm512_set1_epi8('\r');
     const __m512i spaces = _mm512_set1_epi8(' ');
 
     size_t len;
@@ -23,7 +25,10 @@ char* remove_spaces__avx512vbmi(const char* src, char* dst, size_t n) {
         const __m512i input  = _mm512_loadu_si512((const __m512i*)(src + i));
         __m512i output;
 
-        uint64_t mask = _mm512_cmpeq_epi8_mask(input, spaces);
+        uint64_t mask = _mm512_cmpeq_epi8_mask(input, spaces)
+                      | _mm512_cmpeq_epi8_mask(input, NL)
+                      | _mm512_cmpeq_epi8_mask(input, CR);
+
         if (mask) {
             len = 64 - __builtin_popcountll(mask);
             __m512i indices = no_gaps_indices;
