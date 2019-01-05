@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include "all.cpp"
+#include "ansi.cpp"
 
 class Test {
 
@@ -19,9 +20,9 @@ public:
         try {
             test_1_gap();
             test_2_gaps();
-            test_random(100000);
+            test_random();
 
-            puts("All OK");
+            puts(ansi::seq("All OK", ansi::GREEN).c_str());
 
             return true;
         } catch (TestFailed&) {
@@ -32,75 +33,74 @@ public:
 private:
     void test_1_gap() {
 
-        const size_t output_len = size - 1;
- 
         puts("test 1 gap");
         for (size_t i=0; i < size; i++) {
             init_input();
             input[i] = ' ';
-            compare(output_len);
+            compare();
         }
     }
 
     void test_2_gaps() {
 
-        const size_t output_len = size - 2;
-    
         puts("test 2 gaps");
         for (size_t i=0; i < size; i++) {
             for (size_t j=i + 5; j < size; j++) {
                 init_input();
                 input[i] = ' ';
                 input[j] = ' ';
-                compare(output_len);
+                compare();
             }
         }
     }
 
-    void test_random(int tries) {
-        printf("random gaps [%d tests]\n", tries);
-        while (tries) {
-            test_random();
-            tries -= 1;
-        }
+    void test_random() {
+        const int runs = 10;
+
+        puts("test random number of gaps (from 1 to 64)");
+        for (int cardinality=1; cardinality <= 64; cardinality++) {
+            for (int k=0; k < runs; k++) {
+                test_random(random(cardinality));
+            }
+         }
     }
 
-    void test_random() {
+    void test_random(uint64_t v) {
         init_input();
-        uint64_t v = random64();
-        const size_t output_len = 64 - __builtin_popcountll(v);
         while (v) {
             const int k = __builtin_ctzll(v);
-            input[k] = ' ';
-
             v ^= (v & -v);
+
+            input[k] = ' ';
         }
 
-        compare(output_len);
+        compare();
     }
 
-    uint64_t random64() {
-        union {
-            uint64_t word;
-            uint8_t bytes[8];
-        } value;
 
-        for (int i=0; i < 8; i++) {
-            value.bytes[i] = rand() % 256;
+    uint64_t random(int cardinality) {
+        uint64_t v = 0;
+        while (__builtin_popcountll(v) != cardinality) {
+            v |= uint64_t(1) << (rand() % 64);
         }
 
-        return value.word;
+        return v;
     }
 
-    void compare(size_t output_len) {
 
-        remove_spaces__scalar(input, output_ref, size);
-        remove_spaces__avx512vbmi(input, output, size);
-        if (!output_prefixes_equal(output_len)) {
-            puts("FAILED");
-            dump(input, size);
-            dump(output_ref, output_len);
-            dump(output, output_len);
+    void compare() {
+
+        const char* ret_ref = remove_spaces__scalar    (input, output_ref, size);
+        const char* ret     = remove_spaces__avx512vbmi(input, output,     size);
+
+        const size_t len_ref = (ret_ref - output_ref);
+        const size_t len     = (ret - output);
+
+        if (len != len_ref || !output_prefixes_equal(len_ref)) {
+            printf("%s; len_ref=%lu, len=%lu\n", ansi::seq("FAILED", ansi::RED).c_str(), len_ref, len);
+            printf(" input: "); dump(input, size);
+            printf("   ref: "); dump(output_ref, len_ref);
+            printf("result: "); dump(output, len);
 
             throw TestFailed{};
         }
