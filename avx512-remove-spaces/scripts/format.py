@@ -72,7 +72,7 @@ def format_table(data):
     table = Table()
     table.add_header(["number of spaces",
                       ("scalar [cycles/byte]", 3),
-                      ("AVX512BW [cycles/byte]", 3),
+                      ("AVX512VBMI [cycles/byte]", 3),
                       "speedup (avg)"])
     table.add_header(["",
                       "avg (min)", "avg (max)", "best",
