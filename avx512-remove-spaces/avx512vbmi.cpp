@@ -36,6 +36,7 @@ char* remove_spaces__avx512vbmi(const char* src, char* dst, size_t n) {
                       | _mm512_cmpeq_epi8_mask(input, CR);
 
         if (mask) {
+            len = 64 - __builtin_popcountll(mask);
             mask = ~mask;
             __m512i indices = _mm512_set1_epi8(0);
             for (size_t index = 0; index < 6; index++) {
