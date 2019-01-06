@@ -75,15 +75,23 @@ private:
 
 
     void compare() {
+        compare("AVX512VBMI",          remove_spaces__avx512vbmi);
+        compare("AVX512VBMI (Travis)", remove_spaces__avx512vbmi__travis);
+        compare("AVX512VBMI (Zach)",   remove_spaces__avx512vbmi__zach);
+    }
 
-        const char* ret_ref = remove_spaces__scalar    (input, output_ref, size);
-        const char* ret     = remove_spaces__avx512vbmi(input, output,     size);
+
+    template <typename FUNCTION>
+    void compare(const char* name, FUNCTION vectorized_remove_spaces) {
+
+        const char* ret_ref = remove_spaces__scalar   (input, output_ref, size);
+        const char* ret     = vectorized_remove_spaces(input, output,     size);
 
         const size_t len_ref = (ret_ref - output_ref);
         const size_t len     = (ret - output);
 
         if (len != len_ref || !output_prefixes_equal(len_ref)) {
-            printf("%s; len_ref=%lu, len=%lu\n", ansi::seq("FAILED", ansi::RED).c_str(), len_ref, len);
+            printf("%s %s; len_ref=%lu, len=%lu\n", name, ansi::seq("FAILED", ansi::RED).c_str(), len_ref, len);
             printf(" input: "); dump(input, size);
             printf("   ref: "); dump(output_ref, len_ref);
             printf("result: "); dump(output, len);
