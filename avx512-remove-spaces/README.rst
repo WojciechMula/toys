@@ -1,1 +1,1 @@
-.. include:: results.png
+.. image:: results.png
