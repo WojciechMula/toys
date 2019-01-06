@@ -20,7 +20,7 @@ def main():
 
 def gnuplot_data(f, data):
     for cardinality in xrange(1, 64+1):
-        scalar, avx512 = data[cardinality]
+        scalar, avx512, avx512_travis = data[cardinality]
 
         scalar_min  = min(scalar.values)
         scalar_max  = max(scalar.values)
@@ -32,7 +32,12 @@ def gnuplot_data(f, data):
         avx512_avg  = (avx512_min + avx512_max) / 2
         avx512_best = avx512.best
 
-        f.write('%d %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f\n' % (
+        avx512_travis_min  = min(avx512_travis.values)
+        avx512_travis_max  = max(avx512_travis.values)
+        avx512_travis_avg  = (avx512_travis_min + avx512_travis_max) / 2
+        avx512_travis_best = avx512_travis.best
+
+        f.write('%d %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f\n' % (
             cardinality,
             scalar_best,
             scalar_avg,
@@ -42,6 +47,10 @@ def gnuplot_data(f, data):
             avx512_avg,
             avx512_min,
             avx512_max,
+            avx512_travis_best,
+            avx512_travis_avg,
+            avx512_travis_min,
+            avx512_travis_max,
         ))
 
 
@@ -67,10 +76,12 @@ set xrange [0:64]
 set xtics 4 
 set key left
 
-plot "%(data)s" using 1:3:4:5         with yerrorbars title "scalar"     ls 1 lc "magenta", \
-     "%(data)s" using ($1+0.3):7:8:9  with yerrorbars title "AVX512VBMI" ls 1 lc "blue", \
-     "%(data)s" using 1:2 with lines title "scalar (best)", \
-     "%(data)s" using 1:6 with lines title "AVX512VBMI (best)"
+plot "%(data)s" using 1:3:4:5            with yerrorbars title "scalar"     ls 1 lc "magenta", \
+     "%(data)s" using ($1+0.2):7:8:9     with yerrorbars title "AVX512VBMI" ls 1 lc "blue", \
+     "%(data)s" using ($1+0.4):11:12:13  with yerrorbars title "AVX512VBMI (Travis)" ls 1 lc "green", \
+     "%(data)s" using 1:2  with lines title "scalar (best)", \
+     "%(data)s" using 1:6  with lines title "AVX512VBMI (best)", \
+     "%(data)s" using 1:10 with lines title "AVX512VBMI (Travis) (best)"
 """
 
 if __name__ == '__main__':
