@@ -1,8 +1,8 @@
 .SUFFIXES:
 
-FLAGS=$(CXXFLAGS) -mavx512vbmi -Wall -Wextra -pedantic -std=c++11
+FLAGS=$(CXXFLAGS) -mavx512vbmi -Wall -Wextra -pedantic -std=c++11 -Wno-implicit-fallthrough
 
-DEPS=all.cpp scalar.cpp avx512vbmi.cpp application_base.cpp
+DEPS=all.cpp scalar.cpp avx512vbmi.cpp avx512vbmi_travis.cpp application_base.cpp
 
 ALL=unittest test benchmark speed
 
