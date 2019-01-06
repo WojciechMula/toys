@@ -17,7 +17,7 @@ char* remove_spaces__avx512vbmi(const char* src, char* dst, size_t n) {
         0xffff0000ffff0000,
         0xffffffff00000000,
     };
-    const __m512i bit_masks[6] = {
+    const __m512i index_bits[6] = {
         _mm512_set1_epi8(1),
         _mm512_set1_epi8(2),
         _mm512_set1_epi8(4),
@@ -40,7 +40,7 @@ char* remove_spaces__avx512vbmi(const char* src, char* dst, size_t n) {
             __m512i indices = _mm512_set1_epi8(0);
             for (size_t index = 0; index < 6; index++) {
                 uint64_t m = _pext_u64(index_masks[index], mask);
-                indices = _mm512_mask_add_epi8(indices, m, indices, bit_masks[index]);
+                indices = _mm512_mask_add_epi8(indices, m, indices, index_bits[index]);
             }
 
             output = _mm512_permutexvar_epi8(indices, input);
