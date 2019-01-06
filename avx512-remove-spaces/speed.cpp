@@ -52,6 +52,8 @@ int main(int argc, char* argv[1]) {
     size_t size = 64 * ((text.size() + 63) / 64);
     char* output = new char[text.size()];
 
-    measure("scalar",     remove_spaces__scalar,     text.data(), output, size);
-    measure("AVX512VBMI", remove_spaces__avx512vbmi, text.data(), output, size);
+    measure("scalar",               remove_spaces__scalar,              text.data(), output, size);
+    measure("AVX512VBMI",           remove_spaces__avx512vbmi,          text.data(), output, size);
+    measure("AVX512VBMI (Travis)",  remove_spaces__avx512vbmi__travis,  text.data(), output, size);
+    measure("AVX512VBMI (Zach)",    remove_spaces__avx512vbmi__zach,    text.data(), output, size);
 }
