@@ -28,6 +28,7 @@ def load(file):
     for c in xrange(0, 64 + 1):
         data[c] = (Measurements(),
                    Measurements(),
+                   Measurements(),
                    Measurements())
 
     cardinality = None
@@ -54,7 +55,7 @@ def load(file):
         elif name == 'AVX512VBMI (Travis)':
             meas = data[cardinality][2]
         elif name == 'AVX512VBMI (Zach)':
-            meas = data[cardinality][2]
+            meas = data[cardinality][3]
         else:
             assert False
 

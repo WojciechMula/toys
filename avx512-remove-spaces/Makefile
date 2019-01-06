@@ -32,11 +32,15 @@ run_test: test tom-sawyer.txt
 	@cmp scalar.out avx512.out
 
 # Cannon Lake plot
-cnl.data cnl.gnuplot: scripts/gnuplot.py results/cnl.txt
+cnl.data cnl.gnuplot: scripts/gnuplot.py scripts/parse.py results/cnl.txt
 	python scripts/gnuplot.py results/cnl.txt cnl.data cnl.gnuplot cnl.png "Cannon Lake"
 
 cnl.png: cnl.data cnl.gnuplot
 	gnuplot cnl.gnuplot
+
+cnl.rst: scripts/format.py scripts/parse.py results/cnl.txt
+	python scripts/format.py results/cnl.txt > /tmp/cnl.rst
+	mv /tmp/cnl.rst $@
 
 clean:
 	$(RM) $(ALL)
