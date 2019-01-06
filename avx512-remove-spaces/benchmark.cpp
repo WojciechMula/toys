@@ -35,6 +35,7 @@ private:
         BEST_TIME(/**/, remove_spaces__scalar(input, output, 64),     "scalar    ", repeat, size);
         BEST_TIME(/**/, remove_spaces__avx512vbmi(input, output, 64), "AVX512VBMI", repeat, size);
         BEST_TIME(/**/, remove_spaces__avx512vbmi__travis(input, output, 64), "AVX512VBMI (Travis)", repeat, size);
+        BEST_TIME(/**/, remove_spaces__avx512vbmi__zach(input, output, 64), "AVX512VBMI (Zach)", repeat, size);
     }
 };
 
