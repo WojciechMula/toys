@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <cassert>
 
-char* remove_spaces__avx512vbmi(const char* src, char* dst, size_t n) {
+char* remove_spaces__avx512vbmi__zach(const char* src, char* dst, size_t n) {
     assert(n % 64 == 0);
 
     const __m512i NL     = _mm512_set1_epi8('\n');
