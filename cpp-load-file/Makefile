@@ -11,5 +11,12 @@ test: test.cpp
 $(FILES):
 	dd if=/dev/zero of=$@ bs=$@ count=1
 
+time.txt: test $(FILES)
+	./test $(FILES) > /tmp/time.txt
+	mv /tmp/time.txt $@	
+
+time.rst: scripts/format.py time.txt
+	python $< time.txt time.rst
+
 clean:
 	$(RM) test $(FILES)
