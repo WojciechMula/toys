@@ -1,0 +1,45 @@
+tom-sawyer.txt
+scalar     : ..........        978 us
+AVX512VBMI : ..........        256 us
+AVX512VBMI (Travis): ..........        267 us
+AVX512VBMI (Zach): ..........         39 us
+despacer_bitmap (aqrit): ..........        402 us
+despace_block_mux (aqrit): ..........        495 us
+despace_ssse3_cumsum (aqrit): ..........        142 us
+despace_avx2_vpermd (aqrit): ..........         52 us
+moby-dick.txt
+scalar     : ..........       2881 us
+AVX512VBMI : ..........        729 us
+AVX512VBMI (Travis): ..........        742 us
+AVX512VBMI (Zach): ..........        118 us
+despacer_bitmap (aqrit): ..........       1202 us
+despace_block_mux (aqrit): ..........       1446 us
+despace_ssse3_cumsum (aqrit): ..........        424 us
+despace_avx2_vpermd (aqrit): ..........        156 us
+sherlock.txt
+scalar     : ..........       1402 us
+AVX512VBMI : ..........        368 us
+AVX512VBMI (Travis): ..........        376 us
+AVX512VBMI (Zach): ..........         55 us
+despacer_bitmap (aqrit): ..........        559 us
+despace_block_mux (aqrit): ..........        722 us
+despace_ssse3_cumsum (aqrit): ..........        198 us
+despace_avx2_vpermd (aqrit): ..........         72 us
+RealisticTabularDataSets/census-income/census-income.data
+scalar     : ..........     123950 us
+AVX512VBMI : ..........      45733 us
+AVX512VBMI (Travis): ..........      46847 us
+AVX512VBMI (Zach): ..........      13690 us
+despacer_bitmap (aqrit): ..........      98053 us
+despace_block_mux (aqrit): ..........      83003 us
+despace_ssse3_cumsum (aqrit): ..........      34737 us
+despace_avx2_vpermd (aqrit): ..........      14574 us
+RealisticTabularDataSets/weather/weather_sept_85.csv
+scalar     : ..........      74037 us
+AVX512VBMI : ..........      44043 us
+AVX512VBMI (Travis): ..........      44637 us
+AVX512VBMI (Zach): ..........       9866 us
+despacer_bitmap (aqrit): ..........      70963 us
+despace_block_mux (aqrit): ..........      66368 us
+despace_ssse3_cumsum (aqrit): ..........      25113 us
+despace_avx2_vpermd (aqrit): ..........      10523 us

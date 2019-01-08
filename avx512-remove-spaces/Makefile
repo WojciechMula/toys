@@ -42,5 +42,9 @@ cnl.rst: scripts/format.py scripts/parse.py results/cnl.txt
 	python scripts/format.py results/cnl.txt > /tmp/cnl.rst
 	mv /tmp/cnl.rst $@
 
+cnl-speed.rst: scripts/format_speed.py scripts/parse_speed.py results/cnl-speed.txt
+	python scripts/format_speed.py results/cnl-speed.txt > /tmp/cnl-speed.rst
+	mv /tmp/cnl-speed.rst $@
+
 clean:
 	$(RM) $(ALL)
