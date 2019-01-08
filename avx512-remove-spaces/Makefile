@@ -2,7 +2,7 @@
 
 FLAGS=$(CXXFLAGS) -mavx512vbmi -mbmi2 -Wall -Wextra -pedantic -std=c++11 -Wno-implicit-fallthrough
 
-DEPS=all.cpp scalar.cpp avx512vbmi*.cpp application_base.cpp
+DEPS=all.cpp scalar.cpp avx512vbmi*.cpp aqrit.cpp application_base.cpp
 
 ALL=unittest test benchmark speed
 
