@@ -75,9 +75,13 @@ private:
 
 
     void compare() {
-        compare("AVX512VBMI",          remove_spaces__avx512vbmi);
-        compare("AVX512VBMI (Travis)", remove_spaces__avx512vbmi__travis);
-        compare("AVX512VBMI (Zach)",   remove_spaces__avx512vbmi__zach);
+        compare("AVX512VBMI",                   remove_spaces__avx512vbmi);
+        compare("AVX512VBMI (Travis)",          remove_spaces__avx512vbmi__travis);
+        compare("AVX512VBMI (Zach)",            remove_spaces__avx512vbmi__zach);
+        compare("despacer_bitmap (aqrit)",      despacer_bitmap);
+        compare("despace_block_mux (aqrit)",    despace_block_mux);
+        compare("despace_ssse3_cumsum (aqrit)", despace_ssse3_cumsum);
+        compare("despace_avx2_vpermd (aqrit)",  despace_avx2_vpermd);
     }
 
 

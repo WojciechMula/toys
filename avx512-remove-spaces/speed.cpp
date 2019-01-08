@@ -52,8 +52,15 @@ int main(int argc, char* argv[1]) {
     size_t size = 64 * ((text.size() + 63) / 64);
     char* output = new char[text.size()];
 
-    measure("scalar",               remove_spaces__scalar,              text.data(), output, size);
-    measure("AVX512VBMI",           remove_spaces__avx512vbmi,          text.data(), output, size);
-    measure("AVX512VBMI (Travis)",  remove_spaces__avx512vbmi__travis,  text.data(), output, size);
-    measure("AVX512VBMI (Zach)",    remove_spaces__avx512vbmi__zach,    text.data(), output, size);
+#define RUN(__name__, __procedure__) \
+    measure(__name__, __procedure__, text.data(), output, size);
+
+    RUN("scalar",                       remove_spaces__scalar);
+    RUN("AVX512VBMI",                   remove_spaces__avx512vbmi);
+    RUN("AVX512VBMI (Travis)",          remove_spaces__avx512vbmi__travis);
+    RUN("AVX512VBMI (Zach)",            remove_spaces__avx512vbmi__zach);
+    RUN("despacer_bitmap (aqrit)",      despacer_bitmap);
+    RUN("despace_block_mux (aqrit)",    despace_block_mux);
+    RUN("despace_ssse3_cumsum (aqrit)", despace_ssse3_cumsum);
+    RUN("despace_avx2_vpermd (aqrit)",  despace_avx2_vpermd);
 }

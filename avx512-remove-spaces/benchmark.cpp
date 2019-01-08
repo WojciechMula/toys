@@ -32,10 +32,18 @@ private:
 
     void compare() {
         const size_t repeat = 1000;
-        BEST_TIME(/**/, remove_spaces__scalar(input, output, 64),     "scalar    ", repeat, size);
-        BEST_TIME(/**/, remove_spaces__avx512vbmi(input, output, 64), "AVX512VBMI", repeat, size);
-        BEST_TIME(/**/, remove_spaces__avx512vbmi__travis(input, output, 64), "AVX512VBMI (Travis)", repeat, size);
-        BEST_TIME(/**/, remove_spaces__avx512vbmi__zach(input, output, 64), "AVX512VBMI (Zach)", repeat, size);
+
+#define RUN(__name__, __procedure__) \
+        BEST_TIME(/**/, __procedure__(input, output, 64), __name__, repeat, size);
+
+        RUN("scalar",                       remove_spaces__scalar);
+        RUN("AVX512VBMI",                   remove_spaces__avx512vbmi);
+        RUN("AVX512VBMI (Travis)",          remove_spaces__avx512vbmi__travis);
+        RUN("AVX512VBMI (Zach)",            remove_spaces__avx512vbmi__zach);
+        RUN("despacer_bitmap (aqrit)",      despacer_bitmap);
+        RUN("despace_block_mux (aqrit)",    despace_block_mux);
+        RUN("despace_ssse3_cumsum (aqrit)", despace_ssse3_cumsum);
+        RUN("despace_avx2_vpermd (aqrit)",  despace_avx2_vpermd);
     }
 };
 
