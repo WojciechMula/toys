@@ -14,36 +14,28 @@ def main():
 
 def format_table(data):
     table = Table()
-    table.add_header(["number of spaces",
-                      ("scalar [cycles/byte]", 3),
-                      ("AVX512VBMI [cycles/byte]", 3),
-                      ("AVX512VBMI (Travis) [cycles/byte]", 3),
-                      ("AVX512VBMI (Zach) [cycles/byte]", 3)])
-    table.add_header(["",
-                      "avg (min)", "avg (max)", "best",
-                      "avg (min)", "avg (max)", "best",
-                      "avg (min)", "avg (max)", "best",
-                      "avg (min)", "avg (max)", "best",
-                     ])
-    
-    for cardinality in xrange(1, 64+1):
-        scalar, avx512, avx512_travis, avx512_zach = data[cardinality]
+    keys  = data[1].keys()
 
-        table.add_row([
-            '%d' % cardinality,
-            '%0.3f' % min(scalar.values),
-            '%0.3f' % max(scalar.values),
-            '%0.3f' % scalar.best,
-            '%0.3f' % min(avx512.values),
-            '%0.3f' % max(avx512.values),
-            '%0.3f' % avx512.best,
-            '%0.3f' % min(avx512_travis.values),
-            '%0.3f' % max(avx512_travis.values),
-            '%0.3f' % avx512_travis.best,
-            '%0.3f' % min(avx512_zach.values),
-            '%0.3f' % max(avx512_zach.values),
-            '%0.3f' % avx512_zach.best,
-        ])
+    # prepare header
+    header1 = ["number of spaces"]
+    header2 = [""]
+    for key in keys:
+        header1.append(("%s [cycles/byte]" % key, 3))
+        header2.extend(["avg (min)", "avg (max)", "best"])
+
+    table.add_header(header1)
+    table.add_header(header2)
+
+    # add data
+    for cardinality in xrange(1, 64+1):
+        row = ['%d' % cardinality]
+        measurements = data[cardinality]
+        for meas in measurements.values():
+            row.append('%0.3f' % min(meas.values))
+            row.append('%0.3f' % max(meas.values))
+            row.append('%0.3f' % meas.best)
+
+        table.add_row(row)
 
     return table
 

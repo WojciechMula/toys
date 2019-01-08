@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 class Measurements(object):
     def __init__(self):
         self.values = []
@@ -26,13 +28,12 @@ class Measurements(object):
 def load(file):
     data = {}
     for c in xrange(0, 64 + 1):
-        data[c] = {}
+        data[c] = OrderedDict()
 
     cardinality = None
     for line in file:
         if line.startswith('rdtsc_overhead'):
             continue
-
 
         F = line.split(':')
 
