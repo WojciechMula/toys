@@ -11,7 +11,7 @@
 */
 
 // 3x faster on unpredicatble data vs naive version
-void* despacer_bitmap (char* dst, const char* src, size_t count)
+char* despacer_bitmap (const char* src, char* dst, size_t count)
 {
     const uint64_t bitmap = UINT64_C(0xFFFFFFFEFFFFC1FF);
     if (count != 0) {
@@ -27,10 +27,10 @@ void* despacer_bitmap (char* dst, const char* src, size_t count)
 
 
 // SWAR bit-twiddling for sparse whitespace only?
-size_t despace_block_mux( void* dst_void, void* src_void, size_t length )
+char* despace_block_mux(const char* src_ptr, char* dst_ptr, size_t length )
 {
-	uint64_t* src = (uint64_t*)src_void;
-	uint8_t* dst = (uint8_t*)dst_void;
+	uint64_t* src = (uint64_t*)src_ptr;
+	uint8_t* dst = (uint8_t*)dst_ptr;
 
 	const uint64_t mask_09 = 0x0909090909090909;
 	const uint64_t mask_0A = 0x0A0A0A0A0A0A0A0A;
@@ -64,17 +64,17 @@ size_t despace_block_mux( void* dst_void, void* src_void, size_t length )
 		*((uint64_t*)dst) = asrc;
 		dst += (8 - ws_cnt);
 	}
-	dst += despace_branchless(dst, src, length);
-	return (size_t)(dst - ((uint8_t*)dst_void));
+
+	return despacer_bitmap((const char*)src, (char*)dst, length);
 }
 
 
 // no lookup table
 // don't know why I was despacing qwords and not owords...
-size_t despace_ssse3_cumsum( void* dst_void, void* src_void, size_t length )
+char* despace_ssse3_cumsum(const char* src_ptr, char* dst_ptr, size_t length)
 {
-	uint8_t* src = (uint8_t*)src_void;
-	uint8_t* dst = (uint8_t*)dst_void;
+	uint8_t* src = (uint8_t*)src_ptr;
+	uint8_t* dst = (uint8_t*)dst_ptr;
 
 	const __m128i is_3or7 = _mm_setr_epi8(
 		0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
@@ -134,17 +134,16 @@ size_t despace_ssse3_cumsum( void* dst_void, void* src_void, size_t length )
 		_mm_storel_epi64((__m128i*)dst, _mm_unpackhi_epi64(v, v));
 		dst += 8 - cnt1;
 	}
-	dst += despace_branchless(dst, src, length & 15);
-	return (size_t)(dst - ((uint8_t*)dst_void));
+	return despacer_bitmap((const char*)src, (char*)dst, length & 15);
 }
 
 
 // no lookup tables
 // probably needs improvment...
-size_t despace_avx2_vpermd( void* dst_void, void* src_void, size_t length )
+char* despace_avx2_vpermd(const char* src_ptr, char* dst_ptr, size_t length )
 {
-	uint8_t* src = (uint8_t*)src_void;
-	uint8_t* dst = (uint8_t*)dst_void;
+	uint8_t* src = (uint8_t*)src_ptr;
+	uint8_t* dst = (uint8_t*)dst_ptr;
 
 	const __m256i mask_20  = _mm256_set1_epi8( 0x20 );
 	const __m256i mask_70  = _mm256_set1_epi8( 0x70 );
@@ -236,6 +235,5 @@ size_t despace_avx2_vpermd( void* dst_void, void* src_void, size_t length )
 		_mm_storeu_si128((__m128i*)&dst[s0], _mm256_extracti128_si256(r0,1));
 		dst += s1;
 	}
-	dst += despace_branchless(dst, src, length & 31);
-	return (size_t)(dst - ((uint8_t*)dst_void));
+	return despacer_bitmap((const char*)src, (char*)dst, length & 31);
 }
