@@ -26,10 +26,7 @@ class Measurements(object):
 def load(file):
     data = {}
     for c in xrange(0, 64 + 1):
-        data[c] = (Measurements(),
-                   Measurements(),
-                   Measurements(),
-                   Measurements())
+        data[c] = {}
 
     cardinality = None
     for line in file:
@@ -48,20 +45,14 @@ def load(file):
         assert cardinality is not None
         name = F[0].strip()
         F = F[1].split()
-        if name == 'scalar':
-            meas = data[cardinality][0]
-        elif name == 'AVX512VBMI':
-            meas = data[cardinality][1]
-        elif name == 'AVX512VBMI (Travis)':
-            meas = data[cardinality][2]
-        elif name == 'AVX512VBMI (Zach)':
-            meas = data[cardinality][3]
-        else:
-            assert False
+
+        if name not in data[cardinality]:
+            data[cardinality][name] = Measurements()
 
         best = float(F[0])
         avg  = float(F[3])
 
+        meas = data[cardinality][name]
         meas.set_best(best)
         meas.add_value(avg)
 
