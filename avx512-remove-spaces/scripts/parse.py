@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from procedure_names import display_name
 
 class Measurements(object):
     def __init__(self):
@@ -44,7 +45,10 @@ def load(file):
             continue
 
         assert cardinality is not None
-        name = F[0].strip()
+        name = display_name[F[0].strip()]
+        if name is None:
+            continue
+
         F = F[1].split()
 
         if name not in data[cardinality]:
