@@ -9,6 +9,13 @@
 #include <cstdio>
 #include <cstdlib>
 
+// Linux stuff
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+
 std::string load1(const std::string& path) {
     std::ifstream file(path);
     return std::string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -52,6 +59,25 @@ std::string load3(const std::string& path) {
     return res;
 }
 
+std::string load4(const std::string& path) {
+
+    int fd = open(path.c_str(), O_RDONLY);
+    if (fd < 0)
+        return "";
+    
+    struct stat sb;
+    fstat(fd, &sb);
+
+    std::string res;
+    res.resize(sb.st_size);
+
+    // C++17 defines .data() which returns a non-const pointer
+    read(fd, const_cast<char*>(res.data()), sb.st_size);
+    close(fd);
+
+    return res;
+}
+
 // --------------------------------------------------------------------------------
 
 class Test {
@@ -66,6 +92,7 @@ public:
         measure("C++ istreambuf_iterator",  load1);
         measure("C++ stream::rdbuf",        load2);
         measure("libc fread",               load3);
+        measure("POSIX read",               load4);
     }
 
 private:

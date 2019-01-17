@@ -27,7 +27,7 @@ def load(file):
 
         assert size is not None
         if size not in data:
-            data[size] = [None, None, None]
+            data[size] = [None, None, None, None]
 
         F = line.split(': .', 2)
         name = F[0].strip()
@@ -38,6 +38,8 @@ def load(file):
             index = 1
         elif name == "libc fread":
             index = 2
+        elif name == "POSIX read":
+            index = 3
         else:
             print "'%s'" % name
             assert False
@@ -52,16 +54,19 @@ def format_table(data):
     table.add_header(["size [MB]",
                       "istreambuf_iterator",
                       ("stream::rdbuf", 2),
-                      ("LibC fread", 2)])
+                      ("LibC fread", 2),
+                      ("POSIX read", 2)])
     table.add_header(["",
                       "time [us]",
+                      "time [us]", "speed-up",
                       "time [us]", "speed-up",
                       "time [us]", "speed-up"])
 
     for size in sorted(data):
-        iterator_time, rdbuf_time, fread_time = data[size]       
+        iterator_time, rdbuf_time, fread_time, read_time = data[size]
         rdbuf_speedup = float(iterator_time) / rdbuf_time;
         fread_speedup = float(iterator_time) / fread_time;
+        read_speedup  = float(iterator_time) / read_time;
 
         table.add_row([
             '%d' % size,
@@ -70,6 +75,8 @@ def format_table(data):
             '%0.2f' % rdbuf_speedup,
             '%d' % fread_time,
             '%0.2f' % fread_speedup,
+            '%d' % read_time,
+            '%0.2f' % read_speedup,
         ])
 
 
