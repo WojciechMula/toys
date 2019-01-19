@@ -21,6 +21,7 @@ public:
             case1();
             case2();
             case3();
+            case4();
 
             puts("All OK");
             return true;
@@ -37,11 +38,16 @@ private:
     }
 
     void case2() {
-        memset(array, byte, size);
+        memset(array, -1, size);
         test();
     }
 
     void case3() {
+        memset(array, byte, size);
+        test();
+    }
+
+    void case4() {
         srand(0);
         memset(array, 0, size);
         for (size_t i=0; i < size; i++) {
