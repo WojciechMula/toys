@@ -70,6 +70,7 @@ private:
 #endif
 #ifdef HAVE_AVX512BW
         test("AVX512", avx512bw_count_bytes, reference);
+        test("AVX512 (unrolled)", avx512bw_count_bytes_unrolled, reference);
 #endif
     }
 
