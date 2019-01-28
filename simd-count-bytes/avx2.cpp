@@ -14,11 +14,11 @@ uint64_t avx2_count_byte(const uint8_t* data, size_t size, uint8_t byte) {
     __m256i local_sum;
 
     // 1. blocks of 256 registers
-    while (ptr + 256*32 < end) {
+    while (ptr + 255*32 < end) {
         local_sum = _mm256_setzero_si256();
 
         // update 32 x 8-bit counter
-        for (int i=0; i < 256; i++, ptr += 32) {
+        for (int i=0; i < 255; i++, ptr += 32) {
             const __m256i in = _mm256_loadu_si256((const __m256i*)ptr);
             const __m256i eq = _mm256_cmpeq_epi8(in, v); // 0 or -1
 

@@ -6,7 +6,7 @@
 
 class UnitTests {
 
-    static const size_t size = 1024 * 8;
+    static const size_t size = 1024 * 32;
     uint8_t array[size];
     uint8_t byte;
 
@@ -66,7 +66,7 @@ private:
 #endif
 #ifdef HAVE_AVX2
         test("AVX2", avx2_count_byte, reference);
-        test("AVX2 (popcount)", avx2_count_byte_popcount, reference);
+        //test("AVX2 (popcount)", avx2_count_byte_popcount, reference);
 #endif
 #ifdef HAVE_AVX512BW
         test("AVX512", avx512bw_count_bytes, reference);
