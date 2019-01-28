@@ -75,6 +75,14 @@ avx512bw_avx512bw.o: avx512bw.cpp avx512bw.h
 
 # --------------------------------------------------
 
+RST=skylake.rst skylake-x.rst cannonlake.rst
+
+%.rst: results/%.txt scripts/*.py
+	python scripts/format.py $< > /dev/shm/$@
+	mv /dev/shm/$@ $@
+
+rst: $(RST)
+
 clean:
 	$(RM) $(ALL) $(OBJ)
 
