@@ -62,9 +62,11 @@ private:
         const uint64_t reference = scalar_count_bytes((const uint8_t*)array, size, byte);
 #ifdef HAVE_SSE
         test("SSE", sse_count_byte, reference);
-        test("SSE (popcnt)", sse_count_byte_popcount, reference);
+        test("SSE (popcount)", sse_count_byte_popcount, reference);
 #endif
 #ifdef HAVE_AVX2
+        test("AVX2", avx2_count_byte, reference);
+        test("AVX2 (popcount)", avx2_count_byte_popcount, reference);
 #endif
 #ifdef HAVE_AVX512BW
         test("AVX512", avx512bw_count_bytes, reference);

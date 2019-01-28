@@ -25,5 +25,11 @@ example1.s: example1.cpp
 example2.s: example2.cpp
 	$(CXX) $(FLAGS) $< -S
 
+example1-avx.s: example1-avx.cpp
+	$(CXX) $(FLAGS) $< -S
+
+example2-avx.s: example2-avx.cpp
+	$(CXX) $(FLAGS) $< -S
+
 clean:
 	$(RM) $(ALL)

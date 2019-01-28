@@ -8,7 +8,7 @@ int code_block(int x) {
 
     static void* labels[8] = {
         &&case_0, &&case_3, &&case_4, &&case_7, &&case_8, &&case_11,
-        &&end, &&end
+        &&case_default, &&case_default
     };
 
     const __m256i vec = _mm256_set1_epi32(x);
@@ -50,6 +50,9 @@ case_11:
     puts("five");
     result = 1024;
     goto end;
+
+case_default:
+    result = -1;
 
 end:
     return result;
