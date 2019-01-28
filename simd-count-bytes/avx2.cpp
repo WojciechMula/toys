@@ -46,7 +46,7 @@ uint64_t avx2_count_byte(const uint8_t* data, size_t size, uint8_t byte) {
     global_sum = _mm256_add_epi64(global_sum, tmp);
 
 
-    // 3. process tail < 16 bytes
+    // 3. process tail < 32 bytes
     uint64_t result = _mm256_extract_epi64(global_sum, 0)
                     + _mm256_extract_epi64(global_sum, 1)
                     + _mm256_extract_epi64(global_sum, 2)
@@ -67,14 +67,14 @@ uint64_t avx2_count_byte_popcount(const uint8_t* data, size_t size, uint8_t byte
 
     // 1. blocks of 8 registers
     while (ptr + 8*32 < end) {
-        const __m256i eq0 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 0*16)));
-        const __m256i eq1 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 1*16)));
-        const __m256i eq2 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 2*16)));
-        const __m256i eq3 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 3*16)));
-        const __m256i eq4 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 4*16)));
-        const __m256i eq5 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 5*16)));
-        const __m256i eq6 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 6*16)));
-        const __m256i eq7 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 7*16)));
+        const __m256i eq0 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 0*32)));
+        const __m256i eq1 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 1*32)));
+        const __m256i eq2 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 2*32)));
+        const __m256i eq3 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 3*32)));
+        const __m256i eq4 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 4*32)));
+        const __m256i eq5 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 5*32)));
+        const __m256i eq6 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 6*32)));
+        const __m256i eq7 = _mm256_cmpeq_epi8(v, _mm256_loadu_si256((const __m256i*)(ptr + 7*32)));
 
         const __m256i eq0bit = _mm256_and_si256(eq0, _mm256_set1_epi8(0x01));
         const __m256i eq1bit = _mm256_and_si256(eq1, _mm256_set1_epi8(0x02));
