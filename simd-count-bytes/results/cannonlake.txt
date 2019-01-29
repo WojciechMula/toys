@@ -3,7 +3,7 @@ scalar                        	:     0.280 cycle/op (best)    0.288 cycle/op (av
 SSE                           	:     0.093 cycle/op (best)    0.099 cycle/op (avg)
 SSE (popcount)                	:     0.085 cycle/op (best)    0.091 cycle/op (avg)
 AVX2                          	:     0.070 cycle/op (best)    0.073 cycle/op (avg)
-AVX2 (popccount)              	:     0.081 cycle/op (best)    0.084 cycle/op (avg)
+AVX2 (popcount)              	:     0.081 cycle/op (best)    0.084 cycle/op (avg)
 AVX512BW                      	:     0.065 cycle/op (best)    0.070 cycle/op (avg)
 AVX512BW (unrolled)           	:     0.042 cycle/op (best)    0.049 cycle/op (avg)
 rdtsc_overhead set to 20
@@ -11,7 +11,7 @@ scalar                        	:     0.281 cycle/op (best)    0.288 cycle/op (av
 SSE                           	:     0.093 cycle/op (best)    0.100 cycle/op (avg)
 SSE (popcount)                	:     0.087 cycle/op (best)    0.090 cycle/op (avg)
 AVX2                          	:     0.070 cycle/op (best)    0.074 cycle/op (avg)
-AVX2 (popccount)              	:     0.082 cycle/op (best)    0.085 cycle/op (avg)
+AVX2 (popcount)              	:     0.082 cycle/op (best)    0.085 cycle/op (avg)
 AVX512BW                      	:     0.065 cycle/op (best)    0.069 cycle/op (avg)
 AVX512BW (unrolled)           	:     0.042 cycle/op (best)    0.045 cycle/op (avg)
 rdtsc_overhead set to 20
@@ -19,7 +19,7 @@ scalar                        	:     0.281 cycle/op (best)    0.287 cycle/op (av
 SSE                           	:     0.094 cycle/op (best)    0.098 cycle/op (avg)
 SSE (popcount)                	:     0.087 cycle/op (best)    0.091 cycle/op (avg)
 AVX2                          	:     0.071 cycle/op (best)    0.073 cycle/op (avg)
-AVX2 (popccount)              	:     0.082 cycle/op (best)    0.084 cycle/op (avg)
+AVX2 (popcount)              	:     0.082 cycle/op (best)    0.084 cycle/op (avg)
 AVX512BW                      	:     0.065 cycle/op (best)    0.070 cycle/op (avg)
 AVX512BW (unrolled)           	:     0.046 cycle/op (best)    0.050 cycle/op (avg)
 

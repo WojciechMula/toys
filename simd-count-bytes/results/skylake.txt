@@ -3,17 +3,17 @@ scalar                        	:     0.610 cycle/op (best)    0.613 cycle/op (av
 SSE                           	:     0.104 cycle/op (best)    0.107 cycle/op (avg)
 SSE (popcount)                	:     0.098 cycle/op (best)    0.100 cycle/op (avg)
 AVX2                          	:     0.075 cycle/op (best)    0.077 cycle/op (avg)
-AVX2 (popccount)              	:     0.104 cycle/op (best)    0.107 cycle/op (avg)
+AVX2 (popcount)              	:     0.104 cycle/op (best)    0.107 cycle/op (avg)
 rdtsc_overhead set to 24
 scalar                        	:     0.611 cycle/op (best)    0.614 cycle/op (avg)
 SSE                           	:     0.106 cycle/op (best)    0.108 cycle/op (avg)
 SSE (popcount)                	:     0.098 cycle/op (best)    0.100 cycle/op (avg)
 AVX2                          	:     0.076 cycle/op (best)    0.077 cycle/op (avg)
-AVX2 (popccount)              	:     0.105 cycle/op (best)    0.107 cycle/op (avg)
+AVX2 (popcount)              	:     0.105 cycle/op (best)    0.107 cycle/op (avg)
 rdtsc_overhead set to 26
 scalar                        	:     0.610 cycle/op (best)    0.613 cycle/op (avg)
 SSE                           	:     0.104 cycle/op (best)    0.107 cycle/op (avg)
 SSE (popcount)                	:     0.098 cycle/op (best)    0.100 cycle/op (avg)
 AVX2                          	:     0.076 cycle/op (best)    0.078 cycle/op (avg)
-AVX2 (popccount)              	:     0.104 cycle/op (best)    0.107 cycle/op (avg)
+AVX2 (popcount)              	:     0.104 cycle/op (best)    0.107 cycle/op (avg)
 

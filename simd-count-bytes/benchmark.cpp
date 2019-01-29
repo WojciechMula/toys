@@ -23,7 +23,7 @@ public:
 #endif
 #ifdef HAVE_AVX2
         RUN("AVX2",                 avx2_count_byte);
-        RUN("AVX2 (popccount)",     avx2_count_byte_popcount);
+        RUN("AVX2 (popcount)",      avx2_count_byte_popcount);
 #endif
 #ifdef HAVE_AVX512BW
         RUN("AVX512BW",             avx512bw_count_bytes);

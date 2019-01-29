@@ -3,6 +3,6 @@ scalar                        	:     0.446 cycle/op (best)    0.452 cycle/op (av
 SSE                           	:     0.115 cycle/op (best)    0.118 cycle/op (avg)
 SSE (popcount)                	:     0.111 cycle/op (best)    0.113 cycle/op (avg)
 AVX2                          	:     0.090 cycle/op (best)    0.094 cycle/op (avg)
-AVX2 (popccount)              	:     0.107 cycle/op (best)    0.111 cycle/op (avg)
+AVX2 (popcount)              	:     0.107 cycle/op (best)    0.111 cycle/op (avg)
 AVX512BW                      	:     0.062 cycle/op (best)    0.072 cycle/op (avg)
 AVX512BW (unrolled)           	:     0.049 cycle/op (best)    0.055 cycle/op (avg)
