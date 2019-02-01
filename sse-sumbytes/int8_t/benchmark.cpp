@@ -5,7 +5,7 @@
 #include "all.h"
 
 class Benchmark {
-    
+
     std::vector<int8_t> input;
     size_t result;
 
@@ -25,6 +25,7 @@ public:
         test("AVX2 (v2)",                avx2_sumsignedbytes_variant2);
         test("AVX2 (sadbw)",             avx2_sadbw_sumsignedbytes);
         test("AVX2 (sadbw, unrolled)",   avx2_sadbw_unrolled4_sumsignedbytes);
+        test("AVX2 (maddubs)",           avx2_maddubs_sumsignedbytes);
 #endif
     }
 
