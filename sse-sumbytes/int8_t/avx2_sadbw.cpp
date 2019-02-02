@@ -20,7 +20,7 @@ int32_t avx2_sadbw_sumsignedbytes(int8_t* array, size_t size) {
 
         // sum just negative numbers
         const __m256i t1 = _mm256_sad_epu8(_mm256_and_si256(m, va), zero);
-        
+
         positive = _mm256_add_epi32(positive, t0);
         negative = _mm256_sub_epi32(negative, t1);
     }
@@ -92,4 +92,25 @@ int32_t avx2_sadbw_unrolled4_sumsignedbytes(int8_t* array, size_t size) {
            int32_t(_mm256_extract_epi32(accumulator, 2)) +
            int32_t(_mm256_extract_epi32(accumulator, 4)) +
            int32_t(_mm256_extract_epi32(accumulator, 6));
+}
+
+int32_t avx2_sadbw_variant_sumsignedbytes(int8_t* array, size_t size) {
+
+    const __m256i zero   = _mm256_setzero_si256();
+    const __m256i addend = _mm256_set1_epi8(-128);
+    __m256i accumulator = zero;
+
+    for (size_t i=0; i < size; i += 32) {
+        const __m256i v  = _mm256_loadu_si256((__m256i*)(array + i));
+        const __m256i t0  = _mm256_xor_si256(v, addend);
+        const __m256i t1 = _mm256_sad_epu8(t0, zero);
+
+        accumulator = _mm256_add_epi32(accumulator, t1);
+    }
+
+    return int32_t(_mm256_extract_epi32(accumulator, 0)) +
+           int32_t(_mm256_extract_epi32(accumulator, 2)) +
+           int32_t(_mm256_extract_epi32(accumulator, 4)) +
+           int32_t(_mm256_extract_epi32(accumulator, 6)) -
+           128 * int32_t(size);
 }
