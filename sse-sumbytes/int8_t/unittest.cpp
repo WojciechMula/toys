@@ -11,7 +11,7 @@ class UnitTest {
 
 public:
     UnitTest() : failed(false) {}
-    
+
     bool run() {
 
         puts("Fill array with 0x00");
@@ -42,6 +42,8 @@ private:
         test("AVX2 (v2)",                avx2_sumsignedbytes_variant2);
         test("AVX2 (sadbw)",             avx2_sadbw_sumsignedbytes);
         test("AVX2 (sadbw, unrolled)",   avx2_sadbw_unrolled4_sumsignedbytes);
+        test("AVX2 (sadbw, variant)",    avx2_sadbw_variant_sumsignedbytes);
+        test("AVX2 (maddubs)",           avx2_maddubs_sumsignedbytes);
 #endif
     }
 
