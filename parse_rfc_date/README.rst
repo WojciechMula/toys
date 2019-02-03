@@ -88,4 +88,12 @@ Performance comparison on Core i5
     SSE                             :    33.979 cycle/op (best)   34.977 cycle/op (avg)
 
 
+Performance comparison on Skylake
+--------------------------------------------------------------------------------
+
+::
+
+    scalar                        	:    34.330 cycle/op (best)   35.720 cycle/op (avg)
+    SSE                           	:    18.480 cycle/op (best)   18.765 cycle/op (avg)
+    SSE (Kendall)                 	:    23.203 cycle/op (best)   23.293 cycle/op (avg)
 
