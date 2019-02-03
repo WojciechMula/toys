@@ -12,6 +12,7 @@ OBJ=scalar.o\
 
 OBJ_AVX2=avx2.o\
          avx2_sadbw.o\
+         avx2_madd.o\
          scalar_avx2.o\
          sse_avx2.o\
          sse_sadbw_avx2.o
@@ -30,16 +31,16 @@ avx2: $(EXE_AVX2)
 
 ################################################################################
 
-unittest: unittest.cpp $(OBJ) 
+unittest: unittest.cpp $(OBJ)
 	$(CXX) $(FLAGS) $^ -o $@
 
-benchmark: benchmark.cpp $(OBJ) 
+benchmark: benchmark.cpp $(OBJ)
 	$(CXX) $(FLAGS) $^ -o $@
 
-unittest_avx2: unittest.cpp $(OBJ_AVX2) 
+unittest_avx2: unittest.cpp $(OBJ_AVX2)
 	$(CXX) $(FLAGS_AVX2) $^ -o $@
 
-benchmark_avx2: benchmark.cpp $(OBJ_AVX2) 
+benchmark_avx2: benchmark.cpp $(OBJ_AVX2)
 	$(CXX) $(FLAGS_AVX2) $^ -o $@
 
 ################################################################################
@@ -59,6 +60,9 @@ avx2.o: avx2.cpp avx2.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 avx2_sadbw.o: avx2_sadbw.cpp avx2_sadbw.h
+	$(CXX) $(FLAGS_AVX2) -c $< -o $@
+
+avx2_madd.o: avx2_madd.cpp avx2_madd.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
 scalar_avx2.o: scalar.cpp scalar.h
