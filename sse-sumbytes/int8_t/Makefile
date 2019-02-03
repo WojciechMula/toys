@@ -71,5 +71,17 @@ sse_avx2.o: sse.cpp sse.h
 sse_sadbw_avx2.o: sse_sadbw.cpp sse_sadbw.h
 	$(CXX) $(FLAGS_AVX2) -c $< -o $@
 
+################################################################################
+
+%.table: %.txt
+	python scripts/format.py $< > /dev/shm/tmp.rst
+	mv /dev/shm/tmp.rst $@
+	
+
+RESULTS=$(wildcard results/*.txt)
+RST=$(RESULTS:.txt=.table)
+
+rst: $(RST)
+
 clean:
 	$(RM) $(ALL)
