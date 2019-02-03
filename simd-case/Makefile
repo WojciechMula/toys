@@ -32,4 +32,4 @@ example2-avx.s: example2-avx.cpp
 	$(CXX) $(FLAGS) $< -S
 
 clean:
-	$(RM) $(ALL)
+	$(RM) $(ALL) *.s
