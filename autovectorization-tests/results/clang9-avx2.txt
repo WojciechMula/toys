@@ -32,7 +32,7 @@ remove_epi8: no
 remove_if_epi32: no
 remove_if_epi8: no
 replace_epi32: yes
-replace_epi8: no
+replace_epi8: no [loads input's chunk into a vector register, but all comparisons and stores are scalar]
 replace_if_epi32: no
 replace_if_epi8: no
 reverse_epi32: no
