@@ -1,0 +1,47 @@
+compiler: g++ (GCC-Explorer-Build) 9.0.0 20190120 (experimental)
+cmdline: -O3 -mavx512f -mavx512dq -mavx512bw -mavx512vbmi -mavx512vbmi2 -mavx512vl
+
+accumulate_custom_epi32: yes
+accumulate_custom_epi8: no
+accumulate_epi32: yes
+accumulate_epi8: yes
+all_of_epi32: no
+all_of_epi8: no
+any_of_epi32: no
+any_of_epi8: no
+copy_epi32: no
+copy_epi8: no
+copy_if_epi32: no
+copy_if_epi8: no
+count_epi32: yes
+count_epi8: yes
+count_if_epi32: yes
+count_if_epi8: yes
+fill_epi32: yes
+fill_epi8: no
+find_epi32: no
+find_epi8: no
+find_if_epi32: no
+find_if_epi8: no
+is_sorted_epi32: no
+is_sorted_epi8: no
+none_of_epi32: no
+none_of_epi8: no
+remove_epi32: no
+remove_epi8: no
+remove_if_epi32: no
+remove_if_epi8: no
+replace_epi32: yes
+replace_epi8: yes
+replace_if_epi32: no
+replace_if_epi8: yes
+reverse_epi32: yes
+reverse_epi8: yes
+transform_abs_epi32: yes
+transform_abs_epi8: yes
+transform_inc_epi32: yes
+transform_inc_epi8: yes
+transform_neg_epi32: yes
+transform_neg_epi8: yes
+unique_epi32: no
+unique_epi8: no
