@@ -1,0 +1,47 @@
+compiler: Microsoft (R) C/C++ Optimizing Compiler Version 19.16.27023.1 for x86
+cmdline: /O2 /arch:AVX512
+
+accumulate_custom_epi32: no [emits AVX2 code]
+accumulate_custom_epi8: no [emits AVX2 code]
+accumulate_epi32: no [emits AVX2 code]
+accumulate_epi8: no [emits AVX2 code]
+all_of_epi32: no
+all_of_epi8: no
+any_of_epi32: no
+any_of_epi8: no
+copy_epi32: no
+copy_epi8: no
+copy_if_epi32: no
+copy_if_epi8: no
+count_epi32: no [emits AVX2 code]
+count_epi8: no [emits AVX2 code]
+count_if_epi32: no
+count_if_epi8: no
+fill_epi32: no
+fill_epi8: no
+find_epi32: no
+find_epi8: no [calls ``memchr``]
+find_if_epi32: no
+find_if_epi8: no
+is_sorted_epi32: no
+is_sorted_epi8: no
+none_of_epi32: no
+none_of_epi8: no
+remove_epi32: no
+remove_epi8: no
+remove_if_epi32: no
+remove_if_epi8: no
+replace_epi32: no
+replace_epi8: no
+replace_if_epi32: no
+replace_if_epi8: no
+reverse_epi32: no [calls ``___std_reverse_trivially_swappable_4``]
+reverse_epi8: no [calls ``___std_reverse_trivially_swappable_1``]
+transform_abs_epi32: no [emits AVX2 code]
+transform_abs_epi8: no [emits AVX2 code]
+transform_inc_epi32: no [emits AVX2 code]
+transform_inc_epi8: no [emits AVX2 code]
+transform_neg_epi32: no
+transform_neg_epi8: no
+unique_epi32: no
+unique_epi8: no
