@@ -2,7 +2,7 @@
 .PHONY: all
 .PHONY: clean
 
-FLAGS_COMMON=$(CXXFLAGS) -std=c++11 -Wall -Wextra -pedantic -O3
+FLAGS_COMMON=$(CXXFLAGS) -std=c++11 -Wall -Wextra -pedantic -O3 -ftree-vectorize -funroll-loops
 FLAGS=$(FLAGS_COMMON) -march=native
 FLAGS_AVX2=$(FLAGS_COMMON) -DHAVE_AVX2 -mavx2
 
