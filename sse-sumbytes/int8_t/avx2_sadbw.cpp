@@ -102,7 +102,7 @@ int32_t avx2_sadbw_variant_sumsignedbytes(int8_t* array, size_t size) {
 
     for (size_t i=0; i < size; i += 32) {
         const __m256i v  = _mm256_loadu_si256((__m256i*)(array + i));
-        const __m256i t0  = _mm256_xor_si256(v, addend);
+        const __m256i t0 = _mm256_xor_si256(v, addend);
         const __m256i t1 = _mm256_sad_epu8(t0, zero);
 
         accumulator = _mm256_add_epi32(accumulator, t1);
