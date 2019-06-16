@@ -1,0 +1,9 @@
+Regular expression was introduced in C++11. It was nice, however API
+is awkward and unfriendly. I have to check in documentation how to
+use regex almost every time.
+
+This is a demo which shows that with minimal effort we can introduce
+an object-oriented API which is straightforward and easy to use.
+I picked std::string_view from C++17 as an underlaying type, but it's
+obvious that std::string also would do the job (at cost of extra
+allocations).
