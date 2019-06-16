@@ -1,7 +1,12 @@
 #pragma once
 
-#include <cstdio>
-#include <cctype>
+#ifdef __cplusplus
+#   include <cstdio>
+#   include <cctype>
+#else
+#   include <stdio.h>
+#   include <ctype.h>
+#endif
 
 void dump_epi8(__m512i v) {
     int8_t tmp[64];
@@ -58,6 +63,17 @@ void dump_epu16(__m512i v) {
     printf(" ]\n");
 }
 
+void dump_epu32(__m512i v) {
+    uint32_t tmp[16];
+
+    _mm512_storeu_si512((__m512i*)tmp, v);
+    printf("[ %5u", tmp[0]);
+    for (int i=1; i < 16; i++)
+        printf(" | %5d", tmp[i]);
+
+    printf(" ]\n");
+}
+
 void dump_epu16_hex(__m512i v) {
     uint16_t tmp[32];
 
@@ -65,6 +81,17 @@ void dump_epu16_hex(__m512i v) {
     printf("[ %04x", tmp[0]);
     for (int i=1; i < 32; i++)
         printf(" | %04x", tmp[i]);
+
+    printf(" ]\n");
+}
+
+void dump_epu32_hex(__m512i v) {
+    uint32_t tmp[16];
+
+    _mm512_storeu_si512((__m512i*)tmp, v);
+    printf("[ %x", tmp[0]);
+    for (int i=1; i < 16; i++)
+        printf(" | %x", tmp[i]);
 
     printf(" ]\n");
 }
