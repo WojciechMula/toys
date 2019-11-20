@@ -28,7 +28,7 @@ __m128i lzcnt_epu32(__m128i x) {
 
     // 3. We need fixup negative numbers, i.e. the MSB set -- lzcnt is 0
     const __m128i msb_set = _mm_cmplt_epi32(x, _mm_set1_epi32(0));
-    const __m128i t2 = blend_epi32(msb_set, _mm_set1_epi32(0), t1);
+    const __m128i t2 = _mm_andnot_si128(msb_set, t1);
 
     // 4. there's also need for fixup for lzcnt(0) = 32
     const __m128i is_zero = _mm_cmpeq_epi32(_mm_set1_epi32(0), x);
