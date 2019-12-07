@@ -69,7 +69,7 @@ void dump_epu32(__m512i v) {
     _mm512_storeu_si512((__m512i*)tmp, v);
     printf("[ %5u", tmp[0]);
     for (int i=1; i < 16; i++)
-        printf(" | %5d", tmp[i]);
+        printf(" | %5u", tmp[i]);
 
     printf(" ]\n");
 }
