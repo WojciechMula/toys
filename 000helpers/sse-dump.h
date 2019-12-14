@@ -2,9 +2,15 @@
 
 #include <immintrin.h>
 
+#ifdef __cplusplus
 #include <cstdio>
 #include <cstdint>
 #include <cctype>
+#else
+#include <stdio.h>
+#include <stdint.h>
+#include <ctype.h>
+#endif
 
 void dump_epi8(__m128i v) {
     int8_t tmp[16];
