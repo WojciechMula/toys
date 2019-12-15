@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from os.path import join
+from pathlib import Path
 from procedures import PROCEDURES
 from table import Table
 
@@ -58,15 +58,15 @@ def load_all_results(rootdir):
         compiler = COMPILERS[compiler_name]
         for arch_name in compiler:
             filename = compiler[arch_name]
-            path = join(rootdir, filename)
-            with open(path, 'rt') as f:
+            path = rootdir / filename
+            with path.open() as f:
                 data = load_results(f)
                 compiler[arch_name] = data
 
 
 class Formatter(object):
     def __init__(self):
-        load_all_results('results')
+        load_all_results(Path('results'))
         self.footnotes = {}
         self.links = []
 
@@ -115,7 +115,7 @@ class Formatter(object):
         print(self.table)
 
         if len(self.links):
-            print
+            print()
             for link in self.links:
                 print(f"__ {link}")
 
@@ -123,7 +123,7 @@ class Formatter(object):
             tmp = [(fn_idx, text) for text, fn_idx in self.footnotes.items()]
             tmp.sort()
 
-            print
+            print()
             for fn_idx, text in tmp:
                 print(f".. [{fn_idx}] {text}")
 

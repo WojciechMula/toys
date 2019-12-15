@@ -39,7 +39,7 @@ PROCEDURES = {
         'procedures'        : ["copy_if_epi8", "copy_if_epi32"],
     },
 
-    'count'                 : {
+    'count.cpp'             : {
         'title'             : "count",
         'link'              : 'https://en.cppreference.com/w/cpp/algorithm/count',
         'procedures'        : ["count_epi8", "count_epi32"],
