@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from os.path import join
 from procedures import PROCEDURES
 from table import Table
@@ -110,12 +112,12 @@ class Formatter(object):
 
 
     def print_result(self):
-        print self.table
+        print(self.table)
 
         if len(self.links):
             print
             for link in self.links:
-                print "__ %s" % link
+                print(f"__ {link}")
 
         if len(self.footnotes) > 0:
             tmp = [(fn_idx, text) for text, fn_idx in self.footnotes.items()]
@@ -123,7 +125,7 @@ class Formatter(object):
 
             print
             for fn_idx, text in tmp:
-                print ".. [%d] %s" % (fn_idx, text)
+                print(f".. [{fn_idx}] {text}")
 
 
     def register_link(self, link):
@@ -142,7 +144,7 @@ class Formatter(object):
             title = item['title']
        
         if link is not None:
-            return "`%s`__" % title
+            return f"`{title}`__"
         else:
             return title
 
@@ -150,12 +152,12 @@ class Formatter(object):
     def format_procedure(self, source_name, procedure_name):
         link = GITHUB_LINK % source_name
         self.register_link(link)
-        return '`%s`__' % procedure_name
+        return f'`{procedure_name}`__'
 
 
     def format_status(self, text):
         if text == 'yes':
-            return '**%s**' % text
+            return f'**{text}**'
         elif text == 'no':
             return text
         else:
@@ -173,7 +175,7 @@ class Formatter(object):
                 self.footnotes[note] = len(self.footnotes) + 1
 
             fn_idx = self.footnotes[note]
-            return '%s [%d]_' % (status, fn_idx)
+            return f'{status} [{fn_idx}]_'
 
 fmt = Formatter()
 fmt.run()
