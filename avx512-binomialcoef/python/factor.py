@@ -39,6 +39,13 @@ class FactorialNumber:
             self.powers[index] += 1
 
 
+    def clone(self):
+        c = FactorialNumber([], self.primes)
+        c.powers = self.powers[:]
+
+        return c
+
+
     def __str__(self):
         tmp = []
         for index, power in enumerate(self.powers):

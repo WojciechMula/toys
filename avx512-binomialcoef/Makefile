@@ -1,4 +1,4 @@
-FLAGS=-Wall -Wextra -pedantic -std=c++17 -mavx512bw
+FLAGS=-Wall -Wextra -pedantic -std=c++17 -mavx512bw -O2
 TMP=/dev/shm
 
 demo: *.cpp
