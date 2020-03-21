@@ -12,11 +12,9 @@ void dump_epi8(__m512i v) {
     int8_t tmp[64];
 
     _mm512_storeu_si512((__m512i*)tmp, v);
-    printf("[ %4d ", tmp[0]);
-    for (int i=1; i < 64; i++)
-        printf("| %4d", tmp[i]);
-
-    printf(" ]\n");
+    for (int i=0; i < 64; i++)
+        printf(" %d", tmp[i]);
+    printf("\n");
 }
 
 void dump_epu8(__m512i v) {
