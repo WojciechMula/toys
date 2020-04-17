@@ -8,9 +8,18 @@
 #include <stdlib.h>
 #include <assert.h>
 
-int is_pattern(uint16_t x) {
+int is_pattern_old(uint16_t x) {
     const uint16_t n = -x;
     return (x > 0) && n == (n & x);
+}
+
+/*
+    This method was contributed by Falk Hüffner
+    https://github.com/WojciechMula/toys/issues/12
+*/
+int is_pattern(uint16_t x) {
+    const uint16_t n = -x;
+    return (n ^ x) < x;
 }
 
 
