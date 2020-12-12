@@ -12,6 +12,8 @@ DEPS=$(DEPS_H) $(DEPS_CPP)
 
 FLAGS=$(CXXFLAGS) -Wall -Wextra -pedantic -Werror -mavx
 
+all: unittests benchmark
+
 unittests: unittests.cpp $(DEPS)
 	$(CXX) $(FLAGS) $(DEPS_CPP) unittests.cpp -o unittests
 
