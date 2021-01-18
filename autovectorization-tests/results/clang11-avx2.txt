@@ -1,5 +1,5 @@
-compiler: 
-cmdline: 
+compiler: Debian clang version 11.0.1-2
+cmdline: -O3 -mavx2
 
 accumulate_custom_epi32: yes
 accumulate_custom_epi8: no
