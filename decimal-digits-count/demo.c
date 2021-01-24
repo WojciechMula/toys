@@ -15,7 +15,11 @@ int main(int argc, char* argv[]) {
 			const int sse = decimal_digits_sse(x);
 			const int ref = decimal_digits_naive(x);
 		
-			printf("%15d: digits %2d (SSE proc), %2d (correct)\n", x, sse, ref);
+			printf("%15d: digits %2d (SSE proc), %2d (correct)", x, sse, ref);
+            if (sse != ref)
+                printf(" FAILED");
+
+            putchar('\n');
 		} else {
 			printf("%15d: negative numbers not supported\n", x);
 		}
