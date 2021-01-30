@@ -7,6 +7,7 @@
 
 #include "http_verb.h"
 #include "verb-parse-orig.cpp"
+#include "verb-parse-swar.cpp"
 
 
 class Benchmark {
@@ -42,13 +43,20 @@ public:
     void test_all_verbs() {
         printf("Random order (size = %lu, iterations = %lu)\n", size, iterations);
         prepare_random_input([this](){return random_verb();});
-        measure_total_time("boost::beast: ", [this](){return test_boost_beast();}, iterations);
+        measure_all();
     }
 
     void test_common_verbs() {
         printf("Random GET/POST/PUT (size = %lu, iterations = %lu)\n", size, iterations);
         prepare_random_input([this](){return random_common_verb();});
+        measure_all();
+    }
+
+private:
+    void measure_all()
+    {
         measure_total_time("boost::beast: ", [this](){return test_boost_beast();}, iterations);
+        measure_total_time("SWAR:         ", [this](){return test_swar();}, iterations);
     }
 
 private:
@@ -56,6 +64,14 @@ private:
         uint32_t res = 0;
         for (const std::string& s: input)
             res += static_cast<uint32_t>(boost::beast::http::string_to_verb(s));
+
+        return res;
+    }
+
+    uint32_t test_swar() {
+        uint32_t res = 0;
+        for (const std::string& s: input)
+            res += static_cast<uint32_t>(swar::string_to_verb(s));
 
         return res;
     }
