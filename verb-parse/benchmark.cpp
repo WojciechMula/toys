@@ -8,6 +8,7 @@
 #include "http_verb.h"
 #include "verb-parse-orig.cpp"
 #include "verb-parse-swar.cpp"
+#include "verb-parse-perfhash.cpp"
 
 
 class Benchmark {
@@ -57,6 +58,7 @@ private:
     {
         measure_total_time("boost::beast: ", [this](){return test_boost_beast();}, iterations);
         measure_total_time("SWAR:         ", [this](){return test_swar();}, iterations);
+        measure_total_time("perfect hash: ", [this](){return test_perfect_hash();}, iterations);
     }
 
 private:
@@ -72,6 +74,14 @@ private:
         uint32_t res = 0;
         for (const std::string& s: input)
             res += static_cast<uint32_t>(swar::string_to_verb(s));
+
+        return res;
+    }
+
+    uint32_t test_perfect_hash() {
+        uint32_t res = 0;
+        for (const std::string& s: input)
+            res += static_cast<uint32_t>(perfect_hash::string_to_verb(s));
 
         return res;
     }
