@@ -57,10 +57,11 @@ public:
 private:
     void measure_all()
     {
-        measure_total_time("boost::beast  : ", [this](){return test_boost_beast();}, iterations);
-        measure_total_time("SWAR (64 bit) : ", [this](){return test_swar64();}, iterations);
-        measure_total_time("SWAR (32 bit) : ", [this](){return test_swar32();}, iterations);
-        measure_total_time("perfect hash  : ", [this](){return test_perfect_hash();}, iterations);
+        measure_total_time("boost::beast   : ", [this](){return test_boost_beast();}, iterations);
+        measure_total_time("SWAR  (64 bit) : ", [this](){return test_swar64();}, iterations);
+        measure_total_time("SWAR  (32 bit) : ", [this](){return test_swar32();}, iterations);
+        measure_total_time("SWAR2 (32 bit) : ", [this](){return test_swar32_v2();}, iterations);
+        measure_total_time("perfect hash   : ", [this](){return test_perfect_hash();}, iterations);
     }
 
 private:
@@ -84,6 +85,14 @@ private:
         uint32_t res = 0;
         for (const std::string& s: input)
             res += static_cast<uint32_t>(swar32::string_to_verb(s));
+
+        return res;
+    }
+
+    uint32_t test_swar32_v2() {
+        uint32_t res = 0;
+        for (const std::string& s: input)
+            res += static_cast<uint32_t>(swar32::string_to_verb_v2(s));
 
         return res;
     }
