@@ -67,7 +67,7 @@ namespace swar {
                 break;
             case STRING_CONST('M', 'K', 'C', 'A', 'L', 'E', 'N', 'D'):
                 if (v.size() == 10 and v.substr(8) == "AR"_sv)
-                    return verb::mkactivity;
+                    return verb::mkcalendar;
                 break;
             case STRING_CONST('M', 'K', 'C', 'O', 'L', 0, 0, 0):
                 return verb::mkcol;
@@ -84,7 +84,7 @@ namespace swar {
             case STRING_CONST('P', 'R', 'O', 'P', 'F', 'I', 'N', 'D'):
                 return verb::propfind;
             case STRING_CONST('P', 'R', 'O', 'P', 'P', 'A', 'T', 'C'):
-                if (v.size() == 9 and v[9] == 'H')
+                if (v.size() == 9 and v[8] == 'H')
                     return verb::proppatch;
                 break;
             case STRING_CONST('P', 'U', 'R', 'G', 'E', 0, 0, 0):
@@ -98,7 +98,7 @@ namespace swar {
             case STRING_CONST('S', 'E', 'A', 'R', 'C', 'H', 0, 0):
                 return verb::search;
             case STRING_CONST('S', 'U', 'B', 'S', 'C', 'R', 'I', 'B'):
-                if (v.size() == 9 and v[9] == 'E')
+                if (v.size() == 9 and v[8] == 'E')
                     return verb::subscribe;
                 break;
             case STRING_CONST('T', 'R', 'A', 'C', 'E', 0, 0, 0):
@@ -110,7 +110,7 @@ namespace swar {
             case STRING_CONST('U', 'N', 'L', 'O', 'C', 'K', 0, 0):
                 return verb::unlock;
             case STRING_CONST('U', 'N', 'S', 'U', 'B', 'S', 'C', 'R'):
-                if (v.size() == 11 and v.substr(9) == "IBE"_sv)
+                if (v.size() == 11 and v.substr(8) == "IBE"_sv)
                     return verb::unsubscribe;
                 break;
         }
