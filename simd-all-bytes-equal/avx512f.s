@@ -10,8 +10,7 @@ _Z9all_equalDv8_x:
 	vmovdqa64	%zmm0, %zmm1
 	vpshufb	%xmm2, %xmm0, %xmm0
 	vshufi32x4	$0x0, %zmm0, %zmm0, %zmm0
-	vpxord	%zmm1, %zmm0, %zmm0
-	vptestnmd	%zmm0, %zmm0, %k0
+	vpcmpeqd	%zmm0, %zmm1, %k0
 	kmovw	%k0, %eax
 	cmpw	$-1, %ax
 	sete	%al
