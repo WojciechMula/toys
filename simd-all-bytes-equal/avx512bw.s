@@ -6,11 +6,10 @@
 _Z9all_equalDv8_x:
 .LFB5356:
 	.cfi_startproc
-	movabsq	$1099511627775, %rax
 	vpbroadcastb	%xmm0, %zmm1
 	vpcmpub	$0, %zmm1, %zmm0, %k0
-	kmovq	%k0, %rdx
-	cmpq	%rax, %rdx
+	kmovq	%k0, %rax
+	cmpq	$-1, %rax
 	sete	%al
 	ret
 	.cfi_endproc
