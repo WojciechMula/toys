@@ -1,0 +1,44 @@
+./benchmark 100 10000
+Random order (size = 100, iterations = 10000)
+boost::beast   : 2956 us
+SWAR  (64 bit) : 6922 us
+SWAR  (32 bit) : 7200 us
+SWAR2 (32 bit) : 7024 us
+perfect hash   : 5464 us
+
+Random GET/POST/PUT (size = 100, iterations = 10000)
+boost::beast   : 3334 us
+SWAR  (64 bit) : 7321 us
+SWAR  (32 bit) : 6502 us
+SWAR2 (32 bit) : 6421 us
+perfect hash   : 7891 us
+
+./benchmark 1000 1000
+Random order (size = 1000, iterations = 1000)
+boost::beast   : 9315 us
+SWAR  (64 bit) : 7932 us
+SWAR  (32 bit) : 8834 us
+SWAR2 (32 bit) : 9485 us
+perfect hash   : 10352 us
+
+Random GET/POST/PUT (size = 1000, iterations = 1000)
+boost::beast   : 5839 us
+SWAR  (64 bit) : 8820 us
+SWAR  (32 bit) : 8899 us
+SWAR2 (32 bit) : 10027 us
+perfect hash   : 7531 us
+
+./benchmark 10000 100
+Random order (size = 10000, iterations = 100)
+boost::beast   : 16457 us
+SWAR  (64 bit) : 21809 us
+SWAR  (32 bit) : 23204 us
+SWAR2 (32 bit) : 21766 us
+perfect hash   : 11089 us
+
+Random GET/POST/PUT (size = 10000, iterations = 100)
+boost::beast   : 8339 us
+SWAR  (64 bit) : 14289 us
+SWAR  (32 bit) : 13722 us
+SWAR2 (32 bit) : 12117 us
+perfect hash   : 7498 us
