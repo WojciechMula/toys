@@ -5,7 +5,7 @@
 
 class Benchamark {
 
-    static const size_t size = 1024 * 4;
+    static const size_t size = 1024 * 16;
     uint8_t table[size];
 
 public:
@@ -31,6 +31,7 @@ public:
         RUN("AVX512BW (version 2)", avx512bw_count_bytes__version2);
         RUN("AVX512BW (version 3)", avx512bw_count_bytes__version3);
         RUN("AVX512BW (version 4)", avx512bw_count_bytes__version4);
+        RUN("AVX512BW (version 5)", avx512bw_count_bytes__version5);
 #endif
     }
 
