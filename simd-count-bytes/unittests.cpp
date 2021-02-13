@@ -72,6 +72,7 @@ private:
         test("AVX512", avx512bw_count_bytes, reference);
         test("AVX512 (unrolled)", avx512bw_count_bytes_unrolled, reference);
         test("AVX512 (version 2)", avx512bw_count_bytes__version2, reference);
+        test("AVX512 (version 3)", avx512bw_count_bytes__version3, reference);
 #endif
     }
 
