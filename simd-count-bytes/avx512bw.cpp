@@ -166,16 +166,12 @@ uint64_t avx512bw_count_bytes__version3(const uint8_t* data, size_t size, uint8_
 
     const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
     const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i t0 = _mm256_add_epi64(lo, hi);
 
-    sum += _mm256_extract_epi64(lo, 0);
-    sum += _mm256_extract_epi64(lo, 1);
-    sum += _mm256_extract_epi64(lo, 2);
-    sum += _mm256_extract_epi64(lo, 3);
-
-    sum += _mm256_extract_epi64(hi, 0);
-    sum += _mm256_extract_epi64(hi, 1);
-    sum += _mm256_extract_epi64(hi, 2);
-    sum += _mm256_extract_epi64(hi, 3);
+    sum += _mm256_extract_epi64(t0, 0);
+    sum += _mm256_extract_epi64(t0, 1);
+    sum += _mm256_extract_epi64(t0, 2);
+    sum += _mm256_extract_epi64(t0, 3);
 
     return sum + scalar_count_bytes(ptr, end - ptr, byte);
 }
@@ -224,16 +220,12 @@ uint64_t avx512bw_count_bytes__version4(const uint8_t* data, size_t size, uint8_
 
     const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
     const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i t0 = _mm256_add_epi64(lo, hi);
 
-    sum += _mm256_extract_epi64(lo, 0);
-    sum += _mm256_extract_epi64(lo, 1);
-    sum += _mm256_extract_epi64(lo, 2);
-    sum += _mm256_extract_epi64(lo, 3);
-
-    sum += _mm256_extract_epi64(hi, 0);
-    sum += _mm256_extract_epi64(hi, 1);
-    sum += _mm256_extract_epi64(hi, 2);
-    sum += _mm256_extract_epi64(hi, 3);
+    sum += _mm256_extract_epi64(t0, 0);
+    sum += _mm256_extract_epi64(t0, 1);
+    sum += _mm256_extract_epi64(t0, 2);
+    sum += _mm256_extract_epi64(t0, 3);
 
     return sum + scalar_count_bytes(ptr, end - ptr, byte);
 }
