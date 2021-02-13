@@ -269,3 +269,99 @@ uint64_t avx512bw_count_bytes__version5(const uint8_t* data, size_t size, uint8_
 
     return sum + scalar_count_bytes(ptr, end - ptr, byte);
 }
+
+uint64_t avx512bw_count_bytes__version5_unrolled2(const uint8_t* data, size_t size, uint8_t byte) {
+
+    const uint8_t* end = data + size;
+    const uint8_t* ptr = data;
+
+    const __m512i v    = _mm512_set1_epi8(byte);
+    const __m512i v_01 = _mm512_set1_epi8(0x01);
+
+    __m512i vector_acc = _mm512_setzero_si512();
+    while (ptr + 64 * (2*127) < end) {
+        __m512i local_sum = _mm512_set1_epi8(2*127);
+
+        // update 64 x 8-bit counter
+        for (int i=0; i < 127; i++, ptr += 2*64) {
+            const __m512i in0 = _mm512_loadu_si512((const __m512i*)(ptr + 0*64));
+            const __m512i in1 = _mm512_loadu_si512((const __m512i*)(ptr + 1*64));
+            const __m512i x0 = _mm512_xor_si512(in0, v);
+            const __m512i x1 = _mm512_xor_si512(in1, v);
+            const __m512i m0 = _mm512_min_epu8(x0, v_01); // 0 if equal, 1 otherwise
+            const __m512i m1 = _mm512_min_epu8(x1, v_01); // 0 if equal, 1 otherwise
+
+            local_sum = _mm512_sub_epi8(local_sum, m0);
+            local_sum = _mm512_sub_epi8(local_sum, m1);
+        }
+
+        // update the global accumulator 8 x 64-bit
+        const __m512i tmp = _mm512_sad_epu8(local_sum, _mm512_setzero_si512());
+        vector_acc = _mm512_add_epi64(vector_acc, tmp);
+    }
+
+    uint64_t sum = 0;
+
+    const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
+    const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i t0 = _mm256_add_epi64(lo, hi);
+
+    sum += _mm256_extract_epi64(t0, 0);
+    sum += _mm256_extract_epi64(t0, 1);
+    sum += _mm256_extract_epi64(t0, 2);
+    sum += _mm256_extract_epi64(t0, 3);
+
+    return sum + scalar_count_bytes(ptr, end - ptr, byte);
+}
+
+uint64_t avx512bw_count_bytes__version5_unrolled4(const uint8_t* data, size_t size, uint8_t byte) {
+
+    const uint8_t* end = data + size;
+    const uint8_t* ptr = data;
+
+    const __m512i v    = _mm512_set1_epi8(byte);
+    const __m512i v_01 = _mm512_set1_epi8(0x01);
+
+    __m512i vector_acc = _mm512_setzero_si512();
+    while (ptr + 64 * (4*63) < end) {
+        __m512i local_sum = _mm512_set1_epi8(4*63);
+
+        // update 64 x 8-bit counter
+        for (int i=0; i < 63; i++, ptr += 4*64) {
+            const __m512i in0 = _mm512_loadu_si512((const __m512i*)(ptr + 0*64));
+            const __m512i in1 = _mm512_loadu_si512((const __m512i*)(ptr + 1*64));
+            const __m512i in2 = _mm512_loadu_si512((const __m512i*)(ptr + 2*64));
+            const __m512i in3 = _mm512_loadu_si512((const __m512i*)(ptr + 3*64));
+            const __m512i x0 = _mm512_xor_si512(in0, v);
+            const __m512i x1 = _mm512_xor_si512(in1, v);
+            const __m512i x2 = _mm512_xor_si512(in2, v);
+            const __m512i x3 = _mm512_xor_si512(in3, v);
+            const __m512i m0 = _mm512_min_epu8(x0, v_01); // 0 if equal, 1 otherwise
+            const __m512i m1 = _mm512_min_epu8(x1, v_01); // 0 if equal, 1 otherwise
+            const __m512i m2 = _mm512_min_epu8(x2, v_01); // 0 if equal, 1 otherwise
+            const __m512i m3 = _mm512_min_epu8(x3, v_01); // 0 if equal, 1 otherwise
+
+            local_sum = _mm512_sub_epi8(local_sum, m0);
+            local_sum = _mm512_sub_epi8(local_sum, m1);
+            local_sum = _mm512_sub_epi8(local_sum, m2);
+            local_sum = _mm512_sub_epi8(local_sum, m3);
+        }
+
+        // update the global accumulator 8 x 64-bit
+        const __m512i tmp = _mm512_sad_epu8(local_sum, _mm512_setzero_si512());
+        vector_acc = _mm512_add_epi64(vector_acc, tmp);
+    }
+
+    uint64_t sum = 0;
+
+    const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
+    const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i t0 = _mm256_add_epi64(lo, hi);
+
+    sum += _mm256_extract_epi64(t0, 0);
+    sum += _mm256_extract_epi64(t0, 1);
+    sum += _mm256_extract_epi64(t0, 2);
+    sum += _mm256_extract_epi64(t0, 3);
+
+    return sum + scalar_count_bytes(ptr, end - ptr, byte);
+}

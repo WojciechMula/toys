@@ -26,12 +26,14 @@ public:
         RUN("AVX2 (popcount)",      avx2_count_byte_popcount);
 #endif
 #ifdef HAVE_AVX512BW
-        RUN("AVX512BW",             avx512bw_count_bytes);
-        RUN("AVX512BW (unrolled)",  avx512bw_count_bytes_unrolled);
-        RUN("AVX512BW (version 2)", avx512bw_count_bytes__version2);
-        RUN("AVX512BW (version 3)", avx512bw_count_bytes__version3);
-        RUN("AVX512BW (version 4)", avx512bw_count_bytes__version4);
-        RUN("AVX512BW (version 5)", avx512bw_count_bytes__version5);
+        RUN("AVX512BW", avx512bw_count_bytes);
+        RUN("AVX512BW (unrolled 4x)", avx512bw_count_bytes_unrolled);
+        RUN("AVX512BW (ver 2)", avx512bw_count_bytes__version2);
+        RUN("AVX512BW (ver 3)", avx512bw_count_bytes__version3);
+        RUN("AVX512BW (ver 4)", avx512bw_count_bytes__version4);
+        RUN("AVX512BW (ver 5)", avx512bw_count_bytes__version5);
+        RUN("AVX512BW (ver 5 unrolled 2x)", avx512bw_count_bytes__version5_unrolled2);
+        RUN("AVX512BW (ver 5 unrolled 4x)", avx512bw_count_bytes__version5_unrolled4);
 #endif
     }
 

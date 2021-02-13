@@ -9,3 +9,5 @@ uint64_t avx512bw_count_bytes__version2(const uint8_t* data, size_t size, uint8_
 uint64_t avx512bw_count_bytes__version3(const uint8_t* data, size_t size, uint8_t byte);
 uint64_t avx512bw_count_bytes__version4(const uint8_t* data, size_t size, uint8_t byte);
 uint64_t avx512bw_count_bytes__version5(const uint8_t* data, size_t size, uint8_t byte);
+uint64_t avx512bw_count_bytes__version5_unrolled2(const uint8_t* data, size_t size, uint8_t byte);
+uint64_t avx512bw_count_bytes__version5_unrolled4(const uint8_t* data, size_t size, uint8_t byte);

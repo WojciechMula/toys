@@ -70,11 +70,13 @@ private:
 #endif
 #ifdef HAVE_AVX512BW
         test("AVX512", avx512bw_count_bytes, reference);
-        test("AVX512 (unrolled)", avx512bw_count_bytes_unrolled, reference);
-        test("AVX512 (version 2)", avx512bw_count_bytes__version2, reference);
-        test("AVX512 (version 3)", avx512bw_count_bytes__version3, reference);
-        test("AVX512 (version 4)", avx512bw_count_bytes__version4, reference);
-        test("AVX512 (version 5)", avx512bw_count_bytes__version5, reference);
+        test("AVX512 (unrolled 4x)", avx512bw_count_bytes_unrolled, reference);
+        test("AVX512 (ver 2)", avx512bw_count_bytes__version2, reference);
+        test("AVX512 (ver 3)", avx512bw_count_bytes__version3, reference);
+        test("AVX512 (ver 4)", avx512bw_count_bytes__version4, reference);
+        test("AVX512 (ver 5)", avx512bw_count_bytes__version5, reference);
+        test("AVX512 (ver 5 unrolled 2x)", avx512bw_count_bytes__version5_unrolled2, reference);
+        test("AVX512 (ver 5 unrolled 4x)", avx512bw_count_bytes__version5_unrolled4, reference);
 #endif
     }
 
