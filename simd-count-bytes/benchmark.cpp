@@ -28,6 +28,7 @@ public:
 #ifdef HAVE_AVX512BW
         RUN("AVX512BW",             avx512bw_count_bytes);
         RUN("AVX512BW (unrolled)",  avx512bw_count_bytes_unrolled);
+        RUN("AVX512BW (version 2)", avx512bw_count_bytes__version2);
 #endif
     }
 
