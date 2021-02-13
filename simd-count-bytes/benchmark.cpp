@@ -30,6 +30,7 @@ public:
         RUN("AVX512BW (unrolled)",  avx512bw_count_bytes_unrolled);
         RUN("AVX512BW (version 2)", avx512bw_count_bytes__version2);
         RUN("AVX512BW (version 3)", avx512bw_count_bytes__version3);
+        RUN("AVX512BW (version 4)", avx512bw_count_bytes__version4);
 #endif
     }
 
