@@ -75,7 +75,7 @@ avx512bw_avx512bw.o: avx512bw.cpp avx512bw.h
 
 # --------------------------------------------------
 
-RST=skylake.rst skylake-x.rst cannonlake.rst
+RST=skylake.rst skylake-x.rst skylake-x-2.rst cannonlake.rst
 
 %.rst: results/%.txt scripts/*.py
 	python scripts/format.py $< > /dev/shm/$@
