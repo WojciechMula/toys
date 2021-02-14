@@ -131,7 +131,7 @@ uint64_t avx512bw_count_bytes__version3(const uint8_t* data, size_t size, uint8_
             0x0302020102010100llu, 0x0403030203020201llu,
             0x0302020102010100llu, 0x0403030203020201llu);
 
-    __m512i vector_acc = _mm512_setzero_si512();
+    __m512i global_sum = _mm512_setzero_si512();
     while (ptr + 64*4 < end) {
         __m512i lookup = lookup_initial;
 
@@ -157,15 +157,15 @@ uint64_t avx512bw_count_bytes__version3(const uint8_t* data, size_t size, uint8_
         // t1 has got 4-bit values in bytes
         const __m512i popcnt = _mm512_shuffle_epi8(lookup_popcount, t1);
         const __m512i vector_sum = _mm512_sad_epu8(popcnt, _mm512_setzero_si512());
-        vector_acc = _mm512_add_epi64(vector_acc, vector_sum);
+        global_sum = _mm512_add_epi64(global_sum, vector_sum);
 
         ptr += 64*4;
     }
 
     uint64_t sum = 0;
 
-    const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
-    const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i lo = _mm512_extracti64x4_epi64(global_sum, 0);
+    const __m256i hi = _mm512_extracti64x4_epi64(global_sum, 1);
     const __m256i t0 = _mm256_add_epi64(lo, hi);
 
     sum += _mm256_extract_epi64(t0, 0);
@@ -191,7 +191,7 @@ uint64_t avx512bw_count_bytes__version4(const uint8_t* data, size_t size, uint8_
             0x0102020302030304llu, 0x0001010201020203llu,
             0x0102020302030304llu, 0x0001010201020203llu);
 
-    __m512i vector_acc = _mm512_setzero_si512();
+    __m512i global_sum = _mm512_setzero_si512();
     while (ptr + 64*4 < end) {
         __m512i tmp = _mm512_setzero_si512();
 
@@ -211,15 +211,15 @@ uint64_t avx512bw_count_bytes__version4(const uint8_t* data, size_t size, uint8_
         // tmp has got NEGATED 4-bit values in bytes
         const __m512i popcnt = _mm512_shuffle_epi8(lookup_popcount, tmp);
         const __m512i vector_sum = _mm512_sad_epu8(popcnt, _mm512_setzero_si512());
-        vector_acc = _mm512_add_epi64(vector_acc, vector_sum);
+        global_sum = _mm512_add_epi64(global_sum, vector_sum);
 
         ptr += 64*4;
     }
 
     uint64_t sum = 0;
 
-    const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
-    const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i lo = _mm512_extracti64x4_epi64(global_sum, 0);
+    const __m256i hi = _mm512_extracti64x4_epi64(global_sum, 1);
     const __m256i t0 = _mm256_add_epi64(lo, hi);
 
     sum += _mm256_extract_epi64(t0, 0);
@@ -238,7 +238,7 @@ uint64_t avx512bw_count_bytes__version5(const uint8_t* data, size_t size, uint8_
     const __m512i v    = _mm512_set1_epi8(byte);
     const __m512i v_01 = _mm512_set1_epi8(0x01);
 
-    __m512i vector_acc = _mm512_setzero_si512();
+    __m512i global_sum = _mm512_setzero_si512();
     while (ptr + 64*255 < end) {
         __m512i local_sum = _mm512_set1_epi8(-1); // 255
 
@@ -253,13 +253,13 @@ uint64_t avx512bw_count_bytes__version5(const uint8_t* data, size_t size, uint8_
 
         // update the global accumulator 8 x 64-bit
         const __m512i tmp = _mm512_sad_epu8(local_sum, _mm512_setzero_si512());
-        vector_acc = _mm512_add_epi64(vector_acc, tmp);
+        global_sum = _mm512_add_epi64(global_sum, tmp);
     }
 
     uint64_t sum = 0;
 
-    const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
-    const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i lo = _mm512_extracti64x4_epi64(global_sum, 0);
+    const __m256i hi = _mm512_extracti64x4_epi64(global_sum, 1);
     const __m256i t0 = _mm256_add_epi64(lo, hi);
 
     sum += _mm256_extract_epi64(t0, 0);
@@ -278,7 +278,7 @@ uint64_t avx512bw_count_bytes__version5_unrolled2(const uint8_t* data, size_t si
     const __m512i v    = _mm512_set1_epi8(byte);
     const __m512i v_01 = _mm512_set1_epi8(0x01);
 
-    __m512i vector_acc = _mm512_setzero_si512();
+    __m512i global_sum = _mm512_setzero_si512();
     while (ptr + 64 * (2*127) < end) {
         __m512i local_sum = _mm512_set1_epi8(2*127);
 
@@ -297,13 +297,13 @@ uint64_t avx512bw_count_bytes__version5_unrolled2(const uint8_t* data, size_t si
 
         // update the global accumulator 8 x 64-bit
         const __m512i tmp = _mm512_sad_epu8(local_sum, _mm512_setzero_si512());
-        vector_acc = _mm512_add_epi64(vector_acc, tmp);
+        global_sum = _mm512_add_epi64(global_sum, tmp);
     }
 
     uint64_t sum = 0;
 
-    const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
-    const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i lo = _mm512_extracti64x4_epi64(global_sum, 0);
+    const __m256i hi = _mm512_extracti64x4_epi64(global_sum, 1);
     const __m256i t0 = _mm256_add_epi64(lo, hi);
 
     sum += _mm256_extract_epi64(t0, 0);
@@ -322,7 +322,7 @@ uint64_t avx512bw_count_bytes__version5_unrolled4(const uint8_t* data, size_t si
     const __m512i v    = _mm512_set1_epi8(byte);
     const __m512i v_01 = _mm512_set1_epi8(0x01);
 
-    __m512i vector_acc = _mm512_setzero_si512();
+    __m512i global_sum = _mm512_setzero_si512();
     while (ptr + 64 * (4*63) < end) {
         __m512i local_sum = _mm512_set1_epi8(4*63);
 
@@ -349,13 +349,13 @@ uint64_t avx512bw_count_bytes__version5_unrolled4(const uint8_t* data, size_t si
 
         // update the global accumulator 8 x 64-bit
         const __m512i tmp = _mm512_sad_epu8(local_sum, _mm512_setzero_si512());
-        vector_acc = _mm512_add_epi64(vector_acc, tmp);
+        global_sum = _mm512_add_epi64(global_sum, tmp);
     }
 
     uint64_t sum = 0;
 
-    const __m256i lo = _mm512_extracti64x4_epi64(vector_acc, 0);
-    const __m256i hi = _mm512_extracti64x4_epi64(vector_acc, 1);
+    const __m256i lo = _mm512_extracti64x4_epi64(global_sum, 0);
+    const __m256i hi = _mm512_extracti64x4_epi64(global_sum, 1);
     const __m256i t0 = _mm256_add_epi64(lo, hi);
 
     sum += _mm256_extract_epi64(t0, 0);
