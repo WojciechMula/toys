@@ -34,6 +34,7 @@ public:
         RUN("AVX512BW (ver 5)", avx512bw_count_bytes__version5);
         RUN("AVX512BW (ver 5 unrolled 2x)", avx512bw_count_bytes__version5_unrolled2);
         RUN("AVX512BW (ver 5 unrolled 4x)", avx512bw_count_bytes__version5_unrolled4);
+        RUN("AVX512BW (ver 6 unrolled 4x)", avx512bw_count_bytes__version6_unrolled4);
 #endif
     }
 
