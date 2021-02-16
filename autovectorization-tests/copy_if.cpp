@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <vector>
 #include <cstdint>
+#include <iterator>
 
 void copy_if_epi8(const std::vector<int8_t>& v, std::vector<int8_t>& out) {
     std::copy_if(v.begin(), v.end(), std::back_inserter(out),
