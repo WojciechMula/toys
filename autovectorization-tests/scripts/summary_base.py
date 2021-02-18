@@ -79,10 +79,24 @@ class Formatter(object):
                     row.append(procedure_name)
 
                 for compiler_name in self.COMPILERS_ORDER:
-                    avx2 = self.COMPILERS[compiler_name]['avx2'][2]
-                    row.append(self.format_status(avx2[procedure_name]))
-                    avx512 = self.COMPILERS[compiler_name]['avx512'][2]
-                    row.append(self.format_status(avx512[procedure_name]))
+                    try:
+                        avx2 = self.COMPILERS[compiler_name]['avx2'][2]
+                    except KeyError:
+                        avx2 = None
+                    try:
+                        avx512 = self.COMPILERS[compiler_name]['avx512'][2]
+                    except KeyError:
+                        avx512 = None
+
+                    if avx2:
+                        row.append(self.format_status(avx2[procedure_name]))
+                    else:
+                        row.append('---')
+
+                    if avx512:
+                        row.append(self.format_status(avx512[procedure_name]))
+                    else:
+                        row.append('---')
 
                 table.add_row(row)
 
