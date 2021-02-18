@@ -2,7 +2,7 @@ compiler: Microsoft (R) C/C++ Optimizing Compiler Version 19.16.27023.1 for x86
 cmdline: /O2 /arch:AVX2
 
 accumulate_custom_epi32: yes
-accumulate_custom_epi8: yes
+accumulate_custom_epi8: no
 accumulate_epi32: yes
 accumulate_epi8: yes
 all_of_epi32: no
