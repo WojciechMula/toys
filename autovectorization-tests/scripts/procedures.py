@@ -3,16 +3,16 @@
 import sys
 
 PROCEDURES = {
-    'accumulate_custom.cpp' : {
+    'accumulate_default.cpp' : {
         'title'             : "accumulate --- default",
         'link'              : 'https://en.cppreference.com/w/cpp/algorithm/accumulate',
-        'procedures'        : ["accumulate_custom_epi8", "accumulate_custom_epi32"],
+        'procedures'        : ["accumulate_epi8", "accumulate_epi32"],
     },
 
-    'accumulate_default.cpp' : {
+    'accumulate_custom.cpp' : {
         'title'             : "accumulate --- custom",
         'link'              : 'https://en.cppreference.com/w/cpp/algorithm/accumulate',
-        'procedures'        : ["accumulate_epi8", "accumulate_epi32"],
+        'procedures'        : ["accumulate_custom_epi8", "accumulate_custom_epi32"],
     },
 
     'all_of.cpp'            : {
