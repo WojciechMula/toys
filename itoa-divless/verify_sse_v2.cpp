@@ -1,4 +1,4 @@
-#include "itoa_divless_sse.h"
+#include "itoa_divless_sse_v2.h"
 
 #include <vector>
 #include <cstring>
@@ -25,7 +25,7 @@ int main() {
 
     for (const uint32_t x: quick_test) {
 
-        itoa_divless_sse(x, result);
+        itoa_divless_sse_v2(x, result);
         sprintf(expected, "%016u", x);
         if (memcmp(result, expected, 16) != 0) {
             printf("FAILED for %u\n", x);
@@ -40,7 +40,7 @@ int main() {
     for (uint64_t i=0; i <= 0xffffffff; i++) {
         const uint32_t x = i;
 
-        itoa_divless_sse(x, result);
+        itoa_divless_sse_v2(x, result);
         sprintf(expected, "%016u", x);
         if (memcmp(result, expected, 16) != 0) {
             printf("FAILED for %u\n", x);
