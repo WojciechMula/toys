@@ -1,7 +1,7 @@
 FLAGS=-Wall -Wextra -std=c++11 -march=native -O3
 
 
-ALL: verify verify_sse
+ALL: verify verify_sse verify_bcd_add
 
 verify: verify.cpp itoa_divless.o
 	$(CXX) $(FLAGS) itoa_divless.o verify.cpp -o verify
@@ -20,6 +20,9 @@ itoa_divless_sse.o: itoa_divless_sse_table.h itoa_divless_sse.h itoa_divless_sse
 
 itoa_divless_sse_table.h: itoa_divless_sse.py
 	./itoa_divless_sse.py
+
+verify_bcd_add: verify_bcd_add.cpp 
+	$(CXX) $(FLAGS) verify_bcd_add.cpp -o $@
 
 clean:
 	$(RM) verify verify_sse itoa_divless.o itoa_divless_sse.o
