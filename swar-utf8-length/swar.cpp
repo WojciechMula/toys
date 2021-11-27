@@ -18,9 +18,11 @@ size_t swar_count_code_points(const char* buf, size_t len) {
         const uint64_t t3 = t2 + t2;                        //  1000.0000   1000.0000    0000.0000    0000.0000
         const uint64_t t4 = t0 & t3;                        //  1000.0000   0000.0000    0000.0000    0000.000
 
-        // we're counting evertyhing but continuation bytes
-        count += 8 - __builtin_popcountll(t4);
+        count += __builtin_popcountll(t4);
     }
+
+    // we're counting everything but continuation bytes
+    count = 8 * (len / 8) - count;
 
     return count + ((len % 8) ? count_code_points((const char*)end, len % 8) : 0);
 }

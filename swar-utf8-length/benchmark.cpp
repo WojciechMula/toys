@@ -29,7 +29,6 @@ private:
 
         BEST_TIME(/**/, utf8_code_points(buffer, sizeof(buffer)), name, repeat, size);
     }
-
 };
 
 int main() {

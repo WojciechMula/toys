@@ -8,7 +8,7 @@ class Test {
 
 public:
     bool run() {
-        return test("swar", swar_count_code_points);
+        return test("SWAR", swar_count_code_points);
     }
 
 private:
