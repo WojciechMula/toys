@@ -1,0 +1,5 @@
+*.o
+a.out
+validate
+unittest
+benchmark
