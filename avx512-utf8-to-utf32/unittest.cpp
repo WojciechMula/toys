@@ -22,8 +22,12 @@ public:
 
     bool run() {
         prepare_input();
-        avx512_utf8_to_utf32((const char*)input.get(), input_size, output.get());
-        const bool ret = compare();
+
+        bool ret = true;
+
+        ret = test("AVX512F (ver1)", avx512_utf8_to_utf32__version1) and ret;
+        ret = test("AVX512F (ver2)", avx512_utf8_to_utf32__version2) and ret;
+
         if (ret)
             puts("All OK");
 
@@ -57,6 +61,19 @@ private:
         }
 
         return 0;
+    }
+
+    template <typename FUN>
+    bool test(const char* name, FUN utf8_to_utf32) {
+        printf("%-15s", name);
+        fflush(stdout);
+
+        utf8_to_utf32((const char*)input.get(), input_size, output.get());
+        const bool ret = compare();
+        if (ret)
+            puts("OK");
+
+        return ret;
     }
 
     bool compare() const {

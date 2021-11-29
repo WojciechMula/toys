@@ -1,5 +1,6 @@
 *.o
 a.out
-validate
+validate-byte-expand
+validate-utf8-to-utf32
 unittest
 benchmark

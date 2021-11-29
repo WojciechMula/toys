@@ -17,10 +17,10 @@ int main() {
 
         if (buf[0] != character) {
             printf("failed for %u: result=%u\n", character, buf[0]);
-            return 1;
+            return EXIT_FAILURE;
         }
     }
 
     puts("All OK");
-    return 0;
+    return EXIT_SUCCESS;
 }

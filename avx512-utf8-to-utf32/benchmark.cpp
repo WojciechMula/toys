@@ -25,15 +25,16 @@ public:
     void run() {
         prepare_input();
 
-        test("AVX512F", avx512_utf8_to_utf32);
+        test("AVX512F (ver1)", avx512_utf8_to_utf32__version1);
+        test("AVX512F (ver2)", avx512_utf8_to_utf32__version2);
     }
 
 private:
     template <typename FUN>
     void test(const char* name, FUN utf8_to_utf32) {
 
-        const size_t repeat = 1;
-        const size_t size = 1;
+        const size_t repeat = 10000;
+        const size_t size = input_size;
 
         BEST_TIME(/**/, utf8_to_utf32((const char*)input.get(), input_size, output.get()), name, repeat, size);
     }
