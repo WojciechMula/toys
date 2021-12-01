@@ -25,8 +25,9 @@ public:
 
         bool ret = true;
 
-        ret = test("AVX512F (ver1)", avx512_utf8_to_utf32__version1) and ret;
-        ret = test("AVX512F (ver2)", avx512_utf8_to_utf32__version2) and ret;
+        //ret = test("AVX512F (ver1)", avx512_utf8_to_utf32__version1) and ret;
+        //ret = test("AVX512F (ver2)", avx512_utf8_to_utf32__version2) and ret;
+        ret = test("AVX512F (ver3)", avx512_utf8_to_utf32__version3) and ret;
 
         if (ret)
             puts("All OK");
