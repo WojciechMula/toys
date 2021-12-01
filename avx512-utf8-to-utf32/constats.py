@@ -99,6 +99,26 @@ def main():
     ]
     print_constants('expand_ver2', expand_ver2, 1)
 
+    shift_left_v3 = [
+        7, # 0000 - ASCII
+        7, # 0001 - ASCII 
+        7, # 0010 - ASCII
+        7, # 0011 - ASCII
+        7, # 0100 - ASCII
+        7, # 0101 - ASCII
+        7, # 0110 - ASCII
+        7, # 0111 - ASCII
+        0, # 1000 - continuation byte (never processed)
+        0, # 1001 - continuation byte (never processed)
+        0, # 1010 - continuation byte (never processed)
+        0, # 1011 - continuation byte (never processed)
+        9, # 1100 - 2-byte char
+        9, # 1101 - 2-byte char
+       10, # 1110 - 3-byte char
+       11, # 1111 - 4-byte char
+    ]
+    print_constants('shift_left_v3', shift_left_v3, 4)
+
 
 if __name__ == '__main__':
     main()

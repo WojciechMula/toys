@@ -10,8 +10,9 @@ class Test {
 public:
     bool run() {
         bool ret = true;
-        //ret = test("AVX512 (ver1)", avx512_utf8_to_utf32__aux__version1) and ret;
+        ret = test("AVX512 (ver1)", avx512_utf8_to_utf32__aux__version1) and ret;
         ret = test("AVX512 (ver2)", avx512_utf8_to_utf32__aux__version2) and ret;
+        ret = test("AVX512 (ver3)", avx512_utf8_to_utf32__aux__version3) and ret;
         if (ret)
             puts("All OK");
 
