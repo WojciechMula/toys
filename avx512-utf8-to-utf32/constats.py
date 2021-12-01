@@ -119,6 +119,20 @@ def main():
     ]
     print_constants('shift_left_v3', shift_left_v3, 4)
 
+    # merged shift_left_v3 and shift_right
+    shift_left_right_v4 = [(right << 3) | (max(left - 7, 0)) for left, right in zip(shift_left_v3, shift_right)]
+    for byte, left, right in zip(shift_left_right_v4, shift_left_v3, shift_right):
+        assert byte < 256
+        l = (byte & 0x7) + 7
+        continue
+        if left != 0:
+            assert l == left
+
+        r = (byte >> 3)
+        assert r == right
+
+    print_constants('shift_left_right_v4', shift_left_right_v4, 4)
+
 
 if __name__ == '__main__':
     main()

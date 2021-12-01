@@ -13,6 +13,7 @@ public:
         ret = test("AVX512 (ver1)", avx512_utf8_to_utf32__aux__version1) and ret;
         ret = test("AVX512 (ver2)", avx512_utf8_to_utf32__aux__version2) and ret;
         ret = test("AVX512 (ver3)", avx512_utf8_to_utf32__aux__version3) and ret;
+        ret = test("AVX512 (ver4)", avx512_utf8_to_utf32__aux__version4) and ret;
         if (ret)
             puts("All OK");
 
@@ -34,7 +35,7 @@ private:
             _mm512_storeu_si512((__m512i*)buf, output);
 
             if (buf[0] != character) {
-                printf("failed for %u: result=%u\n", character, buf[0]);
+                printf("failed for %u: result=%u (%08x)\n", character, buf[0], buf[0]);
                 return false;
             }
         }
