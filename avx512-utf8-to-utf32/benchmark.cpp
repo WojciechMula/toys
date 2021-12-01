@@ -33,7 +33,7 @@ private:
     template <typename FUN>
     void test(const char* name, FUN utf8_to_utf32) {
 
-        const size_t repeat = 10000;
+        const size_t repeat = 1;
         const size_t size = input_size;
 
         BEST_TIME(/**/, utf8_to_utf32((const char*)input.get(), input_size, output.get()), name, repeat, size);
@@ -69,7 +69,9 @@ private:
 
 };
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc > 2)
+        return 0;
 
     for (size_t size: {512, 1024, 4096}) {
         Benchmark bench{size};
