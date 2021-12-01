@@ -21,9 +21,6 @@ size_t avx512_utf8_to_utf32(EXPANDFN expandfn, const char* str, size_t len, uint
                byte 0 of reg              byte 63 of reg
 
               It means, we are touching 16+3 = 19 bytes
-
-              XXX: gather is slow, we may consider some scalar code or -- better --
-                   use _mm512_permutex2var_epi8()
         */
         const __m512i input = expandfn(ptr);
 
@@ -38,7 +35,8 @@ size_t avx512_utf8_to_utf32(EXPANDFN expandfn, const char* str, size_t len, uint
         const int valid_count = __builtin_popcount(valid);
 
         // 3. Convert words into UCS-32
-        //    (XXX: would passing `valid` mask speed things up?)
+        //    (XXX: would passing `valid` mask speed things up?
+        //     answer: no)
         const __m512i utf32 = avx512_utf8_to_utf32__aux__version1(input);
 
         // 4. Pack only valid words
