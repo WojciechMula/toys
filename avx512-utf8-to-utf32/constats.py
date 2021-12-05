@@ -22,6 +22,15 @@ def print_constants(name, bytes, rep=1):
     print(");")
  
 
+def print_rotate_left():
+    idx = list(range(16))
+    for _ in range(16):
+        print("{%s}," % (', '.join('%2d' % v for v in idx)))
+        z = idx[-1]
+        del idx[-1]
+        idx = [z] + idx
+
+
 def main():
     bswap_lookup = [
         3, 2, 1, 0,
@@ -132,6 +141,8 @@ def main():
         assert r == right
 
     print_constants('shift_left_right_v4', shift_left_right_v4, 4)
+
+    print_rotate_left()
 
 
 if __name__ == '__main__':

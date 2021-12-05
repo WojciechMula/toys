@@ -1,6 +1,7 @@
 #include "avx512-utf8-to-utf32.h"
 
 #include <cstdio>
+#include "uint32-accumulator.h"
 
 __m512i avx512_utf8_to_utf32__aux__version1(__m512i utf8);
 __m512i avx512_utf8_to_utf32__aux__version2(__m512i utf8);
@@ -123,6 +124,78 @@ size_t avx512_utf8_to_utf32__version3(const char* str, size_t len, uint32_t* dwo
             output += valid_count;
             ptr += 16;
         }
+    }
+
+    // TODO: process the tail
+
+    return output - dwords;
+}
+
+size_t avx512_utf8_to_utf32__version4(const char* str, size_t len, uint32_t* dwords) {
+    const char* ptr = str;
+    const char* end = ptr + len;
+
+    uint32_t* output = dwords;
+
+    if (len > 64) {
+
+        // load 16 bytes: [abcdefghijklmnop]
+        __m512i prev = _mm512_broadcast_i64x2(_mm_loadu_si128((const __m128i*)ptr));
+        ptr += 16;
+
+        RegisterAccumulator acc;
+
+        auto convert_to_utf32 = [&output](__m512i utf8, int count) {
+            // 3. Convert words into UCS-32
+            const __m512i utf32 = avx512_utf8_to_utf32__aux__version1(utf8);
+
+            // 4. Store them
+            _mm512_storeu_si512((__m512i*)output, utf32);
+
+            output += count;
+        };
+
+        while (ptr + 16 < end) {
+            // load next 16 bytes: [qrstu....]
+            const __m512i curr = _mm512_broadcast_i64x2(_mm_loadu_si128((const __m128i*)ptr));
+
+            /* 1. Load all possible 4-byte substring into an AVX512 register
+                  from bytes a..p (16) and q..t (4). For these bytes
+                  we create following 32-bit lanes
+
+                  [abcd|bcde|cdef|defg|efgh|...]
+                   ^                          ^
+                   byte 0 of reg              byte 63 of reg */
+
+            const __m512i merged = _mm512_mask_mov_epi32(prev, 0x1000, curr);
+            const __m512i expand_ver2 = _mm512_setr_epi64(
+                0x0403020103020100,
+                0x0605040305040302,
+                0x0807060507060504,
+                0x0a09080709080706,
+                0x0c0b0a090b0a0908,
+                0x0e0d0c0b0d0c0b0a,
+                0x000f0e0d0f0e0d0c,
+                0x0201000f01000f0e
+            );
+
+            const __m512i input = _mm512_shuffle_epi8(merged, expand_ver2);
+            prev = curr;
+
+            /*
+                2. Classify which words contain valid UTF-8 characters.
+                   We test if the 0th byte is not a continuation byte (0b10xxxxxx) */
+            __mmask16 valid;
+            {
+                const __m512i t0 = _mm512_and_si512(input, _mm512_set1_epi32(0xc0));
+                valid = _mm512_cmpneq_epu32_mask(t0, _mm512_set1_epi32(0x80));
+            }
+
+            acc.add(input, valid, convert_to_utf32);
+            ptr += 16;
+        }
+
+        acc.flush(convert_to_utf32);
     }
 
     // TODO: process the tail
