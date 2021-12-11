@@ -2,5 +2,6 @@
 a.out
 validate-byte-expand
 validate-utf8-to-utf32
+validate-avx512-validate
 unittest
 benchmark

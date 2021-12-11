@@ -1,6 +1,6 @@
-FLAGS=-Wall -Wextra -pedantic -Wfatal-errors -O3 -march=icelake-server -flto
+FLAGS=-Wall -Wextra -pedantic -Wfatal-errors -O3 -march=icelake-server
 
-ALL=validate-utf8-to-utf32 validate-byte-expand unittest benchmark
+ALL=validate-utf8-to-utf32 validate-byte-expand validate-avx512-validate unittest benchmark
 OBJ=utf8.o avx512-utf8-to-utf32.o uint32-accumulator.o
 
 all: $(ALL)
@@ -10,6 +10,9 @@ validate-utf8-to-utf32: validate-utf8-to-utf32.cpp utf8.o avx512-utf8-to-utf32.o
 
 validate-byte-expand: validate-byte-expand.cpp utf8.o avx512-utf8-to-utf32.o
 	$(CXX) $(FLAGS) avx512-utf8-to-utf32.o utf8.o $@.cpp -o $@
+
+validate-avx512-validate: validate-avx512-validate.cpp utf8.o avx512-utf8-validate.o
+	$(CXX) $(FLAGS) avx512-utf8-validate.o utf8.o $@.cpp -o $@
 
 unittest: unittest.cpp $(OBJ)
 	$(CXX) $(FLAGS) $(OBJ) $@.cpp -o $@
@@ -25,6 +28,9 @@ avx512-utf8-to-utf32.o: avx512-utf8-to-utf32.h avx512-utf8-to-utf32.cpp
 
 uint32-accumulator.o: uint32-accumulator.h uint32-accumulator.cpp
 	$(CXX) $(FLAGS) uint32-accumulator.cpp -c -o $@
+
+avx512-utf8-validate.o: avx512-utf8-to-utf32.h avx512-utf8-validate.cpp
+	$(CXX) $(FLAGS) avx512-utf8-validate.cpp  -c -o $@
 
 clean:
 	$(RM) $(ALL) *.o
