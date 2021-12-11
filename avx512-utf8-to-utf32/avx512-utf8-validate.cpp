@@ -64,22 +64,33 @@
     Note that expected = mask >> 1, thus only `mask` is stored.
 */
 
+/*
+    The input data is 20 bytes (a..t):
+
+    bytes: abcdefghijklmnop qrst
+    index: 0123456789abcdef 0124
+
+    We validate the first 16 bytes (a..p), and need
+    extra four bytes after the byte `p`: the bytes q..t.
+*/
 bool avx512_utf8_structure_validate_16_bytes(const char* ptr, uint16_t& leading_bytes, uint16_t& valid_chars) {
-    /*
-        The input data is 20 bytes (a..t):
-
-        bytes: abcdefghijklmnop qrst
-        index: 0123456789abcdef 0124
-
-        We validate the first 16 bytes (a..p), and need
-        extra four bytes after the byte `p`: the bytes q..t.
-    */
-
     // 1. Load leading 16 bytes (a..p)
     const __m128i bytes_ap_128 = _mm_loadu_si128((const __m128i*)ptr);
 
     // 2. Load the tail 4 bytes (q..t)
     const __m128i bytes_qt_128 = _mm_loadu_si128((const __m128i*)(ptr + 16));
+
+    return avx512_utf8_structure_validate_16_bytes(bytes_ap_128, bytes_qt_128, leading_bytes, valid_chars);
+}
+
+bool avx512_utf8_structure_validate_16_bytes(__m128i bytes_ap_128, __m128i bytes_qt_128) {
+    uint16_t unused1;
+    uint16_t unused2;
+
+    return avx512_utf8_structure_validate_16_bytes(bytes_ap_128, bytes_qt_128, unused1, unused2);
+}
+
+bool avx512_utf8_structure_validate_16_bytes(__m128i bytes_ap_128, __m128i bytes_qt_128, uint16_t& leading_bytes, uint16_t& valid_chars) {
 
     // 3. Produce bitmask of continuation bytes for input in range b..q
     //    Continuation bytes have the following bit pattern: 10xxx.xxxx
@@ -165,7 +176,7 @@ bool avx512_utf8_structure_validate_16_bytes(const char* ptr, uint16_t& leading_
 
                         0x00'd800   0x00'dfff
 */
-__mmask16 avx512_utf8_validate_ranges(__m512i char_class, __m512i decoded) {
+__mmask16 avx512_utf8_validate_ranges(__m512i char_class, __m512i utf32) {
     // 1. Build minimum value
     //    We start with the min for 4-byte char (single bit set)
     //    and shift it right by the amount depeding on character class.
@@ -272,13 +283,13 @@ __mmask16 avx512_utf8_validate_ranges(__m512i char_class, __m512i decoded) {
 
     // 4. check range min-max
     __mmask16 r1;
-    r1 = _mm512_cmpge_epu32_mask(decoded, min);
-    r1 = _mm512_mask_cmple_epu32_mask(r1, decoded, max);
+    r1 = _mm512_cmpge_epu32_mask(utf32, min);
+    r1 = _mm512_mask_cmple_epu32_mask(r1, utf32, max);
 
     // 5. check surrogate pairs range
     __mmask16 r2;
-    r2 = _mm512_cmpge_epu32_mask(decoded, _mm512_set1_epi32(0xd800));
-    r2 = _mm512_mask_cmple_epu32_mask(r2, decoded, _mm512_set1_epi32(0xdfff));
+    r2 = _mm512_cmpge_epu32_mask(utf32, _mm512_set1_epi32(0xd800));
+    r2 = _mm512_mask_cmple_epu32_mask(r2, utf32, _mm512_set1_epi32(0xdfff));
 
     return _kandn_mask16(r2, r1);
 }
