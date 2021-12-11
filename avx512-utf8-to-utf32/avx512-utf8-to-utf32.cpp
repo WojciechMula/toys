@@ -222,32 +222,34 @@ __m512i avx512_expand__version2(const char* ptr) {
 
     const __m512i t2 = _mm512_mask_mov_epi32(t0, 0x1000, t1);
 
-    /*
-    lane{0,1,2} have got bytes: [  0,  1,  2,  3,  4,  5,  6,  8,  9, 10, 11, 12, 13, 14, 15]
-    lane3 has got bytes:        [ 16, 17, 18, 19,  4,  5,  6,  8,  9, 10, 11, 12, 13, 14, 15]
-    expand_ver2 = [
-        # lane 0:
-        0, 1, 2, 3,
-        1, 2, 3, 4,
-        2, 3, 4, 5,
-        3, 4, 5, 6,
-        # lane 1:
-        4, 5, 6, 7,
-        5, 6, 7, 8,
-        6, 7, 8, 9,
-        7, 8, 9, 10,
-        # lane 2:
-         8,  9, 10, 11,
-         9, 10, 11, 12,
-        10, 11, 12, 13,
-        11, 12, 13, 14,
+    /** pshufb
+        # lane{0,1,2} have got bytes: [  0,  1,  2,  3,  4,  5,  6,  8,  9, 10, 11, 12, 13, 14, 15]
+        # lane3 has got bytes:        [ 16, 17, 18, 19,  4,  5,  6,  8,  9, 10, 11, 12, 13, 14, 15]
 
-        # lane 3 order: 13, 14, 15, 16 14, 15, 16, 17, 15, 16, 17, 18, 16, 17, 18, 19
-        12, 13, 14, 15,
-        13, 14, 15,  0,
-        14, 15,  0,  1,
-        15,  0,  1,  2,
-    ] */
+        expand_ver2 = [
+            # lane 0:
+            0, 1, 2, 3,
+            1, 2, 3, 4,
+            2, 3, 4, 5,
+            3, 4, 5, 6,
+            # lane 1:
+            4, 5, 6, 7,
+            5, 6, 7, 8,
+            6, 7, 8, 9,
+            7, 8, 9, 10,
+            # lane 2:
+             8,  9, 10, 11,
+             9, 10, 11, 12,
+            10, 11, 12, 13,
+            11, 12, 13, 14,
+
+            # lane 3 order: 13, 14, 15, 16 14, 15, 16, 17, 15, 16, 17, 18, 16, 17, 18, 19
+            12, 13, 14, 15,
+            13, 14, 15,  0,
+            14, 15,  0,  1,
+            15,  0,  1,  2,
+        ]
+    */
     const __m512i expand_ver2 = _mm512_setr_epi64(
         0x0403020103020100,
         0x0605040305040302,
@@ -286,7 +288,12 @@ __m512i avx512_utf8_to_utf32__aux__version1(__m512i utf8) {
         |110a.aaaa|10bb.bbbb|????.????|????.????|
         |0aaa.aaaa|????.????|????.????|????.????| */
     __m512i values;
-    // 4 * [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12]
+    /** pshufb
+
+        bswap_lookup = 4 * [3, 2, 1, 0,
+                            7, 6, 5, 4,
+                            11, 10, 9, 8,
+                            15, 14, 13, 12] */
     const __m512i bswap_lookup = _mm512_setr_epi64(
         0x0405060700010203,
         0x0c0d0e0f08090a0b,
@@ -354,7 +361,32 @@ __m512i avx512_utf8_to_utf32__aux__version1(__m512i utf8) {
         |aaaa.abbb|bbb?.????|????.????|????.?000| shift left by 3
         |aaaa.aaa?|????.????|????.????|????.???0| shift left by 1 */
     {
-        // 4 * [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 3, 3, 4, 5]
+        /** pshufb
+
+        continuation = 0
+        ascii    = 1
+        _2_bytes = 3
+        _3_bytes = 4
+        _4_bytes = 5
+
+        shift_left = 4 * [
+            ascii, # 0000
+            ascii, # 0001
+            ascii, # 0010
+            ascii, # 0011
+            ascii, # 0100
+            ascii, # 0101
+            ascii, # 0110
+            ascii, # 0111
+            continuation, # 1000
+            continuation, # 1001
+            continuation, # 1010
+            continuation, # 1011
+            _2_bytes, # 1100
+            _2_bytes, # 1101
+            _3_bytes, # 1110
+            _4_bytes, # 1111
+        ] */
         const __m512i shift_left = _mm512_setr_epi64(
             0x0101010101010101,
             0x0504030300000000,
@@ -378,7 +410,32 @@ __m512i avx512_utf8_to_utf32__aux__version1(__m512i utf8) {
         |0000.0000|0000.0000|0000.0aaa|aabb.bbbb| shift right by 21
         |0000.0000|0000.0000|0000.0000|0aaa.aaaa| shift right by 25 */
     {
-        // 4 * [25, 25, 25, 25, 25, 25, 25, 25, 0, 0, 0, 0, 21, 21, 16, 11]
+        /** pshufb
+
+        continuation = 0
+        ascii    = 25
+        _2_bytes = 21
+        _3_bytes = 16
+        _4_bytes = 11
+
+        shift_right = 4 * [
+            ascii, # 0000
+            ascii, # 0001
+            ascii, # 0010
+            ascii, # 0011
+            ascii, # 0100
+            ascii, # 0101
+            ascii, # 0110
+            ascii, # 0111
+            continuation, # 1000
+            continuation, # 1001
+            continuation, # 1010
+            continuation, # 1011
+            _2_bytes, # 1100
+            _2_bytes, # 1101
+            _3_bytes, # 1110
+            _4_bytes, # 1111
+        ] */
         const __m512i shift_right = _mm512_setr_epi64(
             0x1919191919191919,
             0x0b10151500000000,
@@ -441,7 +498,12 @@ __m512i avx512_utf8_to_utf32__aux__version2(__m512i utf8) {
         |110a.aaaa|10bb.bbbb|????.????|????.????|
         |0aaa.aaaa|????.????|????.????|????.????| */
     __m512i values;
-    // 4 * [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12]
+    /** pshufb
+
+        bswap_lookup = 4 * [3, 2, 1, 0,
+                            7, 6, 5, 4,
+                            11, 10, 9, 8,
+                            15, 14, 13, 12] */
     const __m512i bswap_lookup = _mm512_setr_epi64(
         0x0405060700010203,
         0x0c0d0e0f08090a0b,
@@ -514,7 +576,6 @@ __m512i avx512_utf8_to_utf32__aux__version2(__m512i utf8) {
         |aaaa.abbb|bbb?.????|????.????|????.?000| shift left by 3
         |aaaa.aaa?|????.????|????.????|????.???0| shift left by 1 */
     {
-        // 4 * [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 3, 3, 4, 5]
         const __m512i shift_left = _mm512_setr_epi64(
             0x0101010101010101,
             0x0504030300000000,
@@ -538,7 +599,6 @@ __m512i avx512_utf8_to_utf32__aux__version2(__m512i utf8) {
         |0000.0000|0000.0000|0000.0aaa|aabb.bbbb| shift right by 21
         |0000.0000|0000.0000|0000.0000|0aaa.aaaa| shift right by 25 */
     {
-        // 4 * [25, 25, 25, 25, 25, 25, 25, 25, 0, 0, 0, 0, 21, 21, 16, 11]
         const __m512i shift_right = _mm512_setr_epi64(
             0x1919191919191919,
             0x0b10151500000000,
@@ -621,7 +681,32 @@ __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8) {
         |aaaa.abbb|bbb?.????|????.???0|0000.0000| 2-byte char -- by 9
         |aaaa.aaa?|????.????|????.????|?000.0000| ASCII char -- by 7 */
     {
-        // 4 * [7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 9, 9, 10, 11]
+        /** pshufb
+
+        continuation = 0
+        ascii    = 7
+        _2_bytes = 9
+        _3_bytes = 10
+        _4_bytes = 11
+
+        shift_left_v3 = 4 * [
+            ascii, # 0000
+            ascii, # 0001
+            ascii, # 0010
+            ascii, # 0011
+            ascii, # 0100
+            ascii, # 0101
+            ascii, # 0110
+            ascii, # 0111
+            continuation, # 1000
+            continuation, # 1001
+            continuation, # 1010
+            continuation, # 1011
+            _2_bytes, # 1100
+            _2_bytes, # 1101
+            _3_bytes, # 1110
+            _4_bytes, # 1111
+        ] */
         const __m512i shift_left_v3 = _mm512_setr_epi64(
             0x0707070707070707,
             0x0b0a090900000000,
@@ -722,8 +807,46 @@ __m512i avx512_utf8_to_utf32__aux__version4(__m512i utf8) {
                                                _mm512_set1_epi32(0x0000000f));
 
     /* 5. Get packed shift amounts to use in the following steps */
-    // 4 * [200, 200, 200, 200, 200, 200, 200, 200, 0, 0, 0, 0, 170, 170, 131, 92]
-    const __m512i shift_left_right_v4 = _mm512_setr_epi64(
+    /** pshufb
+
+    ascii_left_v3    = 7
+    _2_bytes_left_v3 = 9
+    _3_bytes_left_v3 = 10
+    _4_bytes_left_v3 = 11
+
+    ascii_right      = 25
+    _2_bytes_right   = 21
+    _3_bytes_right   = 16
+    _4_bytes_right   = 11
+
+    def build(left, right):
+        return (right << 3) | (max(left - 7, 0))
+
+    continuation = 0
+    ascii    = build(ascii_left_v3, ascii_right)
+    _2_bytes = build(_2_bytes_left_v3, _2_bytes_right)
+    _3_bytes = build(_3_bytes_left_v3, _3_bytes_right)
+    _4_bytes = build(_4_bytes_left_v3, _4_bytes_right)
+
+    shift_left_v3 = 4 * [
+        ascii, # 0000
+        ascii, # 0001
+        ascii, # 0010
+        ascii, # 0011
+        ascii, # 0100
+        ascii, # 0101
+        ascii, # 0110
+        ascii, # 0111
+        continuation, # 1000
+        continuation, # 1001
+        continuation, # 1010
+        continuation, # 1011
+        _2_bytes, # 1100
+        _2_bytes, # 1101
+        _3_bytes, # 1110
+        _4_bytes, # 1111
+    ] */
+    const __m512i shift_left_v3 = _mm512_setr_epi64(
         0xc8c8c8c8c8c8c8c8,
         0x5c83aaaa00000000,
         0xc8c8c8c8c8c8c8c8,
