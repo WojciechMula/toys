@@ -14,6 +14,9 @@ validate-byte-expand: validate-byte-expand.cpp utf8.o avx512-utf8-to-utf32.o
 validate-avx512-validate: validate-avx512-validate.cpp utf8.o avx512-utf8-validate.o
 	$(CXX) $(FLAGS) avx512-utf8-validate.o utf8.o $@.cpp -o $@
 
+validate-avx512-validate-range: validate-avx512-validate-range.cpp utf8.o avx512-utf8-validate.o
+	$(CXX) $(FLAGS) avx512-utf8-validate.o utf8.o $@.cpp -o $@
+
 unittest: unittest.cpp $(OBJ)
 	$(CXX) $(FLAGS) $(OBJ) $@.cpp -o $@
 

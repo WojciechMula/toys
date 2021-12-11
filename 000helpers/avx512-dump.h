@@ -87,9 +87,19 @@ void dump_epu32_hex(__m512i v) {
     uint32_t tmp[16];
 
     _mm512_storeu_si512((__m512i*)tmp, v);
-    printf("[ %x", tmp[0]);
+    printf("[ %08x", tmp[0]);
     for (int i=1; i < 16; i++)
-        printf(" | %x", tmp[i]);
+        printf(" | %08x", tmp[i]);
 
     printf(" ]\n");
+}
+
+void dump_mask16(__mmask16 mask) {
+    uint16_t m = mask;
+    for (int i=16; i >= 0; i--) {
+        const uint16_t bit = ((1 << i) & m);
+        putchar(bit ? '1' : '0');
+    }
+
+    printf(" (%02x)\n", m);
 }

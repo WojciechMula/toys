@@ -151,3 +151,134 @@ bool avx512_utf8_structure_validate_16_bytes(const char* ptr, uint16_t& leading_
     return (leading_bytes & 0x1) // detect strings starting with continuation bytes
        and (leading_bytes == valid_chars);
 }
+
+
+/*
+    Valid ranges:
+                        min         max
+    ASCII               0x00'0000   0x00'007f
+    2-byte chars        0x00'0080   0x00'07ff
+    3-byte chars        0x00'0800   0x00'ffff
+    4-byte chars        0x01'0000   0x10'ffff
+
+    Excluded range for surrogate pairs:
+
+                        0x00'd800   0x00'dfff
+*/
+__mmask16 avx512_utf8_validate_ranges(__m512i char_class, __m512i decoded) {
+    // 1. Build minimum value
+    //    We start with the min for 4-byte char (single bit set)
+    //    and shift it right by the amount depeding on character class.
+    __m512i min = _mm512_set1_epi32(0x0100000);
+
+    /** pshufb
+
+        continuation = 0x80
+        ascii    = 32       # 0x0100000 >> 32 = 0x0000 - set to zero (vpsrlv guarantees this)
+        _2_bytes = 13       # 0x0100000 >> 13 = 0x0800
+        _3_bytes = 9        # 0x0100000 >> 9  = 0x8000
+        _4_bytes = 0        # 0x0100000                - keep intact
+
+        min_shifts = 4 * [
+            ascii, # 0000
+            ascii, # 0001
+            ascii, # 0010
+            ascii, # 0011
+            ascii, # 0100
+            ascii, # 0101
+            ascii, # 0110
+            ascii, # 0111
+            continuation, # 1000
+            continuation, # 1001
+            continuation, # 1010
+            continuation, # 1011
+            _2_bytes, # 1100
+            _2_bytes, # 1101
+            _3_bytes, # 1110
+            _4_bytes, # 1111
+        ]
+    */
+    const __m512i min_shifts = _mm512_setr_epi64(
+        0x2020202020202020,
+        0x00090d0d80808080,
+        0x2020202020202020,
+        0x00090d0d80808080,
+        0x2020202020202020,
+        0x00090d0d80808080,
+        0x2020202020202020,
+        0x00090d0d80808080
+    );
+
+    {
+        __m512i shift;
+        shift = _mm512_shuffle_epi8(min_shifts, char_class);
+        // Note: modify char_class to keep 32-bit values 0x8080800Y, thanks
+        //       to that we get rid of the masking.
+        shift = _mm512_and_si512(shift, _mm512_set1_epi32(0xff));
+        min = _mm512_srlv_epi32(min, shift);
+    }
+
+    // 2. Build maximum value
+    //    We start with the max for 4-byte char and shift it **left** by the amount
+    //    depeding on character class. Then the negated-and-shifted mask is used
+    //    to reset higher order bits: max andnot (max << k)
+    __m512i max = _mm512_set1_epi32(0x010ffff);
+
+    /** pshufb
+
+        continuation = 0x80
+        ascii    = 7        # 0x010ffff andnot 0x087fff80 = 0x0000007f
+        _2_bytes = 11       # 0x010ffff andnot 0x87fff800 = 0x000007ff
+        _3_bytes = 16       # 0x010ffff andnot 0xffff0000 = 0x0000ffff
+        _4_bytes = 32       # 0x010ffff andnot 0x00000000 = 0x0010ffff -- keep intact
+
+        max_shifts = 4 * [
+            ascii, # 0000
+            ascii, # 0001
+            ascii, # 0010
+            ascii, # 0011
+            ascii, # 0100
+            ascii, # 0101
+            ascii, # 0110
+            ascii, # 0111
+            continuation, # 1000
+            continuation, # 1001
+            continuation, # 1010
+            continuation, # 1011
+            _2_bytes, # 1100
+            _2_bytes, # 1101
+            _3_bytes, # 1110
+            _4_bytes, # 1111
+        ]
+    */
+    const __m512i max_shifts = _mm512_setr_epi64(
+        0x0707070707070707,
+        0x20100b0b80808080,
+        0x0707070707070707,
+        0x20100b0b80808080,
+        0x0707070707070707,
+        0x20100b0b80808080,
+        0x0707070707070707,
+        0x20100b0b80808080
+    );
+
+    {
+        __m512i shift;
+        shift = _mm512_shuffle_epi8(max_shifts, char_class);
+        shift = _mm512_and_si512(shift, _mm512_set1_epi32(0xff));
+        const __m512i shifted = _mm512_sllv_epi32(max, shift);
+        max = _mm512_andnot_si512(shifted, max);
+    }
+
+    // 4. check range min-max
+    __mmask16 r1;
+    r1 = _mm512_cmpge_epu32_mask(decoded, min);
+    r1 = _mm512_mask_cmple_epu32_mask(r1, decoded, max);
+
+    // 5. check surrogate pairs range
+    __mmask16 r2;
+    r2 = _mm512_cmpge_epu32_mask(decoded, _mm512_set1_epi32(0xd800));
+    r2 = _mm512_mask_cmple_epu32_mask(r2, decoded, _mm512_set1_epi32(0xdfff));
+
+    return _kandn_mask16(r2, r1);
+}

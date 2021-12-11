@@ -24,9 +24,7 @@ public:
     }
 
     bool run() {
-        bool ret = true;
-
-        ret = test() and ret;
+        const bool ret = test();
 
         if (ret)
             puts("All OK");
