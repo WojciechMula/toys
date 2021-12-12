@@ -281,15 +281,17 @@ __mmask16 avx512_utf8_validate_ranges(__m512i char_class, __m512i utf32) {
         max = _mm512_andnot_si512(shifted, max);
     }
 
-    // 4. check range min-max
-    __mmask16 r1;
-    r1 = _mm512_cmpge_epu32_mask(utf32, min);
-    r1 = _mm512_mask_cmple_epu32_mask(r1, utf32, max);
+    // 4. check surrogate pairs range
+    __mmask16 not_surrogate;
+    {
+        const __m512i t0 = _mm512_and_si512(utf32, _mm512_set1_epi32(0xffff'f800));
+        not_surrogate = _mm512_cmpneq_epu32_mask(t0, _mm512_set1_epi32(0xd800));
+    }
 
-    // 5. check surrogate pairs range
-    __mmask16 r2;
-    r2 = _mm512_cmpge_epu32_mask(utf32, _mm512_set1_epi32(0xd800));
-    r2 = _mm512_mask_cmple_epu32_mask(r2, utf32, _mm512_set1_epi32(0xdfff));
+    // 5. check range min-max
+    __mmask16 in_range;
+    in_range = _mm512_mask_cmpge_epu32_mask(not_surrogate, utf32, min);
+    in_range = _mm512_mask_cmple_epu32_mask(in_range, utf32, max);
 
-    return _kandn_mask16(r2, r1);
+    return in_range;
 }
