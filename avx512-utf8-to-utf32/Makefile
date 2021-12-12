@@ -1,6 +1,6 @@
 FLAGS=-Wall -Wextra -pedantic -Wfatal-errors -O3 -march=icelake-server
 
-ALL=validate-utf8-to-utf32 validate-byte-expand validate-avx512-validate unittest benchmark
+ALL=validate-utf8-to-utf32 validate-byte-expand validate-avx512-validate unittest benchmark check
 OBJ=utf8.o avx512-utf8-to-utf32.o avx512-utf8-to-utf32-ver4.o avx512-utf8-validate.o avx512-expand.o avx512-transcode-utf8.o
 
 all: $(ALL)
@@ -18,6 +18,9 @@ validate-avx512-validate-range: validate-avx512-validate-range.cpp utf8.o avx512
 	$(CXX) $(FLAGS) avx512-utf8-validate.o utf8.o $@.cpp -o $@
 
 unittest: unittest.cpp $(OBJ)
+	$(CXX) $(FLAGS) $(OBJ) $@.cpp -o $@
+
+check: check.cpp $(OBJ)
 	$(CXX) $(FLAGS) $(OBJ) $@.cpp -o $@
 
 benchmark: benchmark.cpp $(OBJ)

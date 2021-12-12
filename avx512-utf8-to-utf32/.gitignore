@@ -6,3 +6,4 @@ validate-avx512-validate
 validate-avx512-validate-range
 unittest
 benchmark
+check
