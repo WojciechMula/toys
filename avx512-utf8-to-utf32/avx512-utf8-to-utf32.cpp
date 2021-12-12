@@ -318,9 +318,10 @@ size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPU
     if (len > 64) {
 
         // load 16 bytes: [abcdefghijklmnop]
-        __m128i  prev128   = _mm_loadu_si128((const __m128i*)ptr);
-        uint32_t prev_cont = continuation_bytes(prev128);
-        __m512i  prev = _mm512_broadcast_i64x2(prev128);
+        __m128i   prev128   = _mm_loadu_si128((const __m128i*)ptr);
+        uint32_t  prev_cont = continuation_bytes(prev128);
+        __m512i   prev      = _mm512_broadcast_i64x2(prev128);
+        __mmask16 ascii     = _mm_movemask_epi8(prev128);
         ptr += 16;
 
         while (ptr + 16 < end) {
@@ -328,6 +329,22 @@ size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPU
             const __m128i curr128 = _mm_loadu_si128((const __m128i*)ptr);
             uint32_t curr_cont = continuation_bytes(curr128);
             const __m512i curr = _mm512_broadcast_i64x2(curr128);
+            if (ascii == 0) {
+                if (UTF32)
+                    _mm512_storeu_si512((__m512i*)output, _mm512_cvtepu8_epi32(prev128));
+                else
+                    _mm256_storeu_si256((__m256i*)output, _mm256_cvtepu8_epi16(prev128));
+
+                output += 16;
+                ptr += 16;
+                prev = curr;
+                prev128 = curr128;
+                prev_cont = curr_cont;
+                ascii = _mm_movemask_epi8(curr128);
+                continue;
+            }
+
+            ascii = _mm_movemask_epi8(curr128);
 
             /* 1. Load all possible 4-byte substring into an AVX512 register
                   from bytes a..p (16) and q..t (4). For these bytes
