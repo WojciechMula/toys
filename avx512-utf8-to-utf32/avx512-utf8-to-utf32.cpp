@@ -750,6 +750,11 @@ __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8) {
     return values;
 }
 
+namespace {
+    const __m512i v_3f3f_3f7f = _mm512_set1_epi32(0x3f3f3f7f);
+    const __m512i v_0140_0140 = _mm512_set1_epi32(0x01400140);
+    const __m512i v_0001_1000 = _mm512_set1_epi32(0x00011000);
+}
 
 /*
     32-bit lanes in `char_class` have form 0x8080800N, where N is 4 higest
@@ -783,7 +788,7 @@ __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8, __m512i char_class) {
          ^^        ^^        ^^        ^
     */
     __m512i values;
-    values = _mm512_and_si512(utf8, _mm512_set1_epi32(0x3f3f3f7f));
+    values = _mm512_and_si512(utf8, v_3f3f_3f7f);
 
     /* 2. Swap and join fields A-B and C-D
 
@@ -791,7 +796,7 @@ __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8, __m512i char_class) {
         |0000.cccc|cc??.????|0001.10aa|aabb.bbbb| 3-byte char
         |0000.????|????.????|0001.0aaa|aabb.bbbb| 2-byte char
         |0000.????|????.????|000a.aaaa|aa??.????| ASCII char */
-    values = _mm512_maddubs_epi16(values, _mm512_set1_epi32(0x01400140));
+    values = _mm512_maddubs_epi16(values, v_0140_0140);
 
     /* 3. Swap and join field AB & CD
 
@@ -799,7 +804,7 @@ __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8, __m512i char_class) {
         |0000.0001|10aa.aabb|bbbb.cccc|cc??.????| 3-byte char
         |0000.0001|0aaa.aabb|bbbb.????|????.????| 2-byte char
         |0000.000a|aaaa.aa??|????.????|????.????| ASCII char */
-    values = _mm512_madd_epi16(values, _mm512_set1_epi32(0x00011000));
+    values = _mm512_madd_epi16(values, v_0001_1000);
 
     /* 4. Shift left the values by variable amounts to reset highest UTF-8 bits
         |aaab.bbbb|bccc.cccd|dddd.d000|0000.0000| 4-byte char -- by 11
@@ -1109,8 +1114,16 @@ uint32_t continuation_bytes(__m128i utf8bytes) {
 }
 
 
+namespace {
+    const __m512i v_0010_0000 = _mm512_set1_epi32(0x00100000);
+    const __m512i v_0010_ffff = _mm512_set1_epi32(0x0010ffff);
+    const __m512i v_ffff_f800 = _mm512_set1_epi32(0xfffff800);
+    const __m512i v_0000_d800 = _mm512_set1_epi32(0xd800);
+}
+
+
 __mmask16 avx512_utf8_validate_ranges_masked(__m512i char_class, __m512i utf32) {
-    __m512i min = _mm512_set1_epi32(0x0100000);
+    __m512i min = v_0010_0000;
 
     const __m512i min_shifts = _mm512_setr_epi64(
         0x2020202020202020,
@@ -1128,7 +1141,7 @@ __mmask16 avx512_utf8_validate_ranges_masked(__m512i char_class, __m512i utf32) 
         min = _mm512_srlv_epi32(min, shift);
     }
 
-    __m512i max = _mm512_set1_epi32(0x010ffff);
+    __m512i max = v_0010_ffff;
 
     const __m512i max_shifts = _mm512_setr_epi64(
         0x0707070707070707,
@@ -1149,8 +1162,8 @@ __mmask16 avx512_utf8_validate_ranges_masked(__m512i char_class, __m512i utf32) 
 
     __mmask16 not_surrogate;
     {
-        const __m512i t0 = _mm512_and_si512(utf32, _mm512_set1_epi32(0xffff'f800));
-        not_surrogate = _mm512_cmpneq_epu32_mask(t0, _mm512_set1_epi32(0xd800));
+        const __m512i t0 = _mm512_and_si512(utf32, v_ffff_f800);
+        not_surrogate = _mm512_cmpneq_epu32_mask(t0, v_0000_d800);
     }
 
     __mmask16 in_range;
@@ -1160,6 +1173,12 @@ __mmask16 avx512_utf8_validate_ranges_masked(__m512i char_class, __m512i utf32) 
     return in_range;
 }
 
+namespace {
+    const __m512i v_0000_000f = _mm512_set1_epi32(0x0f);
+    const __m512i v_8080_8000 = _mm512_set1_epi32(0x80808000);
+    const __m512i v_0000_00c0 = _mm512_set1_epi32(0xc0);
+    const __m512i v_0000_0080 = _mm512_set1_epi32(0x80);
+}
 
 template <typename OUTPUT>
 size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPUT* dwords) {
@@ -1216,14 +1235,14 @@ size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPU
             /* 1. Classify leading bytes */
             __m512i char_class;
             char_class = _mm512_srli_epi32(input, 4);
-            char_class = _mm512_and_si512(char_class, _mm512_set1_epi32(0x0000000f));
-            char_class = _mm512_or_si512(char_class, _mm512_set1_epi32(0x80808000));
+            char_class = _mm512_and_si512(char_class, v_0000_000f);
+            char_class = _mm512_or_si512(char_class, v_8080_8000);
 
             /* 2. Get positions of leading bytes */
             __mmask16 leading_bytes;
             {
-                const __m512i t0 = _mm512_and_si512(input, _mm512_set1_epi32(0xc0));
-                leading_bytes = _mm512_cmpneq_epu32_mask(t0, _mm512_set1_epi32(0x80));
+                const __m512i t0 = _mm512_and_si512(input, v_0000_00c0);
+                leading_bytes = _mm512_cmpneq_epu32_mask(t0, v_0000_0080);
             }
 
             /* 3. Validate UTF-8 structure */
@@ -1281,7 +1300,7 @@ size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPU
             const int valid_count = __builtin_popcount(leading_bytes);
 
             // 3. Convert words into UTF-32
-            const __m512i utf32 = avx512_utf8_to_utf32__aux__version3(input);
+            const __m512i utf32 = avx512_utf8_to_utf32__aux__version3(char_class, input);
 
             // 4. Validate if UTF-32 chars are in valid ranges
             {
