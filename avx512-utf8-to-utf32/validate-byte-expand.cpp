@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <cstring>
 
-#include "avx512-utf8-to-utf32.h"
+#include "avx512-expand.h"
 
 class Test {
     uint8_t input[64];

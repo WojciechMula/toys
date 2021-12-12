@@ -12,5 +12,3 @@ __m512i avx512_utf8_to_utf32__aux__version1(__m512i utf8);
 __m512i avx512_utf8_to_utf32__aux__version2(__m512i utf8);
 __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8);
 __m512i avx512_utf8_to_utf32__aux__version4(__m512i utf8);
-__m512i avx512_expand__version1(const char* ptr);
-__m512i avx512_expand__version2(const char* ptr);
