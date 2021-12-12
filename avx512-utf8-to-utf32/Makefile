@@ -1,12 +1,12 @@
 FLAGS=-Wall -Wextra -pedantic -Wfatal-errors -O3 -march=icelake-server
 
 ALL=validate-utf8-to-utf32 validate-byte-expand validate-avx512-validate unittest benchmark
-OBJ=utf8.o avx512-utf8-to-utf32.o avx512-utf8-to-utf32-ver4.o avx512-utf8-validate.o avx512-expand.o
+OBJ=utf8.o avx512-utf8-to-utf32.o avx512-utf8-to-utf32-ver4.o avx512-utf8-validate.o avx512-expand.o avx512-transcode-utf8.o
 
 all: $(ALL)
 
-validate-utf8-to-utf32: validate-utf8-to-utf32.cpp $(OBJ)
-	$(CXX) $(FLAGS) $(OBJ) $@.cpp -o $@
+validate-utf8-to-utf32: validate-utf8-to-utf32.cpp avx512-transcode-utf8.o utf8.o
+	$(CXX) $(FLAGS) utf8.o avx512-transcode-utf8.o $@.cpp -o $@
 
 validate-byte-expand: validate-byte-expand.cpp avx512-expand.o
 	$(CXX) $(FLAGS) avx512-expand.o $@.cpp -o $@
@@ -37,6 +37,9 @@ avx512-utf8-validate.o: avx512-utf8-to-utf32.h avx512-utf8-validate.cpp
 
 avx512-expand.o: avx512-expand.h avx512-expand*.cpp
 	$(CXX) $(FLAGS) avx512-expand.cpp  -c -o $@
+
+avx512-transcode-utf8.o: avx512-transcode-utf8.h avx512-transcode-utf8*.cpp
+	$(CXX) $(FLAGS) avx512-transcode-utf8.cpp  -c -o $@
 
 clean:
 	$(RM) $(ALL) *.o
