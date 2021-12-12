@@ -4,12 +4,14 @@
 #include <type_traits>
 #include "avx512-expand.h"
 #include "avx512-transcode-utf8.h"
+#include "utf8.h"
+
 
 namespace {
     const __m512i v_3f3f_3f7f = _mm512_set1_epi32(0x3f3f3f7f);
     const __m512i v_0140_0140 = _mm512_set1_epi32(0x01400140);
     const __m512i v_0001_1000 = _mm512_set1_epi32(0x00011000);
-    const __m512i v_0010_0000 = _mm512_set1_epi32(0x00100000);
+    const __m512i v_0001_0000 = _mm512_set1_epi32(0x00010000);
     const __m512i v_0010_ffff = _mm512_set1_epi32(0x0010ffff);
     const __m512i v_ffff_f800 = _mm512_set1_epi32(0xfffff800);
     const __m512i v_0000_d800 = _mm512_set1_epi32(0xd800);
@@ -170,8 +172,9 @@ size_t avx512_validating_utf8_to_utf32_naive(const char* str, size_t len, uint32
             const __m128i curr128 = _mm_loadu_si128((const __m128i*)ptr);
 
             // validate if bytes a..u form valid UTF-8 string
-            if (!avx512_utf8_structure_validate_16_bytes(prev128, curr128))
+            if (!avx512_utf8_structure_validate_16_bytes(prev128, curr128)) {
                 return 0;
+            }
 
             const __m512i curr = _mm512_broadcast_i64x2(curr128);
 
@@ -250,17 +253,17 @@ uint32_t continuation_bytes(__m128i utf8bytes) {
 
 
 __mmask16 avx512_utf8_validate_ranges_masked(__m512i char_class, __m512i utf32) {
-    __m512i min = v_0010_0000;
+    __m512i min = v_0001_0000;
 
     const __m512i min_shifts = _mm512_setr_epi64(
         0x2020202020202020,
-        0x00090d0d80808080,
+        0x0005090980808080,
         0x2020202020202020,
-        0x00090d0d80808080,
+        0x0005090980808080,
         0x2020202020202020,
-        0x00090d0d80808080,
+        0x0005090980808080,
         0x2020202020202020,
-        0x00090d0d80808080
+        0x0005090980808080
     );
 
     {
@@ -413,7 +416,8 @@ size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPU
                 ));
 
                 const __m512i masked = _mm512_and_si512(v_continuation, mask);
-                const __mmask16 matched = _mm512_cmpeq_epu32_mask(masked, expected);
+
+                const __mmask16 matched = _mm512_mask_cmpeq_epu32_mask(leading_bytes, masked, expected);
                 if (matched != leading_bytes)
                     return 0;
             }
@@ -426,8 +430,9 @@ size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPU
             // 4. Validate if UTF-32 chars are in valid ranges
             {
                 const __mmask16 in_range = avx512_utf8_validate_ranges_masked(char_class, utf32);
-                if ((leading_bytes & in_range) != leading_bytes)
+                if ((leading_bytes & in_range) != leading_bytes) {
                     return 0;
+                }
             }
 
             // 4. Pack only valid words
@@ -444,7 +449,16 @@ size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPU
         }
     }
 
-    // TODO: process the tail
+    // slow path
+    if (len > 64) {
+        ptr -= 16;
+    }
+
+    while (ptr < end) {
+        uint32_t val;
+        ptr += utf8_decode(ptr, val);
+        *output++ = val;
+    }
 
     return output - dwords;
 }

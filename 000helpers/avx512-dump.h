@@ -94,12 +94,43 @@ void dump_epu32_hex(__m512i v) {
     printf(" ]\n");
 }
 
-void dump_mask16(__mmask16 mask) {
+void dump_mask16(__mmask16 mask, const char* t, const char* f) {
     uint16_t m = mask;
-    for (int i=16; i >= 0; i--) {
+    for (int i=0; i < 16; i++) {
         const uint16_t bit = ((1 << i) & m);
-        putchar(bit ? '1' : '0');
+        printf("%s", bit ? t : f);
     }
 
     printf(" (%02x)\n", m);
+}
+
+void dump_mask16(__mmask16 mask) {
+    dump_mask16(mask, "1", "0");
+}
+
+
+void dump_mask32(__mmask32 mask, const char* t, const char* f) {
+    uint16_t m = mask;
+    for (int i=0; i < 32; i++) {
+        const uint16_t bit = ((1 << i) & m);
+        printf("%s", bit ? t : f);
+    }
+
+    printf(" (%02x)\n", m);
+}
+
+void dump_mask32(__mmask32 mask) {
+    dump_mask32(mask, "1", "0");
+}
+
+void print_uint32_revbin(uint32_t x, const char* t, const char* f) {
+    for (int i=0; i < 32; i++) {
+        const uint16_t bit = ((1 << i) & x);
+        printf("%s", bit ? t : f);
+    }
+    putchar('\n');
+}
+
+void print_uint32_revbin(uint32_t x) {
+    print_uint32_revbin(x, "1", "0");
 }

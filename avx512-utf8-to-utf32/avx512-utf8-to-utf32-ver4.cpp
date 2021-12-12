@@ -1,6 +1,9 @@
 #include "avx512-utf8-to-utf32.h"
 
+#include <immintrin.h>
 #include <cstdio>
+
+#include "avx512-transcode-utf8.h"
 
 namespace {
     __attribute__((__aligned__(64))) uint32_t rotate_left_idx[16][16] = {

@@ -135,7 +135,7 @@ __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8) {
     32-bit lanes in `char_class` have form 0x8080800N, where N is 4 higest
     bits from the leading byte; 0x80 resets corresponding bytes during pshufb.
 */
-__m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8, __m512i char_class) {
+__m512i avx512_utf8_to_utf32__aux__version3(__m512i char_class, __m512i utf8) {
     /*
         Input:
         - utf8: bytes stored at separate 32-bit words

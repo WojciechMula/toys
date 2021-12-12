@@ -7,18 +7,44 @@
 #include <fstream>
 
 #include "avx512-utf8-to-utf32.h"
+#include "bom.h"
 
 
 class Test {
-    std::string utf8_input;
-    std::string utf32_reference;
+    std::string utf8_input_str;
+    std::string utf32_reference_str;
     std::unique_ptr<uint32_t[]> output;
+    const char* utf8_input;
+    size_t utf8_input_size;
+    const uint32_t *utf32_reference;
+    size_t utf32_reference_size;
 
 public:
     Test(const std::string& utf8_path, const std::string& utf32_path) {
-        utf8_input = load_file(utf8_path);
-        utf32_reference = load_file(utf32_path);
-        output = std::make_unique<uint32_t[]>(utf32_reference.size() / 4);
+        utf8_input_str = load_file(utf8_path);
+        utf32_reference_str = load_file(utf32_path);
+
+        {
+            const auto bom  = detect(utf8_input_str);
+            const auto size = bom_size(bom);
+            if (bom != BOM::None)
+                printf("'%s' BOM is %s\n", utf8_path.c_str(), to_string(bom));
+
+            utf8_input = utf8_input_str.data() + size;
+            utf8_input_size = utf8_input_str.size() - size;
+        }
+
+        {
+            const auto bom  = detect(utf32_reference_str);
+            const auto size = bom_size(bom);
+            if (bom != BOM::None)
+                printf("'%s' BOM is %s\n", utf32_path.c_str(), to_string(bom));
+
+            utf32_reference = reinterpret_cast<const uint32_t*>(utf32_reference_str.data() + size);
+            utf32_reference_size = (utf32_reference_str.size() - size)/4;
+        }
+
+        output = std::make_unique<uint32_t[]>(utf32_reference_size);
     }
 
     bool run() {
@@ -40,19 +66,19 @@ private:
 
         bool ret = true;
 
-        const auto processed = validating_utf8_to_utf32(utf8_input.data(),
-                                                        utf8_input.size(),
-                                                        output.get());
-        if (processed != utf8_input.size()) {
+        const auto written = validating_utf8_to_utf32(utf8_input, utf8_input_size, output.get());
+        if (written != utf32_reference_size) {
             puts("wrong return value");
-            printf("expected = %lu\n", utf8_input.size());
-            printf("got      = %lu\n", processed);
+            printf("expected = %lu\n", utf32_reference_size);
+            printf("got      = %lu\n", written);
             ret = false;
         }
 
-        return compare(reinterpret_cast<const uint32_t*>(utf32_reference.data()),
-                       output.get(),
-                       utf32_reference.size()) and ret;
+        ret = compare(utf32_reference, output.get(), utf32_reference_size) and ret;
+        if (ret)
+            puts("OK");
+
+        return ret;
     }
 
     bool compare(const uint32_t* reference, const uint32_t* result, size_t size) const {

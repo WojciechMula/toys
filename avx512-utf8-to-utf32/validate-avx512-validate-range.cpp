@@ -100,7 +100,7 @@ private:
 
             // 4-byte char
             case 0b1111:
-                return ((value >= 0x100000) and (value <= 0x10ffff));
+                return ((value >= 0x10000) and (value <= 0x10ffff));
 
             default:
                 abort();

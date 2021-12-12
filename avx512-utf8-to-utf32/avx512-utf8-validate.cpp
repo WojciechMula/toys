@@ -180,15 +180,15 @@ __mmask16 avx512_utf8_validate_ranges(__m512i char_class, __m512i utf32) {
     // 1. Build minimum value
     //    We start with the min for 4-byte char (single bit set)
     //    and shift it right by the amount depeding on character class.
-    __m512i min = _mm512_set1_epi32(0x0100000);
+    __m512i min = _mm512_set1_epi32(0x10000);
 
     /** pshufb
 
         continuation = 0x80
-        ascii    = 32       # 0x0100000 >> 32 = 0x0000 - set to zero (vpsrlv guarantees this)
-        _2_bytes = 13       # 0x0100000 >> 13 = 0x0800
-        _3_bytes = 9        # 0x0100000 >> 9  = 0x8000
-        _4_bytes = 0        # 0x0100000                - keep intact
+        ascii    = 32       # 0x10000 >> 32 = 0x0000 - set to zero (vpsrlv guarantees this)
+        _2_bytes = 9        # 0x10000 >> 9  = 0x0080
+        _3_bytes = 5        # 0x10000 >> 5  = 0x0800
+        _4_bytes = 0        # 0x10000                - keep intact
 
         min_shifts = 4 * [
             ascii, # 0000
@@ -211,13 +211,13 @@ __mmask16 avx512_utf8_validate_ranges(__m512i char_class, __m512i utf32) {
     */
     const __m512i min_shifts = _mm512_setr_epi64(
         0x2020202020202020,
-        0x00090d0d80808080,
+        0x0005090980808080,
         0x2020202020202020,
-        0x00090d0d80808080,
+        0x0005090980808080,
         0x2020202020202020,
-        0x00090d0d80808080,
+        0x0005090980808080,
         0x2020202020202020,
-        0x00090d0d80808080
+        0x0005090980808080
     );
 
     {
