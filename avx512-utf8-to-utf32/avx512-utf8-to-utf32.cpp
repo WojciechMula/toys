@@ -4,6 +4,21 @@
 #include <type_traits>
 #include "uint32-accumulator.h"
 
+namespace {
+    const __m512i v_3f3f_3f7f = _mm512_set1_epi32(0x3f3f3f7f);
+    const __m512i v_0140_0140 = _mm512_set1_epi32(0x01400140);
+    const __m512i v_0001_1000 = _mm512_set1_epi32(0x00011000);
+    const __m512i v_0010_0000 = _mm512_set1_epi32(0x00100000);
+    const __m512i v_0010_ffff = _mm512_set1_epi32(0x0010ffff);
+    const __m512i v_ffff_f800 = _mm512_set1_epi32(0xfffff800);
+    const __m512i v_0000_d800 = _mm512_set1_epi32(0xd800);
+    const __m512i v_0000_000f = _mm512_set1_epi32(0x0f);
+    const __m512i v_8080_8000 = _mm512_set1_epi32(0x80808000);
+    const __m512i v_0000_00c0 = _mm512_set1_epi32(0xc0);
+    const __m512i v_0000_0080 = _mm512_set1_epi32(0x80);
+}
+
+
 __m512i avx512_utf8_to_utf32__aux__version1(__m512i utf8);
 __m512i avx512_utf8_to_utf32__aux__version2(__m512i utf8);
 
@@ -132,77 +147,6 @@ size_t avx512_utf8_to_utf32__version3(const char* str, size_t len, uint32_t* dwo
     return output - dwords;
 }
 
-size_t avx512_utf8_to_utf32__version4(const char* str, size_t len, uint32_t* dwords) {
-    const char* ptr = str;
-    const char* end = ptr + len;
-
-    uint32_t* output = dwords;
-
-    if (len > 64) {
-
-        // load 16 bytes: [abcdefghijklmnop]
-        __m512i prev = _mm512_broadcast_i64x2(_mm_loadu_si128((const __m128i*)ptr));
-        ptr += 16;
-
-        RegisterAccumulator acc;
-
-        auto convert_to_utf32 = [&output](__m512i utf8, int count) {
-            // 3. Convert words into UCS-32
-            const __m512i utf32 = avx512_utf8_to_utf32__aux__version1(utf8);
-
-            // 4. Store them
-            _mm512_storeu_si512((__m512i*)output, utf32);
-
-            output += count;
-        };
-
-        while (ptr + 16 < end) {
-            // load next 16 bytes: [qrstu....]
-            const __m512i curr = _mm512_broadcast_i64x2(_mm_loadu_si128((const __m128i*)ptr));
-
-            /* 1. Load all possible 4-byte substring into an AVX512 register
-                  from bytes a..p (16) and q..t (4). For these bytes
-                  we create following 32-bit lanes
-
-                  [abcd|bcde|cdef|defg|efgh|...]
-                   ^                          ^
-                   byte 0 of reg              byte 63 of reg */
-
-            const __m512i merged = _mm512_mask_mov_epi32(prev, 0x1000, curr);
-            const __m512i expand_ver2 = _mm512_setr_epi64(
-                0x0403020103020100,
-                0x0605040305040302,
-                0x0807060507060504,
-                0x0a09080709080706,
-                0x0c0b0a090b0a0908,
-                0x0e0d0c0b0d0c0b0a,
-                0x000f0e0d0f0e0d0c,
-                0x0201000f01000f0e
-            );
-
-            const __m512i input = _mm512_shuffle_epi8(merged, expand_ver2);
-            prev = curr;
-
-            /*
-                2. Classify which words contain valid UTF-8 characters.
-                   We test if the 0th byte is not a continuation byte (0b10xxxxxx) */
-            __mmask16 valid;
-            {
-                const __m512i t0 = _mm512_and_si512(input, _mm512_set1_epi32(0xc0));
-                valid = _mm512_cmpneq_epu32_mask(t0, _mm512_set1_epi32(0x80));
-            }
-
-            acc.add(input, valid, convert_to_utf32);
-            ptr += 16;
-        }
-
-        acc.flush(convert_to_utf32);
-    }
-
-    // TODO: process the tail
-
-    return output - dwords;
-}
 
 __m512i avx512_expand__version1(const char* ptr) {
     const __m512i indices = _mm512_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -750,12 +694,6 @@ __m512i avx512_utf8_to_utf32__aux__version3(__m512i utf8) {
     return values;
 }
 
-namespace {
-    const __m512i v_3f3f_3f7f = _mm512_set1_epi32(0x3f3f3f7f);
-    const __m512i v_0140_0140 = _mm512_set1_epi32(0x01400140);
-    const __m512i v_0001_1000 = _mm512_set1_epi32(0x00011000);
-}
-
 /*
     32-bit lanes in `char_class` have form 0x8080800N, where N is 4 higest
     bits from the leading byte; 0x80 resets corresponding bytes during pshufb.
@@ -1114,14 +1052,6 @@ uint32_t continuation_bytes(__m128i utf8bytes) {
 }
 
 
-namespace {
-    const __m512i v_0010_0000 = _mm512_set1_epi32(0x00100000);
-    const __m512i v_0010_ffff = _mm512_set1_epi32(0x0010ffff);
-    const __m512i v_ffff_f800 = _mm512_set1_epi32(0xfffff800);
-    const __m512i v_0000_d800 = _mm512_set1_epi32(0xd800);
-}
-
-
 __mmask16 avx512_utf8_validate_ranges_masked(__m512i char_class, __m512i utf32) {
     __m512i min = v_0010_0000;
 
@@ -1173,12 +1103,6 @@ __mmask16 avx512_utf8_validate_ranges_masked(__m512i char_class, __m512i utf32) 
     return in_range;
 }
 
-namespace {
-    const __m512i v_0000_000f = _mm512_set1_epi32(0x0f);
-    const __m512i v_8080_8000 = _mm512_set1_epi32(0x80808000);
-    const __m512i v_0000_00c0 = _mm512_set1_epi32(0xc0);
-    const __m512i v_0000_0080 = _mm512_set1_epi32(0x80);
-}
 
 template <typename OUTPUT>
 size_t avx512_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPUT* dwords) {

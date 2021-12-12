@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "avx512-utf8-to-utf32.h"
+#include "avx512-utf8-to-utf32-ver4.h"
 #include "utf8.h"
 
 class Test {
