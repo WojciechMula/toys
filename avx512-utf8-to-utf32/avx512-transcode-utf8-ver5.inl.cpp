@@ -2,8 +2,6 @@
 
 // This is slightly modified verison3.
 
-#include "dump.h"
-
 /*
     32-bit lanes in `char_class` have form 0x8080800N, where N is 4 higest
     bits from the leading byte; 0x80 resets corresponding bytes during pshufb.
