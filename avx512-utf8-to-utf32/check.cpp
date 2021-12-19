@@ -50,7 +50,8 @@ public:
     bool run() {
         bool ret = true;
 
-        ret = test("AVX512", avx512_validating_utf8_to_utf32) and ret;
+        //ret = test("AVX512",   avx512_validating_utf8_to_utf32) and ret;
+        ret = test("AVX512BW", avx512bw_validating_utf8_to_utf32) and ret;
 
         if (ret)
             puts("All OK");

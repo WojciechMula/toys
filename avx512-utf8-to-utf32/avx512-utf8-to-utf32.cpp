@@ -487,3 +487,167 @@ size_t avx512_validating_utf8_to_utf32(const char* str, size_t len, uint32_t* dw
 size_t avx512_validating_utf8_to_utf16(const char* str, size_t len, char16_t* chars) {
     return avx512_validating_utf8_to_fixed_length<char16_t>(str, len, chars);
 }
+
+
+#include "validate/avx512-validate-utf8.constants.cpp"
+#include "validate/avx512-validate-structure.cpp"
+#include "validate/avx512-validate-leading-bytes.cpp"
+
+namespace {
+    __m512i _mm512_rotate_by1_epi8(const __m512i input) {
+
+        // lanes order: 1, 2, 3, 0 => 0b00_11_10_01
+        const __m512i permuted = _mm512_shuffle_i32x4(input, input, 0x39);
+
+        return _mm512_alignr_epi8(permuted, input, 1);
+    }
+}
+
+
+template <unsigned idx0, unsigned idx1, unsigned idx2, unsigned idx3>
+constexpr __m512i shuffle_epi128(__m512i v) {
+    static_assert((idx0 >= 0 and idx0 <= 3), "idx0 must be in range 0..3");
+    static_assert((idx1 >= 0 and idx1 <= 3), "idx1 must be in range 0..3");
+    static_assert((idx2 >= 0 and idx2 <= 3), "idx2 must be in range 0..3");
+    static_assert((idx3 >= 0 and idx3 <= 3), "idx3 must be in range 0..3");
+
+    constexpr unsigned shuffle = idx0 | (idx1 << 2) | (idx2 << 4) | (idx3 << 6);
+    return _mm512_shuffle_i32x4(v, v, shuffle);
+}
+
+template <unsigned idx>
+constexpr __m512i broadcast_epi128(__m512i v) {
+    return shuffle_epi128<idx, idx, idx, idx>(v);
+}
+
+
+template <typename OUTPUT>
+size_t avx512bw_validating_utf8_to_fixed_length(const char* str, size_t len, OUTPUT* dwords) {
+    constexpr bool UTF32 = std::is_same<OUTPUT, uint32_t>::value;
+    constexpr bool UTF16 = std::is_same<OUTPUT, char16_t>::value;
+    static_assert(UTF32 or UTF16, "output type has to be uint32_t (for UTF-32) or char16_t (for UTF-16)");
+
+    const char* ptr = str;
+    const char* end = ptr + len;
+
+    OUTPUT* output = dwords;
+
+    while (ptr + 64 < end) {
+
+        const __m512i input = _mm512_loadu_si512((const __m512i*)ptr);
+        const __mmask64 ascii = _mm512_testn_epi8_mask(input, v_80);
+        if (ascii == 0) {
+            const __m256i h0 = _mm512_castsi512_si256(input);
+            const __m256i h1 = _mm512_extracti32x8_epi32(input, 1);
+
+            const __m128i t0 = _mm256_castsi256_si128(h0);
+            const __m128i t1 = _mm256_extracti32x4_epi32(h0, 1);
+            const __m128i t2 = _mm256_castsi256_si128(h1);
+            const __m128i t3 = _mm256_extracti32x4_epi32(h1, 1);
+
+            if (UTF32) {
+                _mm512_storeu_si512((__m512i*)(output + 0*64), _mm512_cvtepu8_epi32(t0));
+                _mm512_storeu_si512((__m512i*)(output + 1*64), _mm512_cvtepu8_epi32(t1));
+                _mm512_storeu_si512((__m512i*)(output + 2*64), _mm512_cvtepu8_epi32(t2));
+                _mm512_storeu_si512((__m512i*)(output + 3*64), _mm512_cvtepu8_epi32(t3));
+            }
+            else {
+                _mm256_storeu_si256((__m256i*)(output + 0*32), _mm256_cvtepu8_epi16(t0));
+                _mm256_storeu_si256((__m256i*)(output + 1*32), _mm256_cvtepu8_epi16(t1));
+                _mm256_storeu_si256((__m256i*)(output + 2*32), _mm256_cvtepu8_epi16(t2));
+                _mm256_storeu_si256((__m256i*)(output + 3*32), _mm256_cvtepu8_epi16(t3));
+            }
+
+            output += 16;
+            ptr += 64;
+            continue;
+        }
+
+        // 1. Validate the structure of UTF-8 sequence.
+        //    Note: procedure validates chars that starts in range [0..60]
+        //    of input.
+        if (not avx512_validate_utf8_structure(input)) {
+            return false;
+        }
+
+        // 2. Precise validate: once we know that the bytes structure is correct,
+        //    we have to check for some forbidden input values.
+        //    Note: this procedure validates chars in range [0..63], due to
+        //    method of obtaining continuation1 vector. (compare with
+        //    validation/avx512-validate-utf8.cpp)
+        const __m512i continuation1 = _mm512_rotate_by1_epi8(input);
+        if (not avx512_validate_leading_bytes(input, continuation1, 0x0ffffffffffffffflu)) {
+            return false;
+        }
+
+        const __m512i expand_ver2 = _mm512_setr_epi64(
+            0x0403020103020100,
+            0x0605040305040302,
+            0x0807060507060504,
+            0x0a09080709080706,
+            0x0c0b0a090b0a0908,
+            0x0e0d0c0b0d0c0b0a,
+            0x000f0e0d0f0e0d0c,
+            0x0201000f01000f0e
+        );
+
+        // 3. Convert 3*16 input bytes
+        // We waste the last 16 bytes, which are not fully validated...
+        // this is another topic to check in the future.
+#define TRANSCODE16(LANE0, LANE1)                                                                            \
+        {                                                                                                    \
+            const __m512i merged = _mm512_mask_mov_epi32(LANE0, 0x1000, LANE1);                              \
+            const __m512i input = _mm512_shuffle_epi8(merged, expand_ver2);                                  \
+                                                                                                             \
+            __mmask16 leading_bytes;                                                                         \
+            const __m512i t0 = _mm512_and_si512(input, v_0000_00c0);                                         \
+            leading_bytes = _mm512_cmpneq_epu32_mask(t0, v_0000_0080);                                       \
+                                                                                                             \
+            __m512i char_class;                                                                              \
+            char_class = _mm512_srli_epi32(input, 4);                                                        \
+            char_class = _mm512_and_si512(char_class, v_0000_000f);                                          \
+            char_class = _mm512_or_si512(char_class, v_8080_8000);                                           \
+                                                                                                             \
+            const int valid_count = __builtin_popcount(leading_bytes);                                       \
+            const __m512i utf32 = avx512_utf8_to_utf32__aux__version3(char_class, input);                    \
+                                                                                                             \
+            const __m512i out = _mm512_mask_compress_epi32(_mm512_setzero_si512(), leading_bytes, utf32);    \
+                                                                                                             \
+            if (UTF32)                                                                                       \
+                _mm512_storeu_si512((__m512i*)output, out);                                                  \
+            else                                                                                             \
+                _mm256_storeu_si256((__m256i*)output, _mm512_cvtepi32_epi16(out));                           \
+                                                                                                             \
+            output += valid_count;                                                                           \
+        }
+
+        const __m512i lane0 = broadcast_epi128<0>(input);
+        const __m512i lane1 = broadcast_epi128<1>(input);
+        TRANSCODE16(lane0, lane1)
+
+        const __m512i lane2 = broadcast_epi128<2>(input);
+        TRANSCODE16(lane1, lane2)
+
+        const __m512i lane3 = broadcast_epi128<3>(input);
+        TRANSCODE16(lane2, lane3)
+
+        ptr += 3*16;
+    }
+
+    while (ptr < end) {
+        uint32_t val;
+        ptr += utf8_decode(ptr, val);
+        *output++ = val;
+    }
+
+    return output - dwords;
+}
+
+
+size_t avx512bw_validating_utf8_to_utf32(const char* str, size_t len, uint32_t* dwords) {
+    return avx512bw_validating_utf8_to_fixed_length<uint32_t>(str, len, dwords);
+}
+
+size_t avx512bw_validating_utf8_to_utf16(const char* str, size_t len, char16_t* chars) {
+    return avx512bw_validating_utf8_to_fixed_length<char16_t>(str, len, chars);
+}

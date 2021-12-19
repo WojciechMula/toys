@@ -43,22 +43,22 @@ int utf8_decode(const char* bytes, uint32_t& val) {
     const uint8_t b0 = bytes[0];
     if ((b0 & 0xf8) == 0xf0) {
         val = (b0 & 0x07);
-        val = (val << 6) & (bytes[1] & 0x3f);
-        val = (val << 6) & (bytes[2] & 0x3f);
-        val = (val << 6) & (bytes[3] & 0x3f);
+        val = (val << 6) | (bytes[1] & 0x3f);
+        val = (val << 6) | (bytes[2] & 0x3f);
+        val = (val << 6) | (bytes[3] & 0x3f);
         return 4;
     }
 
     if ((b0 & 0xf0) == 0xe0) {
         val = (b0 & 0x0f);
-        val = (val << 6) & (bytes[1] & 0x3f);
-        val = (val << 6) & (bytes[2] & 0x3f);
+        val = (val << 6) | (bytes[1] & 0x3f);
+        val = (val << 6) | (bytes[2] & 0x3f);
         return 3;
     }
 
     if ((b0 & 0xe0) == 0xc0) {
         val = (b0 & 0x3f);
-        val = (val << 6) & (bytes[1] & 0x3f);
+        val = (val << 6) | (bytes[1] & 0x3f);
         return 2;
     }
 
