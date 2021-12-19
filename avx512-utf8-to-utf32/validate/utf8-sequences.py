@@ -12,7 +12,7 @@ def main():
     with open(path, 'w') as f:
         f.write(CPP % name)
 
-        for i, (seq, valid, _) in enumerate(L):
+        for i, (seq, valid) in enumerate(L):
             tmp = list(map(ord, seq))
             image = "   {%d, {0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x}}" % \
                 (valid, tmp[0], tmp[1], tmp[2], tmp[3], tmp[4])
@@ -67,6 +67,7 @@ def sequences():
                 b1 = b1.to_bytes(1, 'little')
                 yield (b0, b1, ASCII, ASCII, ASCII)
                 yield (b0, b1, CONT,  ASCII, ASCII)
+                yield (b0, b1, ASCII, CONT,  ASCII)
                 yield (b0, b1, CONT,  CONT,  ASCII)
                 yield (b0, b1, CONT,  CONT,  CONT)
 
@@ -74,9 +75,9 @@ def sequences():
         bytes = b''.join(seq)
         try:
             str(bytes, encoding='utf8')
-            yield (seq, True, None)
+            yield (seq, True)
         except UnicodeError as e:
-            yield (seq, False, e)
+            yield (seq, False)
 
 
 if __name__ == '__main__':

@@ -8,5 +8,5 @@ struct UTF8seq {
     uint8_t bytes[5];
 };
 
-constexpr size_t utf8_sequences_size = 262144;
+constexpr size_t utf8_sequences_size = 327680;
 extern UTF8seq utf8_sequences[utf8_sequences_size];

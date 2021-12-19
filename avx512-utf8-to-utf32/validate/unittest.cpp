@@ -6,10 +6,11 @@
 
 #include "utf8-sequences.h"
 #include "reference.h"
+#include "avx512-validate-utf8.h"
 
 
 class Test {
-    static constexpr size_t size = 64+8;
+    static constexpr size_t size = 64 * 2;
     std::string ascii;
     std::string buffer;
 
@@ -19,7 +20,8 @@ public:
     bool run() {
         bool ret = true;
 
-        ret = test("reference", scalar_validate_utf8_simple);
+        //ret = test("reference",         scalar_validate_utf8_simple, true) and ret;
+        ret = test("AVX512 (ver1)",     avx512_validate_utf8__version1) and ret;
 
         if (ret) {
             puts("All OK");
@@ -34,21 +36,23 @@ private:
         printf("%s ", name);
         fflush(stdout);
 
-        for (size_t pos=0; pos < 60; pos++) {
+        for (size_t pos=0; pos < 64; pos++) {
             buffer = ascii;
 
-            for (size_t j=0; j < utf8_sequences_size; j++) {
+            for (size_t j=640; j < utf8_sequences_size; j++) {
                 // given
                 const auto& tc = utf8_sequences[j];
                 for (int k=0; k < 5; k++)
                     buffer[pos + k] = tc.bytes[k];
 
+                const bool expected = tc.valid;
+                            
                 // when
                 const bool valid = validate_utf8(buffer.data(), buffer.size());
 
                 // then
-                if (valid != tc.valid) {
-                    printf("expected = %s\n", tc.valid ? "true" : "false");
+                if (valid != expected) {
+                    printf("expected = %s\n", expected ? "true" : "false");
                     printf("result   = %s\n", valid ? "true" : "false");
                     printf("testcase [%lu]: sequence %02x %02x %02x %02x %02x\n",
                             j, tc.bytes[0], tc.bytes[1], tc.bytes[2], tc.bytes[3], tc.bytes[4]);

@@ -12,8 +12,10 @@ enum class Error {
     overlong,
     surrogate,
     too_large,
+    assertion,
 };
 
 Error scalar_validate_utf8(const char* bytes, size_t size);
+Error scalar_validate_utf8_char(const char* bytes, int& char_length);
 
 bool scalar_validate_utf8_simple(const char* bytes, size_t size);
