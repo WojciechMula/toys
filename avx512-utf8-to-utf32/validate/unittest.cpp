@@ -20,8 +20,9 @@ public:
     bool run() {
         bool ret = true;
 
-        //ret = test("reference",         scalar_validate_utf8_simple, true) and ret;
+        ret = test("reference",         scalar_validate_utf8_simple) and ret;
         ret = test("AVX512 (ver1)",     avx512_validate_utf8__version1) and ret;
+        ret = test("AVX512VBMI (ver1)", avx512vbmi_validate_utf8__version1) and ret;
 
         if (ret) {
             puts("All OK");
@@ -33,14 +34,15 @@ public:
 private:
     template <typename FUNC>
     bool test(const char* name, FUNC validate_utf8) {
-        printf("%s ", name);
+        printf("%-20s ", name);
         fflush(stdout);
 
         for (size_t pos=0; pos < 64; pos++) {
             buffer = ascii;
 
-            for (size_t j=640; j < utf8_sequences_size; j++) {
+            for (size_t j=0; j < utf8_sequences_size; j++) {
                 // given
+
                 const auto& tc = utf8_sequences[j];
                 for (int k=0; k < 5; k++)
                     buffer[pos + k] = tc.bytes[k];

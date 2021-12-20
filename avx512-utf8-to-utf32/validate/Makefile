@@ -16,7 +16,7 @@ utf8-sequences.o: utf8-sequences.cpp utf8-sequences.h
 reference.o: reference.cpp reference.h
 	$(CXX) $(FLAGS) reference.cpp -c -o $@
 
-avx512-validate-utf8.o: avx512-validate-utf8.cpp avx512-validate-utf8.h avx512-validate*.cpp
+avx512-validate-utf8.o: avx512-validate-utf8.cpp avx512-validate-utf8.h avx512*-validate*.cpp
 	$(CXX) $(FLAGS) avx512-validate-utf8.cpp -c -o $@
 
 clean:

@@ -106,7 +106,7 @@ __mmask64 avx512_validate_leading_bytes(__m512i leading_bytes, __m512i continuat
     }
 
     // 1. Handle 2-byte chars
-    //    Valid if leading byte is greater than 0xc2
+    //    Valid if leading byte is not 0xc0 nor 0xc1
     __mmask64 valid_2bytes = _mm512_mask_cmpge_epu8_mask(_2bytes, leading_bytes, v_c2);
 
     // 4. Handle 3-byte chars
