@@ -1,42 +1,5 @@
 // included in avx512-validate-utf8.cpp
 
-#if 0
-#define DUMP(var) dump_mask64(#var, var)
-#define PUTS(s) puts(s)
-#else
-#define DUMP(var)
-#define PUTS(s)
-#endif
-
-void put_uint8_bin(uint8_t x) {
-    for (int i=3; i >= 0; i--) {
-        putchar((x & (1 << i)) ? '1' : '.');
-    }
-}
-
-void dump_epu8_bin(__m512i v) {
-    return;
-    uint8_t tmp[64];
-
-    _mm512_storeu_si512((__m512i*)tmp, v);
-    putchar('[');
-    put_uint8_bin(tmp[0]);
-    for (int i=0; i < 7; i++) {
-        putchar('|');
-        put_uint8_bin(tmp[i]);
-    }
-
-    printf("]\n");
-}
-
-void dump_mask64(const char* name, uint64_t x) {
-    printf("%-15s = ", name);
-    for (int i=63; i >= 0; i--) {
-        putchar((x & (1lu << i)) ? '1' : '.');
-    }
-    putchar('\n');
-}
-
 // Similarly to `avx512_utf8_structure_validate_16_bytes`
 // from ../avx512-utf8-validate.cpp we compare up to four
 // bits from comparison result. Unlike AVX512F version,
@@ -50,9 +13,6 @@ bool avx512vbmi_validate_utf8_structure(__m512i input) {
         continuation = _mm512_cmpeq_epi8_mask(t0, v_80);
     }
     
-    PUTS("");
-    DUMP(continuation);
-
     // 2. Populate the mask in register
     const __m512i v_continuation = _mm512_set1_epi64(continuation);
 
@@ -77,8 +37,6 @@ bool avx512vbmi_validate_utf8_structure(__m512i input) {
     );
 
     const __m512i shuffled = _mm512_multishift_epi64_epi8(shuffle_shifts, v_continuation);
-
-    dump_epu8_bin(shuffled);
 
     // 4. Match the k continuation bytes followed by leading byte
     /** pshufb
@@ -126,21 +84,15 @@ bool avx512vbmi_validate_utf8_structure(__m512i input) {
         mask = _mm512_shuffle_epi8(mask_lookup, t1);
     }
 
-    dump_epu8_bin(mask);
-
     __m512i expected;
     {
         const __m512i t0 = _mm512_srli_epi32(mask, 1);
         expected = _mm512_and_si512(t0, v_0f);
     }
-    dump_epu8_bin(expected);
 
     const __m512i t0 = _mm512_and_si512(shuffled, mask);
     const __mmask64 matched = _mm512_cmpeq_epi8_mask(t0, expected);
 
-    DUMP(matched);
-    DUMP(~continuation);
-    
     // we can validate 60 - 4 leading bytes
     constexpr uint64_t input_mask = 0x0ffffffffffffffflu;
 
