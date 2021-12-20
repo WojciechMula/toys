@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <type_traits>
+
 #include "avx512-expand.h"
 #include "avx512-transcode-utf8.h"
 #include "utf8.h"
@@ -533,9 +534,8 @@ size_t avx512bw_validating_utf8_to_fixed_length(const char* str, size_t len, OUT
     OUTPUT* output = dwords;
 
     while (ptr + 64 < end) {
-
         const __m512i input = _mm512_loadu_si512((const __m512i*)ptr);
-        const __mmask64 ascii = _mm512_testn_epi8_mask(input, v_80);
+        const __mmask64 ascii = _mm512_test_epi8_mask(input, v_80);
         if (ascii == 0) {
             const __m256i h0 = _mm512_castsi512_si256(input);
             const __m256i h1 = _mm512_extracti32x8_epi32(input, 1);
@@ -546,19 +546,19 @@ size_t avx512bw_validating_utf8_to_fixed_length(const char* str, size_t len, OUT
             const __m128i t3 = _mm256_extracti32x4_epi32(h1, 1);
 
             if (UTF32) {
-                _mm512_storeu_si512((__m512i*)(output + 0*64), _mm512_cvtepu8_epi32(t0));
-                _mm512_storeu_si512((__m512i*)(output + 1*64), _mm512_cvtepu8_epi32(t1));
-                _mm512_storeu_si512((__m512i*)(output + 2*64), _mm512_cvtepu8_epi32(t2));
-                _mm512_storeu_si512((__m512i*)(output + 3*64), _mm512_cvtepu8_epi32(t3));
+                _mm512_storeu_si512((__m512i*)(output + 0*16), _mm512_cvtepu8_epi32(t0));
+                _mm512_storeu_si512((__m512i*)(output + 1*16), _mm512_cvtepu8_epi32(t1));
+                _mm512_storeu_si512((__m512i*)(output + 2*16), _mm512_cvtepu8_epi32(t2));
+                _mm512_storeu_si512((__m512i*)(output + 3*16), _mm512_cvtepu8_epi32(t3));
             }
             else {
-                _mm256_storeu_si256((__m256i*)(output + 0*32), _mm256_cvtepu8_epi16(t0));
-                _mm256_storeu_si256((__m256i*)(output + 1*32), _mm256_cvtepu8_epi16(t1));
-                _mm256_storeu_si256((__m256i*)(output + 2*32), _mm256_cvtepu8_epi16(t2));
-                _mm256_storeu_si256((__m256i*)(output + 3*32), _mm256_cvtepu8_epi16(t3));
+                _mm256_storeu_si256((__m256i*)(output + 0*16), _mm256_cvtepu8_epi16(t0));
+                _mm256_storeu_si256((__m256i*)(output + 1*16), _mm256_cvtepu8_epi16(t1));
+                _mm256_storeu_si256((__m256i*)(output + 2*16), _mm256_cvtepu8_epi16(t2));
+                _mm256_storeu_si256((__m256i*)(output + 3*16), _mm256_cvtepu8_epi16(t3));
             }
 
-            output += 16;
+            output += 64;
             ptr += 64;
             continue;
         }

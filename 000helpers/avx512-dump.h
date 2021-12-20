@@ -29,12 +29,11 @@ void dump_epu8(__m512i v) {
 }
 
 void dump_epu8_hex(__m512i v) {
-    return;
     uint8_t tmp[64];
 
     _mm512_storeu_si512((__m512i*)tmp, v);
     printf("[%02x", tmp[0]);
-    for (int i=1; i < 4; i++)
+    for (int i=1; i < 64; i++)
         printf(" %02x", tmp[i]);
 
     printf("]\n");
