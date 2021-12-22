@@ -1,0 +1,105 @@
+
+loop-gcc.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_Z18test_and_clear_bitRmi>:
+   0:	48 8b 07             	mov    (%rdi),%rax
+   3:	48 89 c2             	mov    %rax,%rdx
+   6:	48 0f b3 f2          	btr    %rsi,%rdx
+   a:	48 39 c2             	cmp    %rax,%rdx
+   d:	48 89 17             	mov    %rdx,(%rdi)
+  10:	0f 92 c0             	setb   %al
+  13:	c3                   	retq   
+  14:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+  1b:	00 00 00 00 
+  1f:	90                   	nop
+
+0000000000000020 <_Z7loop_v1m>:
+  20:	55                   	push   %rbp
+  21:	53                   	push   %rbx
+  22:	bb 3f 00 00 00       	mov    $0x3f,%ebx
+  27:	48 83 ec 08          	sub    $0x8,%rsp
+  2b:	eb 10                	jmp    3d <_Z7loop_v1m+0x1d>
+  2d:	0f 1f 00             	nopl   (%rax)
+  30:	e8 00 00 00 00       	callq  35 <_Z7loop_v1m+0x15>
+  35:	83 eb 01             	sub    $0x1,%ebx
+  38:	72 20                	jb     5a <_Z7loop_v1m+0x3a>
+  3a:	48 89 ef             	mov    %rbp,%rdi
+  3d:	48 85 ff             	test   %rdi,%rdi
+  40:	74 18                	je     5a <_Z7loop_v1m+0x3a>
+  42:	48 89 fd             	mov    %rdi,%rbp
+  45:	48 0f b3 dd          	btr    %rbx,%rbp
+  49:	48 39 fd             	cmp    %rdi,%rbp
+  4c:	89 df                	mov    %ebx,%edi
+  4e:	72 e0                	jb     30 <_Z7loop_v1m+0x10>
+  50:	e8 00 00 00 00       	callq  55 <_Z7loop_v1m+0x35>
+  55:	83 eb 01             	sub    $0x1,%ebx
+  58:	73 e0                	jae    3a <_Z7loop_v1m+0x1a>
+  5a:	48 83 c4 08          	add    $0x8,%rsp
+  5e:	5b                   	pop    %rbx
+  5f:	5d                   	pop    %rbp
+  60:	c3                   	retq   
+  61:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+  68:	00 00 00 00 
+  6c:	0f 1f 40 00          	nopl   0x0(%rax)
+
+0000000000000070 <_Z7loop_v2m>:
+  70:	48 85 ff             	test   %rdi,%rdi
+  73:	74 43                	je     b8 <_Z7loop_v2m+0x48>
+  75:	55                   	push   %rbp
+  76:	bd 3f 00 00 00       	mov    $0x3f,%ebp
+  7b:	53                   	push   %rbx
+  7c:	48 89 fb             	mov    %rdi,%rbx
+  7f:	48 83 ec 08          	sub    $0x8,%rsp
+  83:	eb 14                	jmp    99 <_Z7loop_v2m+0x29>
+  85:	0f 1f 00             	nopl   (%rax)
+  88:	e8 00 00 00 00       	callq  8d <_Z7loop_v2m+0x1d>
+  8d:	48 01 db             	add    %rbx,%rbx
+  90:	ff cd                	dec    %ebp
+  92:	78 18                	js     ac <_Z7loop_v2m+0x3c>
+  94:	48 85 db             	test   %rbx,%rbx
+  97:	74 13                	je     ac <_Z7loop_v2m+0x3c>
+  99:	89 ef                	mov    %ebp,%edi
+  9b:	48 85 db             	test   %rbx,%rbx
+  9e:	79 e8                	jns    88 <_Z7loop_v2m+0x18>
+  a0:	e8 00 00 00 00       	callq  a5 <_Z7loop_v2m+0x35>
+  a5:	48 01 db             	add    %rbx,%rbx
+  a8:	ff cd                	dec    %ebp
+  aa:	79 e8                	jns    94 <_Z7loop_v2m+0x24>
+  ac:	48 83 c4 08          	add    $0x8,%rsp
+  b0:	5b                   	pop    %rbx
+  b1:	5d                   	pop    %rbp
+  b2:	c3                   	retq   
+  b3:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  b8:	c3                   	retq   
+  b9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+
+00000000000000c0 <_Z7loop_v3m>:
+  c0:	55                   	push   %rbp
+  c1:	53                   	push   %rbx
+  c2:	48 83 ec 18          	sub    $0x18,%rsp
+  c6:	c5 fa 7e 0d 00 00 00 	vmovq  0x0(%rip),%xmm1        # ce <_Z7loop_v3m+0xe>
+  cd:	00 
+  ce:	c4 e3 f1 22 05 00 00 	vpinsrq $0x1,0x0(%rip),%xmm1,%xmm0        # d8 <_Z7loop_v3m+0x18>
+  d5:	00 00 01 
+  d8:	c5 f9 7f 04 24       	vmovdqa %xmm0,(%rsp)
+  dd:	48 85 ff             	test   %rdi,%rdi
+  e0:	74 26                	je     108 <_Z7loop_v3m+0x48>
+  e2:	48 89 fb             	mov    %rdi,%rbx
+  e5:	bd 3f 00 00 00       	mov    $0x3f,%ebp
+  ea:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+  f0:	48 89 d8             	mov    %rbx,%rax
+  f3:	48 c1 e8 3f          	shr    $0x3f,%rax
+  f7:	89 ef                	mov    %ebp,%edi
+  f9:	ff 14 c4             	callq  *(%rsp,%rax,8)
+  fc:	48 01 db             	add    %rbx,%rbx
+  ff:	ff cd                	dec    %ebp
+ 101:	78 05                	js     108 <_Z7loop_v3m+0x48>
+ 103:	48 85 db             	test   %rbx,%rbx
+ 106:	75 e8                	jne    f0 <_Z7loop_v3m+0x30>
+ 108:	48 83 c4 18          	add    $0x18,%rsp
+ 10c:	5b                   	pop    %rbx
+ 10d:	5d                   	pop    %rbp
+ 10e:	c3                   	retq   

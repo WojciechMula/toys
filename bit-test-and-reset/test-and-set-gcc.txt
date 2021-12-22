@@ -1,0 +1,26 @@
+
+test-and-set-gcc.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_Z18test_and_clear_bitRmi>:
+   0:	48 8b 07             	mov    (%rdi),%rax
+   3:	41 89 f0             	mov    %esi,%r8d
+   6:	be 01 00 00 00       	mov    $0x1,%esi
+   b:	c4 e2 b9 f7 f6       	shlx   %r8,%rsi,%rsi
+  10:	c4 e2 c8 f2 d0       	andn   %rax,%rsi,%rdx
+  15:	48 85 f0             	test   %rsi,%rax
+  18:	48 89 17             	mov    %rdx,(%rdi)
+  1b:	0f 95 c0             	setne  %al
+  1e:	c3                   	retq   
+  1f:	90                   	nop
+
+0000000000000020 <_Z21test_and_clear_bit_v2Rmi>:
+  20:	48 8b 07             	mov    (%rdi),%rax
+  23:	48 89 c2             	mov    %rax,%rdx
+  26:	48 0f b3 f2          	btr    %rsi,%rdx
+  2a:	48 39 c2             	cmp    %rax,%rdx
+  2d:	48 89 17             	mov    %rdx,(%rdi)
+  30:	0f 92 c0             	setb   %al
+  33:	c3                   	retq   

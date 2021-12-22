@@ -1,0 +1,24 @@
+
+test-and-set-clang.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_Z18test_and_clear_bitRmi>:
+   0:	48 8b 0f             	mov    (%rdi),%rcx
+   3:	48 0f a3 f1          	bt     %rsi,%rcx
+   7:	0f 92 c0             	setb   %al
+   a:	48 0f b3 f1          	btr    %rsi,%rcx
+   e:	48 89 0f             	mov    %rcx,(%rdi)
+  11:	c3                   	retq   
+  12:	66 66 66 66 66 2e 0f 	data16 data16 data16 data16 nopw %cs:0x0(%rax,%rax,1)
+  19:	1f 84 00 00 00 00 00 
+
+0000000000000020 <_Z21test_and_clear_bit_v2Rmi>:
+  20:	48 8b 07             	mov    (%rdi),%rax
+  23:	48 89 c1             	mov    %rax,%rcx
+  26:	48 0f b3 f1          	btr    %rsi,%rcx
+  2a:	48 89 0f             	mov    %rcx,(%rdi)
+  2d:	48 39 c1             	cmp    %rax,%rcx
+  30:	0f 92 c0             	setb   %al
+  33:	c3                   	retq   
