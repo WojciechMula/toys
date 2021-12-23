@@ -80,13 +80,29 @@ def generate(lines):
     except:
         raise ValueError(f"Cannot evaluate program")
 
+    candidates = []
     for variable, values in objects.items():
-        if isinstance(values, type([])) and len(values) == 64:
-            print_constants(variable, values)
-            return
+        if isinstance(values, list) and len(values) == 64:
+            candidates.append(variable)
 
-    raise ValueError(f"The program does not define any 64-value array")
+    n = len(candidates)
+    if n == 0:
+        raise ValueError(f"Expected a single 64-value array, none found")
 
+    if n > 1:
+        image = ', '.join(f'"{name}"' for name in sorted(candidates))
+        raise ValueError(f"Expected a single 64-value array, found {image}")
+
+    name = candidates[0]
+    table = objects[name]
+    for i, v in enumerate(table):
+        if not isinstance(v, int):
+            raise ValueError(f"Element #{i} = {v}: is not an int ({type(v)})")
+
+        if not (0 <= v <= 0xff):
+            raise ValueError(f"Element #{i} = {v}: outside the range [0..255]")
+
+    print_constants(name, table)
 
 if __name__ == '__main__':
     main()
