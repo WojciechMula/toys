@@ -42,7 +42,6 @@ private:
 
             for (size_t j=0; j < utf8_sequences_size; j++) {
                 // given
-
                 const auto& tc = utf8_sequences[j];
                 for (int k=0; k < 5; k++)
                     buffer[pos + k] = tc.bytes[k];

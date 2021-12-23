@@ -19,7 +19,7 @@ bool test_and_clear_bit(uint32_t& val, int bitpos) {
 
     asm (
         "btr  %[bitpos], %[val]    \n"
-        "setc %b[flag]       \n"
+        "setc %b[flag]             \n"
         : [val] "=r" (val),
           [flag] "=r" (flag)
         : [bitpos] "r" (bitpos),

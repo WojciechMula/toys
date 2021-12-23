@@ -12,14 +12,14 @@ bool avx512vbmi_validate_utf8_structure(__m512i input) {
         const __m512i t0 = _mm512_and_si512(input, v_c0);
         continuation = _mm512_cmpeq_epi8_mask(t0, v_80);
     }
-    
+
     // 2. Populate the mask in register
     const __m512i v_continuation = _mm512_set1_epi64(continuation);
 
     // 3. Shift 4-bit sub-bitmasks to separate bytes
     /** pshufb
         shuffle_shifts = list(range(1, 64+1))
-        
+
         # 8-byte lane #0: 1..8
         # 8-byte lane #1: 9..16
         # ...
@@ -40,7 +40,7 @@ bool avx512vbmi_validate_utf8_structure(__m512i input) {
 
     // 4. Match the k continuation bytes followed by leading byte
     /** pshufb
-        
+
         continuation    = 0
         ascii           = 0b0001    # leading + 0 * continuation + leading byte
         _2_bytes        = 0b0011    # leading + 1 * continuation + leading byte

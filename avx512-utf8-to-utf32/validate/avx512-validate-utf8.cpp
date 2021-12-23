@@ -5,8 +5,9 @@
 
 #include "avx512-validate-utf8.constants.cpp"
 #include "avx512-validate-structure.cpp"
-#include "avx512vbmi-validate-structure.cpp"
 #include "avx512-validate-leading-bytes.cpp"
+#include "avx512vbmi-validate-structure.cpp"
+#include "avx512vbmi-validate-leading-bytes.cpp"
 
 namespace {
     bool is_continuation(uint8_t b) {
@@ -60,7 +61,7 @@ bool avx512vbmi_validate_utf8__version1(const char* utf8, size_t size) {
         }
 
         const __m512i continuation1 = _mm512_loadu_si512((const __m512i*)(ptr + 1));
-        if (not avx512_validate_leading_bytes(input, continuation1, 0x0ffffffffffffffflu)) {
+        if (not avx512vbmi_validate_leading_bytes(input, continuation1, 0x0ffffffffffffffflu)) {
             return false;
         }
 
