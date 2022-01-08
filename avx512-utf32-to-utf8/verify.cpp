@@ -6,6 +6,7 @@
 #include <immintrin.h>
 
 #include "avx512bw-utf32-to-utf8.h"
+#include "avx512vbmi2-utf32-to-utf8.h"
 
 
 size_t reference(const uint32_t* utf32, const uint32_t* length, size_t n, char* output) {
@@ -55,7 +56,8 @@ public:
     bool run() {
         bool ret = true;
 
-        ret = test("AVX512BW", avx512bw_compress_utf8);
+        ret = test("AVX512BW",    avx512bw_compress_utf8) and ret;
+        ret = test("AVX512VBMI2", avx512vbmi2_compress_utf8) and ret;
 
         if (ret)
             puts("All OK");
