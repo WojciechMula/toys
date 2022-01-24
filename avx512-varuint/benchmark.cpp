@@ -40,7 +40,7 @@ private:
     template <typename FUN>
     void benchmark(const char* name, FUN unpack_fun, const std::string& buf, uint32_t* output) {
         const size_t size = input.size();
-        constexpr size_t iterations = 1;
+        constexpr size_t iterations = 100;
         BEST_TIME(/**/, unpack_fun(buf, size, output), name, iterations, size);
     }
 

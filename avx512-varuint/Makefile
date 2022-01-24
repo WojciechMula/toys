@@ -1,4 +1,4 @@
-FLAGS=-Wall -Wextra -pedantic -std=c++17 -ggdb
+FLAGS=-Wall -Wextra -pedantic -std=c++17 -O3
 #FLAGS+=-march=native
 FLAGS+=-march=icelake-server
 

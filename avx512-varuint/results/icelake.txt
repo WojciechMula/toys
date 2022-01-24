@@ -1,0 +1,10 @@
+Input size 100000
+rdtsc_overhead set to 36
+SSE                             :     2.785 cycle/op (best)    2.800 cycle/op (avg)
+AVX512VBMI2                     :     1.044 cycle/op (best)    1.079 cycle/op (avg)
+Input size 1000000
+SSE                             :     2.792 cycle/op (best)    2.808 cycle/op (avg)
+AVX512VBMI2                     :     1.059 cycle/op (best)    1.077 cycle/op (avg)
+Input size 10000000
+SSE                             :     2.857 cycle/op (best)    2.875 cycle/op (avg)
+AVX512VBMI2                     :     1.330 cycle/op (best)    1.385 cycle/op (avg)
