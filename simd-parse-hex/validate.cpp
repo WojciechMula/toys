@@ -4,6 +4,7 @@
 
 #include "algorithm1.h"
 #include "algorithm2.h"
+#include "geoff_algorithm.h"
 
 
 char nibble2hex(uint64_t val) {
@@ -104,6 +105,7 @@ bool run() {
 
     ret = validate("Algorithm #1", hex_to_u64_sse_v1) and ret;
     ret = validate("Algorithm #2", hex_to_u64_sse_v2) and ret;
+    ret = validate("Geoff's algorithm", hex_to_u64_sse_geoff) and ret;
 
     return ret;
 }
