@@ -31,32 +31,32 @@ uint64_t hex_to_u64_sse_v1(const char* string, bool& ok) {
         /* 7 */ char(7 + digits),
         /* 8 */ char(8 + digits),
         /* 9 */ char(9 + digits),
-        /* a */ char(error),
-        /* b */ char(error),
-        /* c */ char(error),
-        /* d */ char(error),
-        /* e */ char(error),
-        /* f */ char(error));
+        /* a */ char(error + digits),
+        /* b */ char(error + digits),
+        /* c */ char(error + digits),
+        /* d */ char(error + digits),
+        /* e */ char(error + digits),
+        /* f */ char(error + digits));
     const __m128i lo_ascii_09 = _mm_shuffle_epi8(lookup1, input);
 
     // pretend that input & 0xf0 == 0x40 or 0x60
     const __m128i lookup2 = _mm_setr_epi8(
-        /* 0 */ char(error),
+        /* 0 */ char(error + letters),
         /* 1 */ char(10 + letters),
         /* 2 */ char(11 + letters),
         /* 3 */ char(12 + letters),
         /* 4 */ char(13 + letters),
         /* 5 */ char(14 + letters),
         /* 6 */ char(15 + letters),
-        /* 7 */ char(error),
-        /* 8 */ char(error),
-        /* 9 */ char(error),
-        /* a */ char(error),
-        /* b */ char(error),
-        /* c */ char(error),
-        /* d */ char(error),
-        /* e */ char(error),
-        /* f */ char(error));
+        /* 7 */ char(error + letters),
+        /* 8 */ char(error + letters),
+        /* 9 */ char(error + letters),
+        /* a */ char(error + letters),
+        /* b */ char(error + letters),
+        /* c */ char(error + letters),
+        /* d */ char(error + letters),
+        /* e */ char(error + letters),
+        /* f */ char(error + letters));
     const __m128i lo_ascii_af = _mm_shuffle_epi8(lookup2, lo_nibbles);
     
     // check value of higher nibble 
@@ -80,10 +80,10 @@ uint64_t hex_to_u64_sse_v1(const char* string, bool& ok) {
     const __m128i hi_class = _mm_shuffle_epi8(lookup3, hi_nibbles);
 
     // and find out which preposition was true
-    const __m128i ascii_09_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_09), hi_class);
-    const __m128i ascii_af_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_af), hi_class);
-    const __m128i ascii_09 = _mm_and_si128(ascii_09_mask, lo_ascii_09);
-    const __m128i ascii_af = _mm_and_si128(ascii_af_mask, lo_ascii_af);
+    const __m128i ascii_09_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_09), _mm_setzero_si128());
+    const __m128i ascii_af_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_af), _mm_setzero_si128());
+    const __m128i ascii_09 = _mm_andnot_si128(ascii_09_mask, lo_ascii_09);
+    const __m128i ascii_af = _mm_andnot_si128(ascii_af_mask, lo_ascii_af);
 
     const __m128i res = _mm_or_si128(ascii_09, ascii_af);
     const __m128i err = _mm_or_si128(hi_class, res);

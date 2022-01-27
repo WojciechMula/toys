@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <ctype.h>
 #include <vector>
 
 #include "algorithm1.h"
@@ -39,7 +40,6 @@ char nibble2hex(uint64_t val) {
     return 0;
 }
 
-
 template <typename FN>
 bool validate(const char* name, FN function) {
     char ascii[17];
@@ -68,7 +68,7 @@ bool validate(const char* name, FN function) {
         }
     }
 
-
+    // valid numbers
     for (int position=0; position < 16; position++) {
         for (int i=0; i < 16; i++) {
             ascii[i] = '0';
@@ -91,6 +91,29 @@ bool validate(const char* name, FN function) {
                 printf("expected = %016lx\n", expected);
                 printf("got      = %016lx\n", result);
                 puts("wrongly parsed number");
+                return false;
+            }
+        }
+    }
+
+    // invalid numbers
+    for (int position=0; position < 16; position++) {
+        for (int i=0; i < 16; i++) {
+            ascii[i] = '0';
+        }
+
+        for (int byte=0; byte < 256; byte++) {
+            ascii[position] = byte;
+
+            const bool expected = isxdigit(byte);
+            bool ok = false;
+            function(ascii, ok);
+            if (expected != ok) {
+                puts("");
+                printf("expected = %s\n", expected ? "true" : "false");
+                printf("got      = %s\n", ok ? "true" : "false");
+                printf("input byte = %02x\n", byte);
+                puts("wrongly detected input validity");
                 return false;
             }
         }
