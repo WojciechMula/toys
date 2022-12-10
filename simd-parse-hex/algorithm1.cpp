@@ -80,8 +80,9 @@ uint64_t hex_to_u64_sse_v1(const char* string, bool& ok) {
     const __m128i hi_class = _mm_shuffle_epi8(lookup3, hi_nibbles);
 
     // and find out which preposition was true
-    const __m128i ascii_09_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_09), _mm_setzero_si128());
-    const __m128i ascii_af_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_af), _mm_setzero_si128());
+    const __m128i zero = _mm_setzero_si128();
+    const __m128i ascii_09_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_09), zero);
+    const __m128i ascii_af_mask = _mm_cmpeq_epi8(_mm_and_si128(hi_class, lo_ascii_af), zero);
     const __m128i ascii_09 = _mm_andnot_si128(ascii_09_mask, lo_ascii_09);
     const __m128i ascii_af = _mm_andnot_si128(ascii_af_mask, lo_ascii_af);
 
