@@ -97,6 +97,56 @@ next:
 
     RET
 
+
+TEXT ·procedure3(SB), NOSPLIT|NOFRAME, $0-8
+    MOVQ            ctx+0(FP), AX
+
+    // 0. preload constants
+    MOVL            $16, BX
+    VPBROADCASTD    BX, Z10             // shift right amount
+
+    MOVL            $0x0000ffff, BX
+    VPBROADCASTD    BX, Z11             // lower half of a word
+
+    MOVL            $32, BX
+    VPBROADCASTD    BX, Z12
+
+    //
+    MOVL            context_in(AX), BX  // load input
+    VPBROADCASTD    BX, Z0              // Z0 = |a1|b2|c3|d4|...
+    VPTESTMD        Z0, Z0, K1          // K1 = mask for zero elements
+
+    VPXORD          Z1, Z1, Z1          // BFS = 0
+
+    // 1. check lower 16 bits
+    VPTESTNMD       Z0, Z11, K2
+    VPSRLVD         Z10, Z0, K2, Z0
+    VPADDD          Z10, Z1, K2, Z1
+    VPSRLD          $8, Z11, Z11        // Z11 = 0x000000ff
+    VPSRLD          $1, Z10, Z10        // Z10 = 8
+
+    // 2. check lower 8 bits
+    VPTESTNMD       Z0, Z11, K2
+    VPSRLVD         Z10, Z0, K2, Z0
+    VPADDD          Z10, Z1, K2, Z1
+    VPSRLD          $4, Z11, Z11        // Z11 = 0x0000000f
+    VPSRLD          $1, Z10, Z10        // Z10 = 4
+
+    // 3. check lower 4 bits
+    VPTESTNMD       Z0, Z11, K2
+    VPSRLVD         Z10, Z0, K2, Z0
+    VPADDD          Z10, Z1, K2, Z1
+
+    // 4. lookup BFS for the nibble (0 for 0 input)
+    VMOVDQU32       bfs<>(SB), Z10
+    VPERMD          Z10, Z0, Z0
+    VPADDD          Z1, Z0, Z0
+
+next:
+    MOVL            X0, context_bfs(AX)
+
+    RET
+
 // LUT for 32-bit bswap
 DATA bswap32<>+(4*0)(SB)/4, $0x00010203 // single 128-bit lane
 DATA bswap32<>+(4*1)(SB)/4, $0x04050607

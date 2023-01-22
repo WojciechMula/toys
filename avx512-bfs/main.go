@@ -17,12 +17,34 @@ func procedure1(ctx *context)
 // go:nosplit
 func procedure2(ctx *context)
 
+// go:noescape
+// go:nosplit
+func procedure3(ctx *context)
+
 func main() {
 
+	procedures := []struct {
+		fn   func(*context)
+		name string
+	}{
+		{
+			fn:   procedure1,
+			name: "Procedure 1",
+		},
+		{
+			fn:   procedure2,
+			name: "Procedure 2",
+		},
+		{
+			fn:   procedure3,
+			name: "Procedure 3",
+		},
+	}
+
 	ok := false
-	for i, procedure := range []func(*context){procedure1, procedure2} {
-		fmt.Printf("Procedure %d\n", i+1)
-		res := test(procedure)
+	for i := range procedures {
+		fmt.Printf("%s\n", procedures[i].name)
+		res := test(procedures[i].fn)
 		ok = res && ok
 	}
 
