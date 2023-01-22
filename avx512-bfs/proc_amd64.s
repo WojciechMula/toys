@@ -172,3 +172,79 @@ DATA bfs<>+(4*0x0d)(SB)/4,  $0 // 1101
 DATA bfs<>+(4*0x0e)(SB)/4,  $1 // 1110
 DATA bfs<>+(4*0x0f)(SB)/4,  $0 // 1111
 GLOBL bfs<>(SB), RODATA|NOPTR, $64
+
+
+TEXT ·procedure4(SB), NOSPLIT|NOFRAME, $0-8
+    MOVQ            ctx+0(FP), AX
+
+    // load consts
+    MOVL            $0x0f0f0f0f, BX
+    VPBROADCASTD    BX, Z10
+
+    VBROADCASTF32X4 swapbitslo<>(SB), Z11
+    VBROADCASTF32X4 swapbitshi<>(SB), Z12
+    VBROADCASTF32X4 bswap32<>(SB), Z13
+
+    // load input
+    MOVL            context_in(AX), BX  // load const
+    VPBROADCASTD    BX, Z0              // Z0 = |a1|b2|c3|d4|...
+
+    // 1. separate lo and hi nibbles
+    VPANDD          Z0, Z10, Z1         // Z1 = |01|02|03|04|... -- lo nibbles
+    VPSRLD          $4, Z0, Z2          //
+    VPANDD          Z2, Z10, Z2         // Z2 = |0a|0b|0c|0d|... -- hi nibbles
+
+    // 2. swap bits in lo nibbles & hi nibbles
+    VPSHUFB         Z1, Z11, Z1
+    VPSHUFB         Z2, Z12, Z2
+    VPORD           Z1, Z2, Z0
+
+    // 3. swap bytes
+    VPSHUFB         Z13, Z0, Z0
+
+    // 4. count leading zeros
+    VPLZCNTD        Z0, Z0              // n = lzcnt
+
+    //
+next:
+    MOVL            X0, context_bfs(AX)
+
+    RET
+
+// swap bits in nibble and SHIFT LEFT by 4 bits
+DATA swapbitslo<>+(0x00)(SB)/1, $0x00 // 0000 => 0000
+DATA swapbitslo<>+(0x01)(SB)/1, $0x80 // 0001 => 1000
+DATA swapbitslo<>+(0x02)(SB)/1, $0x40 // 0010 => 0100
+DATA swapbitslo<>+(0x03)(SB)/1, $0xc0 // 0011 => 1100
+DATA swapbitslo<>+(0x04)(SB)/1, $0x20 // 0100 => 0010
+DATA swapbitslo<>+(0x05)(SB)/1, $0xa0 // 0101 => 1010
+DATA swapbitslo<>+(0x06)(SB)/1, $0x60 // 0110 => 0110
+DATA swapbitslo<>+(0x07)(SB)/1, $0xe0 // 0111 => 1110
+DATA swapbitslo<>+(0x08)(SB)/1, $0x10 // 1000 => 0001
+DATA swapbitslo<>+(0x09)(SB)/1, $0x90 // 1001 => 1001
+DATA swapbitslo<>+(0x0a)(SB)/1, $0x50 // 1010 => 0101
+DATA swapbitslo<>+(0x0b)(SB)/1, $0xd0 // 1011 => 1101
+DATA swapbitslo<>+(0x0c)(SB)/1, $0x30 // 1100 => 0011
+DATA swapbitslo<>+(0x0d)(SB)/1, $0xb0 // 1101 => 1011
+DATA swapbitslo<>+(0x0e)(SB)/1, $0x70 // 1110 => 0111
+DATA swapbitslo<>+(0x0f)(SB)/1, $0xf0 // 1111 => 1111
+GLOBL swapbitslo<>(SB), RODATA|NOPTR, $16
+
+// swap bits in nibble
+DATA swapbitshi<>+(0x00)(SB)/1, $0x00 // 0000 => 0000
+DATA swapbitshi<>+(0x01)(SB)/1, $0x08 // 0001 => 1000
+DATA swapbitshi<>+(0x02)(SB)/1, $0x04 // 0010 => 0100
+DATA swapbitshi<>+(0x03)(SB)/1, $0x0c // 0011 => 1100
+DATA swapbitshi<>+(0x04)(SB)/1, $0x02 // 0100 => 0010
+DATA swapbitshi<>+(0x05)(SB)/1, $0x0a // 0101 => 1010
+DATA swapbitshi<>+(0x06)(SB)/1, $0x06 // 0110 => 0110
+DATA swapbitshi<>+(0x07)(SB)/1, $0x0e // 0111 => 1110
+DATA swapbitshi<>+(0x08)(SB)/1, $0x01 // 1000 => 0001
+DATA swapbitshi<>+(0x09)(SB)/1, $0x09 // 1001 => 1001
+DATA swapbitshi<>+(0x0a)(SB)/1, $0x05 // 1010 => 0101
+DATA swapbitshi<>+(0x0b)(SB)/1, $0x0d // 1011 => 1101
+DATA swapbitshi<>+(0x0c)(SB)/1, $0x03 // 1100 => 0011
+DATA swapbitshi<>+(0x0d)(SB)/1, $0x0b // 1101 => 1011
+DATA swapbitshi<>+(0x0e)(SB)/1, $0x07 // 1110 => 0111
+DATA swapbitshi<>+(0x0f)(SB)/1, $0x0f // 1111 => 1111
+GLOBL swapbitshi<>(SB), RODATA|NOPTR, $16

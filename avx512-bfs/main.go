@@ -21,6 +21,10 @@ func procedure2(ctx *context)
 // go:nosplit
 func procedure3(ctx *context)
 
+// go:noescape
+// go:nosplit
+func procedure4(ctx *context)
+
 func main() {
 
 	procedures := []struct {
@@ -38,6 +42,10 @@ func main() {
 		{
 			fn:   procedure3,
 			name: "Procedure 3",
+		},
+		{
+			fn:   procedure4,
+			name: "Procedure 4",
 		},
 	}
 
