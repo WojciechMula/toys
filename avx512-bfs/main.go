@@ -11,9 +11,27 @@ type context struct {
 
 // go:noescape
 // go:nosplit
-func procedure(ctx *context)
+func procedure1(ctx *context)
+
+// go:noescape
+// go:nosplit
+func procedure2(ctx *context)
 
 func main() {
+
+	ok := false
+	for i, procedure := range []func(*context){procedure1, procedure2} {
+		fmt.Printf("Procedure %d\n", i+1)
+		res := test(procedure)
+		ok = res && ok
+	}
+
+	if ok {
+		fmt.Printf("All OK\n")
+	}
+}
+
+func test(procedure func(ctx *context)) bool {
 	ctx := &context{}
 
 	ok := true
@@ -35,9 +53,7 @@ func main() {
 		}
 	}
 
-	if ok {
-		fmt.Printf("All OK\n")
-	}
+	return ok
 }
 
 func bfs(x uint32) uint32 {
