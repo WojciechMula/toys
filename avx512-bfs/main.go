@@ -25,6 +25,10 @@ func procedure3(ctx *context)
 // go:nosplit
 func procedure4(ctx *context)
 
+// go:noescape
+// go:nosplit
+func procedure5(ctx *context)
+
 func main() {
 
 	procedures := []struct {
@@ -47,6 +51,10 @@ func main() {
 			fn:   procedure4,
 			name: "Procedure 4",
 		},
+		{
+			fn:   procedure5,
+			name: "Procedure 5",
+		},
 	}
 
 	ok := false
@@ -66,7 +74,7 @@ func test(procedure func(ctx *context)) bool {
 
 	ok := true
 	for shift := 0; shift < 64; shift++ {
-		for nibble := uint32(0); nibble < 16; nibble++ {
+		for nibble := uint32(0); nibble < 256; nibble++ {
 			ctx.in = nibble << shift
 
 			procedure(ctx)
@@ -75,8 +83,8 @@ func test(procedure func(ctx *context)) bool {
 			want := bfs(ctx.in)
 
 			if got != want {
-				fmt.Printf("word: %08x\n", ctx.in)
-				fmt.Printf("got : %d\n", got)
+				fmt.Printf("word: %032b\n", ctx.in)
+				fmt.Printf("got : %032b\n", got)
 				fmt.Printf("want: %d\n", want)
 				ok = false
 			}

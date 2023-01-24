@@ -248,3 +248,170 @@ DATA swapbitshi<>+(0x0d)(SB)/1, $0x0b // 1101 => 1011
 DATA swapbitshi<>+(0x0e)(SB)/1, $0x07 // 1110 => 0111
 DATA swapbitshi<>+(0x0f)(SB)/1, $0x0f // 1111 => 1111
 GLOBL swapbitshi<>(SB), RODATA|NOPTR, $16
+
+
+TEXT ·procedure5(SB), NOSPLIT|NOFRAME, $0-8
+    MOVQ            ctx+0(FP), AX
+
+    // load consts
+    MOVL            $0x01010101, BX
+    VPBROADCASTD    BX, Z10
+
+    VMOVDQU32 bitswap7<>+0(SB), Z11
+    VMOVDQU32 bitswap7<>+64(SB), Z12
+    VBROADCASTF32X4 bswap32<>(SB), Z13
+
+    // load input
+    MOVL            context_in(AX), BX  // load const
+    VPBROADCASTD    BX, Z0              // Z0 = |a1|b2|c3|d4|...
+
+    // 1. swap 7 lower bits
+    VMOVDQA32       Z0, Z1
+    VPERMI2B        Z12, Z11, Z0
+
+    // 2. move 7th bit to 0th position
+    VPSRLD          $7, Z1, Z1
+    VPTERNLOGD      $0xea, Z0, Z1, Z10 // Z10 = (Z10 and Z1) or Z0
+
+    // 3. swap bytes
+    VPSHUFB         Z13, Z10, Z10
+
+    // 4. count leading zeros
+    VPLZCNTD        Z10, Z0              // n = lzcnt
+
+    //
+next:
+    MOVL            X0, context_bfs(AX)
+
+    RET
+
+
+DATA bitswap7<>+0x00(SB)/1, $0x00 // 00000000 => 00000000
+DATA bitswap7<>+0x01(SB)/1, $0x80 // 00000001 => 10000000
+DATA bitswap7<>+0x02(SB)/1, $0x40 // 00000010 => 01000000
+DATA bitswap7<>+0x03(SB)/1, $0xc0 // 00000011 => 11000000
+DATA bitswap7<>+0x04(SB)/1, $0x20 // 00000100 => 00100000
+DATA bitswap7<>+0x05(SB)/1, $0xa0 // 00000101 => 10100000
+DATA bitswap7<>+0x06(SB)/1, $0x60 // 00000110 => 01100000
+DATA bitswap7<>+0x07(SB)/1, $0xe0 // 00000111 => 11100000
+DATA bitswap7<>+0x08(SB)/1, $0x10 // 00001000 => 00010000
+DATA bitswap7<>+0x09(SB)/1, $0x90 // 00001001 => 10010000
+DATA bitswap7<>+0x0a(SB)/1, $0x50 // 00001010 => 01010000
+DATA bitswap7<>+0x0b(SB)/1, $0xd0 // 00001011 => 11010000
+DATA bitswap7<>+0x0c(SB)/1, $0x30 // 00001100 => 00110000
+DATA bitswap7<>+0x0d(SB)/1, $0xb0 // 00001101 => 10110000
+DATA bitswap7<>+0x0e(SB)/1, $0x70 // 00001110 => 01110000
+DATA bitswap7<>+0x0f(SB)/1, $0xf0 // 00001111 => 11110000
+DATA bitswap7<>+0x10(SB)/1, $0x08 // 00010000 => 00001000
+DATA bitswap7<>+0x11(SB)/1, $0x88 // 00010001 => 10001000
+DATA bitswap7<>+0x12(SB)/1, $0x48 // 00010010 => 01001000
+DATA bitswap7<>+0x13(SB)/1, $0xc8 // 00010011 => 11001000
+DATA bitswap7<>+0x14(SB)/1, $0x28 // 00010100 => 00101000
+DATA bitswap7<>+0x15(SB)/1, $0xa8 // 00010101 => 10101000
+DATA bitswap7<>+0x16(SB)/1, $0x68 // 00010110 => 01101000
+DATA bitswap7<>+0x17(SB)/1, $0xe8 // 00010111 => 11101000
+DATA bitswap7<>+0x18(SB)/1, $0x18 // 00011000 => 00011000
+DATA bitswap7<>+0x19(SB)/1, $0x98 // 00011001 => 10011000
+DATA bitswap7<>+0x1a(SB)/1, $0x58 // 00011010 => 01011000
+DATA bitswap7<>+0x1b(SB)/1, $0xd8 // 00011011 => 11011000
+DATA bitswap7<>+0x1c(SB)/1, $0x38 // 00011100 => 00111000
+DATA bitswap7<>+0x1d(SB)/1, $0xb8 // 00011101 => 10111000
+DATA bitswap7<>+0x1e(SB)/1, $0x78 // 00011110 => 01111000
+DATA bitswap7<>+0x1f(SB)/1, $0xf8 // 00011111 => 11111000
+DATA bitswap7<>+0x20(SB)/1, $0x04 // 00100000 => 00000100
+DATA bitswap7<>+0x21(SB)/1, $0x84 // 00100001 => 10000100
+DATA bitswap7<>+0x22(SB)/1, $0x44 // 00100010 => 01000100
+DATA bitswap7<>+0x23(SB)/1, $0xc4 // 00100011 => 11000100
+DATA bitswap7<>+0x24(SB)/1, $0x24 // 00100100 => 00100100
+DATA bitswap7<>+0x25(SB)/1, $0xa4 // 00100101 => 10100100
+DATA bitswap7<>+0x26(SB)/1, $0x64 // 00100110 => 01100100
+DATA bitswap7<>+0x27(SB)/1, $0xe4 // 00100111 => 11100100
+DATA bitswap7<>+0x28(SB)/1, $0x14 // 00101000 => 00010100
+DATA bitswap7<>+0x29(SB)/1, $0x94 // 00101001 => 10010100
+DATA bitswap7<>+0x2a(SB)/1, $0x54 // 00101010 => 01010100
+DATA bitswap7<>+0x2b(SB)/1, $0xd4 // 00101011 => 11010100
+DATA bitswap7<>+0x2c(SB)/1, $0x34 // 00101100 => 00110100
+DATA bitswap7<>+0x2d(SB)/1, $0xb4 // 00101101 => 10110100
+DATA bitswap7<>+0x2e(SB)/1, $0x74 // 00101110 => 01110100
+DATA bitswap7<>+0x2f(SB)/1, $0xf4 // 00101111 => 11110100
+DATA bitswap7<>+0x30(SB)/1, $0x0c // 00110000 => 00001100
+DATA bitswap7<>+0x31(SB)/1, $0x8c // 00110001 => 10001100
+DATA bitswap7<>+0x32(SB)/1, $0x4c // 00110010 => 01001100
+DATA bitswap7<>+0x33(SB)/1, $0xcc // 00110011 => 11001100
+DATA bitswap7<>+0x34(SB)/1, $0x2c // 00110100 => 00101100
+DATA bitswap7<>+0x35(SB)/1, $0xac // 00110101 => 10101100
+DATA bitswap7<>+0x36(SB)/1, $0x6c // 00110110 => 01101100
+DATA bitswap7<>+0x37(SB)/1, $0xec // 00110111 => 11101100
+DATA bitswap7<>+0x38(SB)/1, $0x1c // 00111000 => 00011100
+DATA bitswap7<>+0x39(SB)/1, $0x9c // 00111001 => 10011100
+DATA bitswap7<>+0x3a(SB)/1, $0x5c // 00111010 => 01011100
+DATA bitswap7<>+0x3b(SB)/1, $0xdc // 00111011 => 11011100
+DATA bitswap7<>+0x3c(SB)/1, $0x3c // 00111100 => 00111100
+DATA bitswap7<>+0x3d(SB)/1, $0xbc // 00111101 => 10111100
+DATA bitswap7<>+0x3e(SB)/1, $0x7c // 00111110 => 01111100
+DATA bitswap7<>+0x3f(SB)/1, $0xfc // 00111111 => 11111100
+DATA bitswap7<>+0x40(SB)/1, $0x02 // 01000000 => 00000010
+DATA bitswap7<>+0x41(SB)/1, $0x82 // 01000001 => 10000010
+DATA bitswap7<>+0x42(SB)/1, $0x42 // 01000010 => 01000010
+DATA bitswap7<>+0x43(SB)/1, $0xc2 // 01000011 => 11000010
+DATA bitswap7<>+0x44(SB)/1, $0x22 // 01000100 => 00100010
+DATA bitswap7<>+0x45(SB)/1, $0xa2 // 01000101 => 10100010
+DATA bitswap7<>+0x46(SB)/1, $0x62 // 01000110 => 01100010
+DATA bitswap7<>+0x47(SB)/1, $0xe2 // 01000111 => 11100010
+DATA bitswap7<>+0x48(SB)/1, $0x12 // 01001000 => 00010010
+DATA bitswap7<>+0x49(SB)/1, $0x92 // 01001001 => 10010010
+DATA bitswap7<>+0x4a(SB)/1, $0x52 // 01001010 => 01010010
+DATA bitswap7<>+0x4b(SB)/1, $0xd2 // 01001011 => 11010010
+DATA bitswap7<>+0x4c(SB)/1, $0x32 // 01001100 => 00110010
+DATA bitswap7<>+0x4d(SB)/1, $0xb2 // 01001101 => 10110010
+DATA bitswap7<>+0x4e(SB)/1, $0x72 // 01001110 => 01110010
+DATA bitswap7<>+0x4f(SB)/1, $0xf2 // 01001111 => 11110010
+DATA bitswap7<>+0x50(SB)/1, $0x0a // 01010000 => 00001010
+DATA bitswap7<>+0x51(SB)/1, $0x8a // 01010001 => 10001010
+DATA bitswap7<>+0x52(SB)/1, $0x4a // 01010010 => 01001010
+DATA bitswap7<>+0x53(SB)/1, $0xca // 01010011 => 11001010
+DATA bitswap7<>+0x54(SB)/1, $0x2a // 01010100 => 00101010
+DATA bitswap7<>+0x55(SB)/1, $0xaa // 01010101 => 10101010
+DATA bitswap7<>+0x56(SB)/1, $0x6a // 01010110 => 01101010
+DATA bitswap7<>+0x57(SB)/1, $0xea // 01010111 => 11101010
+DATA bitswap7<>+0x58(SB)/1, $0x1a // 01011000 => 00011010
+DATA bitswap7<>+0x59(SB)/1, $0x9a // 01011001 => 10011010
+DATA bitswap7<>+0x5a(SB)/1, $0x5a // 01011010 => 01011010
+DATA bitswap7<>+0x5b(SB)/1, $0xda // 01011011 => 11011010
+DATA bitswap7<>+0x5c(SB)/1, $0x3a // 01011100 => 00111010
+DATA bitswap7<>+0x5d(SB)/1, $0xba // 01011101 => 10111010
+DATA bitswap7<>+0x5e(SB)/1, $0x7a // 01011110 => 01111010
+DATA bitswap7<>+0x5f(SB)/1, $0xfa // 01011111 => 11111010
+DATA bitswap7<>+0x60(SB)/1, $0x06 // 01100000 => 00000110
+DATA bitswap7<>+0x61(SB)/1, $0x86 // 01100001 => 10000110
+DATA bitswap7<>+0x62(SB)/1, $0x46 // 01100010 => 01000110
+DATA bitswap7<>+0x63(SB)/1, $0xc6 // 01100011 => 11000110
+DATA bitswap7<>+0x64(SB)/1, $0x26 // 01100100 => 00100110
+DATA bitswap7<>+0x65(SB)/1, $0xa6 // 01100101 => 10100110
+DATA bitswap7<>+0x66(SB)/1, $0x66 // 01100110 => 01100110
+DATA bitswap7<>+0x67(SB)/1, $0xe6 // 01100111 => 11100110
+DATA bitswap7<>+0x68(SB)/1, $0x16 // 01101000 => 00010110
+DATA bitswap7<>+0x69(SB)/1, $0x96 // 01101001 => 10010110
+DATA bitswap7<>+0x6a(SB)/1, $0x56 // 01101010 => 01010110
+DATA bitswap7<>+0x6b(SB)/1, $0xd6 // 01101011 => 11010110
+DATA bitswap7<>+0x6c(SB)/1, $0x36 // 01101100 => 00110110
+DATA bitswap7<>+0x6d(SB)/1, $0xb6 // 01101101 => 10110110
+DATA bitswap7<>+0x6e(SB)/1, $0x76 // 01101110 => 01110110
+DATA bitswap7<>+0x6f(SB)/1, $0xf6 // 01101111 => 11110110
+DATA bitswap7<>+0x70(SB)/1, $0x0e // 01110000 => 00001110
+DATA bitswap7<>+0x71(SB)/1, $0x8e // 01110001 => 10001110
+DATA bitswap7<>+0x72(SB)/1, $0x4e // 01110010 => 01001110
+DATA bitswap7<>+0x73(SB)/1, $0xce // 01110011 => 11001110
+DATA bitswap7<>+0x74(SB)/1, $0x2e // 01110100 => 00101110
+DATA bitswap7<>+0x75(SB)/1, $0xae // 01110101 => 10101110
+DATA bitswap7<>+0x76(SB)/1, $0x6e // 01110110 => 01101110
+DATA bitswap7<>+0x77(SB)/1, $0xee // 01110111 => 11101110
+DATA bitswap7<>+0x78(SB)/1, $0x1e // 01111000 => 00011110
+DATA bitswap7<>+0x79(SB)/1, $0x9e // 01111001 => 10011110
+DATA bitswap7<>+0x7a(SB)/1, $0x5e // 01111010 => 01011110
+DATA bitswap7<>+0x7b(SB)/1, $0xde // 01111011 => 11011110
+DATA bitswap7<>+0x7c(SB)/1, $0x3e // 01111100 => 00111110
+DATA bitswap7<>+0x7d(SB)/1, $0xbe // 01111101 => 10111110
+DATA bitswap7<>+0x7e(SB)/1, $0x7e // 01111110 => 01111110
+DATA bitswap7<>+0x7f(SB)/1, $0xfe // 01111111 => 11111110
+GLOBL bitswap7<>(SB), RODATA|NOPTR, $128
