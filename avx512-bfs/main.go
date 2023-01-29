@@ -57,7 +57,7 @@ func main() {
 		},
 	}
 
-	ok := false
+	ok := true
 	for i := range procedures {
 		fmt.Printf("%s\n", procedures[i].name)
 		res := test(procedures[i].fn)
