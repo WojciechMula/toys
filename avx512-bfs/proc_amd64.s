@@ -415,3 +415,52 @@ DATA bitswap7<>+0x7d(SB)/1, $0xbe // 01111101 => 10111110
 DATA bitswap7<>+0x7e(SB)/1, $0x7e // 01111110 => 01111110
 DATA bitswap7<>+0x7f(SB)/1, $0xfe // 01111111 => 11111110
 GLOBL bitswap7<>(SB), RODATA|NOPTR, $128
+
+
+TEXT ·procedure6(SB), NOSPLIT|NOFRAME, $0-8
+    MOVQ            ctx+0(FP), AX
+
+    // load constants
+    MOVL            $1, BX
+    VPBROADCASTD    BX, Z1              // Z1 = 1
+
+    // load input
+    MOVL            context_in(AX), BX  // load const
+    VPBROADCASTD    BX, Z0              // Z0 = |a1|b2|c3|d4|...
+
+    // 1. fixup c to 0, if input is zero
+    VPMINUD         Z0, Z1, Z2          // c = 1 if input != 0, otherwise c = 0
+
+    // 2. count initial number of bits
+    VPOPCNTD        Z0, Z10             // popcnt0
+
+
+    // 3. reset the lowest bit and set all before it; for instance:
+    //    |0010 1001|0010 0000| - 1 = 
+    //    |0010 1001|0001 1111|
+    //                 ^
+    //                 this bit
+    //
+    //   This means that popcnt of the newword decreased
+    //   by 1 and increased by bfs bits!
+    //      
+    VPSUBD          Z1, Z0, Z0
+
+    // 4. get popcnt1
+    VPOPCNTD        Z0, Z11             // popcnt1
+
+
+    // 5. calculate bfs:
+    //
+    //      popcnt0 - c + bfs = popcnt1
+    //                    bfs = popcnt1 - popcnt0 + c
+    //
+    //      c = 1 if input != 0
+    //      c = 0 if input == 0
+    VPSUBD          Z10, Z11, Z11
+    VPADDD          Z2,  Z11, Z0
+    
+next:
+    MOVL            X0, context_bfs(AX)
+
+    RET
