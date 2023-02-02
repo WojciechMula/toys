@@ -33,6 +33,14 @@ func procedure5(ctx *context)
 // go:nosplit
 func procedure6(ctx *context)
 
+// go:noescape
+// go:nosplit
+func procedure7(ctx *context)
+
+// go:noescape
+// go:nosplit
+func procedure8(ctx *context)
+
 func main() {
 
 	procedures := []struct {
@@ -63,6 +71,14 @@ func main() {
 			fn:   procedure6,
 			name: "Procedure 6",
 		},
+		{
+			fn:   procedure7,
+			name: "Procedure 7",
+		},
+		{
+			fn:   procedure8,
+			name: "Procedure 8",
+		},
 	}
 
 	ok := true
@@ -92,7 +108,8 @@ func test(procedure func(ctx *context)) bool {
 
 			if got != want {
 				fmt.Printf("word: %032b\n", ctx.in)
-				fmt.Printf("got : %032b\n", got)
+				//fmt.Printf("got : %032b\n", got)
+				fmt.Printf("got : %d\n", got)
 				fmt.Printf("want: %d\n", want)
 				ok = false
 			}
