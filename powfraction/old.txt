@@ -1,0 +1,16 @@
+Benchmark/2^{-1}-8          285856621            4.201 ns/op
+Benchmark/2^{-2}-8          26095111            45.97 ns/op
+Benchmark/2^{-3}-8          26118879            46.01 ns/op
+Benchmark/2^{-4}-8          26081094            45.99 ns/op
+Benchmark/2^{-5}-8          26084638            46.00 ns/op
+Benchmark/2^{-6}-8          26080267            45.96 ns/op
+Benchmark/2^{-7}-8          26095249            45.98 ns/op
+Benchmark/2^{-8}-8          26074026            45.99 ns/op
+Benchmark/2^{-9}-8          26070393            45.96 ns/op
+Benchmark/2^{-10}-8         26070722            46.01 ns/op
+Benchmark/2^{-11}-8         26084629            45.98 ns/op
+Benchmark/2^{-12}-8         26072228            45.97 ns/op
+Benchmark/2^{-13}-8         26068743            45.97 ns/op
+Benchmark/2^{-14}-8         26097973            46.00 ns/op
+Benchmark/2^{-15}-8         26088348            45.97 ns/op
+
