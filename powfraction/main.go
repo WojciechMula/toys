@@ -6,7 +6,18 @@ import (
 )
 
 func powfrac(x, exponent float64) float64 {
-	u64 := math.Float64bits(exponent)
+	fraction := extractfraction(exponent)
+	n := bits.TrailingZeros64(fraction)
+	if n > 50 {
+		return powfracaux(x, fraction)
+	}
+
+	return math.Pow(x, exponent)
+
+}
+
+func extractfraction(x float64) uint64 {
+	u64 := math.Float64bits(x)
 	const significand_mask = (1 << 52) - 1
 	const implicit_one = 1 << 52
 	const shifted_exp_mask = (1 << 11) - 1
@@ -17,32 +28,18 @@ func powfrac(x, exponent float64) float64 {
 		panic("only fraction values are supported")
 	}
 	fraction <<= 11
-	fraction >>= -exp
-	fraction <<= 1
+	fraction >>= -exp - 1
 
-	n := bits.TrailingZeros64(fraction)
-	if n > 50 {
-		return powfracaux(x, fraction)
-	}
-
-	return math.Pow(x, exponent)
-
+	return fraction
 }
 
 func powfracaux(x float64, fraction uint64) float64 {
-	res := 1.0
+	res := 1.0 // res = 2^0
 	sq := x
 	for fraction != 0 {
-		sq = math.Sqrt(sq)
-		if sq == 1.0 {
-			break
-		}
-		if int64(fraction) < 0 {
-			prev := res
-			res *= sq
-			if prev == res {
-				break
-			}
+		sq = math.Sqrt(sq)       // sq = 1/2^i
+		if int64(fraction) < 0 { // i-th bit set (MSB)
+			res *= sq // update result
 		}
 
 		fraction <<= 1
