@@ -1,0 +1,23 @@
+digraph {
+
+    L [style="filled", color="lightblue"]
+    E [style="filled", color="lightblue"]
+    F [style="filled", color="lightgray"]
+    B [style="filled", color="hotpink"]
+
+    A -> B
+    A -> C
+
+    B -> D
+    B -> E
+    B -> F
+
+    D -> G
+    D -> H
+
+    F -> I
+    F -> J
+
+    I -> K
+    I -> L
+}
