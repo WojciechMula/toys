@@ -27,6 +27,7 @@ public:
         benchmark("naive",      naive_parse_ipv4);
         benchmark("SSE",        sse_parse_ipv4);
         benchmark("SSE (v2)",   sse_parse_ipv4_v2);
+        benchmark("SSE (v3)",   sse_parse_ipv4_v3);
     }
 
 private:

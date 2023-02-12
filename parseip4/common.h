@@ -12,7 +12,8 @@ enum errors {
     errWrongCharacter   = 6,
     errTooManyFields    = 7,
     errTooFewFields     = 8,
-    errLeadingZeros     = 9
+    errLeadingZeros     = 9,
+    errInvalidInput     = 10    // generic error
 };
 
 struct result {
