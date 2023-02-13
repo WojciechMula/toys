@@ -208,7 +208,7 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
     }
 
     // 5. finally parse ipv4 address according to pattern
-#   include "sse_parse_aux.inl"
+#   include "sse_parse_aux_v2.inl"
 
     return res;
 }
