@@ -1,3 +1,4 @@
+/* Code generated automatically; DO NOT EDIT */
     uint32_t val0;
     uint32_t val1;
     uint32_t val2;

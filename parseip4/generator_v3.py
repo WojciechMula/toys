@@ -6,6 +6,7 @@ class Generator:
         self.f = sys.stdout
 
     def generate(self):
+        self.write("/* Code generated automatically; DO NOT EDIT */")
         self.indent()
         self.write("uint32_t val0;")
         self.write("uint32_t val1;")
@@ -39,7 +40,7 @@ class Generator:
             self.write("switch (dotmask & 0x%02x) {" % ((1 << key) - 1))
             self.indent()
             for lengths in values:
-                self.write("case 0x%02x:" % (lengths2patterns(lengths)))
+                self.write("case 0x%02x: // %s" % (lengths2patterns(lengths), lengths))
                 self.indent()
                 self.generate_case(lengths)
                 self.unindent()

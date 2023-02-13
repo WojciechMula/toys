@@ -1,3 +1,4 @@
+/* Code generated automatically; DO NOT EDIT */
     uint32_t val0;
     uint32_t val1;
     uint32_t val2;
@@ -5,7 +6,7 @@
     switch (ipv4.size()) {
         case 7: // 1 case(s)
             switch (dotmask & 0x7f) {
-                case 0x2a:
+                case 0x2a: // [1, 1, 1, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -22,7 +23,7 @@
             break;
         case 8: // 4 case(s)
             switch (dotmask & 0xff) {
-                case 0x2a:
+                case 0x2a: // [1, 1, 1, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -33,7 +34,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x4a:
+                case 0x4a: // [1, 1, 2, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -44,7 +45,7 @@
                     val3 = (byte[7] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x52:
+                case 0x52: // [1, 2, 1, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -55,7 +56,7 @@
                     val3 = (byte[7] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x54:
+                case 0x54: // [2, 1, 1, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -73,7 +74,7 @@
             break;
         case 9: // 10 case(s)
             switch (dotmask & 0x1ff) {
-                case 0x2a:
+                case 0x2a: // [1, 1, 1, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -87,7 +88,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x4a:
+                case 0x4a: // [1, 1, 2, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -99,7 +100,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x8a:
+                case 0x8a: // [1, 1, 3, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -113,7 +114,7 @@
                     val3 = (byte[8] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x52:
+                case 0x52: // [1, 2, 1, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -125,7 +126,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x92:
+                case 0x92: // [1, 2, 2, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -137,7 +138,7 @@
                     val3 = (byte[8] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa2:
+                case 0xa2: // [1, 3, 1, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -151,7 +152,7 @@
                     val3 = (byte[8] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x54:
+                case 0x54: // [2, 1, 1, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -163,7 +164,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x94:
+                case 0x94: // [2, 1, 2, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -175,7 +176,7 @@
                     val3 = (byte[8] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa4:
+                case 0xa4: // [2, 2, 1, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -187,7 +188,7 @@
                     val3 = (byte[8] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa8:
+                case 0xa8: // [3, 1, 1, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -208,7 +209,7 @@
             break;
         case 10: // 16 case(s)
             switch (dotmask & 0x3ff) {
-                case 0x4a:
+                case 0x4a: // [1, 1, 2, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -223,7 +224,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x8a:
+                case 0x8a: // [1, 1, 3, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -238,7 +239,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x52:
+                case 0x52: // [1, 2, 1, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -253,7 +254,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x92:
+                case 0x92: // [1, 2, 2, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -266,7 +267,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x112:
+                case 0x112: // [1, 2, 3, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -281,7 +282,7 @@
                     val3 = (byte[9] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa2:
+                case 0xa2: // [1, 3, 1, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -296,7 +297,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x122:
+                case 0x122: // [1, 3, 2, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -311,7 +312,7 @@
                     val3 = (byte[9] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x54:
+                case 0x54: // [2, 1, 1, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -326,7 +327,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x94:
+                case 0x94: // [2, 1, 2, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -339,7 +340,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x114:
+                case 0x114: // [2, 1, 3, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -354,7 +355,7 @@
                     val3 = (byte[9] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa4:
+                case 0xa4: // [2, 2, 1, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -367,7 +368,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x124:
+                case 0x124: // [2, 2, 2, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -380,7 +381,7 @@
                     val3 = (byte[9] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x144:
+                case 0x144: // [2, 3, 1, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -395,7 +396,7 @@
                     val3 = (byte[9] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa8:
+                case 0xa8: // [3, 1, 1, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -410,7 +411,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x128:
+                case 0x128: // [3, 1, 2, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -425,7 +426,7 @@
                     val3 = (byte[9] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x148:
+                case 0x148: // [3, 2, 1, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -447,7 +448,7 @@
             break;
         case 11: // 19 case(s)
             switch (dotmask & 0x7ff) {
-                case 0x8a:
+                case 0x8a: // [1, 1, 3, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -465,7 +466,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x92:
+                case 0x92: // [1, 2, 2, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -481,7 +482,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x112:
+                case 0x112: // [1, 2, 3, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -497,7 +498,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa2:
+                case 0xa2: // [1, 3, 1, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -515,7 +516,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x122:
+                case 0x122: // [1, 3, 2, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -531,7 +532,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x222:
+                case 0x222: // [1, 3, 3, 1]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -549,7 +550,7 @@
                     val3 = (byte[10] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x94:
+                case 0x94: // [2, 1, 2, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -565,7 +566,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x114:
+                case 0x114: // [2, 1, 3, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -581,7 +582,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa4:
+                case 0xa4: // [2, 2, 1, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -597,7 +598,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x124:
+                case 0x124: // [2, 2, 2, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -611,7 +612,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x224:
+                case 0x224: // [2, 2, 3, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -627,7 +628,7 @@
                     val3 = (byte[10] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x144:
+                case 0x144: // [2, 3, 1, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -643,7 +644,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x244:
+                case 0x244: // [2, 3, 2, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -659,7 +660,7 @@
                     val3 = (byte[10] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0xa8:
+                case 0xa8: // [3, 1, 1, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -677,7 +678,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x128:
+                case 0x128: // [3, 1, 2, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -693,7 +694,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x228:
+                case 0x228: // [3, 1, 3, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -711,7 +712,7 @@
                     val3 = (byte[10] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x148:
+                case 0x148: // [3, 2, 1, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -727,7 +728,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x248:
+                case 0x248: // [3, 2, 2, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -743,7 +744,7 @@
                     val3 = (byte[10] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x288:
+                case 0x288: // [3, 3, 1, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -768,7 +769,7 @@
             break;
         case 12: // 16 case(s)
             switch (dotmask & 0xfff) {
-                case 0x112:
+                case 0x112: // [1, 2, 3, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1  = 10 * (byte[2] - '0') + (byte[3] - '0');
@@ -787,7 +788,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x122:
+                case 0x122: // [1, 3, 2, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -806,7 +807,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x222:
+                case 0x222: // [1, 3, 3, 2]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -825,7 +826,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x114:
+                case 0x114: // [2, 1, 3, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -844,7 +845,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x124:
+                case 0x124: // [2, 2, 2, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -861,7 +862,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x224:
+                case 0x224: // [2, 2, 3, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -878,7 +879,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x144:
+                case 0x144: // [2, 3, 1, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -897,7 +898,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x244:
+                case 0x244: // [2, 3, 2, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -914,7 +915,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x444:
+                case 0x444: // [2, 3, 3, 1]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -933,7 +934,7 @@
                     val3 = (byte[11] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x128:
+                case 0x128: // [3, 1, 2, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -952,7 +953,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x228:
+                case 0x228: // [3, 1, 3, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -971,7 +972,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x148:
+                case 0x148: // [3, 2, 1, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -990,7 +991,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x248:
+                case 0x248: // [3, 2, 2, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1007,7 +1008,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x448:
+                case 0x448: // [3, 2, 3, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1026,7 +1027,7 @@
                     val3 = (byte[11] - '0');
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x288:
+                case 0x288: // [3, 3, 1, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1045,7 +1046,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x488:
+                case 0x488: // [3, 3, 2, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1071,7 +1072,7 @@
             break;
         case 13: // 10 case(s)
             switch (dotmask & 0x1fff) {
-                case 0x222:
+                case 0x222: // [1, 3, 3, 3]
                     val0 = (byte[0] - '0');
                     res.ipv4 = val0;
                     val1 = (byte[2] - '0');
@@ -1093,7 +1094,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x224:
+                case 0x224: // [2, 2, 3, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -1113,7 +1114,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x244:
+                case 0x244: // [2, 3, 2, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -1133,7 +1134,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x444:
+                case 0x444: // [2, 3, 3, 2]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -1153,7 +1154,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x228:
+                case 0x228: // [3, 1, 3, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1175,7 +1176,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x248:
+                case 0x248: // [3, 2, 2, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1195,7 +1196,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x448:
+                case 0x448: // [3, 2, 3, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1215,7 +1216,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x288:
+                case 0x288: // [3, 3, 1, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1237,7 +1238,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x488:
+                case 0x488: // [3, 3, 2, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1257,7 +1258,7 @@
                     if (val3 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x888:
+                case 0x888: // [3, 3, 3, 1]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1286,7 +1287,7 @@
             break;
         case 14: // 4 case(s)
             switch (dotmask & 0x3fff) {
-                case 0x444:
+                case 0x444: // [2, 3, 3, 3]
                     val0  = 10 * (byte[0] - '0') + (byte[1] - '0');
                     if (val0 < 10) { res.err = errLeadingZeros; break; }
                     res.ipv4 = val0;
@@ -1309,7 +1310,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x448:
+                case 0x448: // [3, 2, 3, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1332,7 +1333,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x488:
+                case 0x488: // [3, 3, 2, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1355,7 +1356,7 @@
                     if (val3 > 255) { res.err = errTooBig; break; }
                     res.ipv4 = (res.ipv4 << 8) | val3;
                     break;
-                case 0x888:
+                case 0x888: // [3, 3, 3, 2]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');
@@ -1385,7 +1386,7 @@
             break;
         case 15: // 1 case(s)
             switch (dotmask & 0x7fff) {
-                case 0x888:
+                case 0x888: // [3, 3, 3, 3]
                     val0 = (byte[0] - '0');
                     val0 = 10 * val0 + (byte[1] - '0');
                     val0 = 10 * val0 + (byte[2] - '0');

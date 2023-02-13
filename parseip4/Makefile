@@ -9,7 +9,7 @@ all: $(ALL)
 DEPS=common.h naive.cpp naive.h sse.h sse.cpp sse_parse_aux_v2.inl sse_parse_aux_v3.inl
 
 sse_parse_aux_v2.inl: generator_v2.py
-	python3 generator_v2.py > sse_parse_aux_v3.inl
+	python3 generator_v2.py > sse_parse_aux_v2.inl
 
 sse_parse_aux_v3.inl: generator_v3.py
 	python3 generator_v3.py > sse_parse_aux_v3.inl

@@ -6,6 +6,7 @@ class Generator:
         self.f = sys.stdout
 
     def generate(self):
+        self.write("/* Code generated automatically; DO NOT EDIT */")
         self.indent()
         self.write("uint32_t val0;")
         self.write("uint32_t val1;")
