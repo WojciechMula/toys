@@ -5,7 +5,6 @@ type Function int
 const (
 	add Function = iota
 	sub
-	xor
 )
 
 func (f Function) eval(a, b uint16) uint16 {
@@ -15,9 +14,6 @@ func (f Function) eval(a, b uint16) uint16 {
 
 	case sub:
 		return a - b
-
-	case xor:
-		return a ^ b
 	}
 
 	panic("wrong operation")
@@ -30,9 +26,6 @@ func (f Function) String() string {
 
 	case sub:
 		return "-"
-
-	case xor:
-		return "^"
 	}
 
 	return "?"
@@ -40,17 +33,45 @@ func (f Function) String() string {
 
 type Operation struct {
 	f1, f2, f3 Function
+	eval       func(a, b, c, d uint16) uint16
 }
 
-func (op *Operation) eval(a, b, c, d uint16) uint16 {
-	v := op.f1.eval(a, b)
-	v = op.f2.eval(v, c)
-	v = op.f3.eval(v, d)
+var allFuncs = []Function{add, sub}
 
-	return v
+func eval000(a, b, c, d uint16) uint16 { return a + b + c + d }
+func eval001(a, b, c, d uint16) uint16 { return a + b + c - d }
+func eval010(a, b, c, d uint16) uint16 { return a + b - c + d }
+func eval011(a, b, c, d uint16) uint16 { return a + b - c - d }
+func eval100(a, b, c, d uint16) uint16 { return a - b + c + d }
+func eval101(a, b, c, d uint16) uint16 { return a - b + c - d }
+func eval110(a, b, c, d uint16) uint16 { return a - b - c + d }
+func eval111(a, b, c, d uint16) uint16 { return a - b - c - d }
+
+var evalfuncs = [8]func(a, b, c, d uint16) uint16{
+	eval000,
+	eval001,
+	eval010,
+	eval011,
+	eval100,
+	eval101,
+	eval110,
+	eval111,
 }
 
-var allFuncs = []Function{add, sub, xor}
+func eval(f1, f2, f3 Function) func(a, b, c, d uint16) uint16 {
+	id := 0
+	if f1 == sub {
+		id |= 4
+	}
+	if f2 == sub {
+		id |= 2
+	}
+	if f3 == sub {
+		id |= 1
+	}
+
+	return evalfuncs[id]
+}
 
 func generateOperations() []Operation {
 	var result []Operation
@@ -58,9 +79,10 @@ func generateOperations() []Operation {
 		for _, f2 := range allFuncs {
 			for _, f3 := range allFuncs {
 				result = append(result, Operation{
-					f1: f1,
-					f2: f2,
-					f3: f3,
+					f1:   f1,
+					f2:   f2,
+					f3:   f3,
+					eval: eval(f1, f2, f3),
 				})
 			}
 		}

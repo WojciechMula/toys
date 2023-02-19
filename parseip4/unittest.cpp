@@ -85,7 +85,6 @@ int main() {
     srand(0);
 
     bool ok = true;
-    /*
     puts("naive");
     ok = test_wrong_input(naive_parse_ipv4) && ok;
     ok = test_valid_inputs(naive_parse_ipv4) && ok;
@@ -104,7 +103,6 @@ int main() {
     puts("SSE (v4)");
     ok = test_valid_inputs(sse_parse_ipv4_v4) && ok;
 
-    */
     puts("SSE (v5)");
     ok = test_valid_inputs(sse_parse_ipv4_v5) && ok;
 

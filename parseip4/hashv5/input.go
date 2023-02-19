@@ -10,6 +10,8 @@ type Transform struct {
 	shr  int
 	and  uint16
 	mul  uint16
+
+	cached []uint16
 }
 
 func (t *Transform) transform(code uint16) uint16 {
@@ -26,6 +28,10 @@ func (t *Transform) transform(code uint16) uint16 {
 	}
 
 	return t.mul * code
+}
+
+func (t *Transform) cache(x uint16) {
+	t.cached = append(t.cached, t.transform(x))
 }
 
 func (t *Transform) text(val string) string {
@@ -60,9 +66,9 @@ var multipliers = []uint16{
 	61, 67, 71, 73, 79, 83, 89, 97, 101,
 }
 
-var andList = []uint16{0x0f, 0x1f, 0x3f, 0x7f, 0xff}
+var andList = []uint16{0, 0x0f}
 
-func generateTransformations() []Transform {
+func generateCodeTransformations() []Transform {
 	var result []Transform
 	for _, mul := range multipliers {
 		for rotl := 0; rotl < 1; rotl++ {
@@ -77,6 +83,16 @@ func generateTransformations() []Transform {
 				}
 			}
 		}
+	}
+
+	return result
+}
+
+// Length is in range 7..15, just multiply it
+func generateLengthTransformations() []Transform {
+	result := make([]Transform, 0, len(multipliers))
+	for _, mul := range multipliers {
+		result = append(result, Transform{mul: mul})
 	}
 
 	return result
