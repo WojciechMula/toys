@@ -112,6 +112,9 @@ int main() {
     puts("SSE (v5)");
     ok = test_valid_inputs(sse_parse_ipv4_v5) && ok;
 
+    puts("SSE (v6)");
+    ok = test_valid_inputs(sse_parse_ipv4_v6) && ok;
+
     if (ok) {
         puts("All OK");
     }
