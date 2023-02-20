@@ -45,14 +45,13 @@ result sse_parse_ipv4(const std::string& ipv4) {
 
     // 3. validate chars if they in range '0'..'9'
     {
-        const __m128i ascii0 = _mm_set1_epi8('0');
-        const __m128i ascii9 = _mm_set1_epi8('9' + 1);
+        const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
+        const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
 
-        const __m128i t1 = _mm_cmplt_epi8(input, ascii0);
-        const __m128i t2 = _mm_cmplt_epi8(input, ascii9);
-        const __m128i t3 = _mm_andnot_si128(t1, t2);
+        const __m128i t1 = _mm_sub_epi8(input, ascii0);
+        const __m128i t2 = _mm_cmplt_epi8(t1, rangedigits);
 
-        uint16_t less = _mm_movemask_epi8(t3);
+        uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
         less ^= (~dotmask) & mask;
 
@@ -169,14 +168,13 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
 
     // 2. validate chars if they in range '0'..'9'
     {
-        const __m128i ascii0 = _mm_set1_epi8('0');
-        const __m128i ascii9 = _mm_set1_epi8('9' + 1);
+        const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
+        const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
 
-        const __m128i t1 = _mm_cmplt_epi8(input, ascii0);
-        const __m128i t2 = _mm_cmplt_epi8(input, ascii9);
-        const __m128i t3 = _mm_andnot_si128(t1, t2);
+        const __m128i t1 = _mm_sub_epi8(input, ascii0);
+        const __m128i t2 = _mm_cmplt_epi8(t1, rangedigits);
 
-        uint16_t less = _mm_movemask_epi8(t3);
+        uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
         less ^= (~dotmask) & mask;
 
@@ -257,14 +255,13 @@ result sse_parse_ipv4_v3(const std::string& ipv4) {
 
     // 2. validate chars if they in range '0'..'9'
     {
-        const __m128i ascii0 = _mm_set1_epi8('0');
-        const __m128i ascii9 = _mm_set1_epi8('9' + 1);
+        const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
+        const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
 
-        const __m128i t1 = _mm_cmplt_epi8(input, ascii0);
-        const __m128i t2 = _mm_cmplt_epi8(input, ascii9);
-        const __m128i t3 = _mm_andnot_si128(t1, t2);
+        const __m128i t1 = _mm_sub_epi8(input, ascii0);
+        const __m128i t2 = _mm_cmplt_epi8(t1, rangedigits);
 
-        uint16_t less = _mm_movemask_epi8(t3);
+        uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
         less ^= (~dotmask) & mask;
 
@@ -314,14 +311,13 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
 
     // 2. validate chars if they in range '0'..'9'
     {
-        const __m128i ascii0 = _mm_set1_epi8('0');
-        const __m128i ascii9 = _mm_set1_epi8('9' + 1);
+        const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
+        const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
 
-        const __m128i t1 = _mm_cmplt_epi8(input, ascii0);
-        const __m128i t2 = _mm_cmplt_epi8(input, ascii9);
-        const __m128i t3 = _mm_andnot_si128(t1, t2);
+        const __m128i t1 = _mm_sub_epi8(input, ascii0);
+        const __m128i t2 = _mm_cmplt_epi8(t1, rangedigits);
 
-        uint16_t less = _mm_movemask_epi8(t3);
+        uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
         less ^= (~dotmask) & mask;
 
@@ -369,14 +365,13 @@ result sse_parse_ipv4_v5(const std::string& ipv4) {
 
     // 2. validate chars if they in range '0'..'9'
     {
-        const __m128i ascii0 = _mm_set1_epi8('0');
-        const __m128i ascii9 = _mm_set1_epi8('9' + 1);
+        const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
+        const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
 
-        const __m128i t1 = _mm_cmplt_epi8(input, ascii0);
-        const __m128i t2 = _mm_cmplt_epi8(input, ascii9);
-        const __m128i t3 = _mm_andnot_si128(t1, t2);
+        const __m128i t1 = _mm_sub_epi8(input, ascii0);
+        const __m128i t2 = _mm_cmplt_epi8(t1, rangedigits);
 
-        uint16_t less = _mm_movemask_epi8(t3);
+        uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
         less ^= (~dotmask) & mask;
 

@@ -9,6 +9,8 @@
 #include "naive.cpp"
 #include "sse.cpp"
 
+#include <immintrin.h>
+
 struct testcase {
     std::string ipv4;
     int err;
@@ -79,6 +81,10 @@ bool test_valid_inputs(T procedure) {
     }
 
     return true;
+}
+
+int8_t get(__m128i x) {
+    return _mm_cvtsi128_si32(x) & 0xff;
 }
 
 int main() {
