@@ -82,3 +82,26 @@ result naive_parse_ipv4(const std::string& ipv4) {
 
     return res;
 }
+
+result naive_parse_ipv4_no_validation(const std::string& ipv4) {
+    result res;
+    res.err = 0;
+    res.ipv4 = 0;
+
+    uint32_t word = 0;
+    for (char c: ipv4) {
+        if (c == '.') {
+            res.ipv4 <<= 8;
+            res.ipv4 |= word;
+            word = 0;
+            continue;
+        }
+
+        word = 10*word + uint32_t(c - '0');
+    }
+
+    res.ipv4 <<= 8;
+    res.ipv4 |= word;
+
+    return res;
+}

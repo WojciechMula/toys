@@ -95,6 +95,9 @@ int main() {
     ok = test_wrong_input(naive_parse_ipv4) && ok;
     ok = test_valid_inputs(naive_parse_ipv4) && ok;
 
+    puts("naive (no validation)");
+    ok = test_valid_inputs(naive_parse_ipv4_no_validation) && ok;
+
     puts("SSE");
     ok = test_wrong_input(sse_parse_ipv4) && ok;
     ok = test_valid_inputs(sse_parse_ipv4) && ok;
