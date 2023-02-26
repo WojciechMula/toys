@@ -64,7 +64,7 @@ bool test_valid_inputs(T procedure) {
         const auto res = procedure(img);
         if (res.err != 0) {
             printf("IPv4: %s\n", img.c_str());
-            printf("hex : %04x\n", ipv4);
+            printf("hex : %08x\n", ipv4);
             printf("classified as invalid: err code=%d\n", res.err);
             return false;
         }
@@ -91,6 +91,7 @@ int main() {
     srand(0);
 
     bool ok = true;
+
     puts("naive");
     ok = test_wrong_input(naive_parse_ipv4) && ok;
     ok = test_valid_inputs(naive_parse_ipv4) && ok;
@@ -117,6 +118,9 @@ int main() {
 
     puts("SSE (v6)");
     ok = test_valid_inputs(sse_parse_ipv4_v6) && ok;
+
+    puts("SSE (v7)");
+    ok = test_valid_inputs(sse_parse_ipv4_v7) && ok;
 
     if (ok) {
         puts("All OK");

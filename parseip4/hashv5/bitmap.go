@@ -7,10 +7,10 @@ type Bitmap struct {
 
 func (b *Bitmap) add(x uint16) bool {
 	idx := x / 64
-	b.indices = append(b.indices, idx)
 	word := b.m[idx]
 	bit := uint64(1) << (x % 64)
 	if word&bit == 0 {
+		b.indices = append(b.indices, idx)
 		b.m[idx] = word | bit
 		return true
 	}

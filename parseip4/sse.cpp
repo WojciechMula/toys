@@ -335,3 +335,4 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
 
 #include "sse_v5.cpp.inl"
 #include "sse_v6.cpp.inl"
+#include "sse_v7.cpp.inl"
