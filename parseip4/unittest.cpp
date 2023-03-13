@@ -8,6 +8,7 @@
 #include "common.h"
 #include "naive.cpp"
 #include "sse.cpp"
+#include "glibc_ref.cpp"
 
 #include <immintrin.h>
 
@@ -16,6 +17,19 @@ struct testcase {
     int err;
     std::string name;
 };
+
+bool same_errors(int err1, int err2) {
+    if (err1 == err2) {
+        return true;
+    }
+
+    if (err1 == errInvalidInput || err2 == errInvalidInput) {
+        return true;
+    }
+
+    return false;
+}
+
 
 template <typename T>
 bool test_wrong_input(T procedure) {
@@ -31,11 +45,29 @@ bool test_wrong_input(T procedure) {
         {"1.2.3.400", errTooBig, "too big number"},
         {"192.2..4", errEmptyField, "too few chars"},
         {"1.2.11111.4", errTooManyDigits, "too many chars"},
+
+        // testcases copied from Go: src/net/netip/netip_test.go
+        {"", errInvalidInput, "Empty string"},
+        {"bad", errInvalidInput, "Garbage non-IP"},
+        {"1234", errInvalidInput, "Single number"},
+        {"1.2.3.4%eth0", errInvalidInput, "IPv4 with a zone specifier"},
+        {".1.2.3", errInvalidInput, "IPv4 field must have at least one digit (1)"},
+        {"1.2.3", errInvalidInput, "IPv4 field must have at least one digit (2)"},
+        {"1..2.3", errInvalidInput, "IPv4 field must have at least one digit (3)"},
+        {"1.2.3.4.5", errInvalidInput, "IPv4 address too long"},
+		{"0300.0250.0214.0377", errInvalidInput, "IPv4 in dotted octal form"},
+        {"0xc0.0xa8.0x8c.0xff", errInvalidInput, "IPv4 in dotted hex form"},
+		{"192.168.12345", errInvalidInput, "IPv4 in class B form (1)"},
+        {"127.0.1", errInvalidInput, "IPv4 in class B form (2)"},
+        {"192.1234567", errInvalidInput, "IPv4 in class A form (1)"},
+        {"127.1", errInvalidInput, "IPv4 in class A form (2)"},
+        {"192.168.300.1", errInvalidInput, "IPv4 field has value >255"},
+        {"192.168.0.1.5.6", errInvalidInput, "IPv4 with too many fields"}
     };
 
     for (const auto& tc: testcases) {
         const auto res = procedure(tc.ipv4);
-        if (res.err != tc.err) {
+        if (!same_errors(res.err, tc.err)) {
             printf("got : %d\n", res.err);
             printf("want: %d\n", tc.err);
             printf("%s: wrong result\n", tc.name.c_str());
@@ -91,6 +123,10 @@ int main() {
     srand(0);
 
     bool ok = true;
+
+    puts("glibc");
+    ok = test_wrong_input(glibc_parse_ipv4) && ok;
+    ok = test_valid_inputs(glibc_parse_ipv4) && ok;
 
     puts("naive");
     ok = test_wrong_input(naive_parse_ipv4) && ok;

@@ -7,6 +7,7 @@
 
 #include "common.h"
 #include "naive.cpp"
+#include "glibc_ref.cpp"
 #include "sse.cpp"
 
 class Application {
@@ -25,6 +26,7 @@ public:
 
     void run() {
         benchmark("naive",      naive_parse_ipv4);
+        benchmark("glibc",      glibc_parse_ipv4);
         benchmark("naive (no validation)", naive_parse_ipv4_no_validation);
         benchmark("SSE",        sse_parse_ipv4);
         benchmark("SSE (v2)",   sse_parse_ipv4_v2);
