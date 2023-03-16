@@ -4,16 +4,16 @@
 #include <string>
 
 enum errors {
-    errTooShort         = 1,
-    errTooLong          = 2,
-    errTooManyDigits    = 3,
-    errEmptyField       = 4,
-    errTooBig           = 5,
-    errWrongCharacter   = 6,
-    errTooManyFields    = 7,
-    errTooFewFields     = 8,
-    errLeadingZeros     = 9,
-    errInvalidInput     = 10    // generic error
+    errInvalidInput     = 0xffff,   // generic error
+    errTooShort         = 0x0001,
+    errTooLong          = 0x0002,
+    errTooManyDigits    = 0x0004,
+    errEmptyField       = 0x0008,
+    errTooBig           = 0x0010,
+    errWrongCharacter   = 0x0020,
+    errTooManyFields    = 0x0040,
+    errTooFewFields     = 0x0080,
+    errLeadingZeros     = 0x0100
 };
 
 struct result {

@@ -9,6 +9,7 @@
 #include "naive.cpp"
 #include "sse.cpp"
 #include "glibc_ref.cpp"
+#include "go_ref.cpp"
 
 #include <immintrin.h>
 
@@ -17,19 +18,6 @@ struct testcase {
     int err;
     std::string name;
 };
-
-bool same_errors(int err1, int err2) {
-    if (err1 == err2) {
-        return true;
-    }
-
-    if (err1 == errInvalidInput || err2 == errInvalidInput) {
-        return true;
-    }
-
-    return false;
-}
-
 
 template <typename T>
 bool test_wrong_input(T procedure) {
@@ -44,7 +32,7 @@ bool test_wrong_input(T procedure) {
         {"192.168.10", errTooFewFields, "too few dots"},
         {"1.2.3.400", errTooBig, "too big number"},
         {"192.2..4", errEmptyField, "too few chars"},
-        {"1.2.11111.4", errTooManyDigits, "too many chars"},
+        {"1.2.11111.4", errTooManyDigits | errTooBig, "too many chars"},
 
         // testcases copied from Go: src/net/netip/netip_test.go
         {"", errInvalidInput, "Empty string"},
@@ -67,7 +55,7 @@ bool test_wrong_input(T procedure) {
 
     for (const auto& tc: testcases) {
         const auto res = procedure(tc.ipv4);
-        if (!same_errors(res.err, tc.err)) {
+        if ((res.err & tc.err) == 0) {
             printf("got : %d\n", res.err);
             printf("want: %d\n", tc.err);
             printf("%s: wrong result\n", tc.name.c_str());
@@ -123,6 +111,10 @@ int main() {
     srand(0);
 
     bool ok = true;
+
+    puts("go");
+    ok = test_wrong_input(go_parse_ipv4) && ok;
+    ok = test_valid_inputs(go_parse_ipv4) && ok;
 
     puts("glibc");
     ok = test_wrong_input(glibc_parse_ipv4) && ok;

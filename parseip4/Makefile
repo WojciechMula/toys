@@ -8,6 +8,7 @@ all: $(ALL)
 
 DEPS=common.h naive.cpp naive.h sse.h sse.cpp \
         glibc_ref.h glibc_ref.cpp \
+        go_ref.h go_ref.cpp \
         sse_parse_aux_v2.inl \
         sse_parse_aux_v3.inl \
         sse_parse_aux_v4.inl \
