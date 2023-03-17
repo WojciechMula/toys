@@ -68,7 +68,7 @@ bool test_wrong_input(T procedure) {
 
 std::string ipv4str(uint32_t x) {
     char tmp[16];
-    sprintf(tmp, "%d.%d.%d.%d", (x >> 24), (x >> 16) & 0xff, (x >> 8) & 0xff, x & 0xff);
+    sprintf(tmp, "%d.%d.%d.%d", x & 0xff, (x >> 8) & 0xff, (x >> 16) & 0xff, (x >> 24));
 
     return tmp;
 }
@@ -107,48 +107,89 @@ int8_t get(__m128i x) {
     return _mm_cvtsi128_si32(x) & 0xff;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     srand(0);
 
     bool ok = true;
 
-    puts("go");
-    ok = test_wrong_input(go_parse_ipv4) && ok;
-    ok = test_valid_inputs(go_parse_ipv4) && ok;
+    std::vector<std::string> args;
+    for (int i=1; i < argc; i++) {
+        args.push_back(argv[i]);
+    }
 
-    puts("glibc");
-    ok = test_wrong_input(glibc_parse_ipv4) && ok;
-    ok = test_valid_inputs(glibc_parse_ipv4) && ok;
+    auto run = [&args](const std::string& name) {
+        if (args.empty()) {
+            return true;
+        }
 
-    puts("naive");
-    ok = test_wrong_input(naive_parse_ipv4) && ok;
-    ok = test_valid_inputs(naive_parse_ipv4) && ok;
+        for (const auto& s: args) {
+            if (name == s) {
+                return true;
+            }
+        }
 
-    puts("naive (no validation)");
-    ok = test_valid_inputs(naive_parse_ipv4_no_validation) && ok;
+        return false;
+    };
 
-    puts("SSE");
-    ok = test_wrong_input(sse_parse_ipv4) && ok;
-    ok = test_valid_inputs(sse_parse_ipv4) && ok;
+    if (run("go")) {
+        puts("go");
+        ok = test_wrong_input(go_parse_ipv4) && ok;
+        ok = test_valid_inputs(go_parse_ipv4) && ok;
+    }
 
-    puts("SSE (v2)");
-    ok = test_wrong_input(sse_parse_ipv4_v2) && ok;
-    ok = test_valid_inputs(sse_parse_ipv4_v2) && ok;
+    if (run("glibc")) {
+        puts("glibc");
+        ok = test_wrong_input(glibc_parse_ipv4) && ok;
+        ok = test_valid_inputs(glibc_parse_ipv4) && ok;
+    }
 
-    puts("SSE (v3)");
-    ok = test_valid_inputs(sse_parse_ipv4_v3) && ok;
+    if (run("naive")) {
+        puts("naive");
+        ok = test_wrong_input(naive_parse_ipv4) && ok;
+        ok = test_valid_inputs(naive_parse_ipv4) && ok;
+    }
 
-    puts("SSE (v4)");
-    ok = test_valid_inputs(sse_parse_ipv4_v4) && ok;
+    if (run("naive (no validation)")) {
+        puts("naive (no validation)");
+        ok = test_valid_inputs(naive_parse_ipv4_no_validation) && ok;
+    }
 
-    puts("SSE (v5)");
-    ok = test_valid_inputs(sse_parse_ipv4_v5) && ok;
+    if (run("SSE")) {
+        puts("SSE");
+        ok = test_wrong_input(sse_parse_ipv4) && ok;
+        ok = test_valid_inputs(sse_parse_ipv4) && ok;
+    }
 
-    puts("SSE (v6)");
-    ok = test_valid_inputs(sse_parse_ipv4_v6) && ok;
+    if (run("SSE (v2)")) {
+        puts("SSE (v2)");
+        ok = test_wrong_input(sse_parse_ipv4_v2) && ok;
+        ok = test_valid_inputs(sse_parse_ipv4_v2) && ok;
+    }
 
-    puts("SSE (v7)");
-    ok = test_valid_inputs(sse_parse_ipv4_v7) && ok;
+    if (run("SSE (v3)")) {
+        puts("SSE (v3)");
+        ok = test_valid_inputs(sse_parse_ipv4_v3) && ok;
+    }
+
+    if (run("SSE (v4)")) {
+        puts("SSE (v4)");
+        ok = test_valid_inputs(sse_parse_ipv4_v4) && ok;
+    }
+
+    if (run("SSE (v5)")) {
+        puts("SSE (v5)");
+        ok = test_valid_inputs(sse_parse_ipv4_v5) && ok;
+    }
+
+    if (run("SSE (v6)")) {
+        puts("SSE (v6)");
+        ok = test_valid_inputs(sse_parse_ipv4_v6) && ok;
+    }
+
+    if (run("SSE (v7)")) {
+        puts("SSE (v7)");
+        ok = test_valid_inputs(sse_parse_ipv4_v7) && ok;
+    }
 
     if (ok) {
         puts("All OK");

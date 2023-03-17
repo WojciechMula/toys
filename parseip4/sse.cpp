@@ -122,6 +122,8 @@ result sse_parse_ipv4(const std::string& ipv4) {
         }
     }
 
+    res.ipv4 = __builtin_bswap32(res.ipv4);
+
     return res;
 }
 
@@ -208,6 +210,8 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
     // 5. finally parse ipv4 address according to pattern
 #   include "sse_parse_aux_v2.inl"
 
+    res.ipv4 = __builtin_bswap32(res.ipv4);
+
     return res;
 }
 
@@ -276,6 +280,8 @@ result sse_parse_ipv4_v3(const std::string& ipv4) {
     // 3. finally parse ipv4 address according to input length & the dots pattern
 #   include "sse_parse_aux_v3.inl"
 
+    res.ipv4 = __builtin_bswap32(res.ipv4);
+
     return res;
 }
 
@@ -329,6 +335,8 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
 
     // 3. finally parse ipv4 address according to input length & the dots pattern
 #   include "sse_parse_aux_v4.inl"
+
+    res.ipv4 = __builtin_bswap32(res.ipv4);
 
     return res;
 }

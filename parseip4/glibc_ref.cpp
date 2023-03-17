@@ -13,7 +13,7 @@ static int inet_pton4 (const char *src, const char *end, unsigned char *dst)
   saw_digit = 0;
   octets = 0;
 
-  *(tp = tmp + 3) = 0;
+  *(tp = tmp) = 0;
   while (src < end)
     {
       ch = *src++;
@@ -37,7 +37,7 @@ static int inet_pton4 (const char *src, const char *end, unsigned char *dst)
         {
           if (octets == 4)
             return 0;
-          *--tp = 0;
+          *++tp = 0;
           saw_digit = 0;
         }
       else

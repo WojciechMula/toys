@@ -79,6 +79,7 @@ result naive_parse_ipv4(const std::string& ipv4) {
 
     res.ipv4 <<= 8;
     res.ipv4 |= word;
+    res.ipv4 = __builtin_bswap32(res.ipv4);
 
     return res;
 }
@@ -102,6 +103,7 @@ result naive_parse_ipv4_no_validation(const std::string& ipv4) {
 
     res.ipv4 <<= 8;
     res.ipv4 |= word;
+    res.ipv4 = __builtin_bswap32(res.ipv4);
 
     return res;
 }
