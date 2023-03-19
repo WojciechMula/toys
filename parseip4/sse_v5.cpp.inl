@@ -56,6 +56,11 @@ result sse_parse_ipv4_v5(const std::string& ipv4) {
     // 3. finally parse ipv4 address according to input length & the dots pattern
 #   include "sse_parse_aux_v5.inl"
 
+    if (hashcode > max_hash) {
+        res.err = errInvalidInput;
+        return res;
+    }
+
     const int8_t* pat = &patterns[hashcode][0];
     const auto max_digits = pat[15];
     switch (max_digits) {

@@ -168,10 +168,7 @@ bool test_wrong_input(T procedure) {
         }
     }
 
-    if (!ok) {
-        exit(1);
-    }
-    return true;
+    return ok;
 }
 
 std::string ipv4str(uint32_t x) {
@@ -294,6 +291,7 @@ int main(int argc, char* argv[]) {
 
     if (run("SSE (v5)")) {
         puts("SSE (v5)");
+        ok = test_wrong_input(sse_parse_ipv4_v5) && ok;
         ok = test_valid_inputs(sse_parse_ipv4_v5) && ok;
     }
 

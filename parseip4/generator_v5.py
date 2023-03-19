@@ -744,7 +744,7 @@ class Generator:
         offset = 0
         pshufb_pattern = [-1] * 16
         for i, l in enumerate(item.lengths):
-            idx = 3 - i
+            idx = i
             if l == 1:
                 pshufb_pattern[idx] = offset
                 offset += 2

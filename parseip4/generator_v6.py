@@ -8,7 +8,7 @@ class Item:
         offset = 0
         pattern = [0xff] * 16
         for i, l in enumerate(lengths):
-            idx = 3 - i
+            idx = i
             if l == 0:
                 pattern[idx] = offset
                 offset += 2

@@ -51,7 +51,7 @@ func (p *Pattern) pshufb() [16]byte {
 
 	offset := byte(0)
 	for i, l := range []int{p.len0, p.len1, p.len2, p.len3} {
-		idx := 3 - i
+		idx := i
 		switch l {
 		case 1:
 			b[idx] = offset
