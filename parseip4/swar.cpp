@@ -75,32 +75,31 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
 
     uint64_t lo = 0;
     uint64_t hi = 0;
-    uint64_t masklo = 0xffffffffffffffffllu;
-    uint64_t maskhi = 0xffffffffffffffffllu;
 
-    if (size <= 8) {
+    if (size == 7) {
         memcpy(&lo, s, size);
-        maskhi = 0;
-        masklo >>= (8 - size) * 8;
+        lo = lo | 0x3000000000000000llu;
+        hi = 0x3030303030303030llu;
+    } else if (size == 8) {
+        memcpy(&lo, s, 8);
+        hi = 0x3030303030303030llu;
     } else {
         memcpy(&lo, s, 8);
-        memcpy(&hi, s + 8, size - 7);
-        maskhi >>= (8 - (size - 8)) * 8;
+        memcpy(&hi, s + 8, size - 8);
+        hi |= 0x3030303030303030llu << ((size - 8)*8);
     }
 
     // 0. prevalidate input: reject every byte with higher nibble different than 2 or 3
     //    Now, we're sure inputs are 6-bit characters in form b001x_yyyy, that helps.
     {
         const uint64_t l0 = ((lo | 0x1010101010101010llu) & 0xf0f0f0f0f0f0f0f0llu);
-        const uint64_t l1 = l0 & masklo;
         const uint64_t h0 = ((hi | 0x1010101010101010llu) & 0xf0f0f0f0f0f0f0f0llu);
-        const uint64_t h1 = h0 & maskhi;
 
-        if (l1 != (0x3030303030303030llu & masklo)) {
+        if (l0 != 0x3030303030303030llu) {
             r.err = errWrongCharacter;
             return r;
         }
-        if (h1 != (0x3030303030303030llu & maskhi)) {
+        if (h0 != 0x3030303030303030llu) {
             r.err = errWrongCharacter;
             return r;
         }
@@ -122,8 +121,8 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
     }
 
     // 3. negation of these maps locates bytes with higher nibble eq 2
-    const uint64_t dotmask_lo = (digitmask_lo ^ 0x0f0f0f0f0f0f0f0fllu) & masklo;
-    const uint64_t dotmask_hi = (digitmask_hi ^ 0x0f0f0f0f0f0f0f0fllu) & maskhi;
+    const uint64_t dotmask_lo = (digitmask_lo ^ 0x0f0f0f0f0f0f0f0fllu);
+    const uint64_t dotmask_hi = (digitmask_hi ^ 0x0f0f0f0f0f0f0f0fllu);
 
     // 4. check if we have exactly three dots
     //    in fact we count bytes having the high nibble eq 2, later
@@ -131,7 +130,11 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
     {
         const int dots = __builtin_popcountll(dotmask_lo) + __builtin_popcountll(dotmask_hi);
         if (dots != 3*4) {
-            r.err = errInvalidInput;
+            if (dots < 3*4) {
+                r.err = errTooFewFields;
+            } else {
+                r.err = errTooManyFields;
+            }
             return r;
         }
     }
@@ -165,8 +168,6 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
         }
     }
 
-    //puts("==============");
-
     // 7. merge lower nibbles of digits with dot marks
     {
         const uint64_t l0 = (dotmask_lo + dotmask_lo) & 0x1010101010101010llu;
@@ -177,7 +178,6 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
         const uint64_t h1 = hi & digitmask_hi;
         hi = h0 | h1;
     }
-    //puts("");
 
     // 6. process three fields
     size_t n = size;
@@ -222,7 +222,6 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
 
             default:
                 r.err = errInvalidInput;
-                r.err = errInvalidInput | errLeadingZeros;
                 return r;
         }
     }
