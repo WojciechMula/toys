@@ -156,8 +156,8 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
 
     // 6. check if digits are really digits
     {
-        const uint64_t l = lo + (digitmask_lo & 0x0606060606060606llu);
-        const uint64_t h = hi + (digitmask_hi & 0x0606060606060606llu);
+        const uint64_t l = lo + 0x0606060606060606llu;
+        const uint64_t h = hi + 0x0606060606060606llu;
 
         const uint64_t t0 = (l | h);
         const uint64_t t1 = t0 & 0x4040404040404040llu;
