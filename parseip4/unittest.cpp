@@ -79,15 +79,15 @@ void generate_leading_zeros_testcases(std::vector<testcase>& tc) {
                     return "1";
                 case 2:
                     if (leading) {
-                        return "02";
                         haszero = true;
+                        return "02";
                     } else {
                         return "12";
                     }
                 case 3:
                     if (leading) {
-                        return "023";
                         haszero = true;
+                        return "023";
                     } else {
                         return "123";
                     }
@@ -165,6 +165,7 @@ bool test_wrong_input(T procedure) {
             printf("\tgot : %s\n", gs.c_str());
             printf("\twant: %s\n", ws.c_str());
             ok = false;
+            break;
         }
     }
 
