@@ -7,6 +7,7 @@
 
 #include "common.h"
 #include "naive.cpp"
+#include "swar.cpp"
 #include "glibc_ref.cpp"
 #include "go_ref.cpp"
 #include "sse.cpp"
@@ -30,6 +31,7 @@ public:
         benchmark("glibc",      glibc_parse_ipv4);
         benchmark("go",         go_parse_ipv4);
         benchmark("naive (no validation)", naive_parse_ipv4_no_validation);
+        benchmark("SWAR",       swar_parse_ipv4);
         benchmark("SSE",        sse_parse_ipv4);
         benchmark("SSE (v2)",   sse_parse_ipv4_v2);
         benchmark("SSE (v3)",   sse_parse_ipv4_v3);

@@ -6,7 +6,10 @@ ALL=unittest benchmark
 
 all: $(ALL)
 
-DEPS=common.h naive.cpp naive.h sse.h sse.cpp \
+DEPS=common.h common.cpp \
+        naive.cpp naive.h \
+        swar.h swar.cpp \
+        sse.h sse.cpp \
         glibc_ref.h glibc_ref.cpp \
         go_ref.h go_ref.cpp \
         sse_parse_aux_v2.inl \
@@ -40,3 +43,6 @@ unittest: unittest.cpp $(DEPS)
 
 benchmark: benchmark.cpp $(DEPS)
 	$(CXX) $(FLAGS) -O2 $< -o $@
+
+clean:
+	$(RM) $(ALL)

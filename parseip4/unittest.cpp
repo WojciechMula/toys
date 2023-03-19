@@ -5,11 +5,12 @@
 #include <cassert>
 #include <vector>
 
-#include "common.h"
+#include "common.cpp"
 #include "naive.cpp"
 #include "sse.cpp"
 #include "glibc_ref.cpp"
 #include "go_ref.cpp"
+#include "swar.cpp"
 
 #include <immintrin.h>
 
@@ -22,17 +23,22 @@ struct testcase {
 template <typename T>
 bool test_wrong_input(T procedure) {
     std::vector<testcase> testcases = {
+        {"1.2.3.400", errTooBig, "too big number"},
+
         {"ip", errTooShort, "string too short"},
-        {"123.123.123.124    ", errTooLong, "string too long"},
+        {"Not an IPv4 at all!!", errTooLong, "string too short (1)"},
+        {"123.123.123.124    ", errTooLong, "string too long (2)"},
         {"a.0.0.0", errWrongCharacter, "not a digit (1)"},
         {"0.z.0.0", errWrongCharacter, "not a digit (2)"},
         {"0.0.?.0", errWrongCharacter, "not a digit (3)"},
         {"0.0.0.%", errWrongCharacter, "not a digit (4)"},
+        {"1a.0.0.%", errWrongCharacter, "not a digit (5)"},
         {"1.2.3.4.5", errTooManyFields, "too many dots"},
         {"192.168.10", errTooFewFields, "too few dots"},
         {"1.2.3.400", errTooBig, "too big number"},
         {"192.2..4", errEmptyField, "too few chars"},
         {"1.2.11111.4", errTooManyDigits | errTooBig, "too many chars"},
+        {"12:.12:.12:.12:", errWrongCharacter, "wrong input"},
 
         // testcases copied from Go: src/net/netip/netip_test.go
         {"", errInvalidInput, "Empty string"},
@@ -53,16 +59,22 @@ bool test_wrong_input(T procedure) {
         {"192.168.0.1.5.6", errInvalidInput, "IPv4 with too many fields"}
     };
 
+    bool ok = true;
     for (const auto& tc: testcases) {
         const auto res = procedure(tc.ipv4);
         if ((res.err & tc.err) == 0) {
-            printf("got : %d\n", res.err);
-            printf("want: %d\n", tc.err);
-            printf("%s: wrong result\n", tc.name.c_str());
-            assert(false);
+            printf("Test %s: %s\n", tc.ipv4.c_str(), tc.name.c_str());
+            const auto& gs = describeErr(res.err);
+            const auto& ws = describeErr(tc.err);
+            printf("\tgot : %s\n", gs.c_str());
+            printf("\twant: %s\n", ws.c_str());
+            ok = false;
         }
     }
 
+    if (!ok) {
+        exit(1);
+    }
     return true;
 }
 
@@ -85,7 +97,7 @@ bool test_valid_inputs(T procedure) {
         if (res.err != 0) {
             printf("IPv4: %s\n", img.c_str());
             printf("hex : %08x\n", ipv4);
-            printf("classified as invalid: err code=%d\n", res.err);
+            printf("reported error: %s\n", describeErr(res.err).c_str());
             return false;
         }
 
@@ -152,6 +164,12 @@ int main(int argc, char* argv[]) {
     if (run("naive (no validation)")) {
         puts("naive (no validation)");
         ok = test_valid_inputs(naive_parse_ipv4_no_validation) && ok;
+    }
+
+    if (run("SWAR")) {
+        puts("swar");
+        //ok = test_wrong_input(swar_parse_ipv4) && ok;
+        ok = test_valid_inputs(swar_parse_ipv4) && ok;
     }
 
     if (run("SSE")) {

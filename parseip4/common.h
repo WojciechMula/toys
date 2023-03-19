@@ -16,6 +16,8 @@ enum errors {
     errLeadingZeros     = 0x0100
 };
 
+std::string describeErr(int err);
+
 struct result {
     uint32_t    ipv4;
     int         err;
