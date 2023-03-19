@@ -59,11 +59,64 @@ void generate_wrong_character_testcases(std::vector<testcase>& tc) {
     }
 }
 
+void generate_leading_zeros_testcases(std::vector<testcase>& tc) {
+    static const std::string pat2("123");
+
+    for (unsigned i=0; i <= 255; i++) {
+        const unsigned l0 = (i >> 2*0) & 0x3;
+        const unsigned l1 = (i >> 2*1) & 0x3;
+        const unsigned l2 = (i >> 2*2) & 0x3;
+        const unsigned l3 = (i >> 2*3) & 0x3;
+
+        if (l0 == 0 || l1 == 0 || l2 == 0 || l3 == 0) {
+            continue;
+        }
+
+        bool haszero;
+        auto word = [&haszero](unsigned len, bool leading) -> std::string {
+            switch (len) {
+                case 1:
+                    return "1";
+                case 2:
+                    if (leading) {
+                        return "02";
+                        haszero = true;
+                    } else {
+                        return "12";
+                    }
+                case 3:
+                    if (leading) {
+                        return "023";
+                        haszero = true;
+                    } else {
+                        return "123";
+                    }
+            }
+
+            return "?";
+        };
+
+        for (unsigned k=1; k < 16; k++) {
+            haszero = false;
+            std::string ipv4;
+            ipv4.append(word(l0, (k & 0x1) != 0));
+            ipv4.push_back('.');
+            ipv4.append(word(l1, (k & 0x2) != 0));
+            ipv4.push_back('.');
+            ipv4.append(word(l2, (k & 0x4) != 0));
+            ipv4.push_back('.');
+            ipv4.append(word(l3, (k & 0x8) != 0));
+
+            if (haszero) {
+                tc.push_back({ipv4, errLeadingZeros, "leading zeros"});
+            }
+        }
+    }
+}
+
 template <typename T>
 bool test_wrong_input(T procedure) {
     std::vector<testcase> testcases = {
-        {"1.2.3.400", errTooBig, "too big number"},
-
         {"ip", errTooShort, "string too short"},
         {"Not an IPv4 at all!!", errTooLong, "string too short"},
         {"123.123.123.124    ", errTooLong, "string too long"},
@@ -100,6 +153,7 @@ bool test_wrong_input(T procedure) {
 
     // more auto-generated tests
     generate_wrong_character_testcases(testcases);
+    generate_leading_zeros_testcases(testcases);
 
     bool ok = true;
     for (const auto& tc: testcases) {
@@ -111,7 +165,6 @@ bool test_wrong_input(T procedure) {
             printf("\tgot : %s\n", gs.c_str());
             printf("\twant: %s\n", ws.c_str());
             ok = false;
-            break;
         }
     }
 
@@ -229,11 +282,13 @@ int main(int argc, char* argv[]) {
 
     if (run("SSE (v3)")) {
         puts("SSE (v3)");
+        ok = test_wrong_input(sse_parse_ipv4_v3) && ok;
         ok = test_valid_inputs(sse_parse_ipv4_v3) && ok;
     }
 
     if (run("SSE (v4)")) {
         puts("SSE (v4)");
+        ok = test_wrong_input(sse_parse_ipv4_v4) && ok;
         ok = test_valid_inputs(sse_parse_ipv4_v4) && ok;
     }
 
@@ -244,11 +299,13 @@ int main(int argc, char* argv[]) {
 
     if (run("SSE (v6)")) {
         puts("SSE (v6)");
+        ok = test_wrong_input(sse_parse_ipv4_v6) && ok;
         ok = test_valid_inputs(sse_parse_ipv4_v6) && ok;
     }
 
     if (run("SSE (v7)")) {
         puts("SSE (v7)");
+        ok = test_wrong_input(sse_parse_ipv4_v7) && ok;
         ok = test_valid_inputs(sse_parse_ipv4_v7) && ok;
     }
 
