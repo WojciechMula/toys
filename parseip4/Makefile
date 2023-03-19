@@ -12,9 +12,9 @@ DEPS=common.h common.cpp \
         sse.h sse.cpp \
         glibc_ref.h glibc_ref.cpp \
         go_ref.h go_ref.cpp \
-        sse_parse_aux_v2.inl \
-        sse_parse_aux_v3.inl \
-        sse_parse_aux_v4.inl \
+        sse_parse_aux_v2.inl sse_v2.cpp.inl \
+        sse_parse_aux_v3.inl sse_v3.cpp.inl \
+        sse_parse_aux_v4.inl sse_v4.cpp.inl \
         sse_parse_aux_v5.inl sse_v5.cpp.inl \
         sse_parse_aux_v6.inl sse_v6.cpp.inl \
         sse_parse_aux_v7.inl sse_v7.cpp.inl
