@@ -26,7 +26,7 @@ uint32_t cvt2xBCD(uint32_t w) {
 #if 0
     const uint8_t b0 = w & 0xff;
     const uint8_t b1 = (w >> 8) & 0xff;
-    return b0 * 10 + b1;
+    return 10*b0 + b1;
 #else
     const uint32_t t0 = w * (1 + (10 << 8));
     const uint32_t t1 = t0 >> 8;
@@ -39,7 +39,7 @@ uint32_t cvt2xBCD(uint32_t w) {
 uint32_t cvt3xBCD(uint32_t w) {
     // input : [00|b2|b1|b0], where b{0,1,2} in range 0..9
     // output: 100*b0 + 10*b1 + b2
-#if 0
+#if 1
     const uint32_t b0 = w & 0xff;
     const uint32_t b1 = (w >> 8) & 0xff;
     const uint32_t b2 = (w >> 16) & 0xff;
@@ -48,7 +48,7 @@ uint32_t cvt3xBCD(uint32_t w) {
     // calculate a = 100*b0 + b2
     const uint32_t a0 = w & 0x0f000f;
     const uint32_t a1 = a0 * ((1 + (100 << 16)) << 8);  // a spans bits [24:24+10]
-    const uint32_t a2 = (a1 >> 24) & 0x3ff;
+    const uint32_t a2 = (a1 >> 24) & 0xfff;
 
     // calculate 10*b1
     const uint32_t c0 = w >> (8 - 3);
@@ -130,11 +130,7 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
     {
         const int dots = __builtin_popcountll(dotmask_lo) + __builtin_popcountll(dotmask_hi);
         if (dots != 3*4) {
-            if (dots < 3*4) {
-                r.err = errTooFewFields;
-            } else {
-                r.err = errTooManyFields;
-            }
+            r.err = errInvalidInput;
             return r;
         }
     }
@@ -209,11 +205,15 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
             case 8*4 - 4: { // 3-digits field
                 r.ipv4 <<= 8;
                 uint32_t x = uint32_t(lo & 0x0f0f0f);
-                if ((x & 0xff) == 0) {
+                x = cvt3xBCD(x);
+                if (x > 255) {
+                    r.err = errTooBig;
+                    return r;
+                } else if (x < 100) {
                     r.err = errLeadingZeros;
                     return r;
                 }
-                r.ipv4 |= uint32_t(cvt3xBCD(x));
+                r.ipv4 |= x;
                 shift_long(lo, hi, 4*8);
                 n -= 4;
                 break;
@@ -250,11 +250,15 @@ result swar_ipv4_aux(const uint8_t* s, size_t size, size_t /*cap*/) {
             case 3: { // 3-digits field
                 r.ipv4 <<= 8;
                 uint32_t x = uint32_t(lo & 0x0f0f0f);
-                if ((x & 0xff) == 0) {
+                x = cvt3xBCD(x);
+                if (x > 255) {
+                    r.err = errTooBig;
+                    return r;
+                } else if (x < 100) {
                     r.err = errLeadingZeros;
                     return r;
                 }
-                r.ipv4 |= uint32_t(cvt3xBCD(x));
+                r.ipv4 |= x;
                 break;
 
             }

@@ -20,19 +20,58 @@ struct testcase {
     std::string name;
 };
 
+void generate_wrong_character_testcases(std::vector<testcase>& tc) {
+    static const std::string pat("123");
+    static const std::string wrong("?/\xf1");
+
+    for (unsigned i=0; i <= 255; i++) {
+        const unsigned l0 = (i >> 2*0) & 0x3;
+        const unsigned l1 = (i >> 2*1) & 0x3;
+        const unsigned l2 = (i >> 2*2) & 0x3;
+        const unsigned l3 = (i >> 2*3) & 0x3;
+
+        if (l0 == 0 || l1 == 0 || l2 == 0 || l3 == 0) {
+            continue;
+        }
+
+        std::string ipv4;
+        ipv4.append(pat.substr(0, l0));
+        ipv4.push_back('.');
+        ipv4.append(pat.substr(0, l1));
+        ipv4.push_back('.');
+        ipv4.append(pat.substr(0, l2));
+        ipv4.push_back('.');
+        ipv4.append(pat.substr(0, l3));
+
+        for (size_t j=0; j < ipv4.size(); j++) {
+            if (ipv4[j] == '.') {
+                continue;
+            }
+
+            const auto orig = ipv4[j];
+            for (char c: wrong) {
+                ipv4[j] = c;
+                tc.push_back({ipv4, errWrongCharacter, "wrong character"});
+            }
+
+            ipv4[j] = orig;
+        }
+    }
+}
+
 template <typename T>
 bool test_wrong_input(T procedure) {
     std::vector<testcase> testcases = {
         {"1.2.3.400", errTooBig, "too big number"},
 
         {"ip", errTooShort, "string too short"},
-        {"Not an IPv4 at all!!", errTooLong, "string too short (1)"},
-        {"123.123.123.124    ", errTooLong, "string too long (2)"},
-        {"a.0.0.0", errWrongCharacter, "not a digit (1)"},
-        {"0.z.0.0", errWrongCharacter, "not a digit (2)"},
-        {"0.0.?.0", errWrongCharacter, "not a digit (3)"},
-        {"0.0.0.%", errWrongCharacter, "not a digit (4)"},
-        {"1a.0.0.%", errWrongCharacter, "not a digit (5)"},
+        {"Not an IPv4 at all!!", errTooLong, "string too short"},
+        {"123.123.123.124    ", errTooLong, "string too long"},
+        {"a.0.0.0", errWrongCharacter, "not a digit"},
+        {"0.z.0.0", errWrongCharacter, "not a digit"},
+        {"0.0.?.0", errWrongCharacter, "not a digit"},
+        {"0.0.0.%", errWrongCharacter, "not a digit"},
+        {"1a.0.0.%", errWrongCharacter, "not a digit"},
         {"1.2.3.4.5", errTooManyFields, "too many dots"},
         {"192.168.10", errTooFewFields, "too few dots"},
         {"1.2.3.400", errTooBig, "too big number"},
@@ -59,6 +98,9 @@ bool test_wrong_input(T procedure) {
         {"192.168.0.1.5.6", errInvalidInput, "IPv4 with too many fields"}
     };
 
+    // more auto-generated tests
+    generate_wrong_character_testcases(testcases);
+
     bool ok = true;
     for (const auto& tc: testcases) {
         const auto res = procedure(tc.ipv4);
@@ -69,6 +111,7 @@ bool test_wrong_input(T procedure) {
             printf("\tgot : %s\n", gs.c_str());
             printf("\twant: %s\n", ws.c_str());
             ok = false;
+            break;
         }
     }
 
@@ -168,7 +211,7 @@ int main(int argc, char* argv[]) {
 
     if (run("SWAR")) {
         puts("swar");
-        //ok = test_wrong_input(swar_parse_ipv4) && ok;
+        ok = test_wrong_input(swar_parse_ipv4) && ok;
         ok = test_valid_inputs(swar_parse_ipv4) && ok;
     }
 
