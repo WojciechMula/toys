@@ -48,7 +48,7 @@ class Generator:
                 self.write("%s = (byte[%d] - '0');" % (var, offset))
                 self.write("%s = 10 * %s + (byte[%d] - '0');" % (var, var, offset + 1))
                 self.write("%s = 10 * %s + (byte[%d] - '0');" % (var, var, offset + 2))
-                self.write("if (%s < 10) { res.err = errLeadingZeros; break; }" % (var,))
+                self.write("if (%s < 100) { res.err = errLeadingZeros; break; }" % (var,))
                 self.write("if (%s > 255) { res.err = errTooBig; break; }" % (var,))
                 offset += 4
             else:

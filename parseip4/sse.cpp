@@ -53,9 +53,8 @@ result sse_parse_ipv4(const std::string& ipv4) {
 
         uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
-        less ^= (~dotmask) & mask;
 
-        if (less != 0) {
+        if ((less | dotmask) != mask) {
             res.err = errWrongCharacter;
             return res;
         }
