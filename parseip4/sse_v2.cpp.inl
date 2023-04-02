@@ -61,7 +61,7 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
     dotmask |= uint16_t(1) << ipv4.size();
 
     // 4. build pattern mask (rejecting wrong patterns upfront)
-    const uint8_t* byte = (const uint8_t*)ipv4.data();
+    const uint8_t* data = (const uint8_t*)ipv4.data();
     uint8_t code = 0;
     for (int i=0; i < 4; i++) {
         const uint8_t n = __builtin_ctz(dotmask);
@@ -80,8 +80,6 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
 
     // 5. finally parse ipv4 address according to pattern
 #   include "sse_parse_aux_v2.inl"
-
-    res.ipv4 = __builtin_bswap32(res.ipv4);
 
     return res;
 }

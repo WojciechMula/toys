@@ -19,7 +19,10 @@ enum errors {
 std::string describeErr(int err);
 
 struct result {
-    uint32_t    ipv4;
+    union {
+        uint32_t    ipv4;
+        uint8_t     byte[4];
+    };
     int         err;
 };
 

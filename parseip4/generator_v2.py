@@ -7,11 +7,8 @@ class Generator:
 
     def generate(self):
         self.write("/* Code generated automatically; DO NOT EDIT */")
+        self.write("uint32_t tmp;")
         self.indent()
-        self.write("uint32_t val0;")
-        self.write("uint32_t val1;")
-        self.write("uint32_t val2;")
-        self.write("uint32_t val3;")
         self.generate_switch()
         self.unindent()
 
@@ -36,28 +33,24 @@ class Generator:
     def generate_case(self, lengths):
         offset = 0
         for i, l in enumerate(lengths):
-            var = 'val%d' % i
+            target = 'res.byte[%d]' % (i)
             if l == 1:
-                self.write("%s = (byte[%d] - '0');" % (var, offset,))
+                self.write("%s = (data[%d] - '0');" % (target, offset,))
                 offset += 2
             elif l == 2:
-                self.write("%s  = 10 * (byte[%d] - '0') + (byte[%d] - '0');" % (var, offset, offset + 1))
-                self.write("if (%s < 10) { res.err = errLeadingZeros; break; }" % (var,))
+                self.write("%s  = 10 * (data[%d] - '0') + (data[%d] - '0');" % (target, offset, offset + 1))
+                self.write("if (%s < 10) { res.err = errLeadingZeros; break; }" % (target,))
                 offset += 3
             elif l == 3:
-                self.write("%s = (byte[%d] - '0');" % (var, offset))
-                self.write("%s = 10 * %s + (byte[%d] - '0');" % (var, var, offset + 1))
-                self.write("%s = 10 * %s + (byte[%d] - '0');" % (var, var, offset + 2))
-                self.write("if (%s < 100) { res.err = errLeadingZeros; break; }" % (var,))
-                self.write("if (%s > 255) { res.err = errTooBig; break; }" % (var,))
+                self.write("tmp = (data[%d] - '0');" % (offset))
+                self.write("tmp = 10 * tmp + (data[%d] - '0');" % (offset + 1))
+                self.write("tmp = 10 * tmp + (data[%d] - '0');" % (offset + 2))
+                self.write("if (tmp < 100) { res.err = errLeadingZeros; break; }")
+                self.write("if (tmp > 255) { res.err = errTooBig; break; }")
+                self.write("%s = tmp;" % (target,))
                 offset += 4
             else:
                 assert False
-
-            if i == 0:
-                self.write("res.ipv4 = %s;" % (var,))
-            else:
-                self.write("res.ipv4 = (res.ipv4 << 8) | %s;" % (var,))
 
         self.write("break;")
 
