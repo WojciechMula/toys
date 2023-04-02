@@ -49,7 +49,5 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
     // 3. finally parse ipv4 address according to input length & the dots pattern
 #   include "sse_parse_aux_v4.inl"
 
-    res.ipv4 = __builtin_bswap32(res.ipv4);
-
     return res;
 }

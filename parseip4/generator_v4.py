@@ -56,45 +56,119 @@ class Generator:
         self.unindent()
         self.write("}")
 
-    def generate_case(self, lengths):
+    def generate_case_max1(self, lengths, pshufb_pattern):
         offset = 0
-        pshufb_pattern = [-1] * 16
         for i, l in enumerate(lengths):
-            var = 'val%d' % i
-            idx = 3 - i
+            idx = i
             if l == 1:
                 pshufb_pattern[idx] = offset
+                offset += 2
+            else:
+                assert False
+
+    def generate_case_max2(self, lengths, pshufb_pattern):
+        offset = 0
+        for i, l in enumerate(lengths):
+            idx = i
+            if l == 1:
+                pshufb_pattern[idx] = offset
+                pshufb_pattern[idx + 12] = offset + 1 # place '.' in 3rd dword
                 offset += 2
             elif l == 2:
                 pshufb_pattern[idx] = offset + 1
                 pshufb_pattern[idx + 4] = offset
+                pshufb_pattern[idx + 12] = offset # place MSD in 3rd dword
+                offset += 3
+            else:
+                assert False
+
+    def generate_case_max3(self, lengths, pshufb_pattern):
+        offset = 0
+        for i, l in enumerate(lengths):
+            idx = i
+            if l == 1:
+                pshufb_pattern[2*idx + 1] = offset
+                offset += 2
+            elif l == 2:
+                pshufb_pattern[2*idx + 0] = offset + 0
+                pshufb_pattern[2*idx + 1] = offset + 1
                 offset += 3
             elif l == 3:
-                pshufb_pattern[idx] = offset + 2
-                pshufb_pattern[idx + 4] = offset + 1
-                pshufb_pattern[idx + 8] = offset
+                pshufb_pattern[2*idx + 0] = offset + 1
+                pshufb_pattern[2*idx + 1] = offset + 2
+                pshufb_pattern[2*idx + 8] = offset + 0
                 offset += 4
             else:
                 assert False
+
+    def minvalues_max3(self, lengths):
+        m = [0] * 8
+        for i, l in enumerate(lengths):
+            if l == 1:
+                val = -1
+            elif l == 2:
+                val = 9
+            elif l == 3:
+                val = 99
+
+            m[i] = val
+
+        return m
+
+    def generate_case(self, lengths):
+        offset = 0
+        pshufb_pattern = [-1] * 16
+
+        ml = max(lengths)
+        if ml == 1:
+            self.generate_case_max1(lengths, pshufb_pattern)
+        elif ml == 2:
+            self.generate_case_max2(lengths, pshufb_pattern)
+        elif ml == 3:
+            self.generate_case_max3(lengths, pshufb_pattern)
+        else:
+            assert False
+
+        w = self.write
 
         self.indent()
         self.write("{")
         img = ', '.join('%d' % idx for idx in pshufb_pattern)
         self.write("const __m128i pattern = _mm_setr_epi8(%s);" % img)
         self.write("const __m128i t1 = _mm_shuffle_epi8(t0, pattern);")
-        if max(lengths) == 1:
+        if ml == 1:
             self.write("res.ipv4 = _mm_cvtsi128_si32(t1);")
-        elif max(lengths) == 2:
+        elif ml == 2:
+            self.write("const uint32_t msd = _mm_extract_epi32(t1, 3);")
+            self.write("if (haszero32(msd)) {")
+            self.write("    res.err = errLeadingZeros;")
+            self.write("    return res;")
+            self.write("}")
             self.write("const uint64_t w01 = _mm_cvtsi128_si64(t1);")
-            self.write("const uint32_t w0 = w01;")
-            self.write("const uint32_t w1 = (w01 >> 32);")
+            self.write("const uint32_t w0  = w01;")
+            self.write("const uint32_t w1  = (w01 >> 32);")
             self.write("res.ipv4 = 10 * w1 + w0;")
-        elif max(lengths) == 3:
-            self.write("const uint64_t w01 = _mm_cvtsi128_si64(t1);")
-            self.write("const uint32_t w2 = _mm_extract_epi32(t1, 2);")
-            self.write("const uint32_t w0 = w01;")
-            self.write("const uint32_t w1 = (w01 >> 32);")
-            self.write("res.ipv4 = 10 * (10 * w2 + w1) + w0;")
+        elif ml == 3:
+            self.write("const __m128i mul = _mm_setr_epi8(10, 1, 10, 1, 10, 1, 10, 1, 100, 0, 100, 0, 100, 0, 100, 0);")
+            self.write("const __m128i t2  = _mm_maddubs_epi16(t1, mul);")
+            self.write("const __m128i t3  = _mm_alignr_epi8(t2, t2, 8);")
+            self.write("const __m128i t4  = _mm_add_epi16(t3, t2);")
+
+            minval = self.minvalues_max3(lengths)
+            self.write("const __m128i minval = _mm_setr_epi16(%s);" % ', '.join(str(x) for x in minval))
+            self.write("const __m128i maxval = _mm_set1_epi16(0x0100);")
+            self.write("const __m128i gt = _mm_cmpgt_epi16(t4, minval);")
+            self.write("const __m128i lt = _mm_cmplt_epi16(t4, maxval);")
+            self.write("const __m128i ir = _mm_and_si128(gt, lt);")
+            self.write("const uint64_t w1 = _mm_cvtsi128_si64(ir);")
+            self.write("if (haszero64(w1)) {")
+            self.write("    res.err = errInvalidInput;")
+            self.write("    return res;")
+            self.write("}")
+
+            self.write("const __m128i t5  = _mm_packus_epi16(t4, t4);")
+            self.write("const uint32_t w0 = _mm_cvtsi128_si32(t5);")
+            self.write("res.ipv4 = w0;")
         else:
             assert False
 
