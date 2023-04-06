@@ -64,36 +64,34 @@ result sse_parse_ipv4(const std::string& ipv4) {
     dotmask |= uint16_t(1) << ipv4.size();
 
     // 4. process four components
-    const uint8_t* byte = (const uint8_t*)ipv4.data();
+    const uint8_t* data = (const uint8_t*)ipv4.data();
     for (int i=0; i < 4; i++) {
         const int n = __builtin_ctz(dotmask);
 
         switch (n) {
             case 1:
-                res.ipv4 <<= 8;
-                res.ipv4 |= (byte[0] - '0');
+                res.byte[i] = (data[0] - '0');
 
-                byte += 2;
+                data += 2;
                 dotmask >>= 2;
                 break;
 
             case 2:
                 {
-                    const uint32_t tmp = 10 * (byte[0] - '0') + (byte[1] - '0');
+                    const uint32_t tmp = 10 * (data[0] - '0') + (data[1] - '0');
                     if (tmp < 10) {
                         res.err = errLeadingZeros;
                         return res;
                     }
-                    res.ipv4 <<= 8;
-                    res.ipv4 |= tmp;
+                    res.byte[i] = tmp;
                 }
-                byte += 3;
+                data += 3;
                 dotmask >>= 3;
                 break;
 
             case 3:
                 {
-                    const uint32_t tmp = 100 * (byte[0] - '0') + 10 * (byte[1] - '0') + (byte[2] - '0');
+                    const uint32_t tmp = 100 * (data[0] - '0') + 10 * (data[1] - '0') + (data[2] - '0');
                     if (tmp > 0xff) {
                         res.err = errTooBig;
                         return res;
@@ -103,11 +101,10 @@ result sse_parse_ipv4(const std::string& ipv4) {
                         return res;
                     }
 
-                    res.ipv4 <<= 8;
-                    res.ipv4 |= tmp;
+                    res.byte[i] = tmp;
                 }
 
-                byte += 4;
+                data += 4;
                 dotmask >>= 4;
                 break;
 
@@ -120,8 +117,6 @@ result sse_parse_ipv4(const std::string& ipv4) {
                 return res;
         }
     }
-
-    res.ipv4 = __builtin_bswap32(res.ipv4);
 
     return res;
 }
