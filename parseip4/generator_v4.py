@@ -72,12 +72,10 @@ class Generator:
             idx = i
             if l == 1:
                 pshufb_pattern[idx] = offset
-                pshufb_pattern[idx + 12] = offset + 1 # place '.' in 3rd dword
                 offset += 2
             elif l == 2:
                 pshufb_pattern[idx] = offset + 1
                 pshufb_pattern[idx + 4] = offset
-                pshufb_pattern[idx + 12] = offset # place MSD in 3rd dword
                 offset += 3
             else:
                 assert False
@@ -90,30 +88,18 @@ class Generator:
                 pshufb_pattern[2*idx + 1] = offset
                 offset += 2
             elif l == 2:
-                pshufb_pattern[2*idx + 0] = offset + 0
-                pshufb_pattern[2*idx + 1] = offset + 1
+                pshufb_pattern[2*idx + 0] = offset + 1
+                pshufb_pattern[2*idx + 1] = offset + 0
+                pshufb_pattern[2*idx + 8 + 1] = offset + 0
                 offset += 3
             elif l == 3:
-                pshufb_pattern[2*idx + 0] = offset + 1
-                pshufb_pattern[2*idx + 1] = offset + 2
+                pshufb_pattern[2*idx + 0] = offset + 2
+                pshufb_pattern[2*idx + 1] = offset + 1
                 pshufb_pattern[2*idx + 8] = offset + 0
+                pshufb_pattern[2*idx + 8 + 1] = offset + 0
                 offset += 4
             else:
                 assert False
-
-    def minvalues_max3(self, lengths):
-        m = [0] * 8
-        for i, l in enumerate(lengths):
-            if l == 1:
-                val = -1
-            elif l == 2:
-                val = 9
-            elif l == 3:
-                val = 99
-
-            m[i] = val
-
-        return m
 
     def generate_case(self, lengths):
         offset = 0
@@ -139,36 +125,39 @@ class Generator:
         if ml == 1:
             self.write("res.ipv4 = _mm_cvtsi128_si32(t1);")
         elif ml == 2:
-            self.write("const uint32_t msd = _mm_extract_epi32(t1, 3);")
-            self.write("if (haszero32(msd)) {")
+            self.write("const __m128i ascii0 = _mm_set1_epi8('0');")
+            self.write("const __m128i t2     = _mm_cmpeq_epi8(t1, ascii0);")
+            self.write("const uint64_t msd = _mm_cvtsi128_si64(t2);")
+            self.write("if (msd != 0) {")
             self.write("    res.err = errLeadingZeros;")
             self.write("    return res;")
             self.write("}")
-            self.write("const uint64_t w01 = _mm_cvtsi128_si64(t1);")
-            self.write("const uint32_t w0  = w01;")
-            self.write("const uint32_t w1  = (w01 >> 32);")
+            self.write("const uint64_t ascii = _mm_cvtsi128_si64(t1);")
+            self.write("const uint64_t w01   = ascii & 0x0f0f0f0f0f0f0f0f;")
+            self.write("const uint32_t w0    = w01 >> 32;")
+            self.write("const uint32_t w1    = w01 & 0xfffffffflu;")
             self.write("res.ipv4 = 10 * w1 + w0;")
         elif ml == 3:
-            self.write("const __m128i mul = _mm_setr_epi8(10, 1, 10, 1, 10, 1, 10, 1, 100, 0, 100, 0, 100, 0, 100, 0);")
-            self.write("const __m128i t2  = _mm_maddubs_epi16(t1, mul);")
-            self.write("const __m128i t3  = _mm_alignr_epi8(t2, t2, 8);")
-            self.write("const __m128i t4  = _mm_add_epi16(t3, t2);")
-
-            minval = self.minvalues_max3(lengths)
-            self.write("const __m128i minval = _mm_setr_epi16(%s);" % ', '.join(str(x) for x in minval))
-            self.write("const __m128i maxval = _mm_set1_epi16(0x0100);")
-            self.write("const __m128i gt = _mm_cmpgt_epi16(t4, minval);")
-            self.write("const __m128i lt = _mm_cmplt_epi16(t4, maxval);")
-            self.write("const __m128i ir = _mm_and_si128(gt, lt);")
-            self.write("const uint64_t w1 = _mm_cvtsi128_si64(ir);")
-            self.write("if (haszero64(w1)) {")
-            self.write("    res.err = errInvalidInput;")
+            self.write("const __m128i ascii0  = _mm_set1_epi8('0'); // 0x30")
+            self.write("const __m128i eq0     = _mm_cmpeq_epi8(t1, ascii0);")
+            self.write("const uint16_t eqmask = _mm_movemask_epi8(eq0);")
+            self.write("if ((eqmask & 0xaa00) != 0) {")
+            self.write("    res.err = errLeadingZeros;")
             self.write("    return res;")
             self.write("}")
-
-            self.write("const __m128i t5  = _mm_packus_epi16(t4, t4);")
-            self.write("const uint32_t w0 = _mm_cvtsi128_si32(t5);")
-            self.write("res.ipv4 = w0;")
+            self.write("const __m128i t2 = _mm_subs_epu8(t1, ascii0);")
+            self.write("const __m128i weights = _mm_setr_epi8(10, 1, 10, 1, 10, 1, 10, 1, 100, 0, 100, 0, 100, 0, 100, 0);")
+            self.write("const __m128i t3 = _mm_maddubs_epi16(t2, weights);")
+            self.write("const __m128i t4 = _mm_alignr_epi8(t3, t3, 8);")
+            self.write("const __m128i t5 = _mm_add_epi16(t4, t3);")
+            self.write("const __m128i gt        = _mm_cmpgt_epi16(t5, _mm_set1_epi16(255));")
+            self.write("const uint16_t gtmask   = _mm_movemask_epi8(gt);")
+            self.write("if ((gtmask & 0x00ff) != 0) {")
+            self.write("    res.err = errTooManyDigits;")
+            self.write("    return res;")
+            self.write("}")
+            self.write("const __m128i t6 = _mm_packs_epi16(t5, t5);")
+            self.write("res.ipv4 = _mm_cvtsi128_si32(t6);")
         else:
             assert False
 

@@ -39,7 +39,7 @@ result sse_parse_ipv4_v3(const std::string& ipv4) {
         return res;
     }
 
-    // 2. validate chars if they in range '0'..'9'
+    // 2. validate chars if they are in range '0'..'9'
     {
         const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
         const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
