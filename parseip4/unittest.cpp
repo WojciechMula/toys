@@ -229,7 +229,7 @@ int main(int argc, char* argv[]) {
         }
 
         for (const auto& s: args) {
-            if (name == s) {
+            if (name.find(s) != std::string::npos) {
                 return true;
             }
         }
