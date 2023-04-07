@@ -308,6 +308,12 @@ int main(int argc, char* argv[]) {
         ok = test_valid_inputs(sse_parse_ipv4_v7) && ok;
     }
 
+    if (run("SSE (v8)")) {
+        puts("SSE (v8)");
+        ok = test_wrong_input(sse_parse_ipv4_v8) && ok;
+        ok = test_valid_inputs(sse_parse_ipv4_v8) && ok;
+    }
+
     if (ok) {
         puts("All OK");
     }
