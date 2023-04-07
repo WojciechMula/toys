@@ -13,9 +13,8 @@ result sse_parse_ipv4_v8(const std::string& ipv4) {
         return res;
     }
 
-    uint16_t mask = 0xffff;
-    mask <<= n;
-    mask = ~mask;
+    const uint16_t msb = uint16_t(1) << ipv4.size();
+    const uint16_t mask = msb - 1;
 
     const __m128i input = _mm_loadu_si128((const __m128i*)ipv4.data());
 
@@ -39,7 +38,7 @@ result sse_parse_ipv4_v8(const std::string& ipv4) {
         return res;
     }
 
-    // 2. validate chars if they in range '0'..'9'
+    // 2. validate chars if they are in range '0'..'9'
     {
         const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
         const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
@@ -49,33 +48,38 @@ result sse_parse_ipv4_v8(const std::string& ipv4) {
 
         uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
-        less ^= (~dotmask) & mask;
+        less |= dotmask;
 
-        if (less != 0) {
+        if (less != mask) {
             res.err = errWrongCharacter;
             return res;
         }
     }
 
     // 3. add the dot after the last character (max length is 15 chars, so it's safe)
-    dotmask |= uint16_t(1) << ipv4.size();
+    dotmask |= msb;
 
     // 4. build pattern mask (rejecting wrong patterns upfront)
     uint8_t code = 0;
-    for (int i=0; i < 4; i++) {
-        const uint8_t n = __builtin_ctz(dotmask);
-        if (n == 0) {
-            res.err = errEmptyField;
-            return res;
-        }
-        if (n > 3) {
-            res.err = errTooManyDigits;
-            return res;
-        }
-
-        code = code * 3 + (n - 1);
-        dotmask >>= n + 1;
+#define ITER                                        \
+    {                                               \
+        const uint8_t n = __builtin_ctz(dotmask);   \
+        if (n == 0) {                               \
+            res.err = errEmptyField;                \
+            return res;                             \
+        }                                           \
+        if (n > 3) {                                \
+            res.err = errTooManyDigits;             \
+            return res;                             \
+        }                                           \
+        code = code * 3 + (n - 1);                  \
+        dotmask >>= n + 1;                          \
     }
+    ITER
+    ITER
+    ITER
+    ITER
+#undef ITER
 
     // 5. finally parse ipv4 address according to the pattern
 #   include "sse_parse_aux_v8.inl"

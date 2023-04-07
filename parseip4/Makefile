@@ -26,7 +26,7 @@ sse_parse_aux_v2.inl: generator_v2.py
 sse_parse_aux_v3.inl: generator_v3.py
 	python3 generator_v3.py > sse_parse_aux_v3.inl
 
-sse_parse_aux_v4.inl: generator_v4.py
+sse_parse_aux_v4.inl: generator_v4.py generator_sse.py
 	python3 generator_v4.py > sse_parse_aux_v4.inl
 
 sse_parse_aux_v5.inl: generator_v5.py
