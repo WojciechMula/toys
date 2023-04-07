@@ -1,7 +1,7 @@
 result sse_parse_ipv4_v4(const std::string& ipv4) {
     result res;
     res.ipv4 = 0;
-    res.err = false;
+    res.err = 0;
 
     const size_t n = ipv4.size();
     if (n < minlen_ipv4) {
