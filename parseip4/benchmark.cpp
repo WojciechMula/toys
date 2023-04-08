@@ -15,9 +15,10 @@
 class Application {
 private:
     std::vector<std::string> addresses;
+    std::vector<std::string> args;
 
 public:
-    Application() {
+    Application(const std::vector<std::string>& args) : args{args} {
         for (uint64_t tmp = 0; tmp <= 0xffffffff; tmp += 881) {
             uint32_t ipv4 = tmp;
             addresses.push_back(ipv4str(ipv4));
@@ -45,6 +46,9 @@ public:
 private:
     template <typename FUNCTION>
     void benchmark(const char* name, FUNCTION function) {
+        if (!selected(name)) {
+            return;
+        }
         
         auto fn = [this, function]() {
             for (const auto& ipv4: addresses) {
@@ -63,10 +67,29 @@ private:
 
         return tmp;
     }
+
+    bool selected(const std::string& name) const {
+        if (args.empty()) {
+            return true;
+        }
+
+        for (const auto& s: args) {
+            if (name.find(s) != std::string::npos) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 };
 
-int main() {
-    Application app{};
+int main(int argc, char* argv[]) {
+    std::vector<std::string> args;
+    for (int i=1; i < argc; i++) {
+        args.push_back(argv[i]);
+    }
+
+    Application app{args};
     app.run();
 
     return EXIT_SUCCESS;
