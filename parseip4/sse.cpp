@@ -122,6 +122,7 @@ result sse_parse_ipv4(const std::string& ipv4) {
 }
 
 
+#include "sse_parse.cpp.inl"
 #include "sse_v2.cpp.inl"
 #include "sse_v3.cpp.inl"
 #include "sse_v4.cpp.inl"

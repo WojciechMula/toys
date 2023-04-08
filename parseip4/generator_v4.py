@@ -21,7 +21,6 @@ class Generator(GeneratorSSE):
                     bylen[inputlen].append(lengths)
 
         keys = sorted(bylen.keys())
-        self.write("const __m128i t0 = input;")
         self.write("switch (ipv4.size()) {")
         self.indent()
         for key in keys:

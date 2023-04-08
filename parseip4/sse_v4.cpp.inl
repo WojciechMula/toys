@@ -46,6 +46,9 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
         }
     }
 
+    const __m128i ascii0  = _mm_set1_epi8('0');
+    const __m128i t0      = input;
+
     // 3. finally parse ipv4 address according to input length & the dots pattern
 #   include "sse_parse_aux_v4.inl"
 

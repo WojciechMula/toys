@@ -1,94 +1,92 @@
 /* Code generated automatically; DO NOT EDIT */
     static uint8_t patterns[81][16] = {
-        {uint8_t(0), uint8_t(2), uint8_t(4), uint8_t(6), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(0), uint8_t(2), uint8_t(4), uint8_t(7), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(6)},
-        {uint8_t(-1), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(0), uint8_t(2), uint8_t(5), uint8_t(7), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(0), uint8_t(2), uint8_t(5), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(7)},
-        {uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(-1), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(8)},
-        {uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(4), uint8_t(4), uint8_t(8), uint8_t(8)},
-        {uint8_t(-1), uint8_t(2), uint8_t(-1), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(5), uint8_t(7), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(2), uint8_t(-1), uint8_t(7), uint8_t(0), uint8_t(3), uint8_t(5), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(2), uint8_t(3), uint8_t(-1), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(-1), uint8_t(-1), uint8_t(7), uint8_t(7)},
-        {uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(6), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(8), uint8_t(0), uint8_t(3), uint8_t(6), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(2), uint8_t(3), uint8_t(5), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(-1), uint8_t(5), uint8_t(8), uint8_t(8)},
-        {uint8_t(-1), uint8_t(0), uint8_t(2), uint8_t(3), uint8_t(6), uint8_t(7), uint8_t(-1), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(5), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(2), uint8_t(3), uint8_t(6), uint8_t(7), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(5), uint8_t(-1), uint8_t(9)},
-        {uint8_t(-1), uint8_t(0), uint8_t(2), uint8_t(3), uint8_t(6), uint8_t(7), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(5), uint8_t(5), uint8_t(9), uint8_t(9)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(-1), uint8_t(6), uint8_t(-1), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(-1), uint8_t(6), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(8)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(-1), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(-1), uint8_t(-1), uint8_t(8), uint8_t(8)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(6), uint8_t(7), uint8_t(-1), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(-1), uint8_t(6), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(6), uint8_t(7), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(-1), uint8_t(6), uint8_t(-1), uint8_t(9)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(6), uint8_t(7), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(-1), uint8_t(6), uint8_t(9), uint8_t(9)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(-1), uint8_t(10), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(6), uint8_t(6), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(6), uint8_t(6), uint8_t(-1), uint8_t(10)},
-        {uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(11), uint8_t(12), uint8_t(-1), uint8_t(-1), uint8_t(2), uint8_t(2), uint8_t(6), uint8_t(6), uint8_t(10), uint8_t(10)},
-        {uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(1), uint8_t(3), uint8_t(5), uint8_t(7), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(7), uint8_t(1), uint8_t(3), uint8_t(5), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(-1), uint8_t(3), uint8_t(-1), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(7), uint8_t(7)},
-        {uint8_t(0), uint8_t(-1), uint8_t(5), uint8_t(-1), uint8_t(1), uint8_t(3), uint8_t(6), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(-1), uint8_t(5), uint8_t(8), uint8_t(1), uint8_t(3), uint8_t(6), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(-1), uint8_t(3), uint8_t(5), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(5), uint8_t(8), uint8_t(8)},
-        {uint8_t(0), uint8_t(1), uint8_t(-1), uint8_t(3), uint8_t(6), uint8_t(7), uint8_t(-1), uint8_t(9), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(5), uint8_t(5), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(-1), uint8_t(3), uint8_t(6), uint8_t(7), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(5), uint8_t(5), uint8_t(-1), uint8_t(9)},
-        {uint8_t(0), uint8_t(1), uint8_t(-1), uint8_t(3), uint8_t(6), uint8_t(7), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(5), uint8_t(5), uint8_t(9), uint8_t(9)},
-        {uint8_t(0), uint8_t(3), uint8_t(-1), uint8_t(-1), uint8_t(1), uint8_t(4), uint8_t(6), uint8_t(8), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(3), uint8_t(-1), uint8_t(8), uint8_t(1), uint8_t(4), uint8_t(6), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(3), uint8_t(4), uint8_t(-1), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(3), uint8_t(-1), uint8_t(-1), uint8_t(8), uint8_t(8)},
-        {uint8_t(0), uint8_t(3), uint8_t(6), uint8_t(-1), uint8_t(1), uint8_t(4), uint8_t(7), uint8_t(9), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(3), uint8_t(6), uint8_t(9), uint8_t(1), uint8_t(4), uint8_t(7), uint8_t(10), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(3), uint8_t(4), uint8_t(6), uint8_t(7), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(3), uint8_t(-1), uint8_t(6), uint8_t(9), uint8_t(9)},
-        {uint8_t(0), uint8_t(1), uint8_t(3), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(-1), uint8_t(10), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(3), uint8_t(6), uint8_t(6), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(3), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(3), uint8_t(6), uint8_t(6), uint8_t(-1), uint8_t(10)},
-        {uint8_t(0), uint8_t(1), uint8_t(3), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(11), uint8_t(12), uint8_t(-1), uint8_t(0), uint8_t(-1), uint8_t(3), uint8_t(6), uint8_t(6), uint8_t(10), uint8_t(10)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(-1), uint8_t(7), uint8_t(-1), uint8_t(9), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(-1), uint8_t(7), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(9)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(-1), uint8_t(7), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(-1), uint8_t(-1), uint8_t(9), uint8_t(9)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(7), uint8_t(8), uint8_t(-1), uint8_t(10), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(-1), uint8_t(7), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(7), uint8_t(8), uint8_t(10), uint8_t(11), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(-1), uint8_t(7), uint8_t(-1), uint8_t(10)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(7), uint8_t(8), uint8_t(11), uint8_t(12), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(-1), uint8_t(7), uint8_t(10), uint8_t(10)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(11), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(7), uint8_t(7), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(11), uint8_t(12), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(7), uint8_t(7), uint8_t(-1), uint8_t(11)},
-        {uint8_t(0), uint8_t(1), uint8_t(4), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(12), uint8_t(13), uint8_t(-1), uint8_t(0), uint8_t(3), uint8_t(3), uint8_t(7), uint8_t(7), uint8_t(11), uint8_t(11)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(6), uint8_t(-1), uint8_t(8), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(6), uint8_t(8), uint8_t(9), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(8)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(8), uint8_t(8)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(6), uint8_t(7), uint8_t(-1), uint8_t(9), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(6), uint8_t(7), uint8_t(9), uint8_t(10), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(-1), uint8_t(9)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(6), uint8_t(7), uint8_t(10), uint8_t(11), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(9), uint8_t(9)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(-1), uint8_t(10), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(6), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(10), uint8_t(11), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(6), uint8_t(-1), uint8_t(10)},
-        {uint8_t(1), uint8_t(2), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(8), uint8_t(11), uint8_t(12), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(-1), uint8_t(6), uint8_t(6), uint8_t(10), uint8_t(10)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(-1), uint8_t(7), uint8_t(-1), uint8_t(9), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(-1), uint8_t(7), uint8_t(9), uint8_t(10), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(9)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(-1), uint8_t(7), uint8_t(10), uint8_t(11), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(-1), uint8_t(9), uint8_t(9)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(7), uint8_t(8), uint8_t(-1), uint8_t(10), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(7), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(7), uint8_t(8), uint8_t(10), uint8_t(11), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(7), uint8_t(-1), uint8_t(10)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(7), uint8_t(8), uint8_t(11), uint8_t(12), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(-1), uint8_t(7), uint8_t(10), uint8_t(10)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(11), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(7), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(11), uint8_t(12), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(7), uint8_t(-1), uint8_t(11)},
-        {uint8_t(1), uint8_t(2), uint8_t(4), uint8_t(5), uint8_t(8), uint8_t(9), uint8_t(12), uint8_t(13), uint8_t(0), uint8_t(0), uint8_t(-1), uint8_t(4), uint8_t(7), uint8_t(7), uint8_t(11), uint8_t(11)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(-1), uint8_t(8), uint8_t(-1), uint8_t(10), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(-1), uint8_t(8), uint8_t(10), uint8_t(11), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(10)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(-1), uint8_t(8), uint8_t(11), uint8_t(12), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(-1), uint8_t(10), uint8_t(10)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(8), uint8_t(9), uint8_t(-1), uint8_t(11), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(8), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(8), uint8_t(9), uint8_t(11), uint8_t(12), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(8), uint8_t(-1), uint8_t(11)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(8), uint8_t(9), uint8_t(12), uint8_t(13), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(-1), uint8_t(8), uint8_t(11), uint8_t(11)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(-1), uint8_t(12), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(8), uint8_t(8), uint8_t(-1), uint8_t(-1)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(12), uint8_t(13), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(8), uint8_t(8), uint8_t(-1), uint8_t(12)},
-        {uint8_t(1), uint8_t(2), uint8_t(5), uint8_t(6), uint8_t(9), uint8_t(10), uint8_t(13), uint8_t(14), uint8_t(0), uint8_t(0), uint8_t(4), uint8_t(4), uint8_t(8), uint8_t(8), uint8_t(12), uint8_t(12)}
+        {0, 2, 4, 6, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), uint8_t(-1), uint8_t(-1), 6, 0, 2, 4, 7, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, uint8_t(-1), 2, uint8_t(-1), 4, 7, 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 6, 6},
+        {uint8_t(-1), uint8_t(-1), 4, uint8_t(-1), 0, 2, 5, 7, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), uint8_t(-1), 4, 7, 0, 2, 5, 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, uint8_t(-1), 2, 4, 5, 8, 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 4, 7, 7},
+        {uint8_t(-1), 0, uint8_t(-1), 2, 5, 6, uint8_t(-1), 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 4, 4, uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, uint8_t(-1), 2, 5, 6, 8, 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 4, 4, uint8_t(-1), 8},
+        {uint8_t(-1), 0, uint8_t(-1), 2, 5, 6, 9, 10, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 4, 4, 8, 8},
+        {uint8_t(-1), 2, uint8_t(-1), uint8_t(-1), 0, 3, 5, 7, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 2, uint8_t(-1), 7, 0, 3, 5, 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, 2, 3, uint8_t(-1), 5, 8, 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), 2, uint8_t(-1), uint8_t(-1), 7, 7},
+        {uint8_t(-1), 2, 5, uint8_t(-1), 0, 3, 6, 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 2, 5, 8, 0, 3, 6, 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, 2, 3, 5, 6, 9, 10, uint8_t(-1), uint8_t(-1), uint8_t(-1), 2, uint8_t(-1), 5, 8, 8},
+        {uint8_t(-1), 0, 2, 3, 6, 7, uint8_t(-1), 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), 2, 5, 5, uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, 2, 3, 6, 7, 9, 10, uint8_t(-1), uint8_t(-1), uint8_t(-1), 2, 5, 5, uint8_t(-1), 9},
+        {uint8_t(-1), 0, 2, 3, 6, 7, 10, 11, uint8_t(-1), uint8_t(-1), uint8_t(-1), 2, 5, 5, 9, 9},
+        {uint8_t(-1), 0, 3, 4, uint8_t(-1), 6, uint8_t(-1), 8, uint8_t(-1), uint8_t(-1), 2, 2, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, 3, 4, uint8_t(-1), 6, 8, 9, uint8_t(-1), uint8_t(-1), 2, 2, uint8_t(-1), uint8_t(-1), uint8_t(-1), 8},
+        {uint8_t(-1), 0, 3, 4, uint8_t(-1), 6, 9, 10, uint8_t(-1), uint8_t(-1), 2, 2, uint8_t(-1), uint8_t(-1), 8, 8},
+        {uint8_t(-1), 0, 3, 4, 6, 7, uint8_t(-1), 9, uint8_t(-1), uint8_t(-1), 2, 2, uint8_t(-1), 6, uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, 3, 4, 6, 7, 9, 10, uint8_t(-1), uint8_t(-1), 2, 2, uint8_t(-1), 6, uint8_t(-1), 9},
+        {uint8_t(-1), 0, 3, 4, 6, 7, 10, 11, uint8_t(-1), uint8_t(-1), 2, 2, uint8_t(-1), 6, 9, 9},
+        {uint8_t(-1), 0, 3, 4, 7, 8, uint8_t(-1), 10, uint8_t(-1), uint8_t(-1), 2, 2, 6, 6, uint8_t(-1), uint8_t(-1)},
+        {uint8_t(-1), 0, 3, 4, 7, 8, 10, 11, uint8_t(-1), uint8_t(-1), 2, 2, 6, 6, uint8_t(-1), 10},
+        {uint8_t(-1), 0, 3, 4, 7, 8, 11, 12, uint8_t(-1), uint8_t(-1), 2, 2, 6, 6, 10, 10},
+        {0, uint8_t(-1), uint8_t(-1), uint8_t(-1), 1, 3, 5, 7, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, uint8_t(-1), uint8_t(-1), 7, 1, 3, 5, 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, 1, uint8_t(-1), 3, uint8_t(-1), 5, 8, 9, uint8_t(-1), 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 7, 7},
+        {0, uint8_t(-1), 5, uint8_t(-1), 1, 3, 6, 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, uint8_t(-1), 5, 8, 1, 3, 6, 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, 1, uint8_t(-1), 3, 5, 6, 9, 10, uint8_t(-1), 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), 5, 8, 8},
+        {0, 1, uint8_t(-1), 3, 6, 7, uint8_t(-1), 9, uint8_t(-1), 0, uint8_t(-1), uint8_t(-1), 5, 5, uint8_t(-1), uint8_t(-1)},
+        {0, 1, uint8_t(-1), 3, 6, 7, 9, 10, uint8_t(-1), 0, uint8_t(-1), uint8_t(-1), 5, 5, uint8_t(-1), 9},
+        {0, 1, uint8_t(-1), 3, 6, 7, 10, 11, uint8_t(-1), 0, uint8_t(-1), uint8_t(-1), 5, 5, 9, 9},
+        {0, 3, uint8_t(-1), uint8_t(-1), 1, 4, 6, 8, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, 3, uint8_t(-1), 8, 1, 4, 6, 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, 1, 3, 4, uint8_t(-1), 6, 9, 10, uint8_t(-1), 0, uint8_t(-1), 3, uint8_t(-1), uint8_t(-1), 8, 8},
+        {0, 3, 6, uint8_t(-1), 1, 4, 7, 9, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, 3, 6, 9, 1, 4, 7, 10, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, 1, 3, 4, 6, 7, 10, 11, uint8_t(-1), 0, uint8_t(-1), 3, uint8_t(-1), 6, 9, 9},
+        {0, 1, 3, 4, 7, 8, uint8_t(-1), 10, uint8_t(-1), 0, uint8_t(-1), 3, 6, 6, uint8_t(-1), uint8_t(-1)},
+        {0, 1, 3, 4, 7, 8, 10, 11, uint8_t(-1), 0, uint8_t(-1), 3, 6, 6, uint8_t(-1), 10},
+        {0, 1, 3, 4, 7, 8, 11, 12, uint8_t(-1), 0, uint8_t(-1), 3, 6, 6, 10, 10},
+        {0, 1, 4, 5, uint8_t(-1), 7, uint8_t(-1), 9, uint8_t(-1), 0, 3, 3, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {0, 1, 4, 5, uint8_t(-1), 7, 9, 10, uint8_t(-1), 0, 3, 3, uint8_t(-1), uint8_t(-1), uint8_t(-1), 9},
+        {0, 1, 4, 5, uint8_t(-1), 7, 10, 11, uint8_t(-1), 0, 3, 3, uint8_t(-1), uint8_t(-1), 9, 9},
+        {0, 1, 4, 5, 7, 8, uint8_t(-1), 10, uint8_t(-1), 0, 3, 3, uint8_t(-1), 7, uint8_t(-1), uint8_t(-1)},
+        {0, 1, 4, 5, 7, 8, 10, 11, uint8_t(-1), 0, 3, 3, uint8_t(-1), 7, uint8_t(-1), 10},
+        {0, 1, 4, 5, 7, 8, 11, 12, uint8_t(-1), 0, 3, 3, uint8_t(-1), 7, 10, 10},
+        {0, 1, 4, 5, 8, 9, uint8_t(-1), 11, uint8_t(-1), 0, 3, 3, 7, 7, uint8_t(-1), uint8_t(-1)},
+        {0, 1, 4, 5, 8, 9, 11, 12, uint8_t(-1), 0, 3, 3, 7, 7, uint8_t(-1), 11},
+        {0, 1, 4, 5, 8, 9, 12, 13, uint8_t(-1), 0, 3, 3, 7, 7, 11, 11},
+        {1, 2, uint8_t(-1), 4, uint8_t(-1), 6, uint8_t(-1), 8, 0, 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {1, 2, uint8_t(-1), 4, uint8_t(-1), 6, 8, 9, 0, 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 8},
+        {1, 2, uint8_t(-1), 4, uint8_t(-1), 6, 9, 10, 0, 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1), 8, 8},
+        {1, 2, uint8_t(-1), 4, 6, 7, uint8_t(-1), 9, 0, 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), 6, uint8_t(-1), uint8_t(-1)},
+        {1, 2, uint8_t(-1), 4, 6, 7, 9, 10, 0, 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), 6, uint8_t(-1), 9},
+        {1, 2, uint8_t(-1), 4, 6, 7, 10, 11, 0, 0, uint8_t(-1), uint8_t(-1), uint8_t(-1), 6, 9, 9},
+        {1, 2, uint8_t(-1), 4, 7, 8, uint8_t(-1), 10, 0, 0, uint8_t(-1), uint8_t(-1), 6, 6, uint8_t(-1), uint8_t(-1)},
+        {1, 2, uint8_t(-1), 4, 7, 8, 10, 11, 0, 0, uint8_t(-1), uint8_t(-1), 6, 6, uint8_t(-1), 10},
+        {1, 2, uint8_t(-1), 4, 7, 8, 11, 12, 0, 0, uint8_t(-1), uint8_t(-1), 6, 6, 10, 10},
+        {1, 2, 4, 5, uint8_t(-1), 7, uint8_t(-1), 9, 0, 0, uint8_t(-1), 4, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {1, 2, 4, 5, uint8_t(-1), 7, 9, 10, 0, 0, uint8_t(-1), 4, uint8_t(-1), uint8_t(-1), uint8_t(-1), 9},
+        {1, 2, 4, 5, uint8_t(-1), 7, 10, 11, 0, 0, uint8_t(-1), 4, uint8_t(-1), uint8_t(-1), 9, 9},
+        {1, 2, 4, 5, 7, 8, uint8_t(-1), 10, 0, 0, uint8_t(-1), 4, uint8_t(-1), 7, uint8_t(-1), uint8_t(-1)},
+        {1, 2, 4, 5, 7, 8, 10, 11, 0, 0, uint8_t(-1), 4, uint8_t(-1), 7, uint8_t(-1), 10},
+        {1, 2, 4, 5, 7, 8, 11, 12, 0, 0, uint8_t(-1), 4, uint8_t(-1), 7, 10, 10},
+        {1, 2, 4, 5, 8, 9, uint8_t(-1), 11, 0, 0, uint8_t(-1), 4, 7, 7, uint8_t(-1), uint8_t(-1)},
+        {1, 2, 4, 5, 8, 9, 11, 12, 0, 0, uint8_t(-1), 4, 7, 7, uint8_t(-1), 11},
+        {1, 2, 4, 5, 8, 9, 12, 13, 0, 0, uint8_t(-1), 4, 7, 7, 11, 11},
+        {1, 2, 5, 6, uint8_t(-1), 8, uint8_t(-1), 10, 0, 0, 4, 4, uint8_t(-1), uint8_t(-1), uint8_t(-1), uint8_t(-1)},
+        {1, 2, 5, 6, uint8_t(-1), 8, 10, 11, 0, 0, 4, 4, uint8_t(-1), uint8_t(-1), uint8_t(-1), 10},
+        {1, 2, 5, 6, uint8_t(-1), 8, 11, 12, 0, 0, 4, 4, uint8_t(-1), uint8_t(-1), 10, 10},
+        {1, 2, 5, 6, 8, 9, uint8_t(-1), 11, 0, 0, 4, 4, uint8_t(-1), 8, uint8_t(-1), uint8_t(-1)},
+        {1, 2, 5, 6, 8, 9, 11, 12, 0, 0, 4, 4, uint8_t(-1), 8, uint8_t(-1), 11},
+        {1, 2, 5, 6, 8, 9, 12, 13, 0, 0, 4, 4, uint8_t(-1), 8, 11, 11},
+        {1, 2, 5, 6, 9, 10, uint8_t(-1), 12, 0, 0, 4, 4, 8, 8, uint8_t(-1), uint8_t(-1)},
+        {1, 2, 5, 6, 9, 10, 12, 13, 0, 0, 4, 4, 8, 8, uint8_t(-1), 12},
+        {1, 2, 5, 6, 9, 10, 13, 14, 0, 0, 4, 4, 8, 8, 12, 12}
     };
     const __m128i pattern = _mm_loadu_si128((const __m128i*)&patterns[code]);
-    const __m128i t0 = input;
     switch (code) {
         case 0x00: // [1, 1, 1, 1]
         {
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-            res.ipv4 = _mm_cvtsi128_si32(t1) & 0x0f0f0f0f;
+            SSE_CONVERT_MAX1
         }
         break;
         case 0x01: // [1, 1, 1, 2]
@@ -107,18 +105,7 @@
         case 0x27: // [2, 2, 2, 1]
         case 0x28: // [2, 2, 2, 2]
         {
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-            const __m128i ascii0 = _mm_set1_epi8('0');
-            const __m128i t2     = _mm_cmpeq_epi8(t1, ascii0);
-            const uint32_t msd = _mm_cvtsi128_si32(t2);
-            if (msd != 0) {
-                res.err = errLeadingZeros;
-            }
-            const uint64_t ascii = _mm_cvtsi128_si64(t1);
-            const uint64_t w01   = ascii & 0x0f0f0f0f0f0f0f0f;
-            const uint32_t w0    = w01 >> 32;
-            const uint32_t w1    = w01 & 0xfffffffflu;
-            res.ipv4 = 10 * w1 + w0;
+            SSE_CONVERT_MAX2
         }
         break;
         case 0x02: // [1, 1, 1, 3]
@@ -187,25 +174,7 @@
         case 0x4f: // [3, 3, 3, 2]
         case 0x50: // [3, 3, 3, 3]
         {
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-            const __m128i ascii0  = _mm_set1_epi8('0'); // 0x30
-            const __m128i eq0     = _mm_cmpeq_epi8(t1, ascii0);
-            const uint16_t eqmask = _mm_movemask_epi8(eq0);
-            if ((eqmask & 0xaa00) != 0) {
-                res.err = errLeadingZeros;
-            }
-            const __m128i t2 = _mm_subs_epu8(t1, ascii0);
-            const __m128i weights = _mm_setr_epi8(10, 1, 10, 1, 10, 1, 10, 1, 100, 0, 100, 0, 100, 0, 100, 0);
-            const __m128i t3 = _mm_maddubs_epi16(t2, weights);
-            const __m128i t4 = _mm_alignr_epi8(t3, t3, 8);
-            const __m128i t5 = _mm_add_epi16(t4, t3);
-            const __m128i gt        = _mm_cmpgt_epi16(t5, _mm_set1_epi16(255));
-            const uint16_t gtmask   = _mm_movemask_epi8(gt);
-            if ((gtmask & 0x00ff) != 0) {
-                res.err = errTooBig;
-            }
-            const __m128i t6 = _mm_packus_epi16(t5, t5);
-            res.ipv4 = _mm_cvtsi128_si32(t6);
+            SSE_CONVERT_MAX3
         }
         break;
     }

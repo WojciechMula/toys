@@ -66,41 +66,22 @@ result sse_parse_ipv4_v7(const std::string& ipv4) {
         return res;
     }
 
+    const __m128i ascii0  = _mm_set1_epi8('0');
+    const __m128i pattern = _mm_loadu_si128((const __m128i*)pat);
+    const __m128i t0      = input;
+
     const uint8_t max_digits = pat[15];
     switch (max_digits) {
         case 1: {
-            const __m128i pattern = _mm_load_si128((const __m128i*)pat);
-            const __m128i ascii0 = _mm_set1_epi8('0');
-            const __m128i t0 = _mm_sub_epi8(input, ascii0);
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-
-            res.ipv4 = _mm_cvtsi128_si32(t1);
+            SSE_CONVERT_MAX1
             return res;
             }
-
         case 2: {
-            const __m128i pattern = _mm_load_si128((const __m128i*)pat);
-            const __m128i ascii0 = _mm_set1_epi8('0');
-            const __m128i t0 = _mm_sub_epi8(input, ascii0);
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-
-            const uint64_t w01 = _mm_cvtsi128_si64(t1);
-            const uint32_t w0 = w01;
-            const uint32_t w1 = (w01 >> 32);
-            res.ipv4 = 10 * w1 + w0;
+            SSE_CONVERT_MAX2
             return res;
             }
         case 3: {
-            const __m128i pattern = _mm_load_si128((const __m128i*)pat);
-            const __m128i ascii0 = _mm_set1_epi8('0');
-            const __m128i t0 = _mm_sub_epi8(input, ascii0);
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-
-            const uint64_t w01 = _mm_cvtsi128_si64(t1);
-            const uint32_t w2 = _mm_extract_epi32(t1, 2);
-            const uint32_t w0 = w01;
-            const uint32_t w1 = (w01 >> 32);
-            res.ipv4 = 10 * (10 * w2 + w1) + w0;
+            SSE_CONVERT_MAX3
             return res;
             }
     }

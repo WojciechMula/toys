@@ -1,6 +1,6 @@
 import sys
 import itertools
-from generator_sse import GeneratorSSE, generate_pshufb_pattern
+from generator_sse import GeneratorSSE, generate_pshufb_pattern, uint8
 
 class Generator(GeneratorSSE):
     def __init__(self):
@@ -12,7 +12,7 @@ class Generator(GeneratorSSE):
 
         tmp = []
         for length, n in code:
-            img = ', '.join("uint8_t(%d)" % x for x in generate_pshufb_pattern(length))
+            img = ', '.join(map(uint8, generate_pshufb_pattern(length)))
             tmp.append("{%s}" % img)
 
         self.write("static uint8_t patterns[81][16] = {")
@@ -28,7 +28,6 @@ class Generator(GeneratorSSE):
         self.write("};")
 
         self.write("const __m128i pattern = _mm_loadu_si128((const __m128i*)&patterns[code]);")
-        self.write("const __m128i t0 = input;")
         self.write("switch (code) {")
         self.indent()
         for ml in [1, 2, 3]:

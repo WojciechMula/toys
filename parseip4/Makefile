@@ -9,7 +9,7 @@ all: $(ALL)
 DEPS=common.h common.cpp \
         naive.cpp naive.h \
         swar.h swar.cpp \
-        sse.h sse.cpp \
+        sse.h sse.cpp sse_parse.cpp.inl \
         glibc_ref.h glibc_ref.cpp \
         go_ref.h go_ref.cpp \
         sse_parse_aux_v2.inl sse_v2.cpp.inl \
