@@ -1,6 +1,6 @@
 import sys
 import itertools
-from generator_sse import GeneratorSSE
+from generator_sse import GeneratorSSE, generate_pshufb_pattern, uint8
 
 class Item:
     pass
@@ -741,7 +741,7 @@ class Generator(GeneratorSSE):
         self.write("};")
 
     def fillup_details(self, item):
-        item.pattern = self.generate_pshufb_pattern(item.lengths)
+        item.pattern = generate_pshufb_pattern(item.lengths)
         item.max_digits = max(item.lengths)
         item.code = lengths2patterns(item.lengths)
 
@@ -770,13 +770,6 @@ def lengths2patterns(lengths):
     img = ''.join('%d' % x for x in reversed(mask))
 
     return int(img, 2)
-
-def uint8(x):
-    if x < 0:
-        return "uint8_t(%d)" % x
-    else:
-        return str(x)
-
 
 if __name__ == '__main__':
     g = Generator()

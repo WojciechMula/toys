@@ -1,6 +1,6 @@
 import sys
 import itertools
-from generator_sse import GeneratorSSE
+from generator_sse import GeneratorSSE, generate_pshufb_pattern
 
 class Generator(GeneratorSSE):
     def __init__(self):
@@ -12,7 +12,7 @@ class Generator(GeneratorSSE):
 
         tmp = []
         for length, n in code:
-            img = ', '.join("uint8_t(%d)" % x for x in self.generate_pshufb_pattern(length))
+            img = ', '.join("uint8_t(%d)" % x for x in generate_pshufb_pattern(length))
             tmp.append("{%s}" % img)
 
         self.write("static uint8_t patterns[81][16] = {")

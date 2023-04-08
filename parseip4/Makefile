@@ -32,7 +32,7 @@ sse_parse_aux_v4.inl: generator_v4.py generator_sse.py
 sse_parse_aux_v5.inl: generator_v5.py generator_sse.py
 	python3 generator_v5.py > sse_parse_aux_v5.inl
 
-sse_parse_aux_v6.inl: generator_v6.py
+sse_parse_aux_v6.inl: generator_v6.py generator_sse.py
 	python3 generator_v6.py > sse_parse_aux_v6.inl
 
 sse_parse_aux_v7.inl: generator_v7/*.go

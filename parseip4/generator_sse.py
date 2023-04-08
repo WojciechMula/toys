@@ -15,66 +15,6 @@ class GeneratorSSE:
     def generate_main(self):
         raise NotImplementedError
 
-    def generate_pshufb_pattern_max1(self, lengths, pshufb_pattern):
-        offset = 0
-        for i, l in enumerate(lengths):
-            idx = i
-            if l == 1:
-                pshufb_pattern[idx] = offset
-                offset += 2
-            else:
-                assert False
-
-    def generate_pshufb_pattern_max2(self, lengths, pshufb_pattern):
-        offset = 0
-        for i, l in enumerate(lengths):
-            idx = i
-            if l == 1:
-                pshufb_pattern[idx + 4] = offset
-                offset += 2
-            elif l == 2:
-                pshufb_pattern[idx] = offset
-                pshufb_pattern[idx + 4] = offset + 1
-                offset += 3
-            else:
-                assert False
-
-    def generate_pshufb_pattern_max3(self, lengths, pshufb_pattern):
-        offset = 0
-        for i, l in enumerate(lengths):
-            idx = i
-            if l == 1:
-                pshufb_pattern[2*idx + 1] = offset
-                offset += 2
-            elif l == 2:
-                pshufb_pattern[2*idx + 0] = offset + 0
-                pshufb_pattern[2*idx + 1] = offset + 1
-                pshufb_pattern[2*idx + 8 + 1] = offset + 0
-                offset += 3
-            elif l == 3:
-                pshufb_pattern[2*idx + 0] = offset + 1
-                pshufb_pattern[2*idx + 1] = offset + 2
-                pshufb_pattern[2*idx + 8] = offset + 0
-                pshufb_pattern[2*idx + 8 + 1] = offset + 0
-                offset += 4
-            else:
-                assert False
-
-    def generate_pshufb_pattern(self, lengths):
-        pshufb_pattern = [-1] * 16
-
-        ml = max(lengths)
-        if ml == 1:
-            self.generate_pshufb_pattern_max1(lengths, pshufb_pattern)
-        elif ml == 2:
-            self.generate_pshufb_pattern_max2(lengths, pshufb_pattern)
-        elif ml == 3:
-            self.generate_pshufb_pattern_max3(lengths, pshufb_pattern)
-        else:
-            assert False
-
-        return pshufb_pattern
-
     def generate_conversion(self, maxlength):
         self.write("const __m128i t1 = _mm_shuffle_epi8(t0, pattern);")
         if maxlength == 1:
@@ -121,7 +61,7 @@ class GeneratorSSE:
 
     def generate_case(self, lengths):
         ml = max(lengths)
-        pshufb_pattern = self.generate_pshufb_pattern(lengths)
+        pshufb_pattern = generate_pshufb_pattern(lengths)
 
         self.indent()
         self.write("{")
@@ -142,3 +82,79 @@ class GeneratorSSE:
 
     def unindent(self):
         self.ind -= 4
+
+
+def generate_pshufb_pattern(lengths):
+    ml = max(lengths)
+    if ml == 1:
+        return generate_pshufb_pattern_max1(lengths)
+    elif ml == 2:
+        return generate_pshufb_pattern_max2(lengths)
+    elif ml == 3:
+        return generate_pshufb_pattern_max3(lengths)
+    else:
+        assert False
+
+
+def generate_pshufb_pattern_max1(lengths):
+    pshufb_pattern = [-1] * 16
+    offset = 0
+    for i, l in enumerate(lengths):
+        idx = i
+        if l == 1:
+            pshufb_pattern[idx] = offset
+            offset += 2
+        else:
+            assert False
+
+    return pshufb_pattern
+
+
+def generate_pshufb_pattern_max2(lengths):
+    pshufb_pattern = [-1] * 16
+    offset = 0
+    for i, l in enumerate(lengths):
+        idx = i
+        if l == 1:
+            pshufb_pattern[idx + 4] = offset
+            offset += 2
+        elif l == 2:
+            pshufb_pattern[idx] = offset
+            pshufb_pattern[idx + 4] = offset + 1
+            offset += 3
+        else:
+            assert False
+
+    return pshufb_pattern
+
+
+def generate_pshufb_pattern_max3(lengths):
+    pshufb_pattern = [-1] * 16
+    offset = 0
+    for i, l in enumerate(lengths):
+        idx = i
+        if l == 1:
+            pshufb_pattern[2*idx + 1] = offset
+            offset += 2
+        elif l == 2:
+            pshufb_pattern[2*idx + 0] = offset + 0
+            pshufb_pattern[2*idx + 1] = offset + 1
+            pshufb_pattern[2*idx + 8 + 1] = offset + 0
+            offset += 3
+        elif l == 3:
+            pshufb_pattern[2*idx + 0] = offset + 1
+            pshufb_pattern[2*idx + 1] = offset + 2
+            pshufb_pattern[2*idx + 8] = offset + 0
+            pshufb_pattern[2*idx + 8 + 1] = offset + 0
+            offset += 4
+        else:
+            assert False
+
+    return pshufb_pattern
+
+
+def uint8(x):
+    if x < 0:
+        return "uint8_t(%d)" % x
+    else:
+        return str(x)

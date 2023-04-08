@@ -1,7 +1,7 @@
 result sse_parse_ipv4_v6(const std::string& ipv4) {
     result res;
     res.ipv4 = 0;
-    res.err = false;
+    res.err = 0;
 
     const size_t n = ipv4.size();
     if (n < minlen_ipv4) {
@@ -13,9 +13,8 @@ result sse_parse_ipv4_v6(const std::string& ipv4) {
         return res;
     }
 
-    uint16_t mask = 0xffff;
-    mask <<= n;
-    mask = ~mask;
+    const uint16_t msb = uint16_t(1) << n;
+    const uint16_t mask = msb - 1;
 
     const __m128i input = _mm_loadu_si128((const __m128i*)ipv4.data());
 
@@ -26,7 +25,6 @@ result sse_parse_ipv4_v6(const std::string& ipv4) {
         const __m128i t0 = _mm_cmpeq_epi8(input, dot);
         dotmask = _mm_movemask_epi8(t0);
         dotmask &= mask;
-        dotmask |= 1 << n;
     }
 
     // 2. validate chars if they in range '0'..'9'
@@ -39,13 +37,14 @@ result sse_parse_ipv4_v6(const std::string& ipv4) {
 
         uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
-        less ^= (~dotmask) & mask;
 
-        if (less != 0) {
+        if ((less | dotmask) != mask) {
             res.err = errWrongCharacter;
             return res;
         }
     }
+
+    dotmask |= msb;
 
     // 3. build a hashcode -- the valid dotmask is expected
     //    1) to have exactly four bits set, 2) and distances
@@ -94,51 +93,66 @@ result sse_parse_ipv4_v6(const std::string& ipv4) {
         return res;
     }
 
-    // 3. finally parse ipv4 address according to input length & the dots pattern
+    // 3. finally, parse the IPv4 address according to the input length & dots pattern
 #   include "sse_parse_aux_v6.inl"
 
-    const uint8_t* pat = &patterns[hashcode][0];
-    const uint16_t code = (uint16_t(pat[14]) << 8) | (uint16_t(pat[13]));
+    const uint8_t* spec = &patterns[hashcode][0];
+    const uint16_t code = uint16_t(spec[16]) | (uint16_t(spec[17]) << 8);
     if (code != dotmask) {
         res.err = errInvalidInput;
         return res;
     }
 
-    const uint8_t max_digits = pat[15];
+    const __m128i ascii0  = _mm_set1_epi8('0');
+    const __m128i pattern = _mm_loadu_si128((const __m128i*)spec);
+    const __m128i t0      = input;
+
+    const uint8_t max_digits = spec[18];
     switch (max_digits) {
         case 1: {
-            const __m128i pattern = _mm_load_si128((const __m128i*)pat);
-            const __m128i ascii0 = _mm_set1_epi8('0');
-            const __m128i t0 = _mm_sub_epi8(input, ascii0);
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
+            const __m128i t0        = _mm_sub_epi8(input, ascii0);
+            const __m128i t1        = _mm_shuffle_epi8(t0, pattern);
 
             res.ipv4 = _mm_cvtsi128_si32(t1);
             return res;
             }
 
         case 2: {
-            const __m128i pattern = _mm_load_si128((const __m128i*)pat);
-            const __m128i ascii0 = _mm_set1_epi8('0');
-            const __m128i t0 = _mm_sub_epi8(input, ascii0);
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-
-            const uint64_t w01 = _mm_cvtsi128_si64(t1);
-            const uint32_t w0 = w01;
-            const uint32_t w1 = (w01 >> 32);
+            const __m128i t1     = _mm_shuffle_epi8(t0, pattern);
+            const __m128i t2     = _mm_cmpeq_epi8(t1, ascii0);
+            const uint32_t msd   = _mm_cvtsi128_si32(t2);
+            if (msd != 0) {
+                res.err = errLeadingZeros;
+                return res;
+            }
+            const uint64_t ascii = _mm_cvtsi128_si64(t1);
+            const uint64_t w01   = ascii & 0x0f0f0f0f0f0f0f0f;
+            const uint32_t w0    = w01 >> 32;
+            const uint32_t w1    = w01 & 0xfffffffflu;
             res.ipv4 = 10 * w1 + w0;
             return res;
             }
         case 3: {
-            const __m128i pattern = _mm_load_si128((const __m128i*)pat);
-            const __m128i ascii0 = _mm_set1_epi8('0');
-            const __m128i t0 = _mm_sub_epi8(input, ascii0);
-            const __m128i t1 = _mm_shuffle_epi8(t0, pattern);
-
-            const uint64_t w01 = _mm_cvtsi128_si64(t1);
-            const uint32_t w2 = _mm_extract_epi32(t1, 2);
-            const uint32_t w0 = w01;
-            const uint32_t w1 = (w01 >> 32);
-            res.ipv4 = 10 * (10 * w2 + w1) + w0;
+            const __m128i t1        = _mm_shuffle_epi8(t0, pattern);
+            const __m128i eq0       = _mm_cmpeq_epi8(t1, ascii0);
+            const uint16_t eqmask   = _mm_movemask_epi8(eq0);
+            if ((eqmask & 0xaa00) != 0) {
+                res.err = errLeadingZeros;
+                return res;
+            }
+            const __m128i t2        = _mm_subs_epu8(t1, ascii0);
+            const __m128i weights   = _mm_setr_epi8(10, 1, 10, 1, 10, 1, 10, 1, 100, 0, 100, 0, 100, 0, 100, 0);
+            const __m128i t3        = _mm_maddubs_epi16(t2, weights);
+            const __m128i t4        = _mm_alignr_epi8(t3, t3, 8);
+            const __m128i t5        = _mm_add_epi16(t4, t3);
+            const __m128i gt        = _mm_cmpgt_epi16(t5, _mm_set1_epi16(255));
+            const uint16_t gtmask   = _mm_movemask_epi8(gt);
+            if ((gtmask & 0x00ff) != 0) {
+                res.err = errTooBig;
+                return res;
+            }
+            const __m128i t6 = _mm_packus_epi16(t5, t5);
+            res.ipv4 = _mm_cvtsi128_si32(t6);
             return res;
             }
     }
