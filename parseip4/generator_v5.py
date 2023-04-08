@@ -1,5 +1,6 @@
 import sys
 import itertools
+from generator_sse import GeneratorSSE
 
 class Item:
     pass
@@ -682,18 +683,8 @@ Best hashes found by `hashv5/main.go` program:
 137: ((((1 * len) + (31 * ((code >> 9) & 0xff))) + (3 * ((code >> 2) & 0x3f))) - (19 * ((code >> 8) & 0xff)))
 """
 
-class Generator:
-    def __init__(self):
-        self.ind = 0
-        self.f = sys.stdout
-
-    def generate(self):
-        self.write("/* Code generated automatically; DO NOT EDIT */")
-        self.indent()
-        self.generate_table()
-        self.unindent()
-
-    def generate_table(self):
+class Generator(GeneratorSSE):
+    def generate_main(self):
         bylen = {}
         for code in range(256):
             l3 = (code >> (0*2)) & 0x03
@@ -722,45 +713,35 @@ class Generator:
 
         count = max(tmp)
         self.write("const unsigned max_hash = %d;" % (count,))
-        self.write("static const int8_t patterns[max_hash + 1][16] = {")
+        self.write("static const uint8_t patterns[max_hash + 1][20] = {")
         self.indent()
         for byte in range(count + 1):
+            pattern     = 20 * [0]
+            max_digits  = 0
+            hashcode    = 0
+            code        = 0
+            inputlen    = 0
             if byte in tmp:
                 item = tmp[byte]
-                pattern = item.pattern[:]
                 max_digits = item.max_digits
-            else:
-                pattern = 16 * [0]
-                max_digits = 0
+                hashcode = item.hashcode
+                code = item.code
+                inputlen = item.inputlen
+                for i, b in enumerate(item.pattern):
+                    pattern[i] = b
 
-            pattern[15] = max_digits
+            pattern[16] = code & 0xff
+            pattern[17] = code >> 8
+            pattern[18] = inputlen
+            pattern[19] = max_digits
 
-            img = ", ".join('%d' % x for x in pattern)
+            img = ", ".join(map(uint8, pattern))
             self.write("/* %03d */ {%s}," % (byte, img))
         self.unindent()
         self.write("};")
 
     def fillup_details(self, item):
-        offset = 0
-        pshufb_pattern = [-1] * 16
-        for i, l in enumerate(item.lengths):
-            idx = i
-            if l == 1:
-                pshufb_pattern[idx] = offset
-                offset += 2
-            elif l == 2:
-                pshufb_pattern[idx] = offset + 1
-                pshufb_pattern[idx + 4] = offset
-                offset += 3
-            elif l == 3:
-                pshufb_pattern[idx] = offset + 2
-                pshufb_pattern[idx + 4] = offset + 1
-                pshufb_pattern[idx + 8] = offset
-                offset += 4
-            else:
-                assert False
-
-        item.pattern = pshufb_pattern
+        item.pattern = self.generate_pshufb_pattern(item.lengths)
         item.max_digits = max(item.lengths)
         item.code = lengths2patterns(item.lengths)
 
@@ -775,18 +756,6 @@ class Generator:
         mul2 = 19
         item.hashcode = k + w0 * mul0 + w1 * mul1 - w2 * mul2
 
-    def write(self, text):
-        f = self.f
-        f.write(' ' * self.ind)
-        f.write(text)
-        f.write('\n')
-
-    def indent(self):
-        self.ind += 4
-
-    def unindent(self):
-        self.ind -= 4
-
 
 def lengths2patterns(lengths):
     mask = [0]*16
@@ -797,11 +766,18 @@ def lengths2patterns(lengths):
     n += lengths[2] + 1
     mask[n] = 1
     n += lengths[3] + 1
-    #mask[n] = 1
 
     img = ''.join('%d' % x for x in reversed(mask))
 
     return int(img, 2)
 
-g = Generator()
-g.generate()
+def uint8(x):
+    if x < 0:
+        return "uint8_t(%d)" % x
+    else:
+        return str(x)
+
+
+if __name__ == '__main__':
+    g = Generator()
+    g.generate()
