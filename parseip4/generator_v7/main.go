@@ -66,7 +66,7 @@ func generate(f io.Writer, hash func(uint16) uint16) {
 	write("")
 	write("// lookup #1")
 	write("const int max_hash = %d;", maxHash)
-	write("static const int8_t patterns_id[%d] = {", maxHash+1)
+	write("static const uint8_t patterns_id[%d] = {", maxHash+1)
 	for h := uint16(0); h <= maxHash; h++ {
 		id, ok := byHash[h]
 		if !ok {
@@ -85,17 +85,21 @@ func generate(f io.Writer, hash func(uint16) uint16) {
 	write("")
 	write("// lookup #2")
 
-	write("static const uint8_t patterns[%d][16] = {", maxId+2)
+	write("static const uint8_t patterns[%d][20] = {", maxId+2)
+	var pshufb [20]byte
 	for id := 0; id <= maxId+1; id++ {
 		p, ok := byId[id]
 		if !ok {
 			fmt.Printf("id = %d\n", id)
 			panic("id not found")
 		}
-		pshufb := p.pshufb()
-		pshufb[15] = byte(p.maxlen())
-		pshufb[13] = byte((p.codeword >> 0) & 0xff)
-		pshufb[14] = byte((p.codeword >> 8) & 0xff)
+
+		for i, b := range p.pshufb() {
+			pshufb[i] = b
+		}
+		pshufb[16] = byte((p.codeword >> 0) & 0xff)
+		pshufb[17] = byte((p.codeword >> 8) & 0xff)
+		pshufb[18] = byte(p.maxlen())
 
 		fmt.Fprintf(f, "\t/* id: %d, hash: %08x */ {", id, p.codeword)
 		for i, b := range pshufb {

@@ -56,12 +56,12 @@ result sse_parse_ipv4_v7(const std::string& ipv4) {
         return res;
     }
 
-    // 3. finally parse ipv4 address according to input length & the dots pattern
-
-    const int8_t id = patterns_id[hashcode];
+    // 4. finally parse ipv4 address according to input length & the dots pattern
+    const uint8_t id = patterns_id[hashcode];
     const uint8_t* pat = &patterns[id][0];
-    const uint16_t expected_code = (uint16_t(pat[14]) << 8) | (uint16_t(pat[13]));
-    if (expected_code != dotmask) {
+
+    const uint16_t expected_dotmask = uint16_t(pat[16]) | (uint16_t(pat[17]) << 8);
+    if (expected_dotmask != dotmask) {
         res.err = errInvalidInput;
         return res;
     }
@@ -70,7 +70,7 @@ result sse_parse_ipv4_v7(const std::string& ipv4) {
     const __m128i pattern = _mm_loadu_si128((const __m128i*)pat);
     const __m128i t0      = input;
 
-    const uint8_t max_digits = pat[15];
+    const uint8_t max_digits = pat[18];
     switch (max_digits) {
         case 1: {
             SSE_CONVERT_MAX1

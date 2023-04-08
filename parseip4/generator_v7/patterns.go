@@ -42,7 +42,20 @@ func (p *Pattern) maxlen() int {
 	return l
 }
 
-func (p *Pattern) pshufb() [16]byte {
+func (p *Pattern) pshufb() (b [16]byte) {
+	switch p.maxlen() {
+	case 1:
+		return p.pshufbMax1()
+	case 2:
+		return p.pshufbMax2()
+	case 3:
+		return p.pshufbMax3()
+	}
+
+	return b
+}
+
+func (p *Pattern) pshufbMax1() [16]byte {
 	var b [16]byte
 
 	for i := range b {
@@ -56,14 +69,64 @@ func (p *Pattern) pshufb() [16]byte {
 		case 1:
 			b[idx] = offset
 			offset += 2
-		case 2:
-			b[idx] = offset + 1
+		default:
+			panic("wrong length")
+		}
+	}
+
+	return b
+}
+
+func (p *Pattern) pshufbMax2() [16]byte {
+	var b [16]byte
+
+	for i := range b {
+		b[i] = 0xff
+	}
+
+	offset := byte(0)
+	for i, l := range []int{p.len0, p.len1, p.len2, p.len3} {
+		idx := i
+		switch l {
+		case 1:
 			b[idx+4] = offset
+			offset += 2
+		case 2:
+			b[idx] = offset
+			b[idx+4] = offset + 1
+			offset += 3
+		default:
+			panic("wrong length")
+		}
+	}
+
+	return b
+}
+
+func (p *Pattern) pshufbMax3() [16]byte {
+	var b [16]byte
+
+	for i := range b {
+		b[i] = 0xff
+	}
+
+	offset := byte(0)
+	for i, l := range []int{p.len0, p.len1, p.len2, p.len3} {
+		idx := i
+		switch l {
+		case 1:
+			b[2*idx+1] = offset
+			offset += 2
+		case 2:
+			b[2*idx+0] = offset + 0
+			b[2*idx+1] = offset + 1
+			b[2*idx+8+1] = offset + 0
 			offset += 3
 		case 3:
-			b[idx] = offset + 2
-			b[idx+4] = offset + 1
-			b[idx+8] = offset
+			b[2*idx+0] = offset + 1
+			b[2*idx+1] = offset + 2
+			b[2*idx+8] = offset + 0
+			b[2*idx+8+1] = offset + 0
 			offset += 4
 		}
 	}
