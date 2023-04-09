@@ -48,9 +48,8 @@ result sse_parse_ipv4_v8(const std::string& ipv4) {
 
         uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
-        less |= dotmask;
 
-        if (less != mask) {
+        if ((less | dotmask) != mask) {
             res.err = errWrongCharacter;
             return res;
         }
@@ -84,8 +83,8 @@ result sse_parse_ipv4_v8(const std::string& ipv4) {
     const __m128i ascii0  = _mm_set1_epi8('0');
     const __m128i t0      = input;
 
-    // 5. finally parse ipv4 address according to the pattern
-#   include "sse_parse_aux_v8.inl"
+    // 5. finally parse IPv4 address according to the pattern
+    #include "sse_parse_aux_v8.inl"
 
     return res;
 }

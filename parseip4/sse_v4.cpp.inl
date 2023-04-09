@@ -28,7 +28,7 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
         dotmask &= mask;
     }
 
-    // 2. validate chars if they in range '0'..'9'
+    // 2. validate if the remaining chars are in the range '0'..'9'
     {
         const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
         const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
@@ -38,9 +38,8 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
 
         uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
-        less ^= (~dotmask) & mask;
 
-        if (less != 0) {
+        if ((less | dotmask) != mask) {
             res.err = errWrongCharacter;
             return res;
         }
@@ -49,8 +48,8 @@ result sse_parse_ipv4_v4(const std::string& ipv4) {
     const __m128i ascii0  = _mm_set1_epi8('0');
     const __m128i t0      = input;
 
-    // 3. finally parse ipv4 address according to input length & the dots pattern
-#   include "sse_parse_aux_v4.inl"
+    // 3. finally parse IPv4 address according to the input length & dot mask
+    #include "sse_parse_aux_v4.inl"
 
     return res;
 }

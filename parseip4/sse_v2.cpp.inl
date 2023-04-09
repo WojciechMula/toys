@@ -1,7 +1,7 @@
 result sse_parse_ipv4_v2(const std::string& ipv4) {
     result res;
     res.ipv4 = 0;
-    res.err = false;
+    res.err = 0;
 
     const size_t n = ipv4.size();
     if (n < minlen_ipv4) {
@@ -13,9 +13,8 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
         return res;
     }
 
-    uint16_t mask = 0xffff;
-    mask <<= n;
-    mask = ~mask;
+    const uint16_t msb = uint16_t(1) << n;
+    const uint16_t mask = msb - 1;
 
     const __m128i input = _mm_loadu_si128((const __m128i*)ipv4.data());
 
@@ -39,7 +38,7 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
         return res;
     }
 
-    // 2. validate chars if they in range '0'..'9'
+    // 2. validate if the remaining chars are in the range '0'..'9'
     {
         const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
         const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
@@ -49,16 +48,15 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
 
         uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
-        less ^= (~dotmask) & mask;
 
-        if (less != 0) {
+        if ((less | dotmask) != mask) {
             res.err = errWrongCharacter;
             return res;
         }
     }
 
     // 3. add the dot after the last character (max length is 15 chars, so it's safe)
-    dotmask |= uint16_t(1) << ipv4.size();
+    dotmask |= msb;
 
     // 4. build pattern mask (rejecting wrong patterns upfront)
     const uint8_t* data = (const uint8_t*)ipv4.data();
@@ -78,8 +76,8 @@ result sse_parse_ipv4_v2(const std::string& ipv4) {
         dotmask >>= n + 1;
     }
 
-    // 5. finally parse ipv4 address according to pattern
-#   include "sse_parse_aux_v2.inl"
+    // 5. finally parse the IPv4 address according to the pattern
+    #include "sse_parse_aux_v2.inl"
 
     return res;
 }

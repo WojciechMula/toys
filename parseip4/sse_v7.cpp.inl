@@ -1,7 +1,7 @@
 result sse_parse_ipv4_v7(const std::string& ipv4) {
     result res;
     res.ipv4 = 0;
-    res.err = false;
+    res.err = 0;
 
     const size_t n = ipv4.size();
     if (n < minlen_ipv4) {
@@ -13,9 +13,8 @@ result sse_parse_ipv4_v7(const std::string& ipv4) {
         return res;
     }
 
-    uint16_t mask = 0xffff;
-    mask <<= n;
-    mask = ~mask;
+    const uint16_t msb = uint16_t(1) << n;
+    const uint16_t mask = msb - 1;
 
     const __m128i input = _mm_loadu_si128((const __m128i*)ipv4.data());
 
@@ -26,10 +25,9 @@ result sse_parse_ipv4_v7(const std::string& ipv4) {
         const __m128i t0 = _mm_cmpeq_epi8(input, dot);
         dotmask = _mm_movemask_epi8(t0);
         dotmask &= mask;
-        dotmask |= 1 << n;
     }
 
-    // 2. validate chars if they in range '0'..'9'
+    // 2. validate if the remaining chars are in the range '0'..'9'
     {
         const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
         const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
@@ -39,15 +37,17 @@ result sse_parse_ipv4_v7(const std::string& ipv4) {
 
         uint16_t less = _mm_movemask_epi8(t2);
         less &= mask;
-        less ^= (~dotmask) & mask;
 
-        if (less != 0) {
+        if ((less | dotmask) != mask) {
             res.err = errWrongCharacter;
             return res;
         }
     }
 
-#   include "sse_parse_aux_v7.inl"
+    # include "sse_parse_aux_v7.inl"
+
+    // ... complete dot mask to make in unique
+    dotmask |= 1 << n;
 
     // 3. build a hashcode -- see generate_v7/main.go::hash_v3
     const uint16_t hashcode = (dotmask >> 5) ^ (dotmask & 0x03ff);
@@ -56,7 +56,7 @@ result sse_parse_ipv4_v7(const std::string& ipv4) {
         return res;
     }
 
-    // 4. finally parse ipv4 address according to input length & the dots pattern
+    // 4. finally parse IPv4 address according to the dots mask
     const uint8_t id = patterns_id[hashcode];
     const uint8_t* pat = &patterns[id][0];
 

@@ -28,7 +28,7 @@ result sse_parse_ipv4_v5(const std::string& ipv4) {
         dotmask &= mask;
     }
 
-    // 2. validate chars if they in range '0'..'9'
+    // 2. validate if the remaining chars are in the range '0'..'9'
     {
         const __m128i ascii0 = _mm_set1_epi8(-128 + '0');
         const __m128i rangedigits = _mm_set1_epi8(-128 + ('9' - '0' + 1));
@@ -45,15 +45,15 @@ result sse_parse_ipv4_v5(const std::string& ipv4) {
         }
     }
 
-    // k is in range 7..15
+    // n is in range 7..15
     // 137: ((((1 * len) + (31 * ((code >> 9) & 0xff))) + (3 * ((code >> 2) & 0x3f))) - (19 * ((code >> 8) & 0xff)))
     uint16_t w0 = 31 * uint16_t((dotmask >> 9) & 0xff);
     uint16_t w1 =  3 * uint16_t((dotmask >> 2) & 0x3f);
     uint16_t w2 = 19 * uint16_t((dotmask >> 8) & 0xff);
     uint16_t hashcode = n + w0 + w1 - w2;
 
-    // 3. finally parse ipv4 address according to input length & the dots pattern
-#   include "sse_parse_aux_v5.inl"
+    // 3. finally parse thr IPv4 address according to the input length & dot mask
+    #include "sse_parse_aux_v5.inl"
 
     if (hashcode > max_hash) {
         res.err = errInvalidInput;
