@@ -1,0 +1,15 @@
+size: 4875105
+rdtsc_overhead set to 28
+naive                         	:    79.962 cycle/op (best)   80.001 cycle/op (avg)
+glibc                         	:    77.893 cycle/op (best)   78.201 cycle/op (avg)
+go                            	:    85.522 cycle/op (best)   85.918 cycle/op (avg)
+naive (no validation)         	:    48.328 cycle/op (best)   48.458 cycle/op (avg)
+SWAR                          	:    84.235 cycle/op (best)   84.258 cycle/op (avg)
+SSE                           	:    47.295 cycle/op (best)   47.344 cycle/op (avg)
+SSE (v2)                      	:    56.745 cycle/op (best)   56.792 cycle/op (avg)
+SSE (v3)                      	:    40.779 cycle/op (best)   40.823 cycle/op (avg)
+SSE (v4)                      	:    31.922 cycle/op (best)   31.938 cycle/op (avg)
+SSE (v5)                      	:    28.127 cycle/op (best)   28.139 cycle/op (avg)
+SSE (v6)                      	:    34.278 cycle/op (best)   34.287 cycle/op (avg)
+SSE (v7)                      	:    26.239 cycle/op (best)   26.251 cycle/op (avg)
+SSE (v8)                      	:    33.645 cycle/op (best)   33.655 cycle/op (avg)

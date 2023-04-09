@@ -16,7 +16,7 @@ def unicode_bar(width):
 
     k8 = int(width * 8)
 
-    k = k8 / 8
+    k = k8 // 8
     f = k8 % 8
 
     return block * k + fractions[f]
