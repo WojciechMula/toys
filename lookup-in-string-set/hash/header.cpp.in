@@ -1,0 +1,67 @@
+#include <cstdint>
+#include <string>
+#include <string_view>
+#include <cassert>
+
+namespace {
+    uint64_t hash1(const std::string_view& s) {
+        const uint64_t n = s.size();
+        const uint64_t f = s[0];
+        const uint64_t l = s[n - 1];
+
+        return (f + l) * n;
+    }
+
+    uint64_t hash2(const std::string_view& s) {
+        const uint64_t n = s.size();
+        const uint64_t f = s[0];
+        const uint64_t l = s[n - 1];
+
+        return (f * l) ^ n;
+    }
+
+    uint64_t hash3(const std::string_view& str) {
+        const uint64_t n = str.size();
+        const uint64_t f = str[0];
+        const uint64_t s = str[1];
+        const uint64_t l = str[n - 1];
+        
+        return ((f << 8) | s) + l + (n * 0x111);
+    }
+
+    uint64_t hash_sum0(const std::string_view& s) {
+        uint64_t h = 0;
+        for (const char c: s) {
+            h += uint64_t(c);
+        }
+
+        return h;
+    }
+
+    uint64_t hash_sumN(const std::string_view& s) {
+        uint64_t h = s.size();
+        for (const char c: s) {
+            h += uint64_t(c);
+        }
+
+        return h;
+    }
+
+    uint64_t hash_djb2(const std::string_view& s) {
+        uint64_t h = 5481;
+        for (const char c: s) {
+            h = h*33 + uint64_t(c);
+        }
+
+        return h;
+    }
+
+    uint64_t hash_sdb(const std::string_view& s) {
+        uint64_t h = 0;
+        for (const char c: s) {
+            h = h*65539 + uint64_t(c);
+        }
+
+        return h;
+    }
+}
