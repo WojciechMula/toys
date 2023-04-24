@@ -2,12 +2,16 @@ import os
 from itertools import chain
 
 def main():
-    files = []
+    makefile('Makefile')
+    allcpp()
+
+def makefile(name):
+    datasets = []
     for f in os.listdir('datasets'):
         if f.endswith('.txt'):
-            files.append(f.removesuffix('.txt'))
+            datasets.append(f.removesuffix('.txt'))
 
-    files.sort()
+    datasets.sort()
 
     def hashcpp(s):
         return "generated/hash_%s.cpp" % (s,)
@@ -18,30 +22,70 @@ def main():
     def dataset(s):
         return "datasets/%s.txt" % (s,)
 
-    ALL = chain(map(hashcpp, files), map(pextcpp, files))
-    print("%s: %s" % ("ALL", ' '.join(ALL)))
+    ALL = chain(map(hashcpp, datasets), map(pextcpp, datasets))
 
-    for f in files:
-        src = dataset(f)
-        dst = hashcpp(f)
-        rule(dst, "hash/main -i %s -o %s" % (src, dst), [src, "hash/main"])
+    with open(name, 'w') as f:
+        f.write("%s: %s" % ("all", ' '.join(ALL)))
 
-    for f in files:
-        src = dataset(f)
-        dst = pextcpp(f)
-        rule(dst, "pext/main -i %s -o %s" % (src, dst), [src, "pext/main"])
+        for ds in datasets:
+            src = dataset(ds)
+            dst = hashcpp(ds)
+            rule(f, dst, "hash/main -i %s -o %s" % (src, dst), [src, "hash/main"])
 
-    rule("hash/main", "go build -C hash")
-    rule("pext/main", "go build -C pext")
+        for ds in datasets:
+            src = dataset(ds)
+            dst = pextcpp(ds)
+            rule(f, dst, "pext/main -i %s -o %s" % (src, dst), [src, "pext/main"])
+
+        rule(f, "hash/main", "go build -C hash", ["hash/*.go"])
+        rule(f, "pext/main", "go build -C pext", ["pext/*.go"])
+
+    print("Created %s" % name)
 
 
-def rule(target, command, deps=[]):
-    print()
+def rule(f, target, command, deps=[]):
+    f.write('\n')
     if deps:
-        print("%s: %s" % (target, ' '.join(deps)))
+        f.write("%s: %s\n" % (target, ' '.join(deps)))
     else:
-        print("%s:" % target)
-    print("\t%s" % command)
+        f.write("%s:\n" % target)
+    f.write("\t%s\n" % command)
+
+
+def allcpp():
+    rootdir = 'generated'
+    for name in os.listdir(rootdir):
+        if name.endswith('.cpp'):
+            with open('generated' + '/' + name, 'rt') as f:
+                parsecpp(f)
+
+def parsecpp(f):
+    for line in f:
+        line, lookup = cut(line, '//lookup:')
+        if lookup:
+            print(parsecomment(line))
+            continue
+
+        line, check = cut(line, '//check:')
+        if check:
+            print(parsecomment(line))
+            continue
+
+
+def parsecomment(s):
+    r = {}
+    for term in s.split(','):
+        v, k = term.split('=', 1)
+        r[v.strip()] = k.strip()
+
+    return r
+
+
+def cut(s, prefix):
+    if s.startswith(prefix):
+        return s.removeprefix(prefix), True
+
+    return s, False
 
 if __name__ == '__main__':
     main()

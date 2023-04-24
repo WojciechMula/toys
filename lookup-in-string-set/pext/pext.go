@@ -1,7 +1,7 @@
 package main
 
-// pdep is software implemntation of x86 PDEP instruction
-func pdep(w, m uint64) uint64 {
+// pext is software implemntation of x86 PEXT instruction
+func pext(w, m uint64) uint64 {
 	res := uint64(0)
 	bit := uint64(1)
 	for w != 0 {

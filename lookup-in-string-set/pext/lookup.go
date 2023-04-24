@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func generatePdepGroupBy(buf *bytes.Buffer, basename string, words []Keyword) error {
+func generateFunction(buf *bytes.Buffer, basename string, words []Keyword) error {
 	bylen := make(map[int]*[]Keyword)
 	for i := range words {
 		n := len(words[i].word)
@@ -18,14 +18,17 @@ func generatePdepGroupBy(buf *bytes.Buffer, basename string, words []Keyword) er
 		*list = append(*list, words[i])
 	}
 
-	a := generateCpp{}
+	a := generateCpp{
+		ctx: generateContext{
+			output:   buf,
+			basename: basename,
+			argname:  "s",
+			valtype:  "int",
+			defval:   "-1",
+		},
+	}
 	a.programs = make(map[int]Program)
 	a.lookups = make(map[int]*Lookup)
-	a.ctx.output = buf
-	a.ctx.argname = "s"
-	a.ctx.defval = "-1"
-	a.ctx.basename = basename
-	a.ctx.signature = fmt.Sprintf("int lookup_%s(std::string_view s)", basename)
 	for n, list := range bylen {
 		mask, err := samesize(*list)
 		if err != nil {

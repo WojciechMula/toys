@@ -102,7 +102,7 @@ func (l *Load) load(word []byte) uint64 {
 
 func (l *Load) evaluate(word []byte) uint64 {
 	q := l.load(word)
-	return pdep(q, l.mask)
+	return pext(q, l.mask)
 }
 
 func (l *Load) trim() *Load {
@@ -192,7 +192,7 @@ func (m *Merge) evaluate(word []byte) uint64 {
 
 	q := q0 | q1
 
-	return pdep(q, m.first.mask|m.second.mask)
+	return pext(q, m.first.mask|m.second.mask)
 }
 
 // Combine is a series of loads that has to form up to a 64-bit word when concatenated.
@@ -254,7 +254,7 @@ func (c *Combine) evaluate(word []byte) uint64 {
 		shift += 8 * load.size
 	}
 
-	return pdep(q, m)
+	return pext(q, m)
 }
 
 func newCombine(loads []*Load) *Combine {

@@ -29,7 +29,7 @@ func main() {
 	check(err)
 
 	buf := bytes.NewBuffer(nil)
-	check(generatePdepGroupBy(buf, basename, words))
+	check(generateFunction(buf, basename, words))
 
 	check(os.WriteFile(outpath, buf.Bytes(), 0644))
 	fmt.Printf("Created %s\n", outpath)

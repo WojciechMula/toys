@@ -22,7 +22,11 @@ type generateContext struct {
 }
 
 func (c *generateContext) lookupName() string {
-	return fmt.Sprintf("lookup_%s_%s", c.basename, c.hashfn)
+	return fmt.Sprintf("lookup_%s_%s", strings.ReplaceAll(c.basename, "-", "_"), c.hashfn)
+}
+
+func (c *generateContext) checkName() string {
+	return fmt.Sprintf("check_%s_%s", strings.ReplaceAll(c.basename, "-", "_"), c.hashfn)
 }
 
 func (c *generateContext) lookupSignature() string {
@@ -30,7 +34,7 @@ func (c *generateContext) lookupSignature() string {
 }
 
 func (c *generateContext) checkSignature() string {
-	return fmt.Sprintf("check_%s_%s()", c.basename, c.hashfn)
+	return fmt.Sprintf("void %s()", c.checkName())
 }
 
 func (c *generateContext) writeln(f string, args ...any) {
@@ -55,6 +59,7 @@ func generateFunction(ctx *generateContext) error {
 
 	// lookup function
 	ctx.emptyline()
+	ctx.writeln("//lookup: name=%s, dataset=%s, hash=%s", ctx.lookupName(), ctx.basename, ctx.hashfn)
 	ctx.writeln("%s {", ctx.lookupSignature())
 	ctx.indent += 4
 	{
@@ -99,6 +104,7 @@ func generateFunction(ctx *generateContext) error {
 
 	// check function
 	ctx.emptyline()
+	ctx.writeln("//check: name=%s, dataset=%s, hash=%s", ctx.checkName(), ctx.basename, ctx.hashfn)
 	ctx.writeln("%s {", ctx.checkSignature())
 	ctx.indent += 4
 	{
