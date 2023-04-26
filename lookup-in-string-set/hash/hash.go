@@ -59,9 +59,14 @@ outer2:
 	return -1, -1
 }
 
-func compileLookup(keywords []Keyword, size, collisions int, hash func([]byte) uint64) (lookup [][]byte, values []string) {
-	lookup = make([][]byte, size*collisions)
-	values = make([]string, size*collisions)
+type LookupEntry struct {
+	word  []byte
+	value string
+	hash  uint64
+}
+
+func compileLookup(keywords []Keyword, size, collisions int, hash func([]byte) uint64) (lookup []LookupEntry) {
+	lookup = make([]LookupEntry, size*collisions)
 
 	for i := range keywords {
 		h := hash(keywords[i].word)
@@ -69,9 +74,10 @@ func compileLookup(keywords []Keyword, size, collisions int, hash func([]byte) u
 
 		found := false
 		for j := uint64(0); j < uint64(collisions); j++ {
-			if values[idx+j] == "" {
-				values[idx+j] = keywords[i].value
-				lookup[idx+j] = keywords[i].word
+			if lookup[idx+j].value == "" {
+				lookup[idx+j].word = keywords[i].word
+				lookup[idx+j].value = keywords[i].value
+				lookup[idx+j].hash = h
 				found = true
 				break
 			}

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -13,8 +12,7 @@ type generateContext struct {
 	argname    string
 	valtype    string
 	defval     string
-	lookup     [][]byte
-	values     []string
+	lookup     []LookupEntry
 	collisions int
 
 	output *bytes.Buffer
@@ -49,34 +47,31 @@ func (c *generateContext) emptyline() {
 }
 
 func generateFunction(ctx *generateContext) error {
-	if len(ctx.output.Bytes()) == 0 {
-		common, err := os.ReadFile("header.cpp.in")
-		if err != nil {
-			return err
-		}
-		ctx.output.Write(common)
-	}
-
 	// lookup function
 	ctx.emptyline()
 	ctx.writeln("//lookup: name=%s, dataset=%s, hash=%s", ctx.lookupName(), ctx.basename, ctx.hashfn)
 	ctx.writeln("%s {", ctx.lookupSignature())
 	ctx.indent += 4
 	{
-		ctx.writeln("const uint64_t idx = %s(%s) * %d;", ctx.hashfn, ctx.argname, ctx.collisions)
+		size := len(ctx.lookup) / ctx.collisions
+		ctx.writeln("const uint64_t idx = (%s(%s) %% %d) * %d;", ctx.hashfn, ctx.argname, size, ctx.collisions)
 		ctx.writeln("static std::string_view lookup[%d] = {", len(ctx.lookup))
 		ctx.indent += 4
-		for _, w := range ctx.lookup {
-			ctx.writeln("%q,", w)
+		for _, e := range ctx.lookup {
+			if e.value != "" {
+				ctx.writeln("%q, // %d (0x%0x)", e.word, e.hash, e.hash)
+			} else {
+				ctx.writeln("%q,", e.word)
+			}
 		}
 		ctx.indent -= 4
 		ctx.writeln("};")
 
 		ctx.writeln("static %s values[%d] = {", ctx.valtype, len(ctx.lookup))
 		ctx.indent += 4
-		for _, s := range ctx.values {
-			if s != "" {
-				ctx.writeln("%s,", s)
+		for _, e := range ctx.lookup {
+			if e.value != "" {
+				ctx.writeln("%s, // %d (0x%x)", e.value, e.hash, e.hash)
 			} else {
 				ctx.writeln("%s,", ctx.defval)
 			}
@@ -109,9 +104,9 @@ func generateFunction(ctx *generateContext) error {
 	ctx.indent += 4
 	{
 		name := ctx.lookupName()
-		for i := range ctx.lookup {
-			if ctx.values[i] != "" {
-				ctx.writeln("assert(%s(%q) == %d);", name, ctx.lookup[i], ctx.values[i])
+		for _, e := range ctx.lookup {
+			if e.value != "" {
+				ctx.writeln("assert(%s(%q) == %s);", name, e.word, e.value)
 			}
 		}
 	}

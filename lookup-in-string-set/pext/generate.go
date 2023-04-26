@@ -140,8 +140,10 @@ type generateContext struct {
 	argname  string
 	defval   string
 	valtype  string
-	idx      int
 
+	linearSearchThreshold int
+
+	idx    int
 	indent int
 	output *bytes.Buffer
 }
@@ -154,10 +156,6 @@ func (g *generateCpp) write() {
 		}
 	}
 
-	g.ctx.writeln("#include <cstdint>")
-	g.ctx.writeln("#include <cstring>")
-	g.ctx.writeln("#include <string_view>")
-	g.ctx.writeln("#include <immintrin.h>")
 	g.ctx.writeln("//lookup: name=%s, dataset=%s", g.ctx.lookupName(), g.ctx.basename)
 	g.ctx.writeln("%s {", g.ctx.lookupSignature())
 	g.ctx.indent += 4
@@ -169,13 +167,19 @@ func (g *generateCpp) write() {
 			if !ok {
 				continue
 			}
+			lookup := g.lookups[size]
 
 			g.ctx.writeln("case %d: {", size)
 			g.ctx.indent += 4
-			g.lookups[size].write(&g.ctx)
-			prog.write(&g.ctx)
+			if len(lookup.words) < g.ctx.linearSearchThreshold {
+				lookup.emitLinearSearch(&g.ctx)
+			} else {
+				lookup.write(&g.ctx)
+				prog.write(&g.ctx)
+			}
 			g.ctx.indent -= 4
 			g.ctx.writeln("}")
+			g.ctx.writeln("break;")
 		}
 		g.ctx.indent -= 4
 		g.ctx.writeln("}")
@@ -188,12 +192,13 @@ func (g *generateCpp) write() {
 
 	g.ctx.writeln("#include <cassert>")
 	g.ctx.writeln("//check: name=%s, dataset=%s", g.ctx.checkName(), g.ctx.basename)
-	g.ctx.writeln("%s ) {", g.ctx.checkSignature())
+	g.ctx.writeln("%s {", g.ctx.checkSignature())
 	g.ctx.indent += 4
 	{
+		name := g.ctx.lookupName()
 		for _, lookup := range g.lookups {
 			for _, kw := range lookup.words {
-				g.ctx.writeln("assert(lookup_%s(%q) == %s);", g.ctx.basename, kw.word, kw.value)
+				g.ctx.writeln("assert(%s(%q) == %s);", name, kw.word, kw.value)
 			}
 		}
 	}

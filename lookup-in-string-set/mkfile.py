@@ -3,7 +3,6 @@ from itertools import chain
 
 def main():
     makefile('Makefile')
-    allcpp()
 
 def makefile(name):
     datasets = []
@@ -22,10 +21,14 @@ def makefile(name):
     def dataset(s):
         return "datasets/%s.txt" % (s,)
 
-    ALL = chain(map(hashcpp, datasets), map(pextcpp, datasets))
+    SRC = chain(map(hashcpp, datasets), map(pextcpp, datasets))
 
     with open(name, 'w') as f:
-        f.write("%s: %s" % ("all", ' '.join(ALL)))
+        f.write("FLAGS=-Wall -Wextra -pedantic -std=c++17 -march=skylake\n")
+        f.write("SRC=%s\n" % (' '.join(SRC)))
+        f.write("all: unittest\n")
+        rule(f, "unittest", "$(CXX) $(FLAGS) unittest.cpp -o unittest", ["unittest.cpp"])
+        rule(f, "unittest.cpp", "python3 unittest.py", ["unittest.py", "$(SRC)"])
 
         for ds in datasets:
             src = dataset(ds)
@@ -51,41 +54,6 @@ def rule(f, target, command, deps=[]):
         f.write("%s:\n" % target)
     f.write("\t%s\n" % command)
 
-
-def allcpp():
-    rootdir = 'generated'
-    for name in os.listdir(rootdir):
-        if name.endswith('.cpp'):
-            with open('generated' + '/' + name, 'rt') as f:
-                parsecpp(f)
-
-def parsecpp(f):
-    for line in f:
-        line, lookup = cut(line, '//lookup:')
-        if lookup:
-            print(parsecomment(line))
-            continue
-
-        line, check = cut(line, '//check:')
-        if check:
-            print(parsecomment(line))
-            continue
-
-
-def parsecomment(s):
-    r = {}
-    for term in s.split(','):
-        v, k = term.split('=', 1)
-        r[v.strip()] = k.strip()
-
-    return r
-
-
-def cut(s, prefix):
-    if s.startswith(prefix):
-        return s.removeprefix(prefix), True
-
-    return s, False
 
 if __name__ == '__main__':
     main()

@@ -34,7 +34,7 @@ func (l *Lookup) write(ctx *generateContext) {
 	ctx.indent -= 4
 	ctx.writeln("};")
 
-	ctx.writeln("static char value[%d] = {", len(l.indices))
+	ctx.writeln("static %s value[%d] = {", ctx.valtype, len(l.indices))
 	ctx.indent += 4
 	for _, idx := range l.indices {
 		if idx == -1 {
@@ -45,6 +45,18 @@ func (l *Lookup) write(ctx *generateContext) {
 	}
 	ctx.indent -= 4
 	ctx.writeln("};")
+}
+
+func (l *Lookup) emitLinearSearch(ctx *generateContext) {
+	for _, kw := range l.words {
+		ctx.writeln("if (%s == %q) {", ctx.argname, kw.word)
+		ctx.indent += 4
+		{
+			ctx.writeln("return %s;", kw.value)
+		}
+		ctx.indent -= 4
+		ctx.writeln("}")
+	}
 }
 
 // Load represents loading a machine word

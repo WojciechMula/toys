@@ -130,7 +130,7 @@ func main() {
 		ctx.valtype = "int"
 		ctx.defval = "-1"
 		ctx.hashfn = h.cppname
-		ctx.lookup, ctx.values = compileLookup(keywords, size, collisions, h.fn)
+		ctx.lookup = compileLookup(keywords, size, collisions, h.fn)
 		ctx.collisions = collisions
 		check(generateFunction(ctx))
 	}

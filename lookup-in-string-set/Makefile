@@ -1,4 +1,13 @@
-all: generated/hash_ada.cpp generated/hash_ada-pred.cpp generated/hash_ada-res.cpp generated/hash_adadefs.cpp generated/hash_c.cpp generated/hash_countries.cpp generated/hash_cplusplus.cpp generated/hash_cpp.cpp generated/hash_go.cpp generated/hash_gpc.cpp generated/hash_irc.cpp generated/hash_java.cpp generated/hash_jscript.cpp generated/hash_modula.cpp generated/hash_modula2.cpp generated/hash_modula3.cpp generated/hash_pascal.cpp generated/hash_sneller.cpp generated/hash_snellerbuiltin.cpp generated/hash_states.cpp generated/pext_ada.cpp generated/pext_ada-pred.cpp generated/pext_ada-res.cpp generated/pext_adadefs.cpp generated/pext_c.cpp generated/pext_countries.cpp generated/pext_cplusplus.cpp generated/pext_cpp.cpp generated/pext_go.cpp generated/pext_gpc.cpp generated/pext_irc.cpp generated/pext_java.cpp generated/pext_jscript.cpp generated/pext_modula.cpp generated/pext_modula2.cpp generated/pext_modula3.cpp generated/pext_pascal.cpp generated/pext_sneller.cpp generated/pext_snellerbuiltin.cpp generated/pext_states.cpp
+FLAGS=-Wall -Wextra -pedantic -std=c++17 -march=skylake
+SRC=generated/hash_ada.cpp generated/hash_ada-pred.cpp generated/hash_ada-res.cpp generated/hash_adadefs.cpp generated/hash_c.cpp generated/hash_countries.cpp generated/hash_cplusplus.cpp generated/hash_cpp.cpp generated/hash_go.cpp generated/hash_gpc.cpp generated/hash_irc.cpp generated/hash_java.cpp generated/hash_jscript.cpp generated/hash_modula.cpp generated/hash_modula2.cpp generated/hash_modula3.cpp generated/hash_pascal.cpp generated/hash_sneller.cpp generated/hash_snellerbuiltin.cpp generated/hash_states.cpp generated/pext_ada.cpp generated/pext_ada-pred.cpp generated/pext_ada-res.cpp generated/pext_adadefs.cpp generated/pext_c.cpp generated/pext_countries.cpp generated/pext_cplusplus.cpp generated/pext_cpp.cpp generated/pext_go.cpp generated/pext_gpc.cpp generated/pext_irc.cpp generated/pext_java.cpp generated/pext_jscript.cpp generated/pext_modula.cpp generated/pext_modula2.cpp generated/pext_modula3.cpp generated/pext_pascal.cpp generated/pext_sneller.cpp generated/pext_snellerbuiltin.cpp generated/pext_states.cpp
+all: unittest
+
+unittest: unittest.cpp
+	$(CXX) $(FLAGS) unittest.cpp -o unittest
+
+unittest.cpp: unittest.py $(SRC)
+	python3 unittest.py
+
 generated/hash_ada.cpp: datasets/ada.txt hash/main
 	hash/main -i datasets/ada.txt -o generated/hash_ada.cpp
 

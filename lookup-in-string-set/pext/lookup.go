@@ -20,11 +20,12 @@ func generateFunction(buf *bytes.Buffer, basename string, words []Keyword) error
 
 	a := generateCpp{
 		ctx: generateContext{
-			output:   buf,
-			basename: basename,
-			argname:  "s",
-			valtype:  "int",
-			defval:   "-1",
+			output:                buf,
+			basename:              basename,
+			argname:               "s",
+			valtype:               "int",
+			defval:                "-1",
+			linearSearchThreshold: 3,
 		},
 	}
 	a.programs = make(map[int]Program)
