@@ -26,9 +26,11 @@ def makefile(name):
     with open(name, 'w') as f:
         f.write("FLAGS=-Wall -Wextra -pedantic -std=c++17 -march=skylake\n")
         f.write("SRC=%s\n" % (' '.join(SRC)))
-        f.write("all: unittest\n")
+        f.write("all: unittest benchmark\n")
         rule(f, "unittest", "$(CXX) $(FLAGS) unittest.cpp -o unittest", ["unittest.cpp"])
         rule(f, "unittest.cpp", "python3 unittest.py", ["unittest.py", "$(SRC)"])
+        rule(f, "benchmark", "$(CXX) $(FLAGS) -O2 benchmark.cpp -o benchmark", ["benchmark.cpp"])
+        rule(f, "benchmark.cpp", "python3 benchmark.py", ["benchmark.py", "$(SRC)"])
 
         for ds in datasets:
             src = dataset(ds)

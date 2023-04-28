@@ -1,4 +1,4 @@
-import os
+import metadata
 
 def main():
     with open('unittest.cpp', 'wt') as f:
@@ -6,14 +6,9 @@ def main():
 
 
 def unittestcpp(f):
-    rootdir = 'generated'
     paths = {}
-    for name in os.listdir(rootdir):
-        if name.endswith('.cpp'):
-            path = rootdir + '/' + name
-            with open(path, 'rt') as cpp:
-                lookups, checks = parsecpp(cpp)
-                paths[path] = (lookups, checks)
+    for path, lookups, checks in metadata.gather():
+        paths[path] = (lookups, checks)
 
     def writeln(s):
         f.write(s)
@@ -39,37 +34,6 @@ def unittestcpp(f):
     writeln("\tcheck_all();")
     writeln("}")
 
-def parsecpp(f):
-    lookups = []
-    checks = []
-    for line in f:
-        line, lookup = cut(line, '//lookup:')
-        if lookup:
-            lookups.append(parsecomment(line))
-            continue
-
-        line, check = cut(line, '//check:')
-        if check:
-            checks.append(parsecomment(line))
-            continue
-
-    return lookups, checks
-
-
-def parsecomment(s):
-    r = {}
-    for term in s.split(','):
-        v, k = term.split('=', 1)
-        r[v.strip()] = k.strip()
-
-    return r
-
-
-def cut(s, prefix):
-    if s.startswith(prefix):
-        return s.removeprefix(prefix), True
-
-    return s, False
 
 if __name__ == '__main__':
     main()
