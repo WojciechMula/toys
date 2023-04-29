@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_snellerbuiltin_hash1, dataset=snellerbuiltin, hash=hash1
+//lookup: name=lookup_snellerbuiltin_hash1, dataset=snellerbuiltin, type=hash, hash=hash1
 int lookup_snellerbuiltin_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 163) * 3;
     static std::string_view lookup[489] = {
@@ -992,7 +992,7 @@ int lookup_snellerbuiltin_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_snellerbuiltin_hash1, dataset=snellerbuiltin, hash=hash1
+//check: name=check_snellerbuiltin_hash1, dataset=snellerbuiltin, type=hash, hash=hash1
 void check_snellerbuiltin_hash1() {
     assert(lookup_snellerbuiltin_hash1("TO_UNIX_MICRO") == 95);
     assert(lookup_snellerbuiltin_hash1("GEO_HASH") == 96);
@@ -1115,7 +1115,7 @@ void check_snellerbuiltin_hash1() {
     assert(lookup_snellerbuiltin_hash1("TAN") == 45);
 }
 
-//lookup: name=lookup_snellerbuiltin_hash2, dataset=snellerbuiltin, hash=hash2
+//lookup: name=lookup_snellerbuiltin_hash2, dataset=snellerbuiltin, type=hash, hash=hash2
 int lookup_snellerbuiltin_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 136) * 3;
     static std::string_view lookup[408] = {
@@ -1946,7 +1946,7 @@ int lookup_snellerbuiltin_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_snellerbuiltin_hash2, dataset=snellerbuiltin, hash=hash2
+//check: name=check_snellerbuiltin_hash2, dataset=snellerbuiltin, type=hash, hash=hash2
 void check_snellerbuiltin_hash2() {
     assert(lookup_snellerbuiltin_hash2("LTRIM") == 2);
     assert(lookup_snellerbuiltin_hash2("RADIANS") == 42);
@@ -2069,7 +2069,7 @@ void check_snellerbuiltin_hash2() {
     assert(lookup_snellerbuiltin_hash2("DATE_TRUNC_YEAR") == 93);
 }
 
-//lookup: name=lookup_snellerbuiltin_hash3, dataset=snellerbuiltin, hash=hash3
+//lookup: name=lookup_snellerbuiltin_hash3, dataset=snellerbuiltin, type=hash, hash=hash3
 int lookup_snellerbuiltin_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 131) * 3;
     static std::string_view lookup[393] = {
@@ -2870,7 +2870,7 @@ int lookup_snellerbuiltin_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_snellerbuiltin_hash3, dataset=snellerbuiltin, hash=hash3
+//check: name=check_snellerbuiltin_hash3, dataset=snellerbuiltin, type=hash, hash=hash3
 void check_snellerbuiltin_hash3() {
     assert(lookup_snellerbuiltin_hash3("CONTAINS_CI") == 7);
     assert(lookup_snellerbuiltin_hash3("ARRAY_SIZE") == 103);
@@ -2993,7 +2993,7 @@ void check_snellerbuiltin_hash3() {
     assert(lookup_snellerbuiltin_hash3("STRUCT_REPLACEMENT") == 111);
 }
 
-//lookup: name=lookup_snellerbuiltin_hash_sum0, dataset=snellerbuiltin, hash=hash_sum0
+//lookup: name=lookup_snellerbuiltin_hash_sum0, dataset=snellerbuiltin, type=hash, hash=hash_sum0
 int lookup_snellerbuiltin_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 264) * 2;
     static std::string_view lookup[528] = {
@@ -4064,7 +4064,7 @@ int lookup_snellerbuiltin_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_snellerbuiltin_hash_sum0, dataset=snellerbuiltin, hash=hash_sum0
+//check: name=check_snellerbuiltin_hash_sum0, dataset=snellerbuiltin, type=hash, hash=hash_sum0
 void check_snellerbuiltin_hash_sum0() {
     assert(lookup_snellerbuiltin_hash_sum0("DATE_EXTRACT_YEAR") == 83);
     assert(lookup_snellerbuiltin_hash_sum0("DATE_DIFF_WEEK") == 69);
@@ -4187,7 +4187,7 @@ void check_snellerbuiltin_hash_sum0() {
     assert(lookup_snellerbuiltin_hash_sum0("TO_UNIX_MICRO") == 95);
 }
 
-//lookup: name=lookup_snellerbuiltin_hash_sumN, dataset=snellerbuiltin, hash=hash_sumN
+//lookup: name=lookup_snellerbuiltin_hash_sumN, dataset=snellerbuiltin, type=hash, hash=hash_sumN
 int lookup_snellerbuiltin_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 293) * 2;
     static std::string_view lookup[586] = {
@@ -5374,7 +5374,7 @@ int lookup_snellerbuiltin_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_snellerbuiltin_hash_sumN, dataset=snellerbuiltin, hash=hash_sumN
+//check: name=check_snellerbuiltin_hash_sumN, dataset=snellerbuiltin, type=hash, hash=hash_sumN
 void check_snellerbuiltin_hash_sumN() {
     assert(lookup_snellerbuiltin_hash_sumN("ATAN") == 48);
     assert(lookup_snellerbuiltin_hash_sumN("CONTAINS_FUZZY_UNICODE") == 12);
@@ -5497,7 +5497,7 @@ void check_snellerbuiltin_hash_sumN() {
     assert(lookup_snellerbuiltin_hash_sumN("MAKE_STRUCT") == 115);
 }
 
-//lookup: name=lookup_snellerbuiltin_hash_djb2, dataset=snellerbuiltin, hash=hash_djb2
+//lookup: name=lookup_snellerbuiltin_hash_djb2, dataset=snellerbuiltin, type=hash, hash=hash_djb2
 int lookup_snellerbuiltin_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 253) * 2;
     static std::string_view lookup[506] = {
@@ -6524,7 +6524,7 @@ int lookup_snellerbuiltin_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_snellerbuiltin_hash_djb2, dataset=snellerbuiltin, hash=hash_djb2
+//check: name=check_snellerbuiltin_hash_djb2, dataset=snellerbuiltin, type=hash, hash=hash_djb2
 void check_snellerbuiltin_hash_djb2() {
     assert(lookup_snellerbuiltin_hash_djb2("DATE_EXTRACT_QUARTER") == 82);
     assert(lookup_snellerbuiltin_hash_djb2("LOG") == 35);
@@ -6647,7 +6647,7 @@ void check_snellerbuiltin_hash_djb2() {
     assert(lookup_snellerbuiltin_hash_djb2("DATE_TRUNC_YEAR") == 93);
 }
 
-//lookup: name=lookup_snellerbuiltin_hash_sdb, dataset=snellerbuiltin, hash=hash_sdb
+//lookup: name=lookup_snellerbuiltin_hash_sdb, dataset=snellerbuiltin, type=hash, hash=hash_sdb
 int lookup_snellerbuiltin_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 1151) * 1;
     static std::string_view lookup[1151] = {
@@ -8964,7 +8964,7 @@ int lookup_snellerbuiltin_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_snellerbuiltin_hash_sdb, dataset=snellerbuiltin, hash=hash_sdb
+//check: name=check_snellerbuiltin_hash_sdb, dataset=snellerbuiltin, type=hash, hash=hash_sdb
 void check_snellerbuiltin_hash_sdb() {
     assert(lookup_snellerbuiltin_hash_sdb("RADIANS") == 42);
     assert(lookup_snellerbuiltin_hash_sdb("TO_UNIX_EPOCH") == 94);

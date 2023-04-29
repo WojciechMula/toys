@@ -1,5 +1,5 @@
-//lookup: name=lookup_modula2, dataset=modula2
-int lookup_modula2(std::string_view s) {
+//lookup: name=lookup_modula2_pext, type=pext, dataset=modula2
+int lookup_modula2_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
             static char lookup[16][2] = {
@@ -379,47 +379,47 @@ int lookup_modula2(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_modula2, dataset=modula2
-void check_modula2() {
-    assert(lookup_modula2("EXPORT") == 13);
-    assert(lookup_modula2("IMPORT") == 18);
-    assert(lookup_modula2("MODULE") == 22);
-    assert(lookup_modula2("RECORD") == 29);
-    assert(lookup_modula2("REPEAT") == 30);
-    assert(lookup_modula2("RETURN") == 31);
-    assert(lookup_modula2("POINTER") == 26);
-    assert(lookup_modula2("ARRAY") == 1);
-    assert(lookup_modula2("BEGIN") == 2);
-    assert(lookup_modula2("CONST") == 5);
-    assert(lookup_modula2("ELSIF") == 10);
-    assert(lookup_modula2("UNTIL") == 36);
-    assert(lookup_modula2("WHILE") == 38);
-    assert(lookup_modula2("CASE") == 4);
-    assert(lookup_modula2("ELSE") == 9);
-    assert(lookup_modula2("EXIT") == 12);
-    assert(lookup_modula2("FROM") == 15);
-    assert(lookup_modula2("LOOP") == 20);
-    assert(lookup_modula2("THEN") == 33);
-    assert(lookup_modula2("TYPE") == 35);
-    assert(lookup_modula2("WITH") == 39);
-    assert(lookup_modula2("PROCEDURE") == 27);
-    assert(lookup_modula2("QUALIFIED") == 28);
-    assert(lookup_modula2("AND") == 0);
-    assert(lookup_modula2("DIV") == 7);
-    assert(lookup_modula2("END") == 11);
-    assert(lookup_modula2("FOR") == 14);
-    assert(lookup_modula2("MOD") == 21);
-    assert(lookup_modula2("NOT") == 23);
-    assert(lookup_modula2("SET") == 32);
-    assert(lookup_modula2("VAR") == 37);
-    assert(lookup_modula2("BY") == 3);
-    assert(lookup_modula2("DO") == 8);
-    assert(lookup_modula2("IF") == 16);
-    assert(lookup_modula2("IN") == 19);
-    assert(lookup_modula2("OF") == 24);
-    assert(lookup_modula2("OR") == 25);
-    assert(lookup_modula2("TO") == 34);
-    assert(lookup_modula2("DEFINITION") == 6);
-    assert(lookup_modula2("IMPLEMENTATION") == 17);
+//check: name=check_modula2_pext, type=pext, dataset=modula2
+void check_modula2_pext() {
+    assert(lookup_modula2_pext("PROCEDURE") == 27);
+    assert(lookup_modula2_pext("QUALIFIED") == 28);
+    assert(lookup_modula2_pext("AND") == 0);
+    assert(lookup_modula2_pext("DIV") == 7);
+    assert(lookup_modula2_pext("END") == 11);
+    assert(lookup_modula2_pext("FOR") == 14);
+    assert(lookup_modula2_pext("MOD") == 21);
+    assert(lookup_modula2_pext("NOT") == 23);
+    assert(lookup_modula2_pext("SET") == 32);
+    assert(lookup_modula2_pext("VAR") == 37);
+    assert(lookup_modula2_pext("BY") == 3);
+    assert(lookup_modula2_pext("DO") == 8);
+    assert(lookup_modula2_pext("IF") == 16);
+    assert(lookup_modula2_pext("IN") == 19);
+    assert(lookup_modula2_pext("OF") == 24);
+    assert(lookup_modula2_pext("OR") == 25);
+    assert(lookup_modula2_pext("TO") == 34);
+    assert(lookup_modula2_pext("CASE") == 4);
+    assert(lookup_modula2_pext("ELSE") == 9);
+    assert(lookup_modula2_pext("EXIT") == 12);
+    assert(lookup_modula2_pext("FROM") == 15);
+    assert(lookup_modula2_pext("LOOP") == 20);
+    assert(lookup_modula2_pext("THEN") == 33);
+    assert(lookup_modula2_pext("TYPE") == 35);
+    assert(lookup_modula2_pext("WITH") == 39);
+    assert(lookup_modula2_pext("DEFINITION") == 6);
+    assert(lookup_modula2_pext("EXPORT") == 13);
+    assert(lookup_modula2_pext("IMPORT") == 18);
+    assert(lookup_modula2_pext("MODULE") == 22);
+    assert(lookup_modula2_pext("RECORD") == 29);
+    assert(lookup_modula2_pext("REPEAT") == 30);
+    assert(lookup_modula2_pext("RETURN") == 31);
+    assert(lookup_modula2_pext("IMPLEMENTATION") == 17);
+    assert(lookup_modula2_pext("POINTER") == 26);
+    assert(lookup_modula2_pext("ARRAY") == 1);
+    assert(lookup_modula2_pext("BEGIN") == 2);
+    assert(lookup_modula2_pext("CONST") == 5);
+    assert(lookup_modula2_pext("ELSIF") == 10);
+    assert(lookup_modula2_pext("UNTIL") == 36);
+    assert(lookup_modula2_pext("WHILE") == 38);
 }
 

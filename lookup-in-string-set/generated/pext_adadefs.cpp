@@ -1,5 +1,5 @@
-//lookup: name=lookup_adadefs, dataset=adadefs
-int lookup_adadefs(std::string_view s) {
+//lookup: name=lookup_adadefs_pext, type=pext, dataset=adadefs
+int lookup_adadefs_pext(std::string_view s) {
     switch (s.size()) {
         case 3: {
             static char lookup[4][3] = {
@@ -603,61 +603,61 @@ int lookup_adadefs(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_adadefs, dataset=adadefs
-void check_adadefs() {
-    assert(lookup_adadefs("safe_large") == 44);
-    assert(lookup_adadefs("safe_small") == 45);
-    assert(lookup_adadefs("terminated") == 50);
-    assert(lookup_adadefs("string") == 11);
-    assert(lookup_adadefs("digits") == 21);
-    assert(lookup_adadefs("length") == 31);
-    assert(lookup_adadefs("boolean") == 0);
-    assert(lookup_adadefs("integer") == 5);
-    assert(lookup_adadefs("natural") == 6);
-    assert(lookup_adadefs("address") == 14);
-    assert(lookup_adadefs("epsilon") == 23);
-    assert(lookup_adadefs("lastbit") == 30);
-    assert(lookup_adadefs("aft") == 15);
-    assert(lookup_adadefs("pos") == 39);
-    assert(lookup_adadefs("val") == 51);
-    assert(lookup_adadefs("constrained") == 18);
-    assert(lookup_adadefs("machine_rounds") == 37);
-    assert(lookup_adadefs("constraint_error") == 2);
-    assert(lookup_adadefs("machine_mantissa") == 34);
-    assert(lookup_adadefs("false") == 3);
-    assert(lookup_adadefs("float") == 4);
-    assert(lookup_adadefs("count") == 19);
-    assert(lookup_adadefs("delta") == 20);
-    assert(lookup_adadefs("first") == 24);
-    assert(lookup_adadefs("image") == 27);
-    assert(lookup_adadefs("large") == 28);
-    assert(lookup_adadefs("range") == 42);
-    assert(lookup_adadefs("small") == 47);
-    assert(lookup_adadefs("value") == 52);
-    assert(lookup_adadefs("width") == 53);
-    assert(lookup_adadefs("numeric_error") == 7);
-    assert(lookup_adadefs("program_error") == 9);
-    assert(lookup_adadefs("storage_error") == 10);
-    assert(lookup_adadefs("tasking_error") == 12);
-    assert(lookup_adadefs("machine_radix") == 36);
-    assert(lookup_adadefs("machine_overflows") == 35);
-    assert(lookup_adadefs("true") == 13);
-    assert(lookup_adadefs("base") == 16);
-    assert(lookup_adadefs("emax") == 22);
-    assert(lookup_adadefs("fore") == 26);
-    assert(lookup_adadefs("last") == 29);
-    assert(lookup_adadefs("pred") == 41);
-    assert(lookup_adadefs("size") == 46);
-    assert(lookup_adadefs("succ") == 49);
-    assert(lookup_adadefs("character") == 1);
-    assert(lookup_adadefs("safe_emax") == 43);
-    assert(lookup_adadefs("machine_emax") == 32);
-    assert(lookup_adadefs("machine_emin") == 33);
-    assert(lookup_adadefs("storage_size") == 48);
-    assert(lookup_adadefs("positive") == 8);
-    assert(lookup_adadefs("callable") == 17);
-    assert(lookup_adadefs("firstbit") == 25);
-    assert(lookup_adadefs("mantissa") == 38);
-    assert(lookup_adadefs("position") == 40);
+//check: name=check_adadefs_pext, type=pext, dataset=adadefs
+void check_adadefs_pext() {
+    assert(lookup_adadefs_pext("positive") == 8);
+    assert(lookup_adadefs_pext("callable") == 17);
+    assert(lookup_adadefs_pext("firstbit") == 25);
+    assert(lookup_adadefs_pext("mantissa") == 38);
+    assert(lookup_adadefs_pext("position") == 40);
+    assert(lookup_adadefs_pext("safe_large") == 44);
+    assert(lookup_adadefs_pext("safe_small") == 45);
+    assert(lookup_adadefs_pext("terminated") == 50);
+    assert(lookup_adadefs_pext("machine_emax") == 32);
+    assert(lookup_adadefs_pext("machine_emin") == 33);
+    assert(lookup_adadefs_pext("storage_size") == 48);
+    assert(lookup_adadefs_pext("character") == 1);
+    assert(lookup_adadefs_pext("safe_emax") == 43);
+    assert(lookup_adadefs_pext("boolean") == 0);
+    assert(lookup_adadefs_pext("integer") == 5);
+    assert(lookup_adadefs_pext("natural") == 6);
+    assert(lookup_adadefs_pext("address") == 14);
+    assert(lookup_adadefs_pext("epsilon") == 23);
+    assert(lookup_adadefs_pext("lastbit") == 30);
+    assert(lookup_adadefs_pext("constraint_error") == 2);
+    assert(lookup_adadefs_pext("machine_mantissa") == 34);
+    assert(lookup_adadefs_pext("string") == 11);
+    assert(lookup_adadefs_pext("digits") == 21);
+    assert(lookup_adadefs_pext("length") == 31);
+    assert(lookup_adadefs_pext("machine_overflows") == 35);
+    assert(lookup_adadefs_pext("machine_rounds") == 37);
+    assert(lookup_adadefs_pext("true") == 13);
+    assert(lookup_adadefs_pext("base") == 16);
+    assert(lookup_adadefs_pext("emax") == 22);
+    assert(lookup_adadefs_pext("fore") == 26);
+    assert(lookup_adadefs_pext("last") == 29);
+    assert(lookup_adadefs_pext("pred") == 41);
+    assert(lookup_adadefs_pext("size") == 46);
+    assert(lookup_adadefs_pext("succ") == 49);
+    assert(lookup_adadefs_pext("numeric_error") == 7);
+    assert(lookup_adadefs_pext("program_error") == 9);
+    assert(lookup_adadefs_pext("storage_error") == 10);
+    assert(lookup_adadefs_pext("tasking_error") == 12);
+    assert(lookup_adadefs_pext("machine_radix") == 36);
+    assert(lookup_adadefs_pext("aft") == 15);
+    assert(lookup_adadefs_pext("pos") == 39);
+    assert(lookup_adadefs_pext("val") == 51);
+    assert(lookup_adadefs_pext("constrained") == 18);
+    assert(lookup_adadefs_pext("false") == 3);
+    assert(lookup_adadefs_pext("float") == 4);
+    assert(lookup_adadefs_pext("count") == 19);
+    assert(lookup_adadefs_pext("delta") == 20);
+    assert(lookup_adadefs_pext("first") == 24);
+    assert(lookup_adadefs_pext("image") == 27);
+    assert(lookup_adadefs_pext("large") == 28);
+    assert(lookup_adadefs_pext("range") == 42);
+    assert(lookup_adadefs_pext("small") == 47);
+    assert(lookup_adadefs_pext("value") == 52);
+    assert(lookup_adadefs_pext("width") == 53);
 }
 

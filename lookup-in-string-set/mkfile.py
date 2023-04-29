@@ -36,8 +36,8 @@ def makefile(name, hasGo):
         f.write("all: unittest benchmark\n")
         rule(f, "unittest", "$(CXX) $(FLAGS) unittest.cpp -o unittest", ["unittest.cpp"])
         rule(f, "unittest.cpp", "python3 unittest.py", ["unittest.py", "$(SRC)"])
-        rule(f, "benchmark", "$(CXX) $(FLAGS) -O2 benchmark.cpp -o benchmark", ["benchmark.cpp"])
-        rule(f, "benchmark.cpp", "python3 benchmark.py", ["benchmark.py", "$(SRC)"])
+        rule(f, "benchmark", "$(CXX) $(FLAGS) -O2 benchmark.cpp -o benchmark", ["benchmark.cpp", "benchmark.cpp.in"])
+        rule(f, "benchmark.cpp.in", "python3 benchmark.py", ["benchmark.py", "$(SRC)"])
 
         if hasGo:
             for ds in datasets:

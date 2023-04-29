@@ -49,7 +49,7 @@ func (c *generateContext) emptyline() {
 func generateFunction(ctx *generateContext) error {
 	// lookup function
 	ctx.emptyline()
-	ctx.writeln("//lookup: name=%s, dataset=%s, hash=%s", ctx.lookupName(), ctx.basename, ctx.hashfn)
+	ctx.writeln("//lookup: name=%s, dataset=%s, type=hash, hash=%s", ctx.lookupName(), ctx.basename, ctx.hashfn)
 	ctx.writeln("%s {", ctx.lookupSignature())
 	ctx.indent += 4
 	{
@@ -99,7 +99,7 @@ func generateFunction(ctx *generateContext) error {
 
 	// check function
 	ctx.emptyline()
-	ctx.writeln("//check: name=%s, dataset=%s, hash=%s", ctx.checkName(), ctx.basename, ctx.hashfn)
+	ctx.writeln("//check: name=%s, dataset=%s, type=hash, hash=%s", ctx.checkName(), ctx.basename, ctx.hashfn)
 	ctx.writeln("%s {", ctx.checkSignature())
 	ctx.indent += 4
 	{

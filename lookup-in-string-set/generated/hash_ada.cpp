@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_ada_hash1, dataset=ada, hash=hash1
+//lookup: name=lookup_ada_hash1, dataset=ada, type=hash, hash=hash1
 int lookup_ada_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 130) * 2;
     static std::string_view lookup[260] = {
@@ -534,7 +534,7 @@ int lookup_ada_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_hash1, dataset=ada, hash=hash1
+//check: name=check_ada_hash1, dataset=ada, type=hash, hash=hash1
 void check_ada_hash1() {
     assert(lookup_ada_hash1("begin") == 57);
     assert(lookup_ada_hash1("terminate") == 2);
@@ -601,7 +601,7 @@ void check_ada_hash1() {
     assert(lookup_ada_hash1("for") == 21);
 }
 
-//lookup: name=lookup_ada_hash2, dataset=ada, hash=hash2
+//lookup: name=lookup_ada_hash2, dataset=ada, type=hash, hash=hash2
 int lookup_ada_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 149) * 2;
     static std::string_view lookup[298] = {
@@ -1212,7 +1212,7 @@ int lookup_ada_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_hash2, dataset=ada, hash=hash2
+//check: name=check_ada_hash2, dataset=ada, type=hash, hash=hash2
 void check_ada_hash2() {
     assert(lookup_ada_hash2("constant") == 31);
     assert(lookup_ada_hash2("is") == 53);
@@ -1279,7 +1279,7 @@ void check_ada_hash2() {
     assert(lookup_ada_hash2("entry") == 28);
 }
 
-//lookup: name=lookup_ada_hash3, dataset=ada, hash=hash3
+//lookup: name=lookup_ada_hash3, dataset=ada, type=hash, hash=hash3
 int lookup_ada_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 70) * 2;
     static std::string_view lookup[140] = {
@@ -1574,7 +1574,7 @@ int lookup_ada_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_hash3, dataset=ada, hash=hash3
+//check: name=check_ada_hash3, dataset=ada, type=hash, hash=hash3
 void check_ada_hash3() {
     assert(lookup_ada_hash3("type") == 3);
     assert(lookup_ada_hash3("or") == 46);
@@ -1641,7 +1641,7 @@ void check_ada_hash3() {
     assert(lookup_ada_hash3("subtype") == 18);
 }
 
-//lookup: name=lookup_ada_hash_sum0, dataset=ada, hash=hash_sum0
+//lookup: name=lookup_ada_hash_sum0, dataset=ada, type=hash, hash=hash_sum0
 int lookup_ada_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 138) * 2;
     static std::string_view lookup[276] = {
@@ -2208,7 +2208,7 @@ int lookup_ada_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_hash_sum0, dataset=ada, hash=hash_sum0
+//check: name=check_ada_hash_sum0, dataset=ada, type=hash, hash=hash_sum0
 void check_ada_hash_sum0() {
     assert(lookup_ada_hash_sum0("terminate") == 2);
     assert(lookup_ada_hash_sum0("procedure") == 23);
@@ -2275,7 +2275,7 @@ void check_ada_hash_sum0() {
     assert(lookup_ada_hash_sum0("case") == 30);
 }
 
-//lookup: name=lookup_ada_hash_sumN, dataset=ada, hash=hash_sumN
+//lookup: name=lookup_ada_hash_sumN, dataset=ada, type=hash, hash=hash_sumN
 int lookup_ada_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 140) * 2;
     static std::string_view lookup[280] = {
@@ -2850,7 +2850,7 @@ int lookup_ada_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_hash_sumN, dataset=ada, hash=hash_sumN
+//check: name=check_ada_hash_sumN, dataset=ada, type=hash, hash=hash_sumN
 void check_ada_hash_sumN() {
     assert(lookup_ada_hash_sumN("exception") == 10);
     assert(lookup_ada_hash_sumN("entry") == 28);
@@ -2917,7 +2917,7 @@ void check_ada_hash_sumN() {
     assert(lookup_ada_hash_sumN("procedure") == 23);
 }
 
-//lookup: name=lookup_ada_hash_djb2, dataset=ada, hash=hash_djb2
+//lookup: name=lookup_ada_hash_djb2, dataset=ada, type=hash, hash=hash_djb2
 int lookup_ada_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 457) * 1;
     static std::string_view lookup[457] = {
@@ -3846,7 +3846,7 @@ int lookup_ada_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_hash_djb2, dataset=ada, hash=hash_djb2
+//check: name=check_ada_hash_djb2, dataset=ada, type=hash, hash=hash_djb2
 void check_ada_hash_djb2() {
     assert(lookup_ada_hash_djb2("exit") == 1);
     assert(lookup_ada_hash_djb2("mod") == 56);
@@ -3913,7 +3913,7 @@ void check_ada_hash_djb2() {
     assert(lookup_ada_hash_djb2("entry") == 28);
 }
 
-//lookup: name=lookup_ada_hash_sdb, dataset=ada, hash=hash_sdb
+//lookup: name=lookup_ada_hash_sdb, dataset=ada, type=hash, hash=hash_sdb
 int lookup_ada_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 534) * 1;
     static std::string_view lookup[534] = {
@@ -4996,7 +4996,7 @@ int lookup_ada_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_hash_sdb, dataset=ada, hash=hash_sdb
+//check: name=check_ada_hash_sdb, dataset=ada, type=hash, hash=hash_sdb
 void check_ada_hash_sdb() {
     assert(lookup_ada_hash_sdb("constant") == 31);
     assert(lookup_ada_hash_sdb("separate") == 14);

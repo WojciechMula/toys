@@ -1,5 +1,5 @@
-//lookup: name=lookup_cpp, dataset=cpp
-int lookup_cpp(std::string_view s) {
+//lookup: name=lookup_cpp_pext, type=pext, dataset=cpp
+int lookup_cpp_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
             if (s == "do") {
@@ -417,54 +417,54 @@ int lookup_cpp(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_cpp, dataset=cpp
-void check_cpp() {
-    assert(lookup_cpp("delete") == 10);
-    assert(lookup_cpp("double") == 12);
-    assert(lookup_cpp("extern") == 15);
-    assert(lookup_cpp("friend") == 18);
-    assert(lookup_cpp("inline") == 21);
-    assert(lookup_cpp("public") == 29);
-    assert(lookup_cpp("return") == 31);
-    assert(lookup_cpp("signed") == 33);
-    assert(lookup_cpp("sizeof") == 34);
-    assert(lookup_cpp("static") == 35);
-    assert(lookup_cpp("struct") == 36);
-    assert(lookup_cpp("switch") == 37);
-    assert(lookup_cpp("do") == 11);
-    assert(lookup_cpp("if") == 20);
-    assert(lookup_cpp("protected") == 28);
-    assert(lookup_cpp("asm") == 0);
-    assert(lookup_cpp("for") == 17);
-    assert(lookup_cpp("int") == 22);
-    assert(lookup_cpp("new") == 24);
-    assert(lookup_cpp("auto") == 1);
-    assert(lookup_cpp("case") == 3);
-    assert(lookup_cpp("char") == 5);
-    assert(lookup_cpp("else") == 13);
-    assert(lookup_cpp("enum") == 14);
-    assert(lookup_cpp("goto") == 19);
-    assert(lookup_cpp("long") == 23);
-    assert(lookup_cpp("this") == 39);
-    assert(lookup_cpp("void") == 44);
-    assert(lookup_cpp("break") == 2);
-    assert(lookup_cpp("catch") == 4);
-    assert(lookup_cpp("class") == 6);
-    assert(lookup_cpp("const") == 7);
-    assert(lookup_cpp("float") == 16);
-    assert(lookup_cpp("short") == 32);
-    assert(lookup_cpp("union") == 41);
-    assert(lookup_cpp("while") == 46);
-    assert(lookup_cpp("continue") == 8);
-    assert(lookup_cpp("operator") == 25);
-    assert(lookup_cpp("overload") == 26);
-    assert(lookup_cpp("register") == 30);
-    assert(lookup_cpp("template") == 38);
-    assert(lookup_cpp("unsigned") == 42);
-    assert(lookup_cpp("volatile") == 45);
-    assert(lookup_cpp("default") == 9);
-    assert(lookup_cpp("private") == 27);
-    assert(lookup_cpp("typedef") == 40);
-    assert(lookup_cpp("virtual") == 43);
+//check: name=check_cpp_pext, type=pext, dataset=cpp
+void check_cpp_pext() {
+    assert(lookup_cpp_pext("break") == 2);
+    assert(lookup_cpp_pext("catch") == 4);
+    assert(lookup_cpp_pext("class") == 6);
+    assert(lookup_cpp_pext("const") == 7);
+    assert(lookup_cpp_pext("float") == 16);
+    assert(lookup_cpp_pext("short") == 32);
+    assert(lookup_cpp_pext("union") == 41);
+    assert(lookup_cpp_pext("while") == 46);
+    assert(lookup_cpp_pext("continue") == 8);
+    assert(lookup_cpp_pext("operator") == 25);
+    assert(lookup_cpp_pext("overload") == 26);
+    assert(lookup_cpp_pext("register") == 30);
+    assert(lookup_cpp_pext("template") == 38);
+    assert(lookup_cpp_pext("unsigned") == 42);
+    assert(lookup_cpp_pext("volatile") == 45);
+    assert(lookup_cpp_pext("default") == 9);
+    assert(lookup_cpp_pext("private") == 27);
+    assert(lookup_cpp_pext("typedef") == 40);
+    assert(lookup_cpp_pext("virtual") == 43);
+    assert(lookup_cpp_pext("delete") == 10);
+    assert(lookup_cpp_pext("double") == 12);
+    assert(lookup_cpp_pext("extern") == 15);
+    assert(lookup_cpp_pext("friend") == 18);
+    assert(lookup_cpp_pext("inline") == 21);
+    assert(lookup_cpp_pext("public") == 29);
+    assert(lookup_cpp_pext("return") == 31);
+    assert(lookup_cpp_pext("signed") == 33);
+    assert(lookup_cpp_pext("sizeof") == 34);
+    assert(lookup_cpp_pext("static") == 35);
+    assert(lookup_cpp_pext("struct") == 36);
+    assert(lookup_cpp_pext("switch") == 37);
+    assert(lookup_cpp_pext("do") == 11);
+    assert(lookup_cpp_pext("if") == 20);
+    assert(lookup_cpp_pext("protected") == 28);
+    assert(lookup_cpp_pext("asm") == 0);
+    assert(lookup_cpp_pext("for") == 17);
+    assert(lookup_cpp_pext("int") == 22);
+    assert(lookup_cpp_pext("new") == 24);
+    assert(lookup_cpp_pext("auto") == 1);
+    assert(lookup_cpp_pext("case") == 3);
+    assert(lookup_cpp_pext("char") == 5);
+    assert(lookup_cpp_pext("else") == 13);
+    assert(lookup_cpp_pext("enum") == 14);
+    assert(lookup_cpp_pext("goto") == 19);
+    assert(lookup_cpp_pext("long") == 23);
+    assert(lookup_cpp_pext("this") == 39);
+    assert(lookup_cpp_pext("void") == 44);
 }
 

@@ -8,10 +8,10 @@ unittest: unittest.cpp
 unittest.cpp: unittest.py $(SRC)
 	python3 unittest.py
 
-benchmark: benchmark.cpp
+benchmark: benchmark.cpp benchmark.cpp.in
 	$(CXX) $(FLAGS) -O2 benchmark.cpp -o benchmark
 
-benchmark.cpp: benchmark.py $(SRC)
+benchmark.cpp.in: benchmark.py $(SRC)
 	python3 benchmark.py
 
 generated/hash_ada.cpp: datasets/ada.txt hash/main

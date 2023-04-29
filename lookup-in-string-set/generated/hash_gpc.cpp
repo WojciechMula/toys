@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_gpc_hash1, dataset=gpc, hash=hash1
+//lookup: name=lookup_gpc_hash1, dataset=gpc, type=hash, hash=hash1
 int lookup_gpc_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 55) * 2;
     static std::string_view lookup[110] = {
@@ -234,7 +234,7 @@ int lookup_gpc_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_gpc_hash1, dataset=gpc, hash=hash1
+//check: name=check_gpc_hash1, dataset=gpc, type=hash, hash=hash1
 void check_gpc_hash1() {
     assert(lookup_gpc_hash1("And") == 0);
     assert(lookup_gpc_hash1("Begin") == 2);
@@ -273,7 +273,7 @@ void check_gpc_hash1() {
     assert(lookup_gpc_hash1("Var") == 32);
 }
 
-//lookup: name=lookup_gpc_hash2, dataset=gpc, hash=hash2
+//lookup: name=lookup_gpc_hash2, dataset=gpc, type=hash, hash=hash2
 int lookup_gpc_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 197) * 1;
     static std::string_view lookup[197] = {
@@ -682,7 +682,7 @@ int lookup_gpc_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_gpc_hash2, dataset=gpc, hash=hash2
+//check: name=check_gpc_hash2, dataset=gpc, type=hash, hash=hash2
 void check_gpc_hash2() {
     assert(lookup_gpc_hash2("And") == 0);
     assert(lookup_gpc_hash2("Goto") == 13);
@@ -721,7 +721,7 @@ void check_gpc_hash2() {
     assert(lookup_gpc_hash2("With") == 34);
 }
 
-//lookup: name=lookup_gpc_hash3, dataset=gpc, hash=hash3
+//lookup: name=lookup_gpc_hash3, dataset=gpc, type=hash, hash=hash3
 int lookup_gpc_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 187) * 1;
     static std::string_view lookup[187] = {
@@ -1110,7 +1110,7 @@ int lookup_gpc_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_gpc_hash3, dataset=gpc, hash=hash3
+//check: name=check_gpc_hash3, dataset=gpc, type=hash, hash=hash3
 void check_gpc_hash3() {
     assert(lookup_gpc_hash3("Type") == 30);
     assert(lookup_gpc_hash3("In") == 15);
@@ -1149,7 +1149,7 @@ void check_gpc_hash3() {
     assert(lookup_gpc_hash3("Then") == 28);
 }
 
-//lookup: name=lookup_gpc_hash_sum0, dataset=gpc, hash=hash_sum0
+//lookup: name=lookup_gpc_hash_sum0, dataset=gpc, type=hash, hash=hash_sum0
 int lookup_gpc_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 50) * 2;
     static std::string_view lookup[100] = {
@@ -1364,7 +1364,7 @@ int lookup_gpc_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_gpc_hash_sum0, dataset=gpc, hash=hash_sum0
+//check: name=check_gpc_hash_sum0, dataset=gpc, type=hash, hash=hash_sum0
 void check_gpc_hash_sum0() {
     assert(lookup_gpc_hash_sum0("Set") == 27);
     assert(lookup_gpc_hash_sum0("Not") == 19);
@@ -1403,7 +1403,7 @@ void check_gpc_hash_sum0() {
     assert(lookup_gpc_hash_sum0("Then") == 28);
 }
 
-//lookup: name=lookup_gpc_hash_sumN, dataset=gpc, hash=hash_sumN
+//lookup: name=lookup_gpc_hash_sumN, dataset=gpc, type=hash, hash=hash_sumN
 int lookup_gpc_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 40) * 2;
     static std::string_view lookup[80] = {
@@ -1578,7 +1578,7 @@ int lookup_gpc_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_gpc_hash_sumN, dataset=gpc, hash=hash_sumN
+//check: name=check_gpc_hash_sumN, dataset=gpc, type=hash, hash=hash_sumN
 void check_gpc_hash_sumN() {
     assert(lookup_gpc_hash_sumN("Downto") == 7);
     assert(lookup_gpc_hash_sumN("End") == 9);
@@ -1617,7 +1617,7 @@ void check_gpc_hash_sumN() {
     assert(lookup_gpc_hash_sumN("And") == 0);
 }
 
-//lookup: name=lookup_gpc_hash_djb2, dataset=gpc, hash=hash_djb2
+//lookup: name=lookup_gpc_hash_djb2, dataset=gpc, type=hash, hash=hash_djb2
 int lookup_gpc_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 117) * 1;
     static std::string_view lookup[117] = {
@@ -1866,7 +1866,7 @@ int lookup_gpc_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_gpc_hash_djb2, dataset=gpc, hash=hash_djb2
+//check: name=check_gpc_hash_djb2, dataset=gpc, type=hash, hash=hash_djb2
 void check_gpc_hash_djb2() {
     assert(lookup_gpc_hash_djb2("Until") == 31);
     assert(lookup_gpc_hash_djb2("File") == 10);
@@ -1905,7 +1905,7 @@ void check_gpc_hash_djb2() {
     assert(lookup_gpc_hash_djb2("In") == 15);
 }
 
-//lookup: name=lookup_gpc_hash_sdb, dataset=gpc, hash=hash_sdb
+//lookup: name=lookup_gpc_hash_sdb, dataset=gpc, type=hash, hash=hash_sdb
 int lookup_gpc_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 219) * 1;
     static std::string_view lookup[219] = {
@@ -2358,7 +2358,7 @@ int lookup_gpc_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_gpc_hash_sdb, dataset=gpc, hash=hash_sdb
+//check: name=check_gpc_hash_sdb, dataset=gpc, type=hash, hash=hash_sdb
 void check_gpc_hash_sdb() {
     assert(lookup_gpc_hash_sdb("Repeat") == 26);
     assert(lookup_gpc_hash_sdb("And") == 0);

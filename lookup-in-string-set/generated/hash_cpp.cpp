@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_cpp_hash1, dataset=cpp, hash=hash1
+//lookup: name=lookup_cpp_hash1, dataset=cpp, type=hash, hash=hash1
 int lookup_cpp_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 85) * 2;
     static std::string_view lookup[170] = {
@@ -354,7 +354,7 @@ int lookup_cpp_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cpp_hash1, dataset=cpp, hash=hash1
+//check: name=check_cpp_hash1, dataset=cpp, type=hash, hash=hash1
 void check_cpp_hash1() {
     assert(lookup_cpp_hash1("char") == 5);
     assert(lookup_cpp_hash1("break") == 2);
@@ -405,7 +405,7 @@ void check_cpp_hash1() {
     assert(lookup_cpp_hash1("do") == 11);
 }
 
-//lookup: name=lookup_cpp_hash2, dataset=cpp, hash=hash2
+//lookup: name=lookup_cpp_hash2, dataset=cpp, type=hash, hash=hash2
 int lookup_cpp_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 69) * 2;
     static std::string_view lookup[138] = {
@@ -696,7 +696,7 @@ int lookup_cpp_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cpp_hash2, dataset=cpp, hash=hash2
+//check: name=check_cpp_hash2, dataset=cpp, type=hash, hash=hash2
 void check_cpp_hash2() {
     assert(lookup_cpp_hash2("sizeof") == 34);
     assert(lookup_cpp_hash2("class") == 6);
@@ -747,7 +747,7 @@ void check_cpp_hash2() {
     assert(lookup_cpp_hash2("auto") == 1);
 }
 
-//lookup: name=lookup_cpp_hash3, dataset=cpp, hash=hash3
+//lookup: name=lookup_cpp_hash3, dataset=cpp, type=hash, hash=hash3
 int lookup_cpp_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 248) * 1;
     static std::string_view lookup[248] = {
@@ -1258,7 +1258,7 @@ int lookup_cpp_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cpp_hash3, dataset=cpp, hash=hash3
+//check: name=check_cpp_hash3, dataset=cpp, type=hash, hash=hash3
 void check_cpp_hash3() {
     assert(lookup_cpp_hash3("this") == 39);
     assert(lookup_cpp_hash3("void") == 44);
@@ -1309,7 +1309,7 @@ void check_cpp_hash3() {
     assert(lookup_cpp_hash3("continue") == 8);
 }
 
-//lookup: name=lookup_cpp_hash_sum0, dataset=cpp, hash=hash_sum0
+//lookup: name=lookup_cpp_hash_sum0, dataset=cpp, type=hash, hash=hash_sum0
 int lookup_cpp_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 90) * 2;
     static std::string_view lookup[180] = {
@@ -1684,7 +1684,7 @@ int lookup_cpp_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cpp_hash_sum0, dataset=cpp, hash=hash_sum0
+//check: name=check_cpp_hash_sum0, dataset=cpp, type=hash, hash=hash_sum0
 void check_cpp_hash_sum0() {
     assert(lookup_cpp_hash_sum0("friend") == 18);
     assert(lookup_cpp_hash_sum0("signed") == 33);
@@ -1735,7 +1735,7 @@ void check_cpp_hash_sum0() {
     assert(lookup_cpp_hash_sum0("while") == 46);
 }
 
-//lookup: name=lookup_cpp_hash_sumN, dataset=cpp, hash=hash_sumN
+//lookup: name=lookup_cpp_hash_sumN, dataset=cpp, type=hash, hash=hash_sumN
 int lookup_cpp_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 74) * 2;
     static std::string_view lookup[148] = {
@@ -2046,7 +2046,7 @@ int lookup_cpp_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cpp_hash_sumN, dataset=cpp, hash=hash_sumN
+//check: name=check_cpp_hash_sumN, dataset=cpp, type=hash, hash=hash_sumN
 void check_cpp_hash_sumN() {
     assert(lookup_cpp_hash_sumN("this") == 39);
     assert(lookup_cpp_hash_sumN("auto") == 1);
@@ -2097,7 +2097,7 @@ void check_cpp_hash_sumN() {
     assert(lookup_cpp_hash_sumN("switch") == 37);
 }
 
-//lookup: name=lookup_cpp_hash_djb2, dataset=cpp, hash=hash_djb2
+//lookup: name=lookup_cpp_hash_djb2, dataset=cpp, type=hash, hash=hash_djb2
 int lookup_cpp_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 304) * 1;
     static std::string_view lookup[304] = {
@@ -2720,7 +2720,7 @@ int lookup_cpp_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cpp_hash_djb2, dataset=cpp, hash=hash_djb2
+//check: name=check_cpp_hash_djb2, dataset=cpp, type=hash, hash=hash_djb2
 void check_cpp_hash_djb2() {
     assert(lookup_cpp_hash_djb2("switch") == 37);
     assert(lookup_cpp_hash_djb2("register") == 30);
@@ -2771,7 +2771,7 @@ void check_cpp_hash_djb2() {
     assert(lookup_cpp_hash_djb2("if") == 20);
 }
 
-//lookup: name=lookup_cpp_hash_sdb, dataset=cpp, hash=hash_sdb
+//lookup: name=lookup_cpp_hash_sdb, dataset=cpp, type=hash, hash=hash_sdb
 int lookup_cpp_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 236) * 1;
     static std::string_view lookup[236] = {
@@ -3258,7 +3258,7 @@ int lookup_cpp_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cpp_hash_sdb, dataset=cpp, hash=hash_sdb
+//check: name=check_cpp_hash_sdb, dataset=cpp, type=hash, hash=hash_sdb
 void check_cpp_hash_sdb() {
     assert(lookup_cpp_hash_sdb("public") == 29);
     assert(lookup_cpp_hash_sdb("overload") == 26);

@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_c_hash1, dataset=c, hash=hash1
+//lookup: name=lookup_c_hash1, dataset=c, type=hash, hash=hash1
 int lookup_c_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 151) * 1;
     static std::string_view lookup[151] = {
@@ -316,7 +316,7 @@ int lookup_c_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_c_hash1, dataset=c, hash=hash1
+//check: name=check_c_hash1, dataset=c, type=hash, hash=hash1
 void check_c_hash1() {
     assert(lookup_c_hash1("default") == 27);
     assert(lookup_c_hash1("register") == 30);
@@ -352,7 +352,7 @@ void check_c_hash1() {
     assert(lookup_c_hash1("double") == 18);
 }
 
-//lookup: name=lookup_c_hash2, dataset=c, hash=hash2
+//lookup: name=lookup_c_hash2, dataset=c, type=hash, hash=hash2
 int lookup_c_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 152) * 1;
     static std::string_view lookup[152] = {
@@ -671,7 +671,7 @@ int lookup_c_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_c_hash2, dataset=c, hash=hash2
+//check: name=check_c_hash2, dataset=c, type=hash, hash=hash2
 void check_c_hash2() {
     assert(lookup_c_hash2("unsigned") == 28);
     assert(lookup_c_hash2("do") == 1);
@@ -707,7 +707,7 @@ void check_c_hash2() {
     assert(lookup_c_hash2("break") == 15);
 }
 
-//lookup: name=lookup_c_hash3, dataset=c, hash=hash3
+//lookup: name=lookup_c_hash3, dataset=c, type=hash, hash=hash3
 int lookup_c_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 121) * 1;
     static std::string_view lookup[121] = {
@@ -964,7 +964,7 @@ int lookup_c_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_c_hash3, dataset=c, hash=hash3
+//check: name=check_c_hash3, dataset=c, type=hash, hash=hash3
 void check_c_hash3() {
     assert(lookup_c_hash3("register") == 30);
     assert(lookup_c_hash3("typedef") == 26);
@@ -1000,7 +1000,7 @@ void check_c_hash3() {
     assert(lookup_c_hash3("float") == 12);
 }
 
-//lookup: name=lookup_c_hash_sum0, dataset=c, hash=hash_sum0
+//lookup: name=lookup_c_hash_sum0, dataset=c, type=hash, hash=hash_sum0
 int lookup_c_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 45) * 2;
     static std::string_view lookup[90] = {
@@ -1195,7 +1195,7 @@ int lookup_c_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_c_hash_sum0, dataset=c, hash=hash_sum0
+//check: name=check_c_hash_sum0, dataset=c, type=hash, hash=hash_sum0
 void check_c_hash_sum0() {
     assert(lookup_c_hash_sum0("struct") == 21);
     assert(lookup_c_hash_sum0("signed") == 25);
@@ -1231,7 +1231,7 @@ void check_c_hash_sum0() {
     assert(lookup_c_hash_sum0("return") == 22);
 }
 
-//lookup: name=lookup_c_hash_sumN, dataset=c, hash=hash_sumN
+//lookup: name=lookup_c_hash_sumN, dataset=c, type=hash, hash=hash_sumN
 int lookup_c_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 50) * 2;
     static std::string_view lookup[100] = {
@@ -1446,7 +1446,7 @@ int lookup_c_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_c_hash_sumN, dataset=c, hash=hash_sumN
+//check: name=check_c_hash_sumN, dataset=c, type=hash, hash=hash_sumN
 void check_c_hash_sumN() {
     assert(lookup_c_hash_sumN("static") == 19);
     assert(lookup_c_hash_sumN("const") == 17);
@@ -1482,7 +1482,7 @@ void check_c_hash_sumN() {
     assert(lookup_c_hash_sumN("default") == 27);
 }
 
-//lookup: name=lookup_c_hash_djb2, dataset=c, hash=hash_djb2
+//lookup: name=lookup_c_hash_djb2, dataset=c, type=hash, hash=hash_djb2
 int lookup_c_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 109) * 1;
     static std::string_view lookup[109] = {
@@ -1715,7 +1715,7 @@ int lookup_c_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_c_hash_djb2, dataset=c, hash=hash_djb2
+//check: name=check_c_hash_djb2, dataset=c, type=hash, hash=hash_djb2
 void check_c_hash_djb2() {
     assert(lookup_c_hash_djb2("do") == 1);
     assert(lookup_c_hash_djb2("int") == 2);
@@ -1751,7 +1751,7 @@ void check_c_hash_djb2() {
     assert(lookup_c_hash_djb2("auto") == 6);
 }
 
-//lookup: name=lookup_c_hash_sdb, dataset=c, hash=hash_sdb
+//lookup: name=lookup_c_hash_sdb, dataset=c, type=hash, hash=hash_sdb
 int lookup_c_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 131) * 1;
     static std::string_view lookup[131] = {
@@ -2028,7 +2028,7 @@ int lookup_c_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_c_hash_sdb, dataset=c, hash=hash_sdb
+//check: name=check_c_hash_sdb, dataset=c, type=hash, hash=hash_sdb
 void check_c_hash_sdb() {
     assert(lookup_c_hash_sdb("if") == 0);
     assert(lookup_c_hash_sdb("auto") == 6);

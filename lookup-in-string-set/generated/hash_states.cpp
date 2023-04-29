@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_states_hash1, dataset=states, hash=hash1
+//lookup: name=lookup_states_hash1, dataset=states, type=hash, hash=hash1
 int lookup_states_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 81) * 2;
     static std::string_view lookup[162] = {
@@ -338,7 +338,7 @@ int lookup_states_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_states_hash1, dataset=states, hash=hash1
+//check: name=check_states_hash1, dataset=states, type=hash, hash=hash1
 void check_states_hash1() {
     assert(lookup_states_hash1("TENNESSEE") == 41);
     assert(lookup_states_hash1("MAINE") == 18);
@@ -392,7 +392,7 @@ void check_states_hash1() {
     assert(lookup_states_hash1("SOUTH DAKOTA") == 40);
 }
 
-//lookup: name=lookup_states_hash2, dataset=states, hash=hash2
+//lookup: name=lookup_states_hash2, dataset=states, type=hash, hash=hash2
 int lookup_states_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 73) * 2;
     static std::string_view lookup[146] = {
@@ -699,7 +699,7 @@ int lookup_states_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_states_hash2, dataset=states, hash=hash2
+//check: name=check_states_hash2, dataset=states, type=hash, hash=hash2
 void check_states_hash2() {
     assert(lookup_states_hash2("ARKANSAS") == 3);
     assert(lookup_states_hash2("CONNECTICUT") == 6);
@@ -753,7 +753,7 @@ void check_states_hash2() {
     assert(lookup_states_hash2("NEW JERSEY") == 29);
 }
 
-//lookup: name=lookup_states_hash3, dataset=states, hash=hash3
+//lookup: name=lookup_states_hash3, dataset=states, type=hash, hash=hash3
 int lookup_states_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 303) * 1;
     static std::string_view lookup[303] = {
@@ -1374,7 +1374,7 @@ int lookup_states_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_states_hash3, dataset=states, hash=hash3
+//check: name=check_states_hash3, dataset=states, type=hash, hash=hash3
 void check_states_hash3() {
     assert(lookup_states_hash3("MAINE") == 18);
     assert(lookup_states_hash3("CALIFORNIA") == 4);
@@ -1428,7 +1428,7 @@ void check_states_hash3() {
     assert(lookup_states_hash3("NORTH CAROLINA") == 32);
 }
 
-//lookup: name=lookup_states_hash_sum0, dataset=states, hash=hash_sum0
+//lookup: name=lookup_states_hash_sum0, dataset=states, type=hash, hash=hash_sum0
 int lookup_states_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 225) * 1;
     static std::string_view lookup[225] = {
@@ -1893,7 +1893,7 @@ int lookup_states_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_states_hash_sum0, dataset=states, hash=hash_sum0
+//check: name=check_states_hash_sum0, dataset=states, type=hash, hash=hash_sum0
 void check_states_hash_sum0() {
     assert(lookup_states_hash_sum0("LOUISIANA") == 17);
     assert(lookup_states_hash_sum0("TENNESSEE") == 41);
@@ -1947,7 +1947,7 @@ void check_states_hash_sum0() {
     assert(lookup_states_hash_sum0("KANSAS") == 15);
 }
 
-//lookup: name=lookup_states_hash_sumN, dataset=states, hash=hash_sumN
+//lookup: name=lookup_states_hash_sumN, dataset=states, type=hash, hash=hash_sumN
 int lookup_states_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 187) * 1;
     static std::string_view lookup[187] = {
@@ -2336,7 +2336,7 @@ int lookup_states_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_states_hash_sumN, dataset=states, hash=hash_sumN
+//check: name=check_states_hash_sumN, dataset=states, type=hash, hash=hash_sumN
 void check_states_hash_sumN() {
     assert(lookup_states_hash_sumN("WYOMING") == 49);
     assert(lookup_states_hash_sumN("VERMONT") == 44);
@@ -2390,7 +2390,7 @@ void check_states_hash_sumN() {
     assert(lookup_states_hash_sumN("PENNSYLVANIA") == 37);
 }
 
-//lookup: name=lookup_states_hash_djb2, dataset=states, hash=hash_djb2
+//lookup: name=lookup_states_hash_djb2, dataset=states, type=hash, hash=hash_djb2
 int lookup_states_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 268) * 1;
     static std::string_view lookup[268] = {
@@ -2941,7 +2941,7 @@ int lookup_states_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_states_hash_djb2, dataset=states, hash=hash_djb2
+//check: name=check_states_hash_djb2, dataset=states, type=hash, hash=hash_djb2
 void check_states_hash_djb2() {
     assert(lookup_states_hash_djb2("UTAH") == 43);
     assert(lookup_states_hash_djb2("ALASKA") == 1);
@@ -2995,7 +2995,7 @@ void check_states_hash_djb2() {
     assert(lookup_states_hash_djb2("WEST VIRGINIA") == 47);
 }
 
-//lookup: name=lookup_states_hash_sdb, dataset=states, hash=hash_sdb
+//lookup: name=lookup_states_hash_sdb, dataset=states, type=hash, hash=hash_sdb
 int lookup_states_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 274) * 1;
     static std::string_view lookup[274] = {
@@ -3558,7 +3558,7 @@ int lookup_states_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_states_hash_sdb, dataset=states, hash=hash_sdb
+//check: name=check_states_hash_sdb, dataset=states, type=hash, hash=hash_sdb
 void check_states_hash_sdb() {
     assert(lookup_states_hash_sdb("CONNECTICUT") == 6);
     assert(lookup_states_hash_sdb("MONTANA") == 25);

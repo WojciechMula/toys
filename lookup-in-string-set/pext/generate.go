@@ -156,7 +156,7 @@ func (g *generateCpp) write() {
 		}
 	}
 
-	g.ctx.writeln("//lookup: name=%s, dataset=%s", g.ctx.lookupName(), g.ctx.basename)
+	g.ctx.writeln("//lookup: name=%s, type=pext, dataset=%s", g.ctx.lookupName(), g.ctx.basename)
 	g.ctx.writeln("%s {", g.ctx.lookupSignature())
 	g.ctx.indent += 4
 	{
@@ -191,7 +191,7 @@ func (g *generateCpp) write() {
 	g.ctx.writeln("")
 
 	g.ctx.writeln("#include <cassert>")
-	g.ctx.writeln("//check: name=%s, dataset=%s", g.ctx.checkName(), g.ctx.basename)
+	g.ctx.writeln("//check: name=%s, type=pext, dataset=%s", g.ctx.checkName(), g.ctx.basename)
 	g.ctx.writeln("%s {", g.ctx.checkSignature())
 	g.ctx.indent += 4
 	{
@@ -209,11 +209,11 @@ func (g *generateCpp) write() {
 }
 
 func (c *generateContext) lookupName() string {
-	return fmt.Sprintf("lookup_%s", strings.ReplaceAll(c.basename, "-", "_"))
+	return fmt.Sprintf("lookup_%s_pext", strings.ReplaceAll(c.basename, "-", "_"))
 }
 
 func (c *generateContext) checkName() string {
-	return fmt.Sprintf("check_%s", strings.ReplaceAll(c.basename, "-", "_"))
+	return fmt.Sprintf("check_%s_pext", strings.ReplaceAll(c.basename, "-", "_"))
 }
 
 func (c *generateContext) lookupSignature() string {

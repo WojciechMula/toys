@@ -9,7 +9,7 @@ MB = 1024**2
 
 def main():
     testdata = writetestdata()
-    path = 'benchmark.cpp'
+    path = 'benchmark.cpp.in'
     with open(path, 'wt') as f:
         benchmarkcpp(f, testdata)
         print("Created '%s'" % path)
@@ -53,17 +53,6 @@ def benchmarkcpp(f, testdata):
         f.write(s)
         f.write('\n')
 
-    paths = [
-        "hash.cpp.in",
-        "pext.cpp.in",
-        "benchmark.h",
-        "benchmark_common.h",
-    ]
-
-    writeln('#include <cstdio>')
-    for path in paths:
-        writeln('#include "%s"' % path)
-
     paths = []
     for path, _, _ in metadata.gather():
         paths.append(path)
@@ -71,35 +60,47 @@ def benchmarkcpp(f, testdata):
     for path in sorted(paths):
         writeln('#include "%s"' % path)
 
-    writeln("")
-    writeln("volatile int total = 0;")
-    writeln("")
-    writeln("int main() {")
-    if 1:
+    for ds in sorted(testdata):
+        testfiles = testdata[ds]
+        writeln("")
+        writeln("void benchmark_%s(const Filter& filter) {" % ds.replace('-', '_'))
         indent += 4
-        writeln("std::vector<std::string> testdata;")
-        writeln("const int repeat = 10;")
-        for ds, testfiles in testdata.items():
-            for testfile in testfiles:
-                writeln("testdata.clear();")
-                writeln('testdata = read_lines("%s");' % testfile)
-                for _, lookups, _ in metadata.gather():
-                    for d in (d for d in lookups if d['dataset'] == ds):
-                        writeln("{")
+        if 1:
+            writeln('if (!filter.dataset("%s")) {' % ds)
+            indent += 4
+            writeln("return;")
+            indent -= 4
+            writeln("}")
+        for testfile in testfiles:
+            writeln("testdata.clear();")
+            writeln('testdata = read_lines("%s");' % testfile)
+            writeln('printf("benchmark for %s\\n");' % testfile)
+            for _, lookups, _ in metadata.gather():
+                for d in (d for d in lookups if d['dataset'] == ds):
+                    writeln('if (filter.type("%s")) {' % d['type'])
+                    indent += 4
+                    writeln("auto fn = [](){")
+                    indent += 4
+                    if 1:
+                        writeln("for (const auto& s: testdata) {")
                         indent += 4
-                        writeln("auto fn = [&testdata]() {")
-                        indent += 4
-                        if 1:
-                            writeln("for (const auto& s: testdata) {")
-                            indent += 4
-                            writeln("total += %s(s);" % d['name'])
-                            indent -= 4
-                            writeln("}")
-                        indent -= 4
-                        writeln("};")
-                        writeln('BEST_TIME(/*pre*/, fn(), "%s", repeat, testdata.size());' % d['name'])
+                        writeln("total += %s(s);" % d['name'])
                         indent -= 4
                         writeln("}")
+                    indent -= 4
+                    writeln("};")
+                    writeln('BEST_TIME(/*pre*/, fn(), "%s", repeat, testdata.size());' % d['name'])
+                    indent -= 4
+                    writeln("}")
+        indent -= 4
+        writeln("}")
+
+    writeln("")
+    writeln("void benchmark(const Filter& filter) {")
+    indent += 4
+    for ds in sorted(testdata):
+        writeln("benchmark_%s(filter);" % ds.replace('-', '_'))
+    indent -= 4
     writeln("}")
 
 

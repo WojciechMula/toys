@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_jscript_hash1, dataset=jscript, hash=hash1
+//lookup: name=lookup_jscript_hash1, dataset=jscript, type=hash, hash=hash1
 int lookup_jscript_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 87) * 2;
     static std::string_view lookup[174] = {
@@ -362,7 +362,7 @@ int lookup_jscript_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_jscript_hash1, dataset=jscript, hash=hash1
+//check: name=check_jscript_hash1, dataset=jscript, type=hash, hash=hash1
 void check_jscript_hash1() {
     assert(lookup_jscript_hash1("transient") == 46);
     assert(lookup_jscript_hash1("var") == 49);
@@ -419,7 +419,7 @@ void check_jscript_hash1() {
     assert(lookup_jscript_hash1("true") == 47);
 }
 
-//lookup: name=lookup_jscript_hash2, dataset=jscript, hash=hash2
+//lookup: name=lookup_jscript_hash2, dataset=jscript, type=hash, hash=hash2
 int lookup_jscript_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 88) * 2;
     static std::string_view lookup[176] = {
@@ -786,7 +786,7 @@ int lookup_jscript_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_jscript_hash2, dataset=jscript, hash=hash2
+//check: name=check_jscript_hash2, dataset=jscript, type=hash, hash=hash2
 void check_jscript_hash2() {
     assert(lookup_jscript_hash2("transient") == 46);
     assert(lookup_jscript_hash2("false") == 15);
@@ -843,7 +843,7 @@ void check_jscript_hash2() {
     assert(lookup_jscript_hash2("switch") == 41);
 }
 
-//lookup: name=lookup_jscript_hash3, dataset=jscript, hash=hash3
+//lookup: name=lookup_jscript_hash3, dataset=jscript, type=hash, hash=hash3
 int lookup_jscript_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 392) * 1;
     static std::string_view lookup[392] = {
@@ -1642,7 +1642,7 @@ int lookup_jscript_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_jscript_hash3, dataset=jscript, hash=hash3
+//check: name=check_jscript_hash3, dataset=jscript, type=hash, hash=hash3
 void check_jscript_hash3() {
     assert(lookup_jscript_hash3("synchronized") == 42);
     assert(lookup_jscript_hash3("double") == 12);
@@ -1699,7 +1699,7 @@ void check_jscript_hash3() {
     assert(lookup_jscript_hash3("char") == 6);
 }
 
-//lookup: name=lookup_jscript_hash_sum0, dataset=jscript, hash=hash_sum0
+//lookup: name=lookup_jscript_hash_sum0, dataset=jscript, type=hash, hash=hash_sum0
 int lookup_jscript_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 87) * 2;
     static std::string_view lookup[174] = {
@@ -2062,7 +2062,7 @@ int lookup_jscript_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_jscript_hash_sum0, dataset=jscript, hash=hash_sum0
+//check: name=check_jscript_hash_sum0, dataset=jscript, type=hash, hash=hash_sum0
 void check_jscript_hash_sum0() {
     assert(lookup_jscript_hash_sum0("final") == 16);
     assert(lookup_jscript_hash_sum0("function") == 20);
@@ -2119,7 +2119,7 @@ void check_jscript_hash_sum0() {
     assert(lookup_jscript_hash_sum0("void") == 50);
 }
 
-//lookup: name=lookup_jscript_hash_sumN, dataset=jscript, hash=hash_sumN
+//lookup: name=lookup_jscript_hash_sumN, dataset=jscript, type=hash, hash=hash_sumN
 int lookup_jscript_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 70) * 2;
     static std::string_view lookup[140] = {
@@ -2414,7 +2414,7 @@ int lookup_jscript_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_jscript_hash_sumN, dataset=jscript, hash=hash_sumN
+//check: name=check_jscript_hash_sumN, dataset=jscript, type=hash, hash=hash_sumN
 void check_jscript_hash_sumN() {
     assert(lookup_jscript_hash_sumN("extends") == 14);
     assert(lookup_jscript_hash_sumN("private") == 34);
@@ -2471,7 +2471,7 @@ void check_jscript_hash_sumN() {
     assert(lookup_jscript_hash_sumN("protected") == 35);
 }
 
-//lookup: name=lookup_jscript_hash_djb2, dataset=jscript, hash=hash_djb2
+//lookup: name=lookup_jscript_hash_djb2, dataset=jscript, type=hash, hash=hash_djb2
 int lookup_jscript_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 310) * 1;
     static std::string_view lookup[310] = {
@@ -3106,7 +3106,7 @@ int lookup_jscript_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_jscript_hash_djb2, dataset=jscript, hash=hash_djb2
+//check: name=check_jscript_hash_djb2, dataset=jscript, type=hash, hash=hash_djb2
 void check_jscript_hash_djb2() {
     assert(lookup_jscript_hash_djb2("double") == 12);
     assert(lookup_jscript_hash_djb2("true") == 47);
@@ -3163,7 +3163,7 @@ void check_jscript_hash_djb2() {
     assert(lookup_jscript_hash_djb2("public") == 36);
 }
 
-//lookup: name=lookup_jscript_hash_sdb, dataset=jscript, hash=hash_sdb
+//lookup: name=lookup_jscript_hash_sdb, dataset=jscript, type=hash, hash=hash_sdb
 int lookup_jscript_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 390) * 1;
     static std::string_view lookup[390] = {
@@ -3958,7 +3958,7 @@ int lookup_jscript_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_jscript_hash_sdb, dataset=jscript, hash=hash_sdb
+//check: name=check_jscript_hash_sdb, dataset=jscript, type=hash, hash=hash_sdb
 void check_jscript_hash_sdb() {
     assert(lookup_jscript_hash_sdb("extends") == 14);
     assert(lookup_jscript_hash_sdb("new") == 31);

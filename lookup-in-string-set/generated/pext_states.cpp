@@ -1,5 +1,5 @@
-//lookup: name=lookup_states, dataset=states
-int lookup_states(std::string_view s) {
+//lookup: name=lookup_states_pext, type=pext, dataset=states
+int lookup_states_pext(std::string_view s) {
     switch (s.size()) {
         case 4: {
             static char lookup[4][4] = {
@@ -340,57 +340,57 @@ int lookup_states(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_states, dataset=states
-void check_states() {
-    assert(lookup_states("LOUISIANA") == 17);
-    assert(lookup_states("MINNESOTA") == 22);
-    assert(lookup_states("TENNESSEE") == 41);
-    assert(lookup_states("WISCONSIN") == 48);
-    assert(lookup_states("ARKANSAS") == 3);
-    assert(lookup_states("COLORADO") == 5);
-    assert(lookup_states("DELAWARE") == 7);
-    assert(lookup_states("ILLINOIS") == 12);
-    assert(lookup_states("KENTUCKY") == 16);
-    assert(lookup_states("MARYLAND") == 19);
-    assert(lookup_states("MICHIGAN") == 21);
-    assert(lookup_states("MISSOURI") == 24);
-    assert(lookup_states("NEBRASKA") == 26);
-    assert(lookup_states("NEW YORK") == 31);
-    assert(lookup_states("OKLAHOMA") == 35);
-    assert(lookup_states("VIRGINIA") == 45);
-    assert(lookup_states("CALIFORNIA") == 4);
-    assert(lookup_states("NEW JERSEY") == 29);
-    assert(lookup_states("NEW MEXICO") == 30);
-    assert(lookup_states("WASHINGTON") == 46);
-    assert(lookup_states("IOWA") == 14);
-    assert(lookup_states("OHIO") == 34);
-    assert(lookup_states("UTAH") == 43);
-    assert(lookup_states("MASSACHUSETTS") == 20);
-    assert(lookup_states("NEW HAMPSHIRE") == 28);
-    assert(lookup_states("WEST VIRGINIA") == 47);
-    assert(lookup_states("NORTH CAROLINA") == 32);
-    assert(lookup_states("SOUTH CAROLINA") == 39);
-    assert(lookup_states("NORTH DAKOTA") == 33);
-    assert(lookup_states("PENNSYLVANIA") == 37);
-    assert(lookup_states("RHODE ISLAND") == 38);
-    assert(lookup_states("SOUTH DAKOTA") == 40);
-    assert(lookup_states("CONNECTICUT") == 6);
-    assert(lookup_states("MISSISSIPPI") == 23);
-    assert(lookup_states("IDAHO") == 11);
-    assert(lookup_states("MAINE") == 18);
-    assert(lookup_states("TEXAS") == 42);
-    assert(lookup_states("ALABAMA") == 0);
-    assert(lookup_states("ARIZONA") == 2);
-    assert(lookup_states("FLORIDA") == 8);
-    assert(lookup_states("GEORGIA") == 9);
-    assert(lookup_states("INDIANA") == 13);
-    assert(lookup_states("MONTANA") == 25);
-    assert(lookup_states("VERMONT") == 44);
-    assert(lookup_states("WYOMING") == 49);
-    assert(lookup_states("ALASKA") == 1);
-    assert(lookup_states("HAWAII") == 10);
-    assert(lookup_states("KANSAS") == 15);
-    assert(lookup_states("NEVADA") == 27);
-    assert(lookup_states("OREGON") == 36);
+//check: name=check_states_pext, type=pext, dataset=states
+void check_states_pext() {
+    assert(lookup_states_pext("CALIFORNIA") == 4);
+    assert(lookup_states_pext("NEW JERSEY") == 29);
+    assert(lookup_states_pext("NEW MEXICO") == 30);
+    assert(lookup_states_pext("WASHINGTON") == 46);
+    assert(lookup_states_pext("ALASKA") == 1);
+    assert(lookup_states_pext("HAWAII") == 10);
+    assert(lookup_states_pext("KANSAS") == 15);
+    assert(lookup_states_pext("NEVADA") == 27);
+    assert(lookup_states_pext("OREGON") == 36);
+    assert(lookup_states_pext("IOWA") == 14);
+    assert(lookup_states_pext("OHIO") == 34);
+    assert(lookup_states_pext("UTAH") == 43);
+    assert(lookup_states_pext("LOUISIANA") == 17);
+    assert(lookup_states_pext("MINNESOTA") == 22);
+    assert(lookup_states_pext("TENNESSEE") == 41);
+    assert(lookup_states_pext("WISCONSIN") == 48);
+    assert(lookup_states_pext("NORTH DAKOTA") == 33);
+    assert(lookup_states_pext("PENNSYLVANIA") == 37);
+    assert(lookup_states_pext("RHODE ISLAND") == 38);
+    assert(lookup_states_pext("SOUTH DAKOTA") == 40);
+    assert(lookup_states_pext("ALABAMA") == 0);
+    assert(lookup_states_pext("ARIZONA") == 2);
+    assert(lookup_states_pext("FLORIDA") == 8);
+    assert(lookup_states_pext("GEORGIA") == 9);
+    assert(lookup_states_pext("INDIANA") == 13);
+    assert(lookup_states_pext("MONTANA") == 25);
+    assert(lookup_states_pext("VERMONT") == 44);
+    assert(lookup_states_pext("WYOMING") == 49);
+    assert(lookup_states_pext("CONNECTICUT") == 6);
+    assert(lookup_states_pext("MISSISSIPPI") == 23);
+    assert(lookup_states_pext("MASSACHUSETTS") == 20);
+    assert(lookup_states_pext("NEW HAMPSHIRE") == 28);
+    assert(lookup_states_pext("WEST VIRGINIA") == 47);
+    assert(lookup_states_pext("ARKANSAS") == 3);
+    assert(lookup_states_pext("COLORADO") == 5);
+    assert(lookup_states_pext("DELAWARE") == 7);
+    assert(lookup_states_pext("ILLINOIS") == 12);
+    assert(lookup_states_pext("KENTUCKY") == 16);
+    assert(lookup_states_pext("MARYLAND") == 19);
+    assert(lookup_states_pext("MICHIGAN") == 21);
+    assert(lookup_states_pext("MISSOURI") == 24);
+    assert(lookup_states_pext("NEBRASKA") == 26);
+    assert(lookup_states_pext("NEW YORK") == 31);
+    assert(lookup_states_pext("OKLAHOMA") == 35);
+    assert(lookup_states_pext("VIRGINIA") == 45);
+    assert(lookup_states_pext("IDAHO") == 11);
+    assert(lookup_states_pext("MAINE") == 18);
+    assert(lookup_states_pext("TEXAS") == 42);
+    assert(lookup_states_pext("NORTH CAROLINA") == 32);
+    assert(lookup_states_pext("SOUTH CAROLINA") == 39);
 }
 

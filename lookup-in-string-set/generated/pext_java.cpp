@@ -1,5 +1,5 @@
-//lookup: name=lookup_java, dataset=java
-int lookup_java(std::string_view s) {
+//lookup: name=lookup_java_pext, type=pext, dataset=java
+int lookup_java_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
             if (s == "if") {
@@ -367,54 +367,54 @@ int lookup_java(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_java, dataset=java
-void check_java() {
-    assert(lookup_java("default") == 1);
-    assert(lookup_java("private") == 3);
-    assert(lookup_java("boolean") == 5);
-    assert(lookup_java("extends") == 21);
-    assert(lookup_java("finally") == 31);
-    assert(lookup_java("package") == 45);
-    assert(lookup_java("implements") == 7);
-    assert(lookup_java("instanceof") == 17);
-    assert(lookup_java("protected") == 8);
-    assert(lookup_java("transient") == 14);
-    assert(lookup_java("interface") == 27);
-    assert(lookup_java("throws") == 9);
-    assert(lookup_java("double") == 11);
-    assert(lookup_java("import") == 12);
-    assert(lookup_java("public") == 13);
-    assert(lookup_java("return") == 18);
-    assert(lookup_java("static") == 28);
-    assert(lookup_java("native") == 37);
-    assert(lookup_java("switch") == 38);
-    assert(lookup_java("synchronized") == 42);
-    assert(lookup_java("abstract") == 0);
-    assert(lookup_java("volatile") == 29);
-    assert(lookup_java("continue") == 43);
-    assert(lookup_java("if") == 2);
-    assert(lookup_java("do") == 6);
-    assert(lookup_java("throw") == 4);
-    assert(lookup_java("break") == 10);
-    assert(lookup_java("short") == 23);
-    assert(lookup_java("catch") == 25);
-    assert(lookup_java("final") == 26);
-    assert(lookup_java("super") == 33);
-    assert(lookup_java("while") == 34);
-    assert(lookup_java("class") == 35);
-    assert(lookup_java("float") == 36);
-    assert(lookup_java("const") == 39);
-    assert(lookup_java("byte") == 15);
-    assert(lookup_java("else") == 16);
-    assert(lookup_java("case") == 20);
-    assert(lookup_java("void") == 24);
-    assert(lookup_java("char") == 30);
-    assert(lookup_java("long") == 32);
-    assert(lookup_java("goto") == 44);
-    assert(lookup_java("this") == 46);
-    assert(lookup_java("try") == 19);
-    assert(lookup_java("int") == 22);
-    assert(lookup_java("for") == 40);
-    assert(lookup_java("new") == 41);
+//check: name=check_java_pext, type=pext, dataset=java
+void check_java_pext() {
+    assert(lookup_java_pext("if") == 2);
+    assert(lookup_java_pext("do") == 6);
+    assert(lookup_java_pext("throw") == 4);
+    assert(lookup_java_pext("break") == 10);
+    assert(lookup_java_pext("short") == 23);
+    assert(lookup_java_pext("catch") == 25);
+    assert(lookup_java_pext("final") == 26);
+    assert(lookup_java_pext("super") == 33);
+    assert(lookup_java_pext("while") == 34);
+    assert(lookup_java_pext("class") == 35);
+    assert(lookup_java_pext("float") == 36);
+    assert(lookup_java_pext("const") == 39);
+    assert(lookup_java_pext("throws") == 9);
+    assert(lookup_java_pext("double") == 11);
+    assert(lookup_java_pext("import") == 12);
+    assert(lookup_java_pext("public") == 13);
+    assert(lookup_java_pext("return") == 18);
+    assert(lookup_java_pext("static") == 28);
+    assert(lookup_java_pext("native") == 37);
+    assert(lookup_java_pext("switch") == 38);
+    assert(lookup_java_pext("byte") == 15);
+    assert(lookup_java_pext("else") == 16);
+    assert(lookup_java_pext("case") == 20);
+    assert(lookup_java_pext("void") == 24);
+    assert(lookup_java_pext("char") == 30);
+    assert(lookup_java_pext("long") == 32);
+    assert(lookup_java_pext("goto") == 44);
+    assert(lookup_java_pext("this") == 46);
+    assert(lookup_java_pext("abstract") == 0);
+    assert(lookup_java_pext("volatile") == 29);
+    assert(lookup_java_pext("continue") == 43);
+    assert(lookup_java_pext("default") == 1);
+    assert(lookup_java_pext("private") == 3);
+    assert(lookup_java_pext("boolean") == 5);
+    assert(lookup_java_pext("extends") == 21);
+    assert(lookup_java_pext("finally") == 31);
+    assert(lookup_java_pext("package") == 45);
+    assert(lookup_java_pext("protected") == 8);
+    assert(lookup_java_pext("transient") == 14);
+    assert(lookup_java_pext("interface") == 27);
+    assert(lookup_java_pext("implements") == 7);
+    assert(lookup_java_pext("instanceof") == 17);
+    assert(lookup_java_pext("try") == 19);
+    assert(lookup_java_pext("int") == 22);
+    assert(lookup_java_pext("for") == 40);
+    assert(lookup_java_pext("new") == 41);
+    assert(lookup_java_pext("synchronized") == 42);
 }
 

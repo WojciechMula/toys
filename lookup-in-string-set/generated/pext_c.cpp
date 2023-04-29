@@ -1,5 +1,5 @@
-//lookup: name=lookup_c, dataset=c
-int lookup_c(std::string_view s) {
+//lookup: name=lookup_c_pext, type=pext, dataset=c
+int lookup_c_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
             if (s == "if") {
@@ -197,39 +197,39 @@ int lookup_c(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_c, dataset=c
-void check_c() {
-    assert(lookup_c("typedef") == 26);
-    assert(lookup_c("default") == 27);
-    assert(lookup_c("unsigned") == 28);
-    assert(lookup_c("continue") == 29);
-    assert(lookup_c("register") == 30);
-    assert(lookup_c("volatile") == 31);
-    assert(lookup_c("if") == 0);
-    assert(lookup_c("do") == 1);
-    assert(lookup_c("int") == 2);
-    assert(lookup_c("for") == 3);
-    assert(lookup_c("case") == 4);
-    assert(lookup_c("char") == 5);
-    assert(lookup_c("auto") == 6);
-    assert(lookup_c("goto") == 7);
-    assert(lookup_c("else") == 8);
-    assert(lookup_c("long") == 9);
-    assert(lookup_c("void") == 10);
-    assert(lookup_c("enum") == 11);
-    assert(lookup_c("float") == 12);
-    assert(lookup_c("short") == 13);
-    assert(lookup_c("union") == 14);
-    assert(lookup_c("break") == 15);
-    assert(lookup_c("while") == 16);
-    assert(lookup_c("const") == 17);
-    assert(lookup_c("double") == 18);
-    assert(lookup_c("static") == 19);
-    assert(lookup_c("extern") == 20);
-    assert(lookup_c("struct") == 21);
-    assert(lookup_c("return") == 22);
-    assert(lookup_c("sizeof") == 23);
-    assert(lookup_c("switch") == 24);
-    assert(lookup_c("signed") == 25);
+//check: name=check_c_pext, type=pext, dataset=c
+void check_c_pext() {
+    assert(lookup_c_pext("double") == 18);
+    assert(lookup_c_pext("static") == 19);
+    assert(lookup_c_pext("extern") == 20);
+    assert(lookup_c_pext("struct") == 21);
+    assert(lookup_c_pext("return") == 22);
+    assert(lookup_c_pext("sizeof") == 23);
+    assert(lookup_c_pext("switch") == 24);
+    assert(lookup_c_pext("signed") == 25);
+    assert(lookup_c_pext("typedef") == 26);
+    assert(lookup_c_pext("default") == 27);
+    assert(lookup_c_pext("unsigned") == 28);
+    assert(lookup_c_pext("continue") == 29);
+    assert(lookup_c_pext("register") == 30);
+    assert(lookup_c_pext("volatile") == 31);
+    assert(lookup_c_pext("if") == 0);
+    assert(lookup_c_pext("do") == 1);
+    assert(lookup_c_pext("int") == 2);
+    assert(lookup_c_pext("for") == 3);
+    assert(lookup_c_pext("case") == 4);
+    assert(lookup_c_pext("char") == 5);
+    assert(lookup_c_pext("auto") == 6);
+    assert(lookup_c_pext("goto") == 7);
+    assert(lookup_c_pext("else") == 8);
+    assert(lookup_c_pext("long") == 9);
+    assert(lookup_c_pext("void") == 10);
+    assert(lookup_c_pext("enum") == 11);
+    assert(lookup_c_pext("float") == 12);
+    assert(lookup_c_pext("short") == 13);
+    assert(lookup_c_pext("union") == 14);
+    assert(lookup_c_pext("break") == 15);
+    assert(lookup_c_pext("while") == 16);
+    assert(lookup_c_pext("const") == 17);
 }
 

@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_java_hash1, dataset=java, hash=hash1
+//lookup: name=lookup_java_hash1, dataset=java, type=hash, hash=hash1
 int lookup_java_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 97) * 2;
     static std::string_view lookup[194] = {
@@ -402,7 +402,7 @@ int lookup_java_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_java_hash1, dataset=java, hash=hash1
+//check: name=check_java_hash1, dataset=java, type=hash, hash=hash1
 void check_java_hash1() {
     assert(lookup_java_hash1("boolean") == 5);
     assert(lookup_java_hash1("class") == 35);
@@ -453,7 +453,7 @@ void check_java_hash1() {
     assert(lookup_java_hash1("void") == 24);
 }
 
-//lookup: name=lookup_java_hash2, dataset=java, hash=hash2
+//lookup: name=lookup_java_hash2, dataset=java, type=hash, hash=hash2
 int lookup_java_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 65) * 2;
     static std::string_view lookup[130] = {
@@ -728,7 +728,7 @@ int lookup_java_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_java_hash2, dataset=java, hash=hash2
+//check: name=check_java_hash2, dataset=java, type=hash, hash=hash2
 void check_java_hash2() {
     assert(lookup_java_hash2("else") == 16);
     assert(lookup_java_hash2("interface") == 27);
@@ -779,7 +779,7 @@ void check_java_hash2() {
     assert(lookup_java_hash2("try") == 19);
 }
 
-//lookup: name=lookup_java_hash3, dataset=java, hash=hash3
+//lookup: name=lookup_java_hash3, dataset=java, type=hash, hash=hash3
 int lookup_java_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 328) * 1;
     static std::string_view lookup[328] = {
@@ -1450,7 +1450,7 @@ int lookup_java_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_java_hash3, dataset=java, hash=hash3
+//check: name=check_java_hash3, dataset=java, type=hash, hash=hash3
 void check_java_hash3() {
     assert(lookup_java_hash3("abstract") == 0);
     assert(lookup_java_hash3("new") == 41);
@@ -1501,7 +1501,7 @@ void check_java_hash3() {
     assert(lookup_java_hash3("boolean") == 5);
 }
 
-//lookup: name=lookup_java_hash_sum0, dataset=java, hash=hash_sum0
+//lookup: name=lookup_java_hash_sum0, dataset=java, type=hash, hash=hash_sum0
 int lookup_java_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 56) * 2;
     static std::string_view lookup[112] = {
@@ -1740,7 +1740,7 @@ int lookup_java_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_java_hash_sum0, dataset=java, hash=hash_sum0
+//check: name=check_java_hash_sum0, dataset=java, type=hash, hash=hash_sum0
 void check_java_hash_sum0() {
     assert(lookup_java_hash_sum0("return") == 18);
     assert(lookup_java_hash_sum0("short") == 23);
@@ -1791,7 +1791,7 @@ void check_java_hash_sum0() {
     assert(lookup_java_hash_sum0("super") == 33);
 }
 
-//lookup: name=lookup_java_hash_sumN, dataset=java, hash=hash_sumN
+//lookup: name=lookup_java_hash_sumN, dataset=java, type=hash, hash=hash_sumN
 int lookup_java_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 63) * 2;
     static std::string_view lookup[126] = {
@@ -2058,7 +2058,7 @@ int lookup_java_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_java_hash_sumN, dataset=java, hash=hash_sumN
+//check: name=check_java_hash_sumN, dataset=java, type=hash, hash=hash_sumN
 void check_java_hash_sumN() {
     assert(lookup_java_hash_sumN("synchronized") == 42);
     assert(lookup_java_hash_sumN("throw") == 4);
@@ -2109,7 +2109,7 @@ void check_java_hash_sumN() {
     assert(lookup_java_hash_sumN("byte") == 15);
 }
 
-//lookup: name=lookup_java_hash_djb2, dataset=java, hash=hash_djb2
+//lookup: name=lookup_java_hash_djb2, dataset=java, type=hash, hash=hash_djb2
 int lookup_java_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 230) * 1;
     static std::string_view lookup[230] = {
@@ -2584,7 +2584,7 @@ int lookup_java_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_java_hash_djb2, dataset=java, hash=hash_djb2
+//check: name=check_java_hash_djb2, dataset=java, type=hash, hash=hash_djb2
 void check_java_hash_djb2() {
     assert(lookup_java_hash_djb2("static") == 28);
     assert(lookup_java_hash_djb2("double") == 11);
@@ -2635,7 +2635,7 @@ void check_java_hash_djb2() {
     assert(lookup_java_hash_djb2("final") == 26);
 }
 
-//lookup: name=lookup_java_hash_sdb, dataset=java, hash=hash_sdb
+//lookup: name=lookup_java_hash_sdb, dataset=java, type=hash, hash=hash_sdb
 int lookup_java_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 365) * 1;
     static std::string_view lookup[365] = {
@@ -3380,7 +3380,7 @@ int lookup_java_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_java_hash_sdb, dataset=java, hash=hash_sdb
+//check: name=check_java_hash_sdb, dataset=java, type=hash, hash=hash_sdb
 void check_java_hash_sdb() {
     assert(lookup_java_hash_sdb("interface") == 27);
     assert(lookup_java_hash_sdb("else") == 16);

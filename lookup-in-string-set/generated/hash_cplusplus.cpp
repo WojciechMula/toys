@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_cplusplus_hash1, dataset=cplusplus, hash=hash1
+//lookup: name=lookup_cplusplus_hash1, dataset=cplusplus, type=hash, hash=hash1
 int lookup_cplusplus_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 127) * 4;
     static std::string_view lookup[508] = {
@@ -1030,7 +1030,7 @@ int lookup_cplusplus_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cplusplus_hash1, dataset=cplusplus, hash=hash1
+//check: name=check_cplusplus_hash1, dataset=cplusplus, type=hash, hash=hash1
 void check_cplusplus_hash1() {
     assert(lookup_cplusplus_hash1("static_cast") == 85);
     assert(lookup_cplusplus_hash1("xor_eq") == 105);
@@ -1140,7 +1140,7 @@ void check_cplusplus_hash1() {
     assert(lookup_cplusplus_hash1("false") == 56);
 }
 
-//lookup: name=lookup_cplusplus_hash2, dataset=cplusplus, hash=hash2
+//lookup: name=lookup_cplusplus_hash2, dataset=cplusplus, type=hash, hash=hash2
 int lookup_cplusplus_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 109) * 3;
     static std::string_view lookup[327] = {
@@ -1809,7 +1809,7 @@ int lookup_cplusplus_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cplusplus_hash2, dataset=cplusplus, hash=hash2
+//check: name=check_cplusplus_hash2, dataset=cplusplus, type=hash, hash=hash2
 void check_cplusplus_hash2() {
     assert(lookup_cplusplus_hash2("asm") == 30);
     assert(lookup_cplusplus_hash2("namespace") == 66);
@@ -1919,7 +1919,7 @@ void check_cplusplus_hash2() {
     assert(lookup_cplusplus_hash2("virtual") == 100);
 }
 
-//lookup: name=lookup_cplusplus_hash3, dataset=cplusplus, hash=hash3
+//lookup: name=lookup_cplusplus_hash3, dataset=cplusplus, type=hash, hash=hash3
 int lookup_cplusplus_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 132) * 3;
     static std::string_view lookup[396] = {
@@ -2726,7 +2726,7 @@ int lookup_cplusplus_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cplusplus_hash3, dataset=cplusplus, hash=hash3
+//check: name=check_cplusplus_hash3, dataset=cplusplus, type=hash, hash=hash3
 void check_cplusplus_hash3() {
     assert(lookup_cplusplus_hash3("compl") == 42);
     assert(lookup_cplusplus_hash3("throw") == 90);
@@ -2836,7 +2836,7 @@ void check_cplusplus_hash3() {
     assert(lookup_cplusplus_hash3("signed") == 81);
 }
 
-//lookup: name=lookup_cplusplus_hash_sum0, dataset=cplusplus, hash=hash_sum0
+//lookup: name=lookup_cplusplus_hash_sum0, dataset=cplusplus, type=hash, hash=hash_sum0
 int lookup_cplusplus_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 116) * 3;
     static std::string_view lookup[348] = {
@@ -3547,7 +3547,7 @@ int lookup_cplusplus_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cplusplus_hash_sum0, dataset=cplusplus, hash=hash_sum0
+//check: name=check_cplusplus_hash_sum0, dataset=cplusplus, type=hash, hash=hash_sum0
 void check_cplusplus_hash_sum0() {
     assert(lookup_cplusplus_hash_sum0("__const__") == 9);
     assert(lookup_cplusplus_hash_sum0("try") == 92);
@@ -3657,7 +3657,7 @@ void check_cplusplus_hash_sum0() {
     assert(lookup_cplusplus_hash_sum0("__typeof__") == 26);
 }
 
-//lookup: name=lookup_cplusplus_hash_sumN, dataset=cplusplus, hash=hash_sumN
+//lookup: name=lookup_cplusplus_hash_sumN, dataset=cplusplus, type=hash, hash=hash_sumN
 int lookup_cplusplus_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 117) * 3;
     static std::string_view lookup[351] = {
@@ -4374,7 +4374,7 @@ int lookup_cplusplus_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cplusplus_hash_sumN, dataset=cplusplus, hash=hash_sumN
+//check: name=check_cplusplus_hash_sumN, dataset=cplusplus, type=hash, hash=hash_sumN
 void check_cplusplus_hash_sumN() {
     assert(lookup_cplusplus_hash_sumN("__typeof__") == 26);
     assert(lookup_cplusplus_hash_sumN("try") == 92);
@@ -4484,7 +4484,7 @@ void check_cplusplus_hash_sumN() {
     assert(lookup_cplusplus_hash_sumN("__alignof") == 0);
 }
 
-//lookup: name=lookup_cplusplus_hash_djb2, dataset=cplusplus, hash=hash_djb2
+//lookup: name=lookup_cplusplus_hash_djb2, dataset=cplusplus, type=hash, hash=hash_djb2
 int lookup_cplusplus_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 677) * 1;
     static std::string_view lookup[677] = {
@@ -5853,7 +5853,7 @@ int lookup_cplusplus_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cplusplus_hash_djb2, dataset=cplusplus, hash=hash_djb2
+//check: name=check_cplusplus_hash_djb2, dataset=cplusplus, type=hash, hash=hash_djb2
 void check_cplusplus_hash_djb2() {
     assert(lookup_cplusplus_hash_djb2("sizeof") == 83);
     assert(lookup_cplusplus_hash_djb2("void") == 101);
@@ -5963,7 +5963,7 @@ void check_cplusplus_hash_djb2() {
     assert(lookup_cplusplus_hash_djb2("float") == 57);
 }
 
-//lookup: name=lookup_cplusplus_hash_sdb, dataset=cplusplus, hash=hash_sdb
+//lookup: name=lookup_cplusplus_hash_sdb, dataset=cplusplus, type=hash, hash=hash_sdb
 int lookup_cplusplus_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 997) * 1;
     static std::string_view lookup[997] = {
@@ -7972,7 +7972,7 @@ int lookup_cplusplus_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_cplusplus_hash_sdb, dataset=cplusplus, hash=hash_sdb
+//check: name=check_cplusplus_hash_sdb, dataset=cplusplus, type=hash, hash=hash_sdb
 void check_cplusplus_hash_sdb() {
     assert(lookup_cplusplus_hash_sdb("union") == 97);
     assert(lookup_cplusplus_hash_sdb("__attribute") == 4);

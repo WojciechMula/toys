@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_modula_hash1, dataset=modula, hash=hash1
+//lookup: name=lookup_modula_hash1, dataset=modula, type=hash, hash=hash1
 int lookup_modula_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 97) * 2;
     static std::string_view lookup[194] = {
@@ -402,7 +402,7 @@ int lookup_modula_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_modula_hash1, dataset=modula, hash=hash1
+//check: name=check_modula_hash1, dataset=modula, type=hash, hash=hash1
 void check_modula_hash1() {
     assert(lookup_modula_hash1("NOT") == 29);
     assert(lookup_modula_hash1("DO") == 8);
@@ -459,7 +459,7 @@ void check_modula_hash1() {
     assert(lookup_modula_hash1("VALUE") == 49);
 }
 
-//lookup: name=lookup_modula_hash2, dataset=modula, hash=hash2
+//lookup: name=lookup_modula_hash2, dataset=modula, type=hash, hash=hash2
 int lookup_modula_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 111) * 2;
     static std::string_view lookup[222] = {
@@ -918,7 +918,7 @@ int lookup_modula_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_modula_hash2, dataset=modula, hash=hash2
+//check: name=check_modula_hash2, dataset=modula, type=hash, hash=hash2
 void check_modula_hash2() {
     assert(lookup_modula_hash2("IF") == 20);
     assert(lookup_modula_hash2("NOT") == 29);
@@ -975,7 +975,7 @@ void check_modula_hash2() {
     assert(lookup_modula_hash2("ELSE") == 9);
 }
 
-//lookup: name=lookup_modula_hash3, dataset=modula, hash=hash3
+//lookup: name=lookup_modula_hash3, dataset=modula, type=hash, hash=hash3
 int lookup_modula_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 351) * 1;
     static std::string_view lookup[351] = {
@@ -1692,7 +1692,7 @@ int lookup_modula_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_modula_hash3, dataset=modula, hash=hash3
+//check: name=check_modula_hash3, dataset=modula, type=hash, hash=hash3
 void check_modula_hash3() {
     assert(lookup_modula_hash3("METHODS") == 26);
     assert(lookup_modula_hash3("END") == 11);
@@ -1749,7 +1749,7 @@ void check_modula_hash3() {
     assert(lookup_modula_hash3("VALUE") == 49);
 }
 
-//lookup: name=lookup_modula_hash_sum0, dataset=modula, hash=hash_sum0
+//lookup: name=lookup_modula_hash_sum0, dataset=modula, type=hash, hash=hash_sum0
 int lookup_modula_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 87) * 2;
     static std::string_view lookup[174] = {
@@ -2112,7 +2112,7 @@ int lookup_modula_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_modula_hash_sum0, dataset=modula, hash=hash_sum0
+//check: name=check_modula_hash_sum0, dataset=modula, type=hash, hash=hash_sum0
 void check_modula_hash_sum0() {
     assert(lookup_modula_hash_sum0("OBJECT") == 30);
     assert(lookup_modula_hash_sum0("FINALLY") == 17);
@@ -2169,7 +2169,7 @@ void check_modula_hash_sum0() {
     assert(lookup_modula_hash_sum0("TYPECASE") == 45);
 }
 
-//lookup: name=lookup_modula_hash_sumN, dataset=modula, hash=hash_sumN
+//lookup: name=lookup_modula_hash_sumN, dataset=modula, type=hash, hash=hash_sumN
 int lookup_modula_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 88) * 2;
     static std::string_view lookup[176] = {
@@ -2536,7 +2536,7 @@ int lookup_modula_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_modula_hash_sumN, dataset=modula, hash=hash_sumN
+//check: name=check_modula_hash_sumN, dataset=modula, type=hash, hash=hash_sumN
 void check_modula_hash_sumN() {
     assert(lookup_modula_hash_sumN("OBJECT") == 30);
     assert(lookup_modula_hash_sumN("FINALLY") == 17);
@@ -2593,7 +2593,7 @@ void check_modula_hash_sumN() {
     assert(lookup_modula_hash_sumN("TYPECASE") == 45);
 }
 
-//lookup: name=lookup_modula_hash_djb2, dataset=modula, hash=hash_djb2
+//lookup: name=lookup_modula_hash_djb2, dataset=modula, type=hash, hash=hash_djb2
 int lookup_modula_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 349) * 1;
     static std::string_view lookup[349] = {
@@ -3306,7 +3306,7 @@ int lookup_modula_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_modula_hash_djb2, dataset=modula, hash=hash_djb2
+//check: name=check_modula_hash_djb2, dataset=modula, type=hash, hash=hash_djb2
 void check_modula_hash_djb2() {
     assert(lookup_modula_hash_djb2("RAISES") == 34);
     assert(lookup_modula_hash_djb2("INTERFACE") == 22);
@@ -3363,7 +3363,7 @@ void check_modula_hash_djb2() {
     assert(lookup_modula_hash_djb2("REPEAT") == 38);
 }
 
-//lookup: name=lookup_modula_hash_sdb, dataset=modula, hash=hash_sdb
+//lookup: name=lookup_modula_hash_sdb, dataset=modula, type=hash, hash=hash_sdb
 int lookup_modula_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 297) * 1;
     static std::string_view lookup[297] = {
@@ -3972,7 +3972,7 @@ int lookup_modula_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_modula_hash_sdb, dataset=modula, hash=hash_sdb
+//check: name=check_modula_hash_sdb, dataset=modula, type=hash, hash=hash_sdb
 void check_modula_hash_sdb() {
     assert(lookup_modula_hash_sdb("LOCK") == 25);
     assert(lookup_modula_hash_sdb("THEN") == 41);

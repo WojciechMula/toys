@@ -1,4 +1,3 @@
 main
 unittest
 benchmark
-testdata/*.txt

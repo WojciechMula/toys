@@ -1,5 +1,5 @@
-//lookup: name=lookup_jscript, dataset=jscript
-int lookup_jscript(std::string_view s) {
+//lookup: name=lookup_jscript_pext, type=pext, dataset=jscript
+int lookup_jscript_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
             static char lookup[4][2] = {
@@ -386,60 +386,60 @@ int lookup_jscript(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_jscript, dataset=jscript
-void check_jscript() {
-    assert(lookup_jscript("byte") == 3);
-    assert(lookup_jscript("case") == 4);
-    assert(lookup_jscript("char") == 6);
-    assert(lookup_jscript("else") == 13);
-    assert(lookup_jscript("goto") == 21);
-    assert(lookup_jscript("long") == 29);
-    assert(lookup_jscript("null") == 32);
-    assert(lookup_jscript("this") == 43);
-    assert(lookup_jscript("true") == 47);
-    assert(lookup_jscript("void") == 50);
-    assert(lookup_jscript("with") == 52);
-    assert(lookup_jscript("double") == 12);
-    assert(lookup_jscript("import") == 24);
-    assert(lookup_jscript("native") == 30);
-    assert(lookup_jscript("public") == 36);
-    assert(lookup_jscript("return") == 37);
-    assert(lookup_jscript("static") == 39);
-    assert(lookup_jscript("switch") == 41);
-    assert(lookup_jscript("throws") == 45);
-    assert(lookup_jscript("abstract") == 0);
-    assert(lookup_jscript("continue") == 9);
-    assert(lookup_jscript("function") == 20);
-    assert(lookup_jscript("for") == 19);
-    assert(lookup_jscript("int") == 27);
-    assert(lookup_jscript("new") == 31);
-    assert(lookup_jscript("try") == 48);
-    assert(lookup_jscript("var") == 49);
-    assert(lookup_jscript("implements") == 23);
-    assert(lookup_jscript("instanceof") == 26);
-    assert(lookup_jscript("interface") == 28);
-    assert(lookup_jscript("protected") == 35);
-    assert(lookup_jscript("transient") == 46);
-    assert(lookup_jscript("do") == 11);
-    assert(lookup_jscript("if") == 22);
-    assert(lookup_jscript("in") == 25);
-    assert(lookup_jscript("break") == 2);
-    assert(lookup_jscript("catch") == 5);
-    assert(lookup_jscript("class") == 7);
-    assert(lookup_jscript("const") == 8);
-    assert(lookup_jscript("false") == 15);
-    assert(lookup_jscript("final") == 16);
-    assert(lookup_jscript("float") == 18);
-    assert(lookup_jscript("short") == 38);
-    assert(lookup_jscript("super") == 40);
-    assert(lookup_jscript("throw") == 44);
-    assert(lookup_jscript("while") == 51);
-    assert(lookup_jscript("synchronized") == 42);
-    assert(lookup_jscript("boolean") == 1);
-    assert(lookup_jscript("default") == 10);
-    assert(lookup_jscript("extends") == 14);
-    assert(lookup_jscript("finally") == 17);
-    assert(lookup_jscript("package") == 33);
-    assert(lookup_jscript("private") == 34);
+//check: name=check_jscript_pext, type=pext, dataset=jscript
+void check_jscript_pext() {
+    assert(lookup_jscript_pext("synchronized") == 42);
+    assert(lookup_jscript_pext("abstract") == 0);
+    assert(lookup_jscript_pext("continue") == 9);
+    assert(lookup_jscript_pext("function") == 20);
+    assert(lookup_jscript_pext("for") == 19);
+    assert(lookup_jscript_pext("int") == 27);
+    assert(lookup_jscript_pext("new") == 31);
+    assert(lookup_jscript_pext("try") == 48);
+    assert(lookup_jscript_pext("var") == 49);
+    assert(lookup_jscript_pext("boolean") == 1);
+    assert(lookup_jscript_pext("default") == 10);
+    assert(lookup_jscript_pext("extends") == 14);
+    assert(lookup_jscript_pext("finally") == 17);
+    assert(lookup_jscript_pext("package") == 33);
+    assert(lookup_jscript_pext("private") == 34);
+    assert(lookup_jscript_pext("byte") == 3);
+    assert(lookup_jscript_pext("case") == 4);
+    assert(lookup_jscript_pext("char") == 6);
+    assert(lookup_jscript_pext("else") == 13);
+    assert(lookup_jscript_pext("goto") == 21);
+    assert(lookup_jscript_pext("long") == 29);
+    assert(lookup_jscript_pext("null") == 32);
+    assert(lookup_jscript_pext("this") == 43);
+    assert(lookup_jscript_pext("true") == 47);
+    assert(lookup_jscript_pext("void") == 50);
+    assert(lookup_jscript_pext("with") == 52);
+    assert(lookup_jscript_pext("double") == 12);
+    assert(lookup_jscript_pext("import") == 24);
+    assert(lookup_jscript_pext("native") == 30);
+    assert(lookup_jscript_pext("public") == 36);
+    assert(lookup_jscript_pext("return") == 37);
+    assert(lookup_jscript_pext("static") == 39);
+    assert(lookup_jscript_pext("switch") == 41);
+    assert(lookup_jscript_pext("throws") == 45);
+    assert(lookup_jscript_pext("interface") == 28);
+    assert(lookup_jscript_pext("protected") == 35);
+    assert(lookup_jscript_pext("transient") == 46);
+    assert(lookup_jscript_pext("implements") == 23);
+    assert(lookup_jscript_pext("instanceof") == 26);
+    assert(lookup_jscript_pext("break") == 2);
+    assert(lookup_jscript_pext("catch") == 5);
+    assert(lookup_jscript_pext("class") == 7);
+    assert(lookup_jscript_pext("const") == 8);
+    assert(lookup_jscript_pext("false") == 15);
+    assert(lookup_jscript_pext("final") == 16);
+    assert(lookup_jscript_pext("float") == 18);
+    assert(lookup_jscript_pext("short") == 38);
+    assert(lookup_jscript_pext("super") == 40);
+    assert(lookup_jscript_pext("throw") == 44);
+    assert(lookup_jscript_pext("while") == 51);
+    assert(lookup_jscript_pext("do") == 11);
+    assert(lookup_jscript_pext("if") == 22);
+    assert(lookup_jscript_pext("in") == 25);
 }
 

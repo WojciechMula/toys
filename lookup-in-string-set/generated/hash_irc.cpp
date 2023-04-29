@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_irc_hash1, dataset=irc, hash=hash1
+//lookup: name=lookup_irc_hash1, dataset=irc, type=hash, hash=hash1
 int lookup_irc_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 46) * 3;
     static std::string_view lookup[138] = {
@@ -290,7 +290,7 @@ int lookup_irc_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_irc_hash1, dataset=irc, hash=hash1
+//check: name=check_irc_hash1, dataset=irc, type=hash, hash=hash1
 void check_irc_hash1() {
     assert(lookup_irc_hash1("SUMMON") == 17);
     assert(lookup_irc_hash1("OPER") == 29);
@@ -339,7 +339,7 @@ void check_irc_hash1() {
     assert(lookup_irc_hash1("CONNECT") == 26);
 }
 
-//lookup: name=lookup_irc_hash2, dataset=irc, hash=hash2
+//lookup: name=lookup_irc_hash2, dataset=irc, type=hash, hash=hash2
 int lookup_irc_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 101) * 2;
     static std::string_view lookup[202] = {
@@ -758,7 +758,7 @@ int lookup_irc_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_irc_hash2, dataset=irc, hash=hash2
+//check: name=check_irc_hash2, dataset=irc, type=hash, hash=hash2
 void check_irc_hash2() {
     assert(lookup_irc_hash2("SQUIT") == 13);
     assert(lookup_irc_hash2("USER") == 5);
@@ -807,7 +807,7 @@ void check_irc_hash2() {
     assert(lookup_irc_hash2("NICK") == 0);
 }
 
-//lookup: name=lookup_irc_hash3, dataset=irc, hash=hash3
+//lookup: name=lookup_irc_hash3, dataset=irc, type=hash, hash=hash3
 int lookup_irc_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 291) * 1;
     static std::string_view lookup[291] = {
@@ -1404,7 +1404,7 @@ int lookup_irc_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_irc_hash3, dataset=irc, hash=hash3
+//check: name=check_irc_hash3, dataset=irc, type=hash, hash=hash3
 void check_irc_hash3() {
     assert(lookup_irc_hash3("CHANNEL") == 10);
     assert(lookup_irc_hash3("USERS") == 19);
@@ -1453,7 +1453,7 @@ void check_irc_hash3() {
     assert(lookup_irc_hash3("MOTD") == 44);
 }
 
-//lookup: name=lookup_irc_hash_sum0, dataset=irc, hash=hash_sum0
+//lookup: name=lookup_irc_hash_sum0, dataset=irc, type=hash, hash=hash_sum0
 int lookup_irc_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 54) * 2;
     static std::string_view lookup[108] = {
@@ -1684,7 +1684,7 @@ int lookup_irc_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_irc_hash_sum0, dataset=irc, hash=hash_sum0
+//check: name=check_irc_hash_sum0, dataset=irc, type=hash, hash=hash_sum0
 void check_irc_hash_sum0() {
     assert(lookup_irc_hash_sum0("TOPIC") == 8);
     assert(lookup_irc_hash_sum0("LINKS") == 16);
@@ -1733,7 +1733,7 @@ void check_irc_hash_sum0() {
     assert(lookup_irc_hash_sum0("QUIT") == 12);
 }
 
-//lookup: name=lookup_irc_hash_sumN, dataset=irc, hash=hash_sumN
+//lookup: name=lookup_irc_hash_sumN, dataset=irc, type=hash, hash=hash_sumN
 int lookup_irc_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 47) * 2;
     static std::string_view lookup[94] = {
@@ -1936,7 +1936,7 @@ int lookup_irc_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_irc_hash_sumN, dataset=irc, hash=hash_sumN
+//check: name=check_irc_hash_sumN, dataset=irc, type=hash, hash=hash_sumN
 void check_irc_hash_sumN() {
     assert(lookup_irc_hash_sumN("NAMES") == 34);
     assert(lookup_irc_hash_sumN("VOICE") == 41);
@@ -1985,7 +1985,7 @@ void check_irc_hash_sumN() {
     assert(lookup_irc_hash_sumN("INVITE") == 9);
 }
 
-//lookup: name=lookup_irc_hash_djb2, dataset=irc, hash=hash_djb2
+//lookup: name=lookup_irc_hash_djb2, dataset=irc, type=hash, hash=hash_djb2
 int lookup_irc_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 309) * 1;
     static std::string_view lookup[309] = {
@@ -2618,7 +2618,7 @@ int lookup_irc_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_irc_hash_djb2, dataset=irc, hash=hash_djb2
+//check: name=check_irc_hash_djb2, dataset=irc, type=hash, hash=hash_djb2
 void check_irc_hash_djb2() {
     assert(lookup_irc_hash_djb2("SQUIT") == 13);
     assert(lookup_irc_hash_djb2("REHASH") == 33);
@@ -2667,7 +2667,7 @@ void check_irc_hash_djb2() {
     assert(lookup_irc_hash_djb2("XTRA") == 43);
 }
 
-//lookup: name=lookup_irc_hash_sdb, dataset=irc, hash=hash_sdb
+//lookup: name=lookup_irc_hash_sdb, dataset=irc, type=hash, hash=hash_sdb
 int lookup_irc_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 274) * 1;
     static std::string_view lookup[274] = {
@@ -3230,7 +3230,7 @@ int lookup_irc_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_irc_hash_sdb, dataset=irc, hash=hash_sdb
+//check: name=check_irc_hash_sdb, dataset=irc, type=hash, hash=hash_sdb
 void check_irc_hash_sdb() {
     assert(lookup_irc_hash_sdb("GRPH") == 42);
     assert(lookup_irc_hash_sdb("RESTART") == 20);

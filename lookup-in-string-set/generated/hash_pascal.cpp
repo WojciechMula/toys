@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_pascal_hash1, dataset=pascal, hash=hash1
+//lookup: name=lookup_pascal_hash1, dataset=pascal, type=hash, hash=hash1
 int lookup_pascal_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 41) * 2;
     static std::string_view lookup[82] = {
@@ -178,7 +178,7 @@ int lookup_pascal_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_pascal_hash1, dataset=pascal, hash=hash1
+//check: name=check_pascal_hash1, dataset=pascal, type=hash, hash=hash1
 void check_pascal_hash1() {
     assert(lookup_pascal_hash1("packed") == 14);
     assert(lookup_pascal_hash1("then") == 8);
@@ -218,7 +218,7 @@ void check_pascal_hash1() {
     assert(lookup_pascal_hash1("or") == 13);
 }
 
-//lookup: name=lookup_pascal_hash2, dataset=pascal, hash=hash2
+//lookup: name=lookup_pascal_hash2, dataset=pascal, type=hash, hash=hash2
 int lookup_pascal_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 156) * 1;
     static std::string_view lookup[156] = {
@@ -545,7 +545,7 @@ int lookup_pascal_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_pascal_hash2, dataset=pascal, hash=hash2
+//check: name=check_pascal_hash2, dataset=pascal, type=hash, hash=hash2
 void check_pascal_hash2() {
     assert(lookup_pascal_hash2("file") == 25);
     assert(lookup_pascal_hash2("in") == 18);
@@ -585,7 +585,7 @@ void check_pascal_hash2() {
     assert(lookup_pascal_hash2("until") == 7);
 }
 
-//lookup: name=lookup_pascal_hash3, dataset=pascal, hash=hash3
+//lookup: name=lookup_pascal_hash3, dataset=pascal, type=hash, hash=hash3
 int lookup_pascal_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 207) * 1;
     static std::string_view lookup[207] = {
@@ -1014,7 +1014,7 @@ int lookup_pascal_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_pascal_hash3, dataset=pascal, hash=hash3
+//check: name=check_pascal_hash3, dataset=pascal, type=hash, hash=hash3
 void check_pascal_hash3() {
     assert(lookup_pascal_hash3("or") == 13);
     assert(lookup_pascal_hash3("nil") == 16);
@@ -1054,7 +1054,7 @@ void check_pascal_hash3() {
     assert(lookup_pascal_hash3("repeat") == 19);
 }
 
-//lookup: name=lookup_pascal_hash_sum0, dataset=pascal, hash=hash_sum0
+//lookup: name=lookup_pascal_hash_sum0, dataset=pascal, type=hash, hash=hash_sum0
 int lookup_pascal_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 64) * 2;
     static std::string_view lookup[128] = {
@@ -1325,7 +1325,7 @@ int lookup_pascal_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_pascal_hash_sum0, dataset=pascal, hash=hash_sum0
+//check: name=check_pascal_hash_sum0, dataset=pascal, type=hash, hash=hash_sum0
 void check_pascal_hash_sum0() {
     assert(lookup_pascal_hash_sum0("label") == 17);
     assert(lookup_pascal_hash_sum0("mod") == 33);
@@ -1365,7 +1365,7 @@ void check_pascal_hash_sum0() {
     assert(lookup_pascal_hash_sum0("record") == 10);
 }
 
-//lookup: name=lookup_pascal_hash_sumN, dataset=pascal, hash=hash_sumN
+//lookup: name=lookup_pascal_hash_sumN, dataset=pascal, type=hash, hash=hash_sumN
 int lookup_pascal_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 40) * 2;
     static std::string_view lookup[80] = {
@@ -1540,7 +1540,7 @@ int lookup_pascal_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_pascal_hash_sumN, dataset=pascal, hash=hash_sumN
+//check: name=check_pascal_hash_sumN, dataset=pascal, type=hash, hash=hash_sumN
 void check_pascal_hash_sumN() {
     assert(lookup_pascal_hash_sumN("until") == 7);
     assert(lookup_pascal_hash_sumN("begin") == 34);
@@ -1580,7 +1580,7 @@ void check_pascal_hash_sumN() {
     assert(lookup_pascal_hash_sumN("function") == 3);
 }
 
-//lookup: name=lookup_pascal_hash_djb2, dataset=pascal, hash=hash_djb2
+//lookup: name=lookup_pascal_hash_djb2, dataset=pascal, type=hash, hash=hash_djb2
 int lookup_pascal_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 251) * 1;
     static std::string_view lookup[251] = {
@@ -2097,7 +2097,7 @@ int lookup_pascal_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_pascal_hash_djb2, dataset=pascal, hash=hash_djb2
+//check: name=check_pascal_hash_djb2, dataset=pascal, type=hash, hash=hash_djb2
 void check_pascal_hash_djb2() {
     assert(lookup_pascal_hash_djb2("packed") == 14);
     assert(lookup_pascal_hash_djb2("record") == 10);
@@ -2137,7 +2137,7 @@ void check_pascal_hash_djb2() {
     assert(lookup_pascal_hash_djb2("var") == 5);
 }
 
-//lookup: name=lookup_pascal_hash_sdb, dataset=pascal, hash=hash_sdb
+//lookup: name=lookup_pascal_hash_sdb, dataset=pascal, type=hash, hash=hash_sdb
 int lookup_pascal_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 203) * 1;
     static std::string_view lookup[203] = {
@@ -2558,7 +2558,7 @@ int lookup_pascal_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_pascal_hash_sdb, dataset=pascal, hash=hash_sdb
+//check: name=check_pascal_hash_sdb, dataset=pascal, type=hash, hash=hash_sdb
 void check_pascal_hash_sdb() {
     assert(lookup_pascal_hash_sdb("goto") == 21);
     assert(lookup_pascal_hash_sdb("end") == 32);

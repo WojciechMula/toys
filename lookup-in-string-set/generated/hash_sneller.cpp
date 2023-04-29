@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_sneller_hash1, dataset=sneller, hash=hash1
+//lookup: name=lookup_sneller_hash1, dataset=sneller, type=hash, hash=hash1
 int lookup_sneller_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 437) * 3;
     static std::string_view lookup[1311] = {
@@ -2636,7 +2636,7 @@ int lookup_sneller_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_sneller_hash1, dataset=sneller, hash=hash1
+//check: name=check_sneller_hash1, dataset=sneller, type=hash, hash=hash1
 void check_sneller_hash1() {
     assert(lookup_sneller_hash1("POW_UINT") == 160);
     assert(lookup_sneller_hash1("MINUTE") == 114);
@@ -2880,7 +2880,7 @@ void check_sneller_hash1() {
     assert(lookup_sneller_hash1("CONTAINS_FUZZY") == 132);
 }
 
-//lookup: name=lookup_sneller_hash2, dataset=sneller, hash=hash2
+//lookup: name=lookup_sneller_hash2, dataset=sneller, type=hash, hash=hash2
 int lookup_sneller_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 256) * 4;
     static std::string_view lookup[1024] = {
@@ -4943,7 +4943,7 @@ int lookup_sneller_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_sneller_hash2, dataset=sneller, hash=hash2
+//check: name=check_sneller_hash2, dataset=sneller, type=hash, hash=hash2
 void check_sneller_hash2() {
     assert(lookup_sneller_hash2("ASC") == 4);
     assert(lookup_sneller_hash2("DATE_DIFF_SECOND") == 186);
@@ -5187,7 +5187,7 @@ void check_sneller_hash2() {
     assert(lookup_sneller_hash2("GRAPHVIZ") == 93);
 }
 
-//lookup: name=lookup_sneller_hash3, dataset=sneller, hash=hash3
+//lookup: name=lookup_sneller_hash3, dataset=sneller, type=hash, hash=hash3
 int lookup_sneller_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 326) * 3;
     static std::string_view lookup[978] = {
@@ -7158,7 +7158,7 @@ int lookup_sneller_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_sneller_hash3, dataset=sneller, hash=hash3
+//check: name=check_sneller_hash3, dataset=sneller, type=hash, hash=hash3
 void check_sneller_hash3() {
     assert(lookup_sneller_hash3("AND") == 1);
     assert(lookup_sneller_hash3("INNER") == 45);
@@ -7402,7 +7402,7 @@ void check_sneller_hash3() {
     assert(lookup_sneller_hash3("MILLISECONDS") == 112);
 }
 
-//lookup: name=lookup_sneller_hash_sum0, dataset=sneller, hash=hash_sum0
+//lookup: name=lookup_sneller_hash_sum0, dataset=sneller, type=hash, hash=hash_sum0
 int lookup_sneller_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 246) * 4;
     static std::string_view lookup[984] = {
@@ -9385,7 +9385,7 @@ int lookup_sneller_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_sneller_hash_sum0, dataset=sneller, hash=hash_sum0
+//check: name=check_sneller_hash_sum0, dataset=sneller, type=hash, hash=hash_sum0
 void check_sneller_hash_sum0() {
     assert(lookup_sneller_hash_sum0("POW") == 159);
     assert(lookup_sneller_hash_sum0("DECIMAL") == 99);
@@ -9629,7 +9629,7 @@ void check_sneller_hash_sum0() {
     assert(lookup_sneller_hash_sum0("SUM") == 68);
 }
 
-//lookup: name=lookup_sneller_hash_sumN, dataset=sneller, hash=hash_sumN
+//lookup: name=lookup_sneller_hash_sumN, dataset=sneller, type=hash, hash=hash_sumN
 int lookup_sneller_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 249) * 4;
     static std::string_view lookup[996] = {
@@ -11636,7 +11636,7 @@ int lookup_sneller_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_sneller_hash_sumN, dataset=sneller, hash=hash_sumN
+//check: name=check_sneller_hash_sumN, dataset=sneller, type=hash, hash=hash_sumN
 void check_sneller_hash_sumN() {
     assert(lookup_sneller_hash_sumN("POW") == 159);
     assert(lookup_sneller_hash_sumN("DECIMAL") == 99);
@@ -11880,7 +11880,7 @@ void check_sneller_hash_sumN() {
     assert(lookup_sneller_hash_sumN("DATE_ADD_YEAR") == 183);
 }
 
-//lookup: name=lookup_sneller_hash_djb2, dataset=sneller, hash=hash_djb2
+//lookup: name=lookup_sneller_hash_djb2, dataset=sneller, type=hash, hash=hash_djb2
 int lookup_sneller_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 642) * 2;
     static std::string_view lookup[1284] = {
@@ -14463,7 +14463,7 @@ int lookup_sneller_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_sneller_hash_djb2, dataset=sneller, hash=hash_djb2
+//check: name=check_sneller_hash_djb2, dataset=sneller, type=hash, hash=hash_djb2
 void check_sneller_hash_djb2() {
     assert(lookup_sneller_hash_djb2("DEFAULT") == 89);
     assert(lookup_sneller_hash_djb2("PARTITION") == 34);
@@ -14707,7 +14707,7 @@ void check_sneller_hash_djb2() {
     assert(lookup_sneller_hash_djb2("TRIM") == 61);
 }
 
-//lookup: name=lookup_sneller_hash_sdb, dataset=sneller, hash=hash_sdb
+//lookup: name=lookup_sneller_hash_sdb, dataset=sneller, type=hash, hash=hash_sdb
 int lookup_sneller_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 567) * 2;
     static std::string_view lookup[1134] = {
@@ -16990,7 +16990,7 @@ int lookup_sneller_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_sneller_hash_sdb, dataset=sneller, hash=hash_sdb
+//check: name=check_sneller_hash_sdb, dataset=sneller, type=hash, hash=hash_sdb
 void check_sneller_hash_sdb() {
     assert(lookup_sneller_hash_sdb("MICROSECOND") == 109);
     assert(lookup_sneller_hash_sdb("DATE_ADD_MICROSECOND") == 174);

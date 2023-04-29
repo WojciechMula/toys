@@ -1,5 +1,5 @@
-//lookup: name=lookup_irc, dataset=irc
-int lookup_irc(std::string_view s) {
+//lookup: name=lookup_irc_pext, type=pext, dataset=irc
+int lookup_irc_pext(std::string_view s) {
     switch (s.size()) {
         case 3: {
             static char lookup[4][3] = {
@@ -290,52 +290,52 @@ int lookup_irc(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_irc, dataset=irc
-void check_irc() {
-    assert(lookup_irc("NICK") == 0);
-    assert(lookup_irc("USER") == 5);
-    assert(lookup_irc("LIST") == 7);
-    assert(lookup_irc("QUIT") == 12);
-    assert(lookup_irc("KILL") == 14);
-    assert(lookup_irc("INFO") == 15);
-    assert(lookup_irc("HELP") == 22);
-    assert(lookup_irc("AWAY") == 24);
-    assert(lookup_irc("PING") == 27);
-    assert(lookup_irc("PONG") == 28);
-    assert(lookup_irc("OPER") == 29);
-    assert(lookup_irc("PASS") == 30);
-    assert(lookup_irc("WALL") == 31);
-    assert(lookup_irc("TIME") == 32);
-    assert(lookup_irc("GRPH") == 42);
-    assert(lookup_irc("XTRA") == 43);
-    assert(lookup_irc("MOTD") == 44);
-    assert(lookup_irc("MSG") == 1);
-    assert(lookup_irc("WHO") == 3);
-    assert(lookup_irc("DIE") == 25);
-    assert(lookup_irc("PRIVMSG") == 2);
-    assert(lookup_irc("CHANNEL") == 10);
-    assert(lookup_irc("VERSION") == 11);
-    assert(lookup_irc("RESTART") == 20);
-    assert(lookup_irc("CONNECT") == 26);
-    assert(lookup_irc("WHOIS") == 4);
-    assert(lookup_irc("TOPIC") == 8);
-    assert(lookup_irc("SQUIT") == 13);
-    assert(lookup_irc("LINKS") == 16);
-    assert(lookup_irc("STATS") == 18);
-    assert(lookup_irc("USERS") == 19);
-    assert(lookup_irc("ERROR") == 23);
-    assert(lookup_irc("NAMES") == 34);
-    assert(lookup_irc("ADMIN") == 36);
-    assert(lookup_irc("TRACE") == 37);
-    assert(lookup_irc("VOICE") == 41);
-    assert(lookup_irc("SERVER") == 6);
-    assert(lookup_irc("INVITE") == 9);
-    assert(lookup_irc("SUMMON") == 17);
-    assert(lookup_irc("REHASH") == 33);
-    assert(lookup_irc("NOTICE") == 39);
-    assert(lookup_irc("LUSERS") == 40);
-    assert(lookup_irc("WHOREPLY") == 21);
-    assert(lookup_irc("NAMREPLY") == 35);
-    assert(lookup_irc("LINREPLY") == 38);
+//check: name=check_irc_pext, type=pext, dataset=irc
+void check_irc_pext() {
+    assert(lookup_irc_pext("MSG") == 1);
+    assert(lookup_irc_pext("WHO") == 3);
+    assert(lookup_irc_pext("DIE") == 25);
+    assert(lookup_irc_pext("PRIVMSG") == 2);
+    assert(lookup_irc_pext("CHANNEL") == 10);
+    assert(lookup_irc_pext("VERSION") == 11);
+    assert(lookup_irc_pext("RESTART") == 20);
+    assert(lookup_irc_pext("CONNECT") == 26);
+    assert(lookup_irc_pext("WHOIS") == 4);
+    assert(lookup_irc_pext("TOPIC") == 8);
+    assert(lookup_irc_pext("SQUIT") == 13);
+    assert(lookup_irc_pext("LINKS") == 16);
+    assert(lookup_irc_pext("STATS") == 18);
+    assert(lookup_irc_pext("USERS") == 19);
+    assert(lookup_irc_pext("ERROR") == 23);
+    assert(lookup_irc_pext("NAMES") == 34);
+    assert(lookup_irc_pext("ADMIN") == 36);
+    assert(lookup_irc_pext("TRACE") == 37);
+    assert(lookup_irc_pext("VOICE") == 41);
+    assert(lookup_irc_pext("SERVER") == 6);
+    assert(lookup_irc_pext("INVITE") == 9);
+    assert(lookup_irc_pext("SUMMON") == 17);
+    assert(lookup_irc_pext("REHASH") == 33);
+    assert(lookup_irc_pext("NOTICE") == 39);
+    assert(lookup_irc_pext("LUSERS") == 40);
+    assert(lookup_irc_pext("WHOREPLY") == 21);
+    assert(lookup_irc_pext("NAMREPLY") == 35);
+    assert(lookup_irc_pext("LINREPLY") == 38);
+    assert(lookup_irc_pext("NICK") == 0);
+    assert(lookup_irc_pext("USER") == 5);
+    assert(lookup_irc_pext("LIST") == 7);
+    assert(lookup_irc_pext("QUIT") == 12);
+    assert(lookup_irc_pext("KILL") == 14);
+    assert(lookup_irc_pext("INFO") == 15);
+    assert(lookup_irc_pext("HELP") == 22);
+    assert(lookup_irc_pext("AWAY") == 24);
+    assert(lookup_irc_pext("PING") == 27);
+    assert(lookup_irc_pext("PONG") == 28);
+    assert(lookup_irc_pext("OPER") == 29);
+    assert(lookup_irc_pext("PASS") == 30);
+    assert(lookup_irc_pext("WALL") == 31);
+    assert(lookup_irc_pext("TIME") == 32);
+    assert(lookup_irc_pext("GRPH") == 42);
+    assert(lookup_irc_pext("XTRA") == 43);
+    assert(lookup_irc_pext("MOTD") == 44);
 }
 

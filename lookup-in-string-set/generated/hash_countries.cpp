@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_countries_hash1, dataset=countries, hash=hash1
+//lookup: name=lookup_countries_hash1, dataset=countries, type=hash, hash=hash1
 int lookup_countries_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 193) * 5;
     static std::string_view lookup[965] = {
@@ -1944,7 +1944,7 @@ int lookup_countries_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_countries_hash1, dataset=countries, hash=hash1
+//check: name=check_countries_hash1, dataset=countries, type=hash, hash=hash1
 void check_countries_hash1() {
     assert(lookup_countries_hash1("FINLAND") == 111);
     assert(lookup_countries_hash1("SWEDEN") == 139);
@@ -2140,7 +2140,7 @@ void check_countries_hash1() {
     assert(lookup_countries_hash1("NEPAL") == 80);
 }
 
-//lookup: name=lookup_countries_hash2, dataset=countries, hash=hash2
+//lookup: name=lookup_countries_hash2, dataset=countries, type=hash, hash=hash2
 int lookup_countries_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 192) * 5;
     static std::string_view lookup[960] = {
@@ -4075,7 +4075,7 @@ int lookup_countries_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_countries_hash2, dataset=countries, hash=hash2
+//check: name=check_countries_hash2, dataset=countries, type=hash, hash=hash2
 void check_countries_hash2() {
     assert(lookup_countries_hash2("GEORGIA") == 113);
     assert(lookup_countries_hash2("GRENADA") == 154);
@@ -4271,7 +4271,7 @@ void check_countries_hash2() {
     assert(lookup_countries_hash2("CYPRUS") == 108);
 }
 
-//lookup: name=lookup_countries_hash3, dataset=countries, hash=hash3
+//lookup: name=lookup_countries_hash3, dataset=countries, type=hash, hash=hash3
 int lookup_countries_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 207) * 3;
     static std::string_view lookup[621] = {
@@ -5528,7 +5528,7 @@ int lookup_countries_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_countries_hash3, dataset=countries, hash=hash3
+//check: name=check_countries_hash3, dataset=countries, type=hash, hash=hash3
 void check_countries_hash3() {
     assert(lookup_countries_hash3("NICARAGUA") == 160);
     assert(lookup_countries_hash3("SPAIN") == 138);
@@ -5724,7 +5724,7 @@ void check_countries_hash3() {
     assert(lookup_countries_hash3("KENYA") == 23);
 }
 
-//lookup: name=lookup_countries_hash_sum0, dataset=countries, hash=hash_sum0
+//lookup: name=lookup_countries_hash_sum0, dataset=countries, type=hash, hash=hash_sum0
 int lookup_countries_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 192) * 4;
     static std::string_view lookup[768] = {
@@ -7275,7 +7275,7 @@ int lookup_countries_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_countries_hash_sum0, dataset=countries, hash=hash_sum0
+//check: name=check_countries_hash_sum0, dataset=countries, type=hash, hash=hash_sum0
 void check_countries_hash_sum0() {
     assert(lookup_countries_hash_sum0("UZBEKISTAN") == 95);
     assert(lookup_countries_hash_sum0("MARSHALL ISLANDS") == 169);
@@ -7471,7 +7471,7 @@ void check_countries_hash_sum0() {
     assert(lookup_countries_hash_sum0("BARBADOS") == 146);
 }
 
-//lookup: name=lookup_countries_hash_sumN, dataset=countries, hash=hash_sumN
+//lookup: name=lookup_countries_hash_sumN, dataset=countries, type=hash, hash=hash_sumN
 int lookup_countries_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 192) * 4;
     static std::string_view lookup[768] = {
@@ -9022,7 +9022,7 @@ int lookup_countries_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_countries_hash_sumN, dataset=countries, hash=hash_sumN
+//check: name=check_countries_hash_sumN, dataset=countries, type=hash, hash=hash_sumN
 void check_countries_hash_sumN() {
     assert(lookup_countries_hash_sumN("SUDAN") == 45);
     assert(lookup_countries_hash_sumN("SPAIN") == 138);
@@ -9218,7 +9218,7 @@ void check_countries_hash_sumN() {
     assert(lookup_countries_hash_sumN("TONGA") == 177);
 }
 
-//lookup: name=lookup_countries_hash_djb2, dataset=countries, hash=hash_djb2
+//lookup: name=lookup_countries_hash_djb2, dataset=countries, type=hash, hash=hash_djb2
 int lookup_countries_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 557) * 2;
     static std::string_view lookup[1114] = {
@@ -11461,7 +11461,7 @@ int lookup_countries_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_countries_hash_djb2, dataset=countries, hash=hash_djb2
+//check: name=check_countries_hash_djb2, dataset=countries, type=hash, hash=hash_djb2
 void check_countries_hash_djb2() {
     assert(lookup_countries_hash_djb2("SOMALIA") == 42);
     assert(lookup_countries_hash_djb2("LIBYA") == 26);
@@ -11657,7 +11657,7 @@ void check_countries_hash_djb2() {
     assert(lookup_countries_hash_djb2("KOREA, SOUTH") == 72);
 }
 
-//lookup: name=lookup_countries_hash_sdb, dataset=countries, hash=hash_sdb
+//lookup: name=lookup_countries_hash_sdb, dataset=countries, type=hash, hash=hash_sdb
 int lookup_countries_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 482) * 2;
     static std::string_view lookup[964] = {
@@ -13600,7 +13600,7 @@ int lookup_countries_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_countries_hash_sdb, dataset=countries, hash=hash_sdb
+//check: name=check_countries_hash_sdb, dataset=countries, type=hash, hash=hash_sdb
 void check_countries_hash_sdb() {
     assert(lookup_countries_hash_sdb("PANAMA") == 161);
     assert(lookup_countries_hash_sdb("LUXEMBOURG") == 123);

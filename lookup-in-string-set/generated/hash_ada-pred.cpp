@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_ada_pred_hash1, dataset=ada-pred, hash=hash1
+//lookup: name=lookup_ada_pred_hash1, dataset=ada-pred, type=hash, hash=hash1
 int lookup_ada_pred_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 99) * 2;
     static std::string_view lookup[198] = {
@@ -410,7 +410,7 @@ int lookup_ada_pred_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_pred_hash1, dataset=ada-pred, hash=hash1
+//check: name=check_ada_pred_hash1, dataset=ada-pred, type=hash, hash=hash1
 void check_ada_pred_hash1() {
     assert(lookup_ada_pred_hash1("float") == 4);
     assert(lookup_ada_pred_hash1("first") == 24);
@@ -468,7 +468,7 @@ void check_ada_pred_hash1() {
     assert(lookup_ada_pred_hash1("address") == 14);
 }
 
-//lookup: name=lookup_ada_pred_hash2, dataset=ada-pred, hash=hash2
+//lookup: name=lookup_ada_pred_hash2, dataset=ada-pred, type=hash, hash=hash2
 int lookup_ada_pred_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 69) * 2;
     static std::string_view lookup[138] = {
@@ -759,7 +759,7 @@ int lookup_ada_pred_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_pred_hash2, dataset=ada-pred, hash=hash2
+//check: name=check_ada_pred_hash2, dataset=ada-pred, type=hash, hash=hash2
 void check_ada_pred_hash2() {
     assert(lookup_ada_pred_hash2("large") == 28);
     assert(lookup_ada_pred_hash2("positive") == 8);
@@ -817,7 +817,7 @@ void check_ada_pred_hash2() {
     assert(lookup_ada_pred_hash2("small") == 47);
 }
 
-//lookup: name=lookup_ada_pred_hash3, dataset=ada-pred, hash=hash3
+//lookup: name=lookup_ada_pred_hash3, dataset=ada-pred, type=hash, hash=hash3
 int lookup_ada_pred_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 333) * 1;
     static std::string_view lookup[333] = {
@@ -1498,7 +1498,7 @@ int lookup_ada_pred_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_pred_hash3, dataset=ada-pred, hash=hash3
+//check: name=check_ada_pred_hash3, dataset=ada-pred, type=hash, hash=hash3
 void check_ada_pred_hash3() {
     assert(lookup_ada_pred_hash3("pred") == 41);
     assert(lookup_ada_pred_hash3("epsilon") == 23);
@@ -1556,7 +1556,7 @@ void check_ada_pred_hash3() {
     assert(lookup_ada_pred_hash3("string") == 11);
 }
 
-//lookup: name=lookup_ada_pred_hash_sum0, dataset=ada-pred, hash=hash_sum0
+//lookup: name=lookup_ada_pred_hash_sum0, dataset=ada-pred, type=hash, hash=hash_sum0
 int lookup_ada_pred_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 84) * 2;
     static std::string_view lookup[168] = {
@@ -1907,7 +1907,7 @@ int lookup_ada_pred_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_pred_hash_sum0, dataset=ada-pred, hash=hash_sum0
+//check: name=check_ada_pred_hash_sum0, dataset=ada-pred, type=hash, hash=hash_sum0
 void check_ada_pred_hash_sum0() {
     assert(lookup_ada_pred_hash_sum0("constrained") == 18);
     assert(lookup_ada_pred_hash_sum0("pos") == 39);
@@ -1965,7 +1965,7 @@ void check_ada_pred_hash_sum0() {
     assert(lookup_ada_pred_hash_sum0("lastbit") == 30);
 }
 
-//lookup: name=lookup_ada_pred_hash_sumN, dataset=ada-pred, hash=hash_sumN
+//lookup: name=lookup_ada_pred_hash_sumN, dataset=ada-pred, type=hash, hash=hash_sumN
 int lookup_ada_pred_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 83) * 2;
     static std::string_view lookup[166] = {
@@ -2312,7 +2312,7 @@ int lookup_ada_pred_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_pred_hash_sumN, dataset=ada-pred, hash=hash_sumN
+//check: name=check_ada_pred_hash_sumN, dataset=ada-pred, type=hash, hash=hash_sumN
 void check_ada_pred_hash_sumN() {
     assert(lookup_ada_pred_hash_sumN("base") == 16);
     assert(lookup_ada_pred_hash_sumN("terminated") == 50);
@@ -2370,7 +2370,7 @@ void check_ada_pred_hash_sumN() {
     assert(lookup_ada_pred_hash_sumN("boolean") == 0);
 }
 
-//lookup: name=lookup_ada_pred_hash_djb2, dataset=ada-pred, hash=hash_djb2
+//lookup: name=lookup_ada_pred_hash_djb2, dataset=ada-pred, type=hash, hash=hash_djb2
 int lookup_ada_pred_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 329) * 1;
     static std::string_view lookup[329] = {
@@ -3043,7 +3043,7 @@ int lookup_ada_pred_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_pred_hash_djb2, dataset=ada-pred, hash=hash_djb2
+//check: name=check_ada_pred_hash_djb2, dataset=ada-pred, type=hash, hash=hash_djb2
 void check_ada_pred_hash_djb2() {
     assert(lookup_ada_pred_hash_djb2("count") == 19);
     assert(lookup_ada_pred_hash_djb2("float") == 4);
@@ -3101,7 +3101,7 @@ void check_ada_pred_hash_djb2() {
     assert(lookup_ada_pred_hash_djb2("character") == 1);
 }
 
-//lookup: name=lookup_ada_pred_hash_sdb, dataset=ada-pred, hash=hash_sdb
+//lookup: name=lookup_ada_pred_hash_sdb, dataset=ada-pred, type=hash, hash=hash_sdb
 int lookup_ada_pred_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 371) * 1;
     static std::string_view lookup[371] = {
@@ -3858,7 +3858,7 @@ int lookup_ada_pred_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_ada_pred_hash_sdb, dataset=ada-pred, hash=hash_sdb
+//check: name=check_ada_pred_hash_sdb, dataset=ada-pred, type=hash, hash=hash_sdb
 void check_ada_pred_hash_sdb() {
     assert(lookup_ada_pred_hash_sdb("true") == 13);
     assert(lookup_ada_pred_hash_sdb("machine_radix") == 36);

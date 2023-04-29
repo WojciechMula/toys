@@ -1,5 +1,5 @@
-//lookup: name=lookup_go, dataset=go
-int lookup_go(std::string_view s) {
+//lookup: name=lookup_go_pext, type=pext, dataset=go
+int lookup_go_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
             if (s == "go") {
@@ -189,32 +189,32 @@ int lookup_go(std::string_view s) {
 }
 
 #include <cassert>
-//check: name=check_go, dataset=go
-void check_go() {
-    assert(lookup_go("case") == 1);
-    assert(lookup_go("chan") == 2);
-    assert(lookup_go("else") == 7);
-    assert(lookup_go("func") == 10);
-    assert(lookup_go("goto") == 12);
-    assert(lookup_go("type") == 23);
-    assert(lookup_go("default") == 5);
-    assert(lookup_go("package") == 17);
-    assert(lookup_go("go") == 11);
-    assert(lookup_go("if") == 13);
-    assert(lookup_go("import") == 14);
-    assert(lookup_go("return") == 19);
-    assert(lookup_go("select") == 20);
-    assert(lookup_go("struct") == 21);
-    assert(lookup_go("switch") == 22);
-    assert(lookup_go("continue") == 4);
-    assert(lookup_go("for") == 9);
-    assert(lookup_go("map") == 16);
-    assert(lookup_go("var") == 24);
-    assert(lookup_go("interface") == 15);
-    assert(lookup_go("break") == 0);
-    assert(lookup_go("const") == 3);
-    assert(lookup_go("defer") == 6);
-    assert(lookup_go("range") == 18);
-    assert(lookup_go("fallthrough") == 8);
+//check: name=check_go_pext, type=pext, dataset=go
+void check_go_pext() {
+    assert(lookup_go_pext("case") == 1);
+    assert(lookup_go_pext("chan") == 2);
+    assert(lookup_go_pext("else") == 7);
+    assert(lookup_go_pext("func") == 10);
+    assert(lookup_go_pext("goto") == 12);
+    assert(lookup_go_pext("type") == 23);
+    assert(lookup_go_pext("default") == 5);
+    assert(lookup_go_pext("package") == 17);
+    assert(lookup_go_pext("fallthrough") == 8);
+    assert(lookup_go_pext("break") == 0);
+    assert(lookup_go_pext("const") == 3);
+    assert(lookup_go_pext("defer") == 6);
+    assert(lookup_go_pext("range") == 18);
+    assert(lookup_go_pext("import") == 14);
+    assert(lookup_go_pext("return") == 19);
+    assert(lookup_go_pext("select") == 20);
+    assert(lookup_go_pext("struct") == 21);
+    assert(lookup_go_pext("switch") == 22);
+    assert(lookup_go_pext("interface") == 15);
+    assert(lookup_go_pext("for") == 9);
+    assert(lookup_go_pext("map") == 16);
+    assert(lookup_go_pext("var") == 24);
+    assert(lookup_go_pext("continue") == 4);
+    assert(lookup_go_pext("go") == 11);
+    assert(lookup_go_pext("if") == 13);
 }
 

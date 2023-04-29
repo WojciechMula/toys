@@ -1,5 +1,5 @@
 
-//lookup: name=lookup_go_hash1, dataset=go, hash=hash1
+//lookup: name=lookup_go_hash1, dataset=go, type=hash, hash=hash1
 int lookup_go_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 38) * 2;
     static std::string_view lookup[76] = {
@@ -166,7 +166,7 @@ int lookup_go_hash1(std::string_view s) {
     return -1;
 }
 
-//check: name=check_go_hash1, dataset=go, hash=hash1
+//check: name=check_go_hash1, dataset=go, type=hash, hash=hash1
 void check_go_hash1() {
     assert(lookup_go_hash1("chan") == 2);
     assert(lookup_go_hash1("case") == 1);
@@ -195,7 +195,7 @@ void check_go_hash1() {
     assert(lookup_go_hash1("break") == 0);
 }
 
-//lookup: name=lookup_go_hash2, dataset=go, hash=hash2
+//lookup: name=lookup_go_hash2, dataset=go, type=hash, hash=hash2
 int lookup_go_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 27) * 2;
     static std::string_view lookup[54] = {
@@ -318,7 +318,7 @@ int lookup_go_hash2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_go_hash2, dataset=go, hash=hash2
+//check: name=check_go_hash2, dataset=go, type=hash, hash=hash2
 void check_go_hash2() {
     assert(lookup_go_hash2("select") == 20);
     assert(lookup_go_hash2("struct") == 21);
@@ -347,7 +347,7 @@ void check_go_hash2() {
     assert(lookup_go_hash2("else") == 7);
 }
 
-//lookup: name=lookup_go_hash3, dataset=go, hash=hash3
+//lookup: name=lookup_go_hash3, dataset=go, type=hash, hash=hash3
 int lookup_go_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 107) * 1;
     static std::string_view lookup[107] = {
@@ -576,7 +576,7 @@ int lookup_go_hash3(std::string_view s) {
     return -1;
 }
 
-//check: name=check_go_hash3, dataset=go, hash=hash3
+//check: name=check_go_hash3, dataset=go, type=hash, hash=hash3
 void check_go_hash3() {
     assert(lookup_go_hash3("defer") == 6);
     assert(lookup_go_hash3("return") == 19);
@@ -605,7 +605,7 @@ void check_go_hash3() {
     assert(lookup_go_hash3("fallthrough") == 8);
 }
 
-//lookup: name=lookup_go_hash_sum0, dataset=go, hash=hash_sum0
+//lookup: name=lookup_go_hash_sum0, dataset=go, type=hash, hash=hash_sum0
 int lookup_go_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 73) * 1;
     static std::string_view lookup[73] = {
@@ -766,7 +766,7 @@ int lookup_go_hash_sum0(std::string_view s) {
     return -1;
 }
 
-//check: name=check_go_hash_sum0, dataset=go, hash=hash_sum0
+//check: name=check_go_hash_sum0, dataset=go, type=hash, hash=hash_sum0
 void check_go_hash_sum0() {
     assert(lookup_go_hash_sum0("switch") == 22);
     assert(lookup_go_hash_sum0("goto") == 12);
@@ -795,7 +795,7 @@ void check_go_hash_sum0() {
     assert(lookup_go_hash_sum0("interface") == 15);
 }
 
-//lookup: name=lookup_go_hash_sumN, dataset=go, hash=hash_sumN
+//lookup: name=lookup_go_hash_sumN, dataset=go, type=hash, hash=hash_sumN
 int lookup_go_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 63) * 1;
     static std::string_view lookup[63] = {
@@ -936,7 +936,7 @@ int lookup_go_hash_sumN(std::string_view s) {
     return -1;
 }
 
-//check: name=check_go_hash_sumN, dataset=go, hash=hash_sumN
+//check: name=check_go_hash_sumN, dataset=go, type=hash, hash=hash_sumN
 void check_go_hash_sumN() {
     assert(lookup_go_hash_sumN("goto") == 12);
     assert(lookup_go_hash_sumN("map") == 16);
@@ -965,7 +965,7 @@ void check_go_hash_sumN() {
     assert(lookup_go_hash_sumN("fallthrough") == 8);
 }
 
-//lookup: name=lookup_go_hash_djb2, dataset=go, hash=hash_djb2
+//lookup: name=lookup_go_hash_djb2, dataset=go, type=hash, hash=hash_djb2
 int lookup_go_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 107) * 1;
     static std::string_view lookup[107] = {
@@ -1194,7 +1194,7 @@ int lookup_go_hash_djb2(std::string_view s) {
     return -1;
 }
 
-//check: name=check_go_hash_djb2, dataset=go, hash=hash_djb2
+//check: name=check_go_hash_djb2, dataset=go, type=hash, hash=hash_djb2
 void check_go_hash_djb2() {
     assert(lookup_go_hash_djb2("switch") == 22);
     assert(lookup_go_hash_djb2("for") == 9);
@@ -1223,7 +1223,7 @@ void check_go_hash_djb2() {
     assert(lookup_go_hash_djb2("map") == 16);
 }
 
-//lookup: name=lookup_go_hash_sdb, dataset=go, hash=hash_sdb
+//lookup: name=lookup_go_hash_sdb, dataset=go, type=hash, hash=hash_sdb
 int lookup_go_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 71) * 1;
     static std::string_view lookup[71] = {
@@ -1380,7 +1380,7 @@ int lookup_go_hash_sdb(std::string_view s) {
     return -1;
 }
 
-//check: name=check_go_hash_sdb, dataset=go, hash=hash_sdb
+//check: name=check_go_hash_sdb, dataset=go, type=hash, hash=hash_sdb
 void check_go_hash_sdb() {
     assert(lookup_go_hash_sdb("goto") == 12);
     assert(lookup_go_hash_sdb("interface") == 15);
