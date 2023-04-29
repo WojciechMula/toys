@@ -41,6 +41,26 @@
 #include "generated/pext_sneller.cpp"
 #include "generated/pext_snellerbuiltin.cpp"
 #include "generated/pext_states.cpp"
+#include "generated/split_ada-pred.cpp"
+#include "generated/split_ada-res.cpp"
+#include "generated/split_ada.cpp"
+#include "generated/split_adadefs.cpp"
+#include "generated/split_c.cpp"
+#include "generated/split_countries.cpp"
+#include "generated/split_cplusplus.cpp"
+#include "generated/split_cpp.cpp"
+#include "generated/split_go.cpp"
+#include "generated/split_gpc.cpp"
+#include "generated/split_irc.cpp"
+#include "generated/split_java.cpp"
+#include "generated/split_jscript.cpp"
+#include "generated/split_modula.cpp"
+#include "generated/split_modula2.cpp"
+#include "generated/split_modula3.cpp"
+#include "generated/split_pascal.cpp"
+#include "generated/split_sneller.cpp"
+#include "generated/split_snellerbuiltin.cpp"
+#include "generated/split_states.cpp"
 
 void check_all() {
     puts("checking check_ada_pred_hash1");
@@ -363,6 +383,46 @@ void check_all() {
     check_snellerbuiltin_pext();
     puts("checking check_states_pext");
     check_states_pext();
+    puts("checking check_ada_pred_split");
+    check_ada_pred_split();
+    puts("checking check_ada_res_split");
+    check_ada_res_split();
+    puts("checking check_ada_split");
+    check_ada_split();
+    puts("checking check_adadefs_split");
+    check_adadefs_split();
+    puts("checking check_c_split");
+    check_c_split();
+    puts("checking check_countries_split");
+    check_countries_split();
+    puts("checking check_cplusplus_split");
+    check_cplusplus_split();
+    puts("checking check_cpp_split");
+    check_cpp_split();
+    puts("checking check_go_split");
+    check_go_split();
+    puts("checking check_gpc_split");
+    check_gpc_split();
+    puts("checking check_irc_split");
+    check_irc_split();
+    puts("checking check_java_split");
+    check_java_split();
+    puts("checking check_jscript_split");
+    check_jscript_split();
+    puts("checking check_modula_split");
+    check_modula_split();
+    puts("checking check_modula2_split");
+    check_modula2_split();
+    puts("checking check_modula3_split");
+    check_modula3_split();
+    puts("checking check_pascal_split");
+    check_pascal_split();
+    puts("checking check_sneller_split");
+    check_sneller_split();
+    puts("checking check_snellerbuiltin_split");
+    check_snellerbuiltin_split();
+    puts("checking check_states_split");
+    check_states_split();
     puts("All OK");
 }
 

@@ -25,10 +25,13 @@ def makefile(name, hasGo):
     def pextcpp(s):
         return "generated/pext_%s.cpp" % (s,)
 
+    def splitcpp(s):
+        return "generated/split_%s.cpp" % (s,)
+
     def dataset(s):
         return "datasets/%s.txt" % (s,)
 
-    SRC = chain(map(hashcpp, datasets), map(pextcpp, datasets))
+    SRC = chain(map(hashcpp, datasets), map(pextcpp, datasets), map(splitcpp, datasets))
 
     with open(name, 'w') as f:
         f.write("FLAGS=-Wall -Wextra -pedantic -std=c++17 -march=skylake\n")
@@ -50,8 +53,14 @@ def makefile(name, hasGo):
                 dst = pextcpp(ds)
                 rule(f, dst, "pext/main -i %s -o %s" % (src, dst), [src, "pext/main"])
 
-            rule(f, "hash/main", "go build -C hash", ["hash/*.go"])
-            rule(f, "pext/main", "go build -C pext", ["pext/*.go"])
+            for ds in datasets:
+                src = dataset(ds)
+                dst = splitcpp(ds)
+                rule(f, dst, "split/main -i %s -o %s" % (src, dst), [src, "split/main"])
+
+            rule(f, "hash/main",  "go build -C hash",  ["hash/*.go"])
+            rule(f, "pext/main",  "go build -C pext",  ["pext/*.go"])
+            rule(f, "split/main", "go build -C split", ["split/*.go"])
 
     print("Created %s" % name)
 
