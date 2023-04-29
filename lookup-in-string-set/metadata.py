@@ -2,7 +2,7 @@ import os
 import functools
 
 
-@functools.cache
+@functools.lru_cache(maxsize=None)
 def gather(rootdir='generated'):
     res = []
     for name in os.listdir(rootdir):
@@ -43,6 +43,6 @@ def parsecomment(s):
 
 def cut(s, prefix):
     if s.startswith(prefix):
-        return s.removeprefix(prefix), True
+        return s[len(prefix):], True
 
     return s, False

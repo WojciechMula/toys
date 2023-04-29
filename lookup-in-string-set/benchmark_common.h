@@ -23,6 +23,9 @@ std::vector<std::string> split_lines(const std::string& str) {
         const auto pos = s.find('\n');
         if (pos < std::string_view::npos) {
             res.push_back(std::string{s.substr(0, pos)});
+        } else {
+            res.push_back(std::string{s});
+            break;
         }
 
         s = s.substr(pos+1);

@@ -1,14 +1,21 @@
 import os
+import sys
 from itertools import chain
 
-def main():
-    makefile('Makefile')
 
-def makefile(name):
+def main():
+    hasGo = True
+    if "--without-go" in sys.argv:
+        hasGo = False
+
+    makefile('Makefile', hasGo)
+
+
+def makefile(name, hasGo):
     datasets = []
     for f in os.listdir('datasets'):
         if f.endswith('.txt'):
-            datasets.append(f.removesuffix('.txt'))
+            datasets.append(f[:-4])
 
     datasets.sort()
 
@@ -32,18 +39,19 @@ def makefile(name):
         rule(f, "benchmark", "$(CXX) $(FLAGS) -O2 benchmark.cpp -o benchmark", ["benchmark.cpp"])
         rule(f, "benchmark.cpp", "python3 benchmark.py", ["benchmark.py", "$(SRC)"])
 
-        for ds in datasets:
-            src = dataset(ds)
-            dst = hashcpp(ds)
-            rule(f, dst, "hash/main -i %s -o %s" % (src, dst), [src, "hash/main"])
+        if hasGo:
+            for ds in datasets:
+                src = dataset(ds)
+                dst = hashcpp(ds)
+                rule(f, dst, "hash/main -i %s -o %s" % (src, dst), [src, "hash/main"])
 
-        for ds in datasets:
-            src = dataset(ds)
-            dst = pextcpp(ds)
-            rule(f, dst, "pext/main -i %s -o %s" % (src, dst), [src, "pext/main"])
+            for ds in datasets:
+                src = dataset(ds)
+                dst = pextcpp(ds)
+                rule(f, dst, "pext/main -i %s -o %s" % (src, dst), [src, "pext/main"])
 
-        rule(f, "hash/main", "go build -C hash", ["hash/*.go"])
-        rule(f, "pext/main", "go build -C pext", ["pext/*.go"])
+            rule(f, "hash/main", "go build -C hash", ["hash/*.go"])
+            rule(f, "pext/main", "go build -C pext", ["pext/*.go"])
 
     print("Created %s" % name)
 
