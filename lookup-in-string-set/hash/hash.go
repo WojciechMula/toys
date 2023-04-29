@@ -8,31 +8,29 @@ import (
 // and finds the size of hashtable that minimizes collisions.
 //
 // It returns the size and the number of collisions.
-func computerHashParameters(keywords []Keyword, hash func([]byte) uint64) (size int, pow2size int, collisions int) {
+func computerHashParameters(keywords []Keyword, hash func([]byte) uint64) (size int, collisions int) {
 	collisions = 1
 	hashes := make([]uint64, len(keywords))
 	for i := range keywords {
 		hashes[i] = hash(keywords[i].word)
 	}
 	for {
-		size, pow2size = hashtableaux(hashes, collisions)
+		size = hashtableaux(hashes, collisions)
 		if size > 0 {
-			fmt.Printf("size = %5d, powsize = %5d, maxcollisions = %d\n", size, pow2size, collisions)
+			fmt.Printf("size = %5d, maxcollisions = %d\n", size, collisions)
 			return
 		}
 		collisions += 1
 	}
 }
 
-func hashtableaux(hashes []uint64, maxcollisions int) (int, int) {
+func hashtableaux(hashes []uint64, maxcollisions int) int {
 	n := len(hashes)
 	const sizeOverhead = 10
 
-	pow2 := -1
 outer:
-	for i := 0; i < 16; i++ {
+	for N := n; N < sizeOverhead*n; N++ {
 		table := make(map[uint64]int)
-		N := uint64(1) << i
 		for _, h := range hashes {
 			idx := h % uint64(N)
 			table[idx] += 1
@@ -40,23 +38,10 @@ outer:
 				continue outer
 			}
 		}
-		pow2 = int(N)
+		return N
 	}
 
-outer2:
-	for N := n; N < sizeOverhead*n; N++ {
-		table := make(map[uint64]int)
-		for _, h := range hashes {
-			idx := h % uint64(N)
-			table[idx] += 1
-			if table[idx] > maxcollisions {
-				continue outer2
-			}
-		}
-		return N, pow2
-	}
-
-	return -1, -1
+	return -1
 }
 
 type LookupEntry struct {

@@ -121,7 +121,7 @@ func main() {
 	buf := bytes.NewBuffer(nil)
 	for _, h := range hashes {
 		fmt.Printf("Hash %-40s: ", h.name)
-		size, _, collisions := computerHashParameters(keywords, h.fn)
+		size, collisions := computerHashParameters(keywords, h.fn)
 
 		ctx := &generateContext{}
 		ctx.output = buf
