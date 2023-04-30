@@ -15,7 +15,7 @@ To recreate Makefile run::
 
 If there's no Go 1.20 available, it's possible to run::
 
-    $ python3 mkfile.py --without go
+    $ python3 mkfile.py --without-go
 
 Running test and benchmarks::
 
