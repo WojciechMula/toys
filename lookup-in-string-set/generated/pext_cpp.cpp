@@ -11,7 +11,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 3: {
-            static char lookup[8][3] = {
+            static constexpr const char lookup[8][3] = {
                 {}, // no match
                 {}, // no match
                 {'a', 's', 'm'},
@@ -21,7 +21,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {'i', 'n', 't'},
                 {'n', 'e', 'w'},
             };
-            static int value[8] = {
+            static constexpr const int value[8] = {
                 -1,
                 -1,
                 0,
@@ -39,7 +39,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 4: {
-            static char lookup[32][4] = {
+            static constexpr const char lookup[32][4] = {
                 {}, // no match
                 {'v', 'o', 'i', 'd'},
                 {'c', 'a', 's', 'e'},
@@ -73,7 +73,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            static constexpr const int value[32] = {
                 -1,
                 44,
                 3,
@@ -116,7 +116,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[16][5] = {
+            static constexpr const char lookup[16][5] = {
                 {}, // no match
                 {'c', 'a', 't', 'c', 'h'},
                 {}, // no match
@@ -134,7 +134,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            static constexpr const int value[16] = {
                 -1,
                 4,
                 -1,
@@ -161,7 +161,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[64][6] = {
+            static constexpr const char lookup[64][6] = {
                 {'s', 'i', 'g', 'n', 'e', 'd'},
                 {}, // no match
                 {'f', 'r', 'i', 'e', 'n', 'd'},
@@ -227,7 +227,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[64] = {
+            static constexpr const int value[64] = {
                 33,
                 -1,
                 18,
@@ -302,7 +302,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 7: {
-            static char lookup[8][7] = {
+            static constexpr const char lookup[8][7] = {
                 {'p', 'r', 'i', 'v', 'a', 't', 'e'},
                 {'t', 'y', 'p', 'e', 'd', 'e', 'f'},
                 {'v', 'i', 'r', 't', 'u', 'a', 'l'},
@@ -312,7 +312,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[8] = {
+            static constexpr const int value[8] = {
                 27,
                 40,
                 43,
@@ -330,7 +330,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 8: {
-            static char lookup[32][8] = {
+            static constexpr const char lookup[32][8] = {
                 {}, // no match
                 {'o', 'v', 'e', 'r', 'l', 'o', 'a', 'd'},
                 {}, // no match
@@ -364,7 +364,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            static constexpr const int value[32] = {
                 -1,
                 26,
                 -1,

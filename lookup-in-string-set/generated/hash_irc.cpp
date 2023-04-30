@@ -2,7 +2,7 @@
 //lookup: name=lookup_irc_hash1, dataset=irc, type=hash, hash=hash1
 int lookup_irc_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 46) * 3;
-    static std::string_view lookup[138] = {
+    static constexpr const std::string_view lookup[138] = {
         "SUMMON", // 966 (0x3c6)
         "OPER", // 644 (0x284)
         "",
@@ -142,7 +142,7 @@ int lookup_irc_hash1(std::string_view s) {
         "CONNECT", // 1057 (0x421)
         "",
     };
-    static int values[138] = {
+    static constexpr const int values[138] = {
         17, // 966 (0x3c6)
         29, // 644 (0x284)
         -1,
@@ -342,7 +342,7 @@ void check_irc_hash1() {
 //lookup: name=lookup_irc_hash2, dataset=irc, type=hash, hash=hash2
 int lookup_irc_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 101) * 2;
-    static std::string_view lookup[202] = {
+    static constexpr const std::string_view lookup[202] = {
         "SQUIT", // 6969 (0x1b39)
         "",
         "",
@@ -546,7 +546,7 @@ int lookup_irc_hash2(std::string_view s) {
         "",
         "",
     };
-    static int values[202] = {
+    static constexpr const int values[202] = {
         13, // 6969 (0x1b39)
         -1,
         -1,
@@ -810,7 +810,7 @@ void check_irc_hash2() {
 //lookup: name=lookup_irc_hash3, dataset=irc, type=hash, hash=hash3
 int lookup_irc_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 291) * 1;
-    static std::string_view lookup[291] = {
+    static constexpr const std::string_view lookup[291] = {
         "",
         "",
         "",
@@ -1103,7 +1103,7 @@ int lookup_irc_hash3(std::string_view s) {
         "",
         "MOTD", // 20951 (0x51d7)
     };
-    static int values[291] = {
+    static constexpr const int values[291] = {
         -1,
         -1,
         -1,
@@ -1456,7 +1456,7 @@ void check_irc_hash3() {
 //lookup: name=lookup_irc_hash_sum0, dataset=irc, type=hash, hash=hash_sum0
 int lookup_irc_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 54) * 2;
-    static std::string_view lookup[108] = {
+    static constexpr const std::string_view lookup[108] = {
         "",
         "",
         "",
@@ -1566,7 +1566,7 @@ int lookup_irc_hash_sum0(std::string_view s) {
         "QUIT", // 323 (0x143)
         "",
     };
-    static int values[108] = {
+    static constexpr const int values[108] = {
         -1,
         -1,
         -1,
@@ -1736,7 +1736,7 @@ void check_irc_hash_sum0() {
 //lookup: name=lookup_irc_hash_sumN, dataset=irc, type=hash, hash=hash_sumN
 int lookup_irc_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 47) * 2;
-    static std::string_view lookup[94] = {
+    static constexpr const std::string_view lookup[94] = {
         "",
         "",
         "NAMES", // 377 (0x179)
@@ -1832,7 +1832,7 @@ int lookup_irc_hash_sumN(std::string_view s) {
         "MSG", // 234 (0xea)
         "INVITE", // 469 (0x1d5)
     };
-    static int values[94] = {
+    static constexpr const int values[94] = {
         -1,
         -1,
         34, // 377 (0x179)
@@ -1988,7 +1988,7 @@ void check_irc_hash_sumN() {
 //lookup: name=lookup_irc_hash_djb2, dataset=irc, type=hash, hash=hash_djb2
 int lookup_irc_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 309) * 1;
-    static std::string_view lookup[309] = {
+    static constexpr const std::string_view lookup[309] = {
         "",
         "",
         "",
@@ -2299,7 +2299,7 @@ int lookup_irc_hash_djb2(std::string_view s) {
         "",
         "XTRA", // 6503289704 (0x183a05368)
     };
-    static int values[309] = {
+    static constexpr const int values[309] = {
         -1,
         -1,
         -1,
@@ -2670,7 +2670,7 @@ void check_irc_hash_djb2() {
 //lookup: name=lookup_irc_hash_sdb, dataset=irc, type=hash, hash=hash_sdb
 int lookup_irc_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 274) * 1;
-    static std::string_view lookup[274] = {
+    static constexpr const std::string_view lookup[274] = {
         "",
         "GRPH", // 19987820180999063 (0x4702d109b90b97)
         "",
@@ -2946,7 +2946,7 @@ int lookup_irc_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[274] = {
+    static constexpr const int values[274] = {
         -1,
         42, // 19987820180999063 (0x4702d109b90b97)
         -1,

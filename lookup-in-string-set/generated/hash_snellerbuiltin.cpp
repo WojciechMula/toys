@@ -2,7 +2,7 @@
 //lookup: name=lookup_snellerbuiltin_hash1, dataset=snellerbuiltin, type=hash, hash=hash1
 int lookup_snellerbuiltin_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 163) * 3;
-    static std::string_view lookup[489] = {
+    static constexpr const std::string_view lookup[489] = {
         "TO_UNIX_MICRO", // 2119 (0x847)
         "",
         "",
@@ -493,7 +493,7 @@ int lookup_snellerbuiltin_hash1(std::string_view s) {
         "",
         "",
     };
-    static int values[489] = {
+    static constexpr const int values[489] = {
         95, // 2119 (0x847)
         -1,
         -1,
@@ -1118,7 +1118,7 @@ void check_snellerbuiltin_hash1() {
 //lookup: name=lookup_snellerbuiltin_hash2, dataset=snellerbuiltin, type=hash, hash=hash2
 int lookup_snellerbuiltin_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 136) * 3;
-    static std::string_view lookup[408] = {
+    static constexpr const std::string_view lookup[408] = {
         "",
         "",
         "",
@@ -1528,7 +1528,7 @@ int lookup_snellerbuiltin_hash2(std::string_view s) {
         "DATE_TRUNC_YEAR", // 5575 (0x15c7)
         "",
     };
-    static int values[408] = {
+    static constexpr const int values[408] = {
         -1,
         -1,
         -1,
@@ -2072,7 +2072,7 @@ void check_snellerbuiltin_hash2() {
 //lookup: name=lookup_snellerbuiltin_hash3, dataset=snellerbuiltin, type=hash, hash=hash3
 int lookup_snellerbuiltin_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 131) * 3;
-    static std::string_view lookup[393] = {
+    static constexpr const std::string_view lookup[393] = {
         "",
         "",
         "",
@@ -2467,7 +2467,7 @@ int lookup_snellerbuiltin_hash3(std::string_view s) {
         "STRUCT_REPLACEMENT", // 26330 (0x66da)
         "",
     };
-    static int values[393] = {
+    static constexpr const int values[393] = {
         -1,
         -1,
         -1,
@@ -2996,7 +2996,7 @@ void check_snellerbuiltin_hash3() {
 //lookup: name=lookup_snellerbuiltin_hash_sum0, dataset=snellerbuiltin, type=hash, hash=hash_sum0
 int lookup_snellerbuiltin_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 264) * 2;
-    static std::string_view lookup[528] = {
+    static constexpr const std::string_view lookup[528] = {
         "DATE_EXTRACT_YEAR", // 1320 (0x528)
         "",
         "DATE_DIFF_WEEK", // 1057 (0x421)
@@ -3526,7 +3526,7 @@ int lookup_snellerbuiltin_hash_sum0(std::string_view s) {
         "TO_UNIX_MICRO", // 1055 (0x41f)
         "",
     };
-    static int values[528] = {
+    static constexpr const int values[528] = {
         83, // 1320 (0x528)
         -1,
         69, // 1057 (0x421)
@@ -4190,7 +4190,7 @@ void check_snellerbuiltin_hash_sum0() {
 //lookup: name=lookup_snellerbuiltin_hash_sumN, dataset=snellerbuiltin, type=hash, hash=hash_sumN
 int lookup_snellerbuiltin_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 293) * 2;
-    static std::string_view lookup[586] = {
+    static constexpr const std::string_view lookup[586] = {
         "",
         "",
         "",
@@ -4778,7 +4778,7 @@ int lookup_snellerbuiltin_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[586] = {
+    static constexpr const int values[586] = {
         -1,
         -1,
         -1,
@@ -5500,7 +5500,7 @@ void check_snellerbuiltin_hash_sumN() {
 //lookup: name=lookup_snellerbuiltin_hash_djb2, dataset=snellerbuiltin, type=hash, hash=hash_djb2
 int lookup_snellerbuiltin_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 253) * 2;
-    static std::string_view lookup[506] = {
+    static constexpr const std::string_view lookup[506] = {
         "DATE_EXTRACT_QUARTER", // 10391303716592721252 (0x903553acbcb49d64)
         "",
         "",
@@ -6008,7 +6008,7 @@ int lookup_snellerbuiltin_hash_djb2(std::string_view s) {
         "DATE_TRUNC_YEAR", // 13329815573148667042 (0xb8fd04a3aeff0ca2)
         "",
     };
-    static int values[506] = {
+    static constexpr const int values[506] = {
         82, // 10391303716592721252 (0x903553acbcb49d64)
         -1,
         -1,
@@ -6650,7 +6650,7 @@ void check_snellerbuiltin_hash_djb2() {
 //lookup: name=lookup_snellerbuiltin_hash_sdb, dataset=snellerbuiltin, type=hash, hash=hash_sdb
 int lookup_snellerbuiltin_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 1151) * 1;
-    static std::string_view lookup[1151] = {
+    static constexpr const std::string_view lookup[1151] = {
         "",
         "",
         "",
@@ -7803,7 +7803,7 @@ int lookup_snellerbuiltin_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[1151] = {
+    static constexpr const int values[1151] = {
         -1,
         -1,
         -1,

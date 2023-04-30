@@ -2,7 +2,7 @@
 //lookup: name=lookup_ada_hash1, dataset=ada, type=hash, hash=hash1
 int lookup_ada_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 130) * 2;
-    static std::string_view lookup[260] = {
+    static constexpr const std::string_view lookup[260] = {
         "begin", // 1040 (0x410)
         "",
         "",
@@ -264,7 +264,7 @@ int lookup_ada_hash1(std::string_view s) {
         "",
         "",
     };
-    static int values[260] = {
+    static constexpr const int values[260] = {
         57, // 1040 (0x410)
         -1,
         -1,
@@ -604,7 +604,7 @@ void check_ada_hash1() {
 //lookup: name=lookup_ada_hash2, dataset=ada, type=hash, hash=hash2
 int lookup_ada_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 149) * 2;
-    static std::string_view lookup[298] = {
+    static constexpr const std::string_view lookup[298] = {
         "",
         "",
         "",
@@ -904,7 +904,7 @@ int lookup_ada_hash2(std::string_view s) {
         "",
         "",
     };
-    static int values[298] = {
+    static constexpr const int values[298] = {
         -1,
         -1,
         -1,
@@ -1282,7 +1282,7 @@ void check_ada_hash2() {
 //lookup: name=lookup_ada_hash3, dataset=ada, type=hash, hash=hash3
 int lookup_ada_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 70) * 2;
-    static std::string_view lookup[140] = {
+    static constexpr const std::string_view lookup[140] = {
         "type", // 31010 (0x7922)
         "or", // 29190 (0x7206)
         "pragma", // 30521 (0x7739)
@@ -1424,7 +1424,7 @@ int lookup_ada_hash3(std::string_view s) {
         "subtype", // 31569 (0x7b51)
         "",
     };
-    static int values[140] = {
+    static constexpr const int values[140] = {
         3, // 31010 (0x7922)
         46, // 29190 (0x7206)
         39, // 30521 (0x7739)
@@ -1644,7 +1644,7 @@ void check_ada_hash3() {
 //lookup: name=lookup_ada_hash_sum0, dataset=ada, type=hash, hash=hash_sum0
 int lookup_ada_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 138) * 2;
-    static std::string_view lookup[276] = {
+    static constexpr const std::string_view lookup[276] = {
         "",
         "",
         "",
@@ -1922,7 +1922,7 @@ int lookup_ada_hash_sum0(std::string_view s) {
         "",
         "",
     };
-    static int values[276] = {
+    static constexpr const int values[276] = {
         -1,
         -1,
         -1,
@@ -2278,7 +2278,7 @@ void check_ada_hash_sum0() {
 //lookup: name=lookup_ada_hash_sumN, dataset=ada, type=hash, hash=hash_sumN
 int lookup_ada_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 140) * 2;
-    static std::string_view lookup[280] = {
+    static constexpr const std::string_view lookup[280] = {
         "",
         "",
         "",
@@ -2560,7 +2560,7 @@ int lookup_ada_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[280] = {
+    static constexpr const int values[280] = {
         -1,
         -1,
         -1,
@@ -2920,7 +2920,7 @@ void check_ada_hash_sumN() {
 //lookup: name=lookup_ada_hash_djb2, dataset=ada, type=hash, hash=hash_djb2
 int lookup_ada_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 457) * 1;
-    static std::string_view lookup[457] = {
+    static constexpr const std::string_view lookup[457] = {
         "",
         "",
         "",
@@ -3379,7 +3379,7 @@ int lookup_ada_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    static int values[457] = {
+    static constexpr const int values[457] = {
         -1,
         -1,
         -1,
@@ -3916,7 +3916,7 @@ void check_ada_hash_djb2() {
 //lookup: name=lookup_ada_hash_sdb, dataset=ada, type=hash, hash=hash_sdb
 int lookup_ada_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 534) * 1;
-    static std::string_view lookup[534] = {
+    static constexpr const std::string_view lookup[534] = {
         "",
         "",
         "",
@@ -4452,7 +4452,7 @@ int lookup_ada_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[534] = {
+    static constexpr const int values[534] = {
         -1,
         -1,
         -1,

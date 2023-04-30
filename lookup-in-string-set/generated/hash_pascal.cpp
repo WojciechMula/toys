@@ -2,7 +2,7 @@
 //lookup: name=lookup_pascal_hash1, dataset=pascal, type=hash, hash=hash1
 int lookup_pascal_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 41) * 2;
-    static std::string_view lookup[82] = {
+    static constexpr const std::string_view lookup[82] = {
         "",
         "",
         "packed", // 1272 (0x4f8)
@@ -86,7 +86,7 @@ int lookup_pascal_hash1(std::string_view s) {
         "var", // 696 (0x2b8)
         "or", // 450 (0x1c2)
     };
-    static int values[82] = {
+    static constexpr const int values[82] = {
         -1,
         -1,
         14, // 1272 (0x4f8)
@@ -221,7 +221,7 @@ void check_pascal_hash1() {
 //lookup: name=lookup_pascal_hash2, dataset=pascal, type=hash, hash=hash2
 int lookup_pascal_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 156) * 1;
-    static std::string_view lookup[156] = {
+    static constexpr const std::string_view lookup[156] = {
         "",
         "",
         "file", // 10298 (0x283a)
@@ -379,7 +379,7 @@ int lookup_pascal_hash2(std::string_view s) {
         "",
         "",
     };
-    static int values[156] = {
+    static constexpr const int values[156] = {
         -1,
         -1,
         25, // 10298 (0x283a)
@@ -588,7 +588,7 @@ void check_pascal_hash2() {
 //lookup: name=lookup_pascal_hash3, dataset=pascal, type=hash, hash=hash3
 int lookup_pascal_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 207) * 1;
-    static std::string_view lookup[207] = {
+    static constexpr const std::string_view lookup[207] = {
         "",
         "",
         "",
@@ -797,7 +797,7 @@ int lookup_pascal_hash3(std::string_view s) {
         "",
         "",
     };
-    static int values[207] = {
+    static constexpr const int values[207] = {
         -1,
         -1,
         -1,
@@ -1057,7 +1057,7 @@ void check_pascal_hash3() {
 //lookup: name=lookup_pascal_hash_sum0, dataset=pascal, type=hash, hash=hash_sum0
 int lookup_pascal_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 64) * 2;
-    static std::string_view lookup[128] = {
+    static constexpr const std::string_view lookup[128] = {
         "label", // 512 (0x200)
         "mod", // 320 (0x140)
         "repeat", // 641 (0x281)
@@ -1187,7 +1187,7 @@ int lookup_pascal_hash_sum0(std::string_view s) {
         "record", // 639 (0x27f)
         "",
     };
-    static int values[128] = {
+    static constexpr const int values[128] = {
         17, // 512 (0x200)
         33, // 320 (0x140)
         19, // 641 (0x281)
@@ -1368,7 +1368,7 @@ void check_pascal_hash_sum0() {
 //lookup: name=lookup_pascal_hash_sumN, dataset=pascal, type=hash, hash=hash_sumN
 int lookup_pascal_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 40) * 2;
-    static std::string_view lookup[80] = {
+    static constexpr const std::string_view lookup[80] = {
         "",
         "",
         "until", // 561 (0x231)
@@ -1450,7 +1450,7 @@ int lookup_pascal_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[80] = {
+    static constexpr const int values[80] = {
         -1,
         -1,
         7, // 561 (0x231)
@@ -1583,7 +1583,7 @@ void check_pascal_hash_sumN() {
 //lookup: name=lookup_pascal_hash_djb2, dataset=pascal, type=hash, hash=hash_djb2
 int lookup_pascal_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 251) * 1;
-    static std::string_view lookup[251] = {
+    static constexpr const std::string_view lookup[251] = {
         "",
         "packed", // 7083037814161 (0x67125f3ed91)
         "record", // 7083120833416 (0x6712ae6b388)
@@ -1836,7 +1836,7 @@ int lookup_pascal_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    static int values[251] = {
+    static constexpr const int values[251] = {
         -1,
         14, // 7083037814161 (0x67125f3ed91)
         10, // 7083120833416 (0x6712ae6b388)
@@ -2140,7 +2140,7 @@ void check_pascal_hash_djb2() {
 //lookup: name=lookup_pascal_hash_sdb, dataset=pascal, type=hash, hash=hash_sdb
 int lookup_pascal_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 203) * 1;
-    static std::string_view lookup[203] = {
+    static constexpr const std::string_view lookup[203] = {
         "",
         "",
         "",
@@ -2345,7 +2345,7 @@ int lookup_pascal_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[203] = {
+    static constexpr const int values[203] = {
         -1,
         -1,
         -1,

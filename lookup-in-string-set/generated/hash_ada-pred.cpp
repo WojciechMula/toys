@@ -2,7 +2,7 @@
 //lookup: name=lookup_ada_pred_hash1, dataset=ada-pred, type=hash, hash=hash1
 int lookup_ada_pred_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 99) * 2;
-    static std::string_view lookup[198] = {
+    static constexpr const std::string_view lookup[198] = {
         "",
         "",
         "float", // 1090 (0x442)
@@ -202,7 +202,7 @@ int lookup_ada_pred_hash1(std::string_view s) {
         "address", // 1484 (0x5cc)
         "",
     };
-    static int values[198] = {
+    static constexpr const int values[198] = {
         -1,
         -1,
         4, // 1090 (0x442)
@@ -471,7 +471,7 @@ void check_ada_pred_hash1() {
 //lookup: name=lookup_ada_pred_hash2, dataset=ada-pred, type=hash, hash=hash2
 int lookup_ada_pred_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 69) * 2;
-    static std::string_view lookup[138] = {
+    static constexpr const std::string_view lookup[138] = {
         "",
         "",
         "",
@@ -611,7 +611,7 @@ int lookup_ada_pred_hash2(std::string_view s) {
         "",
         "",
     };
-    static int values[138] = {
+    static constexpr const int values[138] = {
         -1,
         -1,
         -1,
@@ -820,7 +820,7 @@ void check_ada_pred_hash2() {
 //lookup: name=lookup_ada_pred_hash3, dataset=ada-pred, type=hash, hash=hash3
 int lookup_ada_pred_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 333) * 1;
-    static std::string_view lookup[333] = {
+    static constexpr const std::string_view lookup[333] = {
         "",
         "",
         "",
@@ -1155,7 +1155,7 @@ int lookup_ada_pred_hash3(std::string_view s) {
         "",
         "",
     };
-    static int values[333] = {
+    static constexpr const int values[333] = {
         -1,
         -1,
         -1,
@@ -1559,7 +1559,7 @@ void check_ada_pred_hash3() {
 //lookup: name=lookup_ada_pred_hash_sum0, dataset=ada-pred, type=hash, hash=hash_sum0
 int lookup_ada_pred_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 84) * 2;
-    static std::string_view lookup[168] = {
+    static constexpr const std::string_view lookup[168] = {
         "",
         "",
         "",
@@ -1729,7 +1729,7 @@ int lookup_ada_pred_hash_sum0(std::string_view s) {
         "lastbit", // 755 (0x2f3)
         "",
     };
-    static int values[168] = {
+    static constexpr const int values[168] = {
         -1,
         -1,
         -1,
@@ -1968,7 +1968,7 @@ void check_ada_pred_hash_sum0() {
 //lookup: name=lookup_ada_pred_hash_sumN, dataset=ada-pred, type=hash, hash=hash_sumN
 int lookup_ada_pred_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 83) * 2;
-    static std::string_view lookup[166] = {
+    static constexpr const std::string_view lookup[166] = {
         "base", // 415 (0x19f)
         "terminated", // 1079 (0x437)
         "",
@@ -2136,7 +2136,7 @@ int lookup_ada_pred_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[166] = {
+    static constexpr const int values[166] = {
         16, // 415 (0x19f)
         50, // 1079 (0x437)
         -1,
@@ -2373,7 +2373,7 @@ void check_ada_pred_hash_sumN() {
 //lookup: name=lookup_ada_pred_hash_djb2, dataset=ada-pred, type=hash, hash=hash_djb2
 int lookup_ada_pred_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 329) * 1;
-    static std::string_view lookup[329] = {
+    static constexpr const std::string_view lookup[329] = {
         "",
         "",
         "",
@@ -2704,7 +2704,7 @@ int lookup_ada_pred_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    static int values[329] = {
+    static constexpr const int values[329] = {
         -1,
         -1,
         -1,
@@ -3104,7 +3104,7 @@ void check_ada_pred_hash_djb2() {
 //lookup: name=lookup_ada_pred_hash_sdb, dataset=ada-pred, type=hash, hash=hash_sdb
 int lookup_ada_pred_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 371) * 1;
-    static std::string_view lookup[371] = {
+    static constexpr const std::string_view lookup[371] = {
         "",
         "",
         "",
@@ -3477,7 +3477,7 @@ int lookup_ada_pred_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[371] = {
+    static constexpr const int values[371] = {
         -1,
         -1,
         -1,

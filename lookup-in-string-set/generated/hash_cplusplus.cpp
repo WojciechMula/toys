@@ -2,7 +2,7 @@
 //lookup: name=lookup_cplusplus_hash1, dataset=cplusplus, type=hash, hash=hash1
 int lookup_cplusplus_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 127) * 4;
-    static std::string_view lookup[508] = {
+    static constexpr const std::string_view lookup[508] = {
         "",
         "",
         "",
@@ -512,7 +512,7 @@ int lookup_cplusplus_hash1(std::string_view s) {
         "",
         "",
     };
-    static int values[508] = {
+    static constexpr const int values[508] = {
         -1,
         -1,
         -1,
@@ -1143,7 +1143,7 @@ void check_cplusplus_hash1() {
 //lookup: name=lookup_cplusplus_hash2, dataset=cplusplus, type=hash, hash=hash2
 int lookup_cplusplus_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 109) * 3;
-    static std::string_view lookup[327] = {
+    static constexpr const std::string_view lookup[327] = {
         "",
         "",
         "",
@@ -1472,7 +1472,7 @@ int lookup_cplusplus_hash2(std::string_view s) {
         "",
         "",
     };
-    static int values[327] = {
+    static constexpr const int values[327] = {
         -1,
         -1,
         -1,
@@ -1922,7 +1922,7 @@ void check_cplusplus_hash2() {
 //lookup: name=lookup_cplusplus_hash3, dataset=cplusplus, type=hash, hash=hash3
 int lookup_cplusplus_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 132) * 3;
-    static std::string_view lookup[396] = {
+    static constexpr const std::string_view lookup[396] = {
         "compl", // 26928 (0x6930)
         "throw", // 31284 (0x7a34)
         "volatile", // 32604 (0x7f5c)
@@ -2320,7 +2320,7 @@ int lookup_cplusplus_hash3(std::string_view s) {
         "signed", // 31283 (0x7a33)
         "",
     };
-    static int values[396] = {
+    static constexpr const int values[396] = {
         42, // 26928 (0x6930)
         90, // 31284 (0x7a34)
         102, // 32604 (0x7f5c)
@@ -2839,7 +2839,7 @@ void check_cplusplus_hash3() {
 //lookup: name=lookup_cplusplus_hash_sum0, dataset=cplusplus, type=hash, hash=hash_sum0
 int lookup_cplusplus_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 116) * 3;
-    static std::string_view lookup[348] = {
+    static constexpr const std::string_view lookup[348] = {
         "",
         "",
         "",
@@ -3189,7 +3189,7 @@ int lookup_cplusplus_hash_sum0(std::string_view s) {
         "",
         "",
     };
-    static int values[348] = {
+    static constexpr const int values[348] = {
         -1,
         -1,
         -1,
@@ -3660,7 +3660,7 @@ void check_cplusplus_hash_sum0() {
 //lookup: name=lookup_cplusplus_hash_sumN, dataset=cplusplus, type=hash, hash=hash_sumN
 int lookup_cplusplus_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 117) * 3;
-    static std::string_view lookup[351] = {
+    static constexpr const std::string_view lookup[351] = {
         "__typeof__", // 1053 (0x41d)
         "",
         "",
@@ -4013,7 +4013,7 @@ int lookup_cplusplus_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[351] = {
+    static constexpr const int values[351] = {
         26, // 1053 (0x41d)
         -1,
         -1,
@@ -4487,7 +4487,7 @@ void check_cplusplus_hash_sumN() {
 //lookup: name=lookup_cplusplus_hash_djb2, dataset=cplusplus, type=hash, hash=hash_djb2
 int lookup_cplusplus_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 677) * 1;
-    static std::string_view lookup[677] = {
+    static constexpr const std::string_view lookup[677] = {
         "",
         "sizeof", // 7083165528057 (0x6712d90aff9)
         "",
@@ -5166,7 +5166,7 @@ int lookup_cplusplus_hash_djb2(std::string_view s) {
         "float", // 214626058367 (0x31f8b5c07f)
         "",
     };
-    static int values[677] = {
+    static constexpr const int values[677] = {
         -1,
         83, // 7083165528057 (0x6712d90aff9)
         -1,
@@ -5966,7 +5966,7 @@ void check_cplusplus_hash_djb2() {
 //lookup: name=lookup_cplusplus_hash_sdb, dataset=cplusplus, type=hash, hash=hash_sdb
 int lookup_cplusplus_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 997) * 1;
-    static std::string_view lookup[997] = {
+    static constexpr const std::string_view lookup[997] = {
         "",
         "",
         "",
@@ -6965,7 +6965,7 @@ int lookup_cplusplus_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[997] = {
+    static constexpr const int values[997] = {
         -1,
         -1,
         -1,

@@ -20,7 +20,7 @@ int lookup_c_pext(std::string_view s) {
         }
         break;
         case 4: {
-            static char lookup[16][4] = {
+            static constexpr const char lookup[16][4] = {
                 {}, // no match
                 {'v', 'o', 'i', 'd'},
                 {'c', 'a', 's', 'e'},
@@ -38,7 +38,7 @@ int lookup_c_pext(std::string_view s) {
                 {'a', 'u', 't', 'o'},
                 {'g', 'o', 't', 'o'},
             };
-            static int value[16] = {
+            static constexpr const int value[16] = {
                 -1,
                 10,
                 4,
@@ -65,7 +65,7 @@ int lookup_c_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[16][5] = {
+            static constexpr const char lookup[16][5] = {
                 {}, // no match
                 {'b', 'r', 'e', 'a', 'k'},
                 {}, // no match
@@ -83,7 +83,7 @@ int lookup_c_pext(std::string_view s) {
                 {'s', 'h', 'o', 'r', 't'},
                 {'c', 'o', 'n', 's', 't'},
             };
-            static int value[16] = {
+            static constexpr const int value[16] = {
                 -1,
                 15,
                 -1,
@@ -110,7 +110,7 @@ int lookup_c_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[16][6] = {
+            static constexpr const char lookup[16][6] = {
                 {'s', 'i', 'g', 'n', 'e', 'd'},
                 {'s', 't', 'r', 'u', 'c', 't'},
                 {'d', 'o', 'u', 'b', 'l', 'e'},
@@ -128,7 +128,7 @@ int lookup_c_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            static constexpr const int value[16] = {
                 25,
                 21,
                 18,
@@ -164,7 +164,7 @@ int lookup_c_pext(std::string_view s) {
         }
         break;
         case 8: {
-            static char lookup[8][8] = {
+            static constexpr const char lookup[8][8] = {
                 {'u', 'n', 's', 'i', 'g', 'n', 'e', 'd'},
                 {}, // no match
                 {'v', 'o', 'l', 'a', 't', 'i', 'l', 'e'},
@@ -174,7 +174,7 @@ int lookup_c_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[8] = {
+            static constexpr const int value[8] = {
                 28,
                 -1,
                 31,
@@ -199,6 +199,20 @@ int lookup_c_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_c_pext, type=pext, dataset=c
 void check_c_pext() {
+    assert(lookup_c_pext("case") == 4);
+    assert(lookup_c_pext("char") == 5);
+    assert(lookup_c_pext("auto") == 6);
+    assert(lookup_c_pext("goto") == 7);
+    assert(lookup_c_pext("else") == 8);
+    assert(lookup_c_pext("long") == 9);
+    assert(lookup_c_pext("void") == 10);
+    assert(lookup_c_pext("enum") == 11);
+    assert(lookup_c_pext("float") == 12);
+    assert(lookup_c_pext("short") == 13);
+    assert(lookup_c_pext("union") == 14);
+    assert(lookup_c_pext("break") == 15);
+    assert(lookup_c_pext("while") == 16);
+    assert(lookup_c_pext("const") == 17);
     assert(lookup_c_pext("double") == 18);
     assert(lookup_c_pext("static") == 19);
     assert(lookup_c_pext("extern") == 20);
@@ -217,19 +231,5 @@ void check_c_pext() {
     assert(lookup_c_pext("do") == 1);
     assert(lookup_c_pext("int") == 2);
     assert(lookup_c_pext("for") == 3);
-    assert(lookup_c_pext("case") == 4);
-    assert(lookup_c_pext("char") == 5);
-    assert(lookup_c_pext("auto") == 6);
-    assert(lookup_c_pext("goto") == 7);
-    assert(lookup_c_pext("else") == 8);
-    assert(lookup_c_pext("long") == 9);
-    assert(lookup_c_pext("void") == 10);
-    assert(lookup_c_pext("enum") == 11);
-    assert(lookup_c_pext("float") == 12);
-    assert(lookup_c_pext("short") == 13);
-    assert(lookup_c_pext("union") == 14);
-    assert(lookup_c_pext("break") == 15);
-    assert(lookup_c_pext("while") == 16);
-    assert(lookup_c_pext("const") == 17);
 }
 

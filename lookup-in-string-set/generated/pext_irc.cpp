@@ -2,13 +2,13 @@
 int lookup_irc_pext(std::string_view s) {
     switch (s.size()) {
         case 3: {
-            static char lookup[4][3] = {
+            static constexpr const char lookup[4][3] = {
                 {'D', 'I', 'E'},
                 {'M', 'S', 'G'},
                 {}, // no match
                 {'W', 'H', 'O'},
             };
-            static int value[4] = {
+            static constexpr const int value[4] = {
                 25,
                 1,
                 -1,
@@ -22,7 +22,7 @@ int lookup_irc_pext(std::string_view s) {
         }
         break;
         case 4: {
-            static char lookup[64][4] = {
+            static constexpr const char lookup[64][4] = {
                 {'H', 'E', 'L', 'P'},
                 {}, // no match
                 {}, // no match
@@ -88,7 +88,7 @@ int lookup_irc_pext(std::string_view s) {
                 {}, // no match
                 {'I', 'N', 'F', 'O'},
             };
-            static int value[64] = {
+            static constexpr const int value[64] = {
                 22,
                 -1,
                 -1,
@@ -163,7 +163,7 @@ int lookup_irc_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[16][5] = {
+            static constexpr const char lookup[16][5] = {
                 {}, // no match
                 {}, // no match
                 {'T', 'R', 'A', 'C', 'E'},
@@ -181,7 +181,7 @@ int lookup_irc_pext(std::string_view s) {
                 {'E', 'R', 'R', 'O', 'R'},
                 {'L', 'I', 'N', 'K', 'S'},
             };
-            static int value[16] = {
+            static constexpr const int value[16] = {
                 -1,
                 -1,
                 37,
@@ -208,7 +208,7 @@ int lookup_irc_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[8][6] = {
+            static constexpr const char lookup[8][6] = {
                 {'N', 'O', 'T', 'I', 'C', 'E'},
                 {'I', 'N', 'V', 'I', 'T', 'E'},
                 {'S', 'U', 'M', 'M', 'O', 'N'},
@@ -218,7 +218,7 @@ int lookup_irc_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[8] = {
+            static constexpr const int value[8] = {
                 39,
                 9,
                 17,
@@ -237,7 +237,7 @@ int lookup_irc_pext(std::string_view s) {
         }
         break;
         case 7: {
-            static char lookup[8][7] = {
+            static constexpr const char lookup[8][7] = {
                 {'C', 'H', 'A', 'N', 'N', 'E', 'L'},
                 {}, // no match
                 {'V', 'E', 'R', 'S', 'I', 'O', 'N'},
@@ -247,7 +247,7 @@ int lookup_irc_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[8] = {
+            static constexpr const int value[8] = {
                 10,
                 -1,
                 11,
@@ -266,13 +266,13 @@ int lookup_irc_pext(std::string_view s) {
         }
         break;
         case 8: {
-            static char lookup[4][8] = {
+            static constexpr const char lookup[4][8] = {
                 {}, // no match
                 {'N', 'A', 'M', 'R', 'E', 'P', 'L', 'Y'},
                 {'L', 'I', 'N', 'R', 'E', 'P', 'L', 'Y'},
                 {'W', 'H', 'O', 'R', 'E', 'P', 'L', 'Y'},
             };
-            static int value[4] = {
+            static constexpr const int value[4] = {
                 -1,
                 35,
                 38,
@@ -292,25 +292,6 @@ int lookup_irc_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_irc_pext, type=pext, dataset=irc
 void check_irc_pext() {
-    assert(lookup_irc_pext("MSG") == 1);
-    assert(lookup_irc_pext("WHO") == 3);
-    assert(lookup_irc_pext("DIE") == 25);
-    assert(lookup_irc_pext("PRIVMSG") == 2);
-    assert(lookup_irc_pext("CHANNEL") == 10);
-    assert(lookup_irc_pext("VERSION") == 11);
-    assert(lookup_irc_pext("RESTART") == 20);
-    assert(lookup_irc_pext("CONNECT") == 26);
-    assert(lookup_irc_pext("WHOIS") == 4);
-    assert(lookup_irc_pext("TOPIC") == 8);
-    assert(lookup_irc_pext("SQUIT") == 13);
-    assert(lookup_irc_pext("LINKS") == 16);
-    assert(lookup_irc_pext("STATS") == 18);
-    assert(lookup_irc_pext("USERS") == 19);
-    assert(lookup_irc_pext("ERROR") == 23);
-    assert(lookup_irc_pext("NAMES") == 34);
-    assert(lookup_irc_pext("ADMIN") == 36);
-    assert(lookup_irc_pext("TRACE") == 37);
-    assert(lookup_irc_pext("VOICE") == 41);
     assert(lookup_irc_pext("SERVER") == 6);
     assert(lookup_irc_pext("INVITE") == 9);
     assert(lookup_irc_pext("SUMMON") == 17);
@@ -337,5 +318,24 @@ void check_irc_pext() {
     assert(lookup_irc_pext("GRPH") == 42);
     assert(lookup_irc_pext("XTRA") == 43);
     assert(lookup_irc_pext("MOTD") == 44);
+    assert(lookup_irc_pext("MSG") == 1);
+    assert(lookup_irc_pext("WHO") == 3);
+    assert(lookup_irc_pext("DIE") == 25);
+    assert(lookup_irc_pext("PRIVMSG") == 2);
+    assert(lookup_irc_pext("CHANNEL") == 10);
+    assert(lookup_irc_pext("VERSION") == 11);
+    assert(lookup_irc_pext("RESTART") == 20);
+    assert(lookup_irc_pext("CONNECT") == 26);
+    assert(lookup_irc_pext("WHOIS") == 4);
+    assert(lookup_irc_pext("TOPIC") == 8);
+    assert(lookup_irc_pext("SQUIT") == 13);
+    assert(lookup_irc_pext("LINKS") == 16);
+    assert(lookup_irc_pext("STATS") == 18);
+    assert(lookup_irc_pext("USERS") == 19);
+    assert(lookup_irc_pext("ERROR") == 23);
+    assert(lookup_irc_pext("NAMES") == 34);
+    assert(lookup_irc_pext("ADMIN") == 36);
+    assert(lookup_irc_pext("TRACE") == 37);
+    assert(lookup_irc_pext("VOICE") == 41);
 }
 

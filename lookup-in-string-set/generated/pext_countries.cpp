@@ -2,7 +2,7 @@
 int lookup_countries_pext(std::string_view s) {
     switch (s.size()) {
         case 4: {
-            static char lookup[32][4] = {
+            static constexpr const char lookup[32][4] = {
                 {}, // no match
                 {'C', 'U', 'B', 'A'},
                 {}, // no match
@@ -36,7 +36,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            static constexpr const int value[32] = {
                 -1,
                 150,
                 -1,
@@ -79,7 +79,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[1024][5] = {
+            static constexpr const char lookup[1024][5] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -1105,7 +1105,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[1024] = {
+            static constexpr const int value[1024] = {
                 -1,
                 -1,
                 -1,
@@ -2140,7 +2140,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[256][6] = {
+            static constexpr const char lookup[256][6] = {
                 {'G', 'A', 'M', 'B', 'I', 'A'},
                 {'Z', 'A', 'M', 'B', 'I', 'A'},
                 {}, // no match
@@ -2398,7 +2398,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[256] = {
+            static constexpr const int value[256] = {
                 18,
                 51,
                 -1,
@@ -2671,7 +2671,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 7: {
-            static char lookup[1024][7] = {
+            static constexpr const char lookup[1024][7] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -3697,7 +3697,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[1024] = {
+            static constexpr const int value[1024] = {
                 -1,
                 -1,
                 -1,
@@ -4738,7 +4738,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 8: {
-            static char lookup[256][8] = {
+            static constexpr const char lookup[256][8] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -4996,7 +4996,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[256] = {
+            static constexpr const int value[256] = {
                 -1,
                 -1,
                 -1,
@@ -5263,7 +5263,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 9: {
-            static char lookup[128][9] = {
+            static constexpr const char lookup[128][9] = {
                 {'A', 'U', 'S', 'T', 'R', 'A', 'L', 'I', 'A'},
                 {}, // no match
                 {'L', 'I', 'T', 'H', 'U', 'A', 'N', 'I', 'A'},
@@ -5393,7 +5393,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[128] = {
+            static constexpr const int value[128] = {
                 166,
                 -1,
                 122,
@@ -5532,7 +5532,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 10: {
-            static char lookup[128][10] = {
+            static constexpr const char lookup[128][10] = {
                 {}, // no match
                 {}, // no match
                 {'B', 'A', 'N', 'G', 'L', 'A', 'D', 'E', 'S', 'H'},
@@ -5662,7 +5662,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[128] = {
+            static constexpr const int value[128] = {
                 -1,
                 -1,
                 55,
@@ -5801,7 +5801,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 11: {
-            static char lookup[16][11] = {
+            static constexpr const char lookup[16][11] = {
                 {'N', 'E', 'W', ' ', 'Z', 'E', 'A', 'L', 'A', 'N', 'D'},
                 {'S', 'W', 'I', 'T', 'Z', 'E', 'R', 'L', 'A', 'N', 'D'},
                 {'S', 'A', 'I', 'N', 'T', ' ', 'L', 'U', 'C', 'I', 'A'},
@@ -5819,7 +5819,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            static constexpr const int value[16] = {
                 172,
                 140,
                 163,
@@ -5846,7 +5846,7 @@ int lookup_countries_pext(std::string_view s) {
         }
         break;
         case 12: {
-            static char lookup[32][12] = {
+            static constexpr const char lookup[32][12] = {
                 {'S', 'O', 'U', 'T', 'H', ' ', 'A', 'F', 'R', 'I', 'C', 'A'},
                 {}, // no match
                 {'S', 'A', 'U', 'D', 'I', ' ', 'A', 'R', 'A', 'B', 'I', 'A'},
@@ -5880,7 +5880,7 @@ int lookup_countries_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            static constexpr const int value[32] = {
                 43,
                 -1,
                 86,
@@ -6016,6 +6016,72 @@ int lookup_countries_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_countries_pext, type=pext, dataset=countries
 void check_countries_pext() {
+    assert(lookup_countries_pext("SAO TOME AND PRINCIPE") == 38);
+    assert(lookup_countries_pext("SAINT KITTS AND NEVIS") == 162);
+    assert(lookup_countries_pext("UNITED KINGDOM") == 142);
+    assert(lookup_countries_pext("ANTIGUA AND BARBUDA") == 144);
+    assert(lookup_countries_pext("TRINIDAD AND TOBAGO") == 165);
+    assert(lookup_countries_pext("GUINEA-BISSAU") == 21);
+    assert(lookup_countries_pext("LIECHTENSTEIN") == 121);
+    assert(lookup_countries_pext("MARSHALL ISLANDS") == 169);
+    assert(lookup_countries_pext("PAPUA NEW GUINEA") == 174);
+    assert(lookup_countries_pext("SOLOMON ISLANDS") == 176);
+    assert(lookup_countries_pext("ANGOLA") == 1);
+    assert(lookup_countries_pext("GAMBIA") == 18);
+    assert(lookup_countries_pext("GUINEA") == 20);
+    assert(lookup_countries_pext("MALAWI") == 28);
+    assert(lookup_countries_pext("RWANDA") == 37);
+    assert(lookup_countries_pext("UGANDA") == 50);
+    assert(lookup_countries_pext("ZAMBIA") == 51);
+    assert(lookup_countries_pext("BHUTAN") == 56);
+    assert(lookup_countries_pext("BRUNEI") == 57);
+    assert(lookup_countries_pext("ISRAEL") == 67);
+    assert(lookup_countries_pext("JORDAN") == 69);
+    assert(lookup_countries_pext("KUWAIT") == 73);
+    assert(lookup_countries_pext("TURKEY") == 92);
+    assert(lookup_countries_pext("CYPRUS") == 108);
+    assert(lookup_countries_pext("FRANCE") == 112);
+    assert(lookup_countries_pext("GREECE") == 115);
+    assert(lookup_countries_pext("LATVIA") == 120);
+    assert(lookup_countries_pext("MONACO") == 127);
+    assert(lookup_countries_pext("NORWAY") == 130);
+    assert(lookup_countries_pext("POLAND") == 131);
+    assert(lookup_countries_pext("SERBIA") == 135);
+    assert(lookup_countries_pext("SWEDEN") == 139);
+    assert(lookup_countries_pext("BELIZE") == 147);
+    assert(lookup_countries_pext("CANADA") == 148);
+    assert(lookup_countries_pext("MEXICO") == 159);
+    assert(lookup_countries_pext("PANAMA") == 161);
+    assert(lookup_countries_pext("TUVALU") == 178);
+    assert(lookup_countries_pext("BRAZIL") == 182);
+    assert(lookup_countries_pext("GUYANA") == 186);
+    assert(lookup_countries_pext("SIERRA LEONE") == 41);
+    assert(lookup_countries_pext("SOUTH AFRICA") == 43);
+    assert(lookup_countries_pext("KOREA, NORTH") == 71);
+    assert(lookup_countries_pext("KOREA, SOUTH") == 72);
+    assert(lookup_countries_pext("SAUDI ARABIA") == 86);
+    assert(lookup_countries_pext("TURKMENISTAN") == 93);
+    assert(lookup_countries_pext("VATICAN CITY") == 143);
+    assert(lookup_countries_pext("CAPE VERDE") == 7);
+    assert(lookup_countries_pext("MADAGASCAR") == 27);
+    assert(lookup_countries_pext("MAURITANIA") == 30);
+    assert(lookup_countries_pext("MOZAMBIQUE") == 33);
+    assert(lookup_countries_pext("SEYCHELLES") == 40);
+    assert(lookup_countries_pext("BANGLADESH") == 55);
+    assert(lookup_countries_pext("EAST TIMOR") == 62);
+    assert(lookup_countries_pext("KAZAKHSTAN") == 70);
+    assert(lookup_countries_pext("KYRGYZSTAN") == 74);
+    assert(lookup_countries_pext("TAJIKISTAN") == 90);
+    assert(lookup_countries_pext("UZBEKISTAN") == 95);
+    assert(lookup_countries_pext("AZERBAIJAN") == 102);
+    assert(lookup_countries_pext("LUXEMBOURG") == 123);
+    assert(lookup_countries_pext("MONTENEGRO") == 128);
+    assert(lookup_countries_pext("SAN MARINO") == 134);
+    assert(lookup_countries_pext("COSTA RICA") == 149);
+    assert(lookup_countries_pext("MICRONESIA") == 170);
+    assert(lookup_countries_pext("CENTRAL AFRICAN REPUBLIC") == 8);
+    assert(lookup_countries_pext("RUSSIAN FEDERATION") == 85);
+    assert(lookup_countries_pext("DOMINICAN REPUBLIC") == 152);
     assert(lookup_countries_pext("ALGERIA") == 0);
     assert(lookup_countries_pext("BURKINA") == 4);
     assert(lookup_countries_pext("BURUNDI") == 5);
@@ -6058,54 +6124,29 @@ void check_countries_pext() {
     assert(lookup_countries_pext("BOLIVIA") == 181);
     assert(lookup_countries_pext("ECUADOR") == 185);
     assert(lookup_countries_pext("URUGUAY") == 190);
-    assert(lookup_countries_pext("CHAD") == 9);
-    assert(lookup_countries_pext("MALI") == 29);
-    assert(lookup_countries_pext("TOGO") == 48);
-    assert(lookup_countries_pext("IRAN") == 65);
-    assert(lookup_countries_pext("IRAQ") == 66);
-    assert(lookup_countries_pext("LAOS") == 75);
-    assert(lookup_countries_pext("OMAN") == 81);
-    assert(lookup_countries_pext("CUBA") == 150);
-    assert(lookup_countries_pext("FIJI") == 167);
-    assert(lookup_countries_pext("PERU") == 188);
-    assert(lookup_countries_pext("IVORY COAST") == 22);
-    assert(lookup_countries_pext("SOUTH SUDAN") == 44);
-    assert(lookup_countries_pext("AFGHANISTAN") == 53);
-    assert(lookup_countries_pext("PHILIPPINES") == 83);
-    assert(lookup_countries_pext("NETHERLANDS") == 129);
-    assert(lookup_countries_pext("SWITZERLAND") == 140);
-    assert(lookup_countries_pext("EL SALVADOR") == 153);
-    assert(lookup_countries_pext("SAINT LUCIA") == 163);
-    assert(lookup_countries_pext("NEW ZEALAND") == 172);
-    assert(lookup_countries_pext("CENTRAL AFRICAN REPUBLIC") == 8);
-    assert(lookup_countries_pext("MARSHALL ISLANDS") == 169);
-    assert(lookup_countries_pext("PAPUA NEW GUINEA") == 174);
-    assert(lookup_countries_pext("SOLOMON ISLANDS") == 176);
-    assert(lookup_countries_pext("EQUATORIAL GUINEA") == 14);
-    assert(lookup_countries_pext("UNITED KINGDOM") == 142);
-    assert(lookup_countries_pext("SIERRA LEONE") == 41);
-    assert(lookup_countries_pext("SOUTH AFRICA") == 43);
-    assert(lookup_countries_pext("KOREA, NORTH") == 71);
-    assert(lookup_countries_pext("KOREA, SOUTH") == 72);
-    assert(lookup_countries_pext("SAUDI ARABIA") == 86);
-    assert(lookup_countries_pext("TURKMENISTAN") == 93);
-    assert(lookup_countries_pext("VATICAN CITY") == 143);
-    assert(lookup_countries_pext("BOSNIA AND HERZEGOVINA") == 105);
-    assert(lookup_countries_pext("ANTIGUA AND BARBUDA") == 144);
-    assert(lookup_countries_pext("TRINIDAD AND TOBAGO") == 165);
-    assert(lookup_countries_pext("MAURITIUS") == 31);
-    assert(lookup_countries_pext("SWAZILAND") == 46);
-    assert(lookup_countries_pext("INDONESIA") == 64);
-    assert(lookup_countries_pext("SINGAPORE") == 87);
-    assert(lookup_countries_pext("SRI LANKA") == 88);
-    assert(lookup_countries_pext("LITHUANIA") == 122);
-    assert(lookup_countries_pext("MACEDONIA") == 124);
-    assert(lookup_countries_pext("GUATEMALA") == 155);
-    assert(lookup_countries_pext("NICARAGUA") == 160);
-    assert(lookup_countries_pext("AUSTRALIA") == 166);
-    assert(lookup_countries_pext("ARGENTINA") == 180);
-    assert(lookup_countries_pext("VENEZUELA") == 191);
-    assert(lookup_countries_pext("SAINT VINCENT AND THE GRENADINES") == 164);
+    assert(lookup_countries_pext("BOTSWANA") == 3);
+    assert(lookup_countries_pext("CAMEROON") == 6);
+    assert(lookup_countries_pext("DJIBOUTI") == 12);
+    assert(lookup_countries_pext("ETHIOPIA") == 16);
+    assert(lookup_countries_pext("TANZANIA") == 47);
+    assert(lookup_countries_pext("ZIMBABWE") == 52);
+    assert(lookup_countries_pext("CAMBODIA") == 60);
+    assert(lookup_countries_pext("MALAYSIA") == 77);
+    assert(lookup_countries_pext("MALDIVES") == 78);
+    assert(lookup_countries_pext("MONGOLIA") == 79);
+    assert(lookup_countries_pext("PAKISTAN") == 82);
+    assert(lookup_countries_pext("THAILAND") == 91);
+    assert(lookup_countries_pext("BULGARIA") == 106);
+    assert(lookup_countries_pext("PORTUGAL") == 132);
+    assert(lookup_countries_pext("SLOVAKIA") == 136);
+    assert(lookup_countries_pext("SLOVENIA") == 137);
+    assert(lookup_countries_pext("BARBADOS") == 146);
+    assert(lookup_countries_pext("DOMINICA") == 151);
+    assert(lookup_countries_pext("HONDURAS") == 157);
+    assert(lookup_countries_pext("KIRIBATI") == 168);
+    assert(lookup_countries_pext("COLOMBIA") == 184);
+    assert(lookup_countries_pext("PARAGUAY") == 187);
+    assert(lookup_countries_pext("SURINAME") == 189);
     assert(lookup_countries_pext("BENIN") == 2);
     assert(lookup_countries_pext("CONGO") == 11);
     assert(lookup_countries_pext("EGYPT") == 13);
@@ -6132,81 +6173,40 @@ void check_countries_pext() {
     assert(lookup_countries_pext("SAMOA") == 175);
     assert(lookup_countries_pext("TONGA") == 177);
     assert(lookup_countries_pext("CHILE") == 183);
-    assert(lookup_countries_pext("SAO TOME AND PRINCIPE") == 38);
-    assert(lookup_countries_pext("SAINT KITTS AND NEVIS") == 162);
-    assert(lookup_countries_pext("RUSSIAN FEDERATION") == 85);
-    assert(lookup_countries_pext("DOMINICAN REPUBLIC") == 152);
+    assert(lookup_countries_pext("MAURITIUS") == 31);
+    assert(lookup_countries_pext("SWAZILAND") == 46);
+    assert(lookup_countries_pext("INDONESIA") == 64);
+    assert(lookup_countries_pext("SINGAPORE") == 87);
+    assert(lookup_countries_pext("SRI LANKA") == 88);
+    assert(lookup_countries_pext("LITHUANIA") == 122);
+    assert(lookup_countries_pext("MACEDONIA") == 124);
+    assert(lookup_countries_pext("GUATEMALA") == 155);
+    assert(lookup_countries_pext("NICARAGUA") == 160);
+    assert(lookup_countries_pext("AUSTRALIA") == 166);
+    assert(lookup_countries_pext("ARGENTINA") == 180);
+    assert(lookup_countries_pext("VENEZUELA") == 191);
+    assert(lookup_countries_pext("IVORY COAST") == 22);
+    assert(lookup_countries_pext("SOUTH SUDAN") == 44);
+    assert(lookup_countries_pext("AFGHANISTAN") == 53);
+    assert(lookup_countries_pext("PHILIPPINES") == 83);
+    assert(lookup_countries_pext("NETHERLANDS") == 129);
+    assert(lookup_countries_pext("SWITZERLAND") == 140);
+    assert(lookup_countries_pext("EL SALVADOR") == 153);
+    assert(lookup_countries_pext("SAINT LUCIA") == 163);
+    assert(lookup_countries_pext("NEW ZEALAND") == 172);
     assert(lookup_countries_pext("UNITED ARAB EMIRATES") == 94);
-    assert(lookup_countries_pext("ANGOLA") == 1);
-    assert(lookup_countries_pext("GAMBIA") == 18);
-    assert(lookup_countries_pext("GUINEA") == 20);
-    assert(lookup_countries_pext("MALAWI") == 28);
-    assert(lookup_countries_pext("RWANDA") == 37);
-    assert(lookup_countries_pext("UGANDA") == 50);
-    assert(lookup_countries_pext("ZAMBIA") == 51);
-    assert(lookup_countries_pext("BHUTAN") == 56);
-    assert(lookup_countries_pext("BRUNEI") == 57);
-    assert(lookup_countries_pext("ISRAEL") == 67);
-    assert(lookup_countries_pext("JORDAN") == 69);
-    assert(lookup_countries_pext("KUWAIT") == 73);
-    assert(lookup_countries_pext("TURKEY") == 92);
-    assert(lookup_countries_pext("CYPRUS") == 108);
-    assert(lookup_countries_pext("FRANCE") == 112);
-    assert(lookup_countries_pext("GREECE") == 115);
-    assert(lookup_countries_pext("LATVIA") == 120);
-    assert(lookup_countries_pext("MONACO") == 127);
-    assert(lookup_countries_pext("NORWAY") == 130);
-    assert(lookup_countries_pext("POLAND") == 131);
-    assert(lookup_countries_pext("SERBIA") == 135);
-    assert(lookup_countries_pext("SWEDEN") == 139);
-    assert(lookup_countries_pext("BELIZE") == 147);
-    assert(lookup_countries_pext("CANADA") == 148);
-    assert(lookup_countries_pext("MEXICO") == 159);
-    assert(lookup_countries_pext("PANAMA") == 161);
-    assert(lookup_countries_pext("TUVALU") == 178);
-    assert(lookup_countries_pext("BRAZIL") == 182);
-    assert(lookup_countries_pext("GUYANA") == 186);
-    assert(lookup_countries_pext("CAPE VERDE") == 7);
-    assert(lookup_countries_pext("MADAGASCAR") == 27);
-    assert(lookup_countries_pext("MAURITANIA") == 30);
-    assert(lookup_countries_pext("MOZAMBIQUE") == 33);
-    assert(lookup_countries_pext("SEYCHELLES") == 40);
-    assert(lookup_countries_pext("BANGLADESH") == 55);
-    assert(lookup_countries_pext("EAST TIMOR") == 62);
-    assert(lookup_countries_pext("KAZAKHSTAN") == 70);
-    assert(lookup_countries_pext("KYRGYZSTAN") == 74);
-    assert(lookup_countries_pext("TAJIKISTAN") == 90);
-    assert(lookup_countries_pext("UZBEKISTAN") == 95);
-    assert(lookup_countries_pext("AZERBAIJAN") == 102);
-    assert(lookup_countries_pext("LUXEMBOURG") == 123);
-    assert(lookup_countries_pext("MONTENEGRO") == 128);
-    assert(lookup_countries_pext("SAN MARINO") == 134);
-    assert(lookup_countries_pext("COSTA RICA") == 149);
-    assert(lookup_countries_pext("MICRONESIA") == 170);
-    assert(lookup_countries_pext("GUINEA-BISSAU") == 21);
-    assert(lookup_countries_pext("LIECHTENSTEIN") == 121);
-    assert(lookup_countries_pext("BOTSWANA") == 3);
-    assert(lookup_countries_pext("CAMEROON") == 6);
-    assert(lookup_countries_pext("DJIBOUTI") == 12);
-    assert(lookup_countries_pext("ETHIOPIA") == 16);
-    assert(lookup_countries_pext("TANZANIA") == 47);
-    assert(lookup_countries_pext("ZIMBABWE") == 52);
-    assert(lookup_countries_pext("CAMBODIA") == 60);
-    assert(lookup_countries_pext("MALAYSIA") == 77);
-    assert(lookup_countries_pext("MALDIVES") == 78);
-    assert(lookup_countries_pext("MONGOLIA") == 79);
-    assert(lookup_countries_pext("PAKISTAN") == 82);
-    assert(lookup_countries_pext("THAILAND") == 91);
-    assert(lookup_countries_pext("BULGARIA") == 106);
-    assert(lookup_countries_pext("PORTUGAL") == 132);
-    assert(lookup_countries_pext("SLOVAKIA") == 136);
-    assert(lookup_countries_pext("SLOVENIA") == 137);
-    assert(lookup_countries_pext("BARBADOS") == 146);
-    assert(lookup_countries_pext("DOMINICA") == 151);
-    assert(lookup_countries_pext("HONDURAS") == 157);
-    assert(lookup_countries_pext("KIRIBATI") == 168);
-    assert(lookup_countries_pext("COLOMBIA") == 184);
-    assert(lookup_countries_pext("PARAGUAY") == 187);
-    assert(lookup_countries_pext("SURINAME") == 189);
+    assert(lookup_countries_pext("SAINT VINCENT AND THE GRENADINES") == 164);
+    assert(lookup_countries_pext("CHAD") == 9);
+    assert(lookup_countries_pext("MALI") == 29);
+    assert(lookup_countries_pext("TOGO") == 48);
+    assert(lookup_countries_pext("IRAN") == 65);
+    assert(lookup_countries_pext("IRAQ") == 66);
+    assert(lookup_countries_pext("LAOS") == 75);
+    assert(lookup_countries_pext("OMAN") == 81);
+    assert(lookup_countries_pext("CUBA") == 150);
+    assert(lookup_countries_pext("FIJI") == 167);
+    assert(lookup_countries_pext("PERU") == 188);
+    assert(lookup_countries_pext("EQUATORIAL GUINEA") == 14);
+    assert(lookup_countries_pext("BOSNIA AND HERZEGOVINA") == 105);
 }
 
