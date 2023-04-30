@@ -15,10 +15,10 @@ known_procedures = ['pext', 'split', 'hash1', 'hash2', 'hash3', 'hash_sum0', 'ha
 
 def render(data):
     table = Table()
-    table.add_header(['', ('valid words', 8)])
+    table.add_header(['', ('valid words density', 8)])
     table.add_header(['procedure', '0%', 'speed-up', '25%', 'speed-up', '50%', 'speed-up', '75%', 'speed-up'])
     for dataset, val in data.items():
-        table.add_row([('dataset %s' % dataset, 9)])
+        table.add_row([('dataset ``%s``' % dataset, 9)])
         rows = []
         for _ in known_procedures:
             rows.append([''] * 9)
