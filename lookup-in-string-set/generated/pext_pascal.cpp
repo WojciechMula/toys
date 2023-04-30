@@ -499,41 +499,41 @@ int lookup_pascal_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_pascal_pext, type=pext, dataset=pascal
 void check_pascal_pext() {
-    assert(lookup_pascal_pext("procedure") == 12);
-    assert(lookup_pascal_pext("or") == 13);
-    assert(lookup_pascal_pext("in") == 18);
-    assert(lookup_pascal_pext("of") == 20);
-    assert(lookup_pascal_pext("do") == 28);
-    assert(lookup_pascal_pext("to") == 30);
-    assert(lookup_pascal_pext("if") == 35);
     assert(lookup_pascal_pext("with") == 0);
-    assert(lookup_pascal_pext("case") == 4);
-    assert(lookup_pascal_pext("then") == 8);
-    assert(lookup_pascal_pext("goto") == 21);
-    assert(lookup_pascal_pext("file") == 25);
-    assert(lookup_pascal_pext("else") == 26);
-    assert(lookup_pascal_pext("type") == 31);
     assert(lookup_pascal_pext("array") == 1);
+    assert(lookup_pascal_pext("and") == 2);
+    assert(lookup_pascal_pext("function") == 3);
+    assert(lookup_pascal_pext("case") == 4);
+    assert(lookup_pascal_pext("var") == 5);
     assert(lookup_pascal_pext("const") == 6);
     assert(lookup_pascal_pext("until") == 7);
-    assert(lookup_pascal_pext("label") == 17);
-    assert(lookup_pascal_pext("while") == 24);
-    assert(lookup_pascal_pext("begin") == 34);
-    assert(lookup_pascal_pext("and") == 2);
-    assert(lookup_pascal_pext("var") == 5);
+    assert(lookup_pascal_pext("then") == 8);
     assert(lookup_pascal_pext("set") == 9);
+    assert(lookup_pascal_pext("record") == 10);
+    assert(lookup_pascal_pext("program") == 11);
+    assert(lookup_pascal_pext("procedure") == 12);
+    assert(lookup_pascal_pext("or") == 13);
+    assert(lookup_pascal_pext("packed") == 14);
     assert(lookup_pascal_pext("not") == 15);
     assert(lookup_pascal_pext("nil") == 16);
+    assert(lookup_pascal_pext("label") == 17);
+    assert(lookup_pascal_pext("in") == 18);
+    assert(lookup_pascal_pext("repeat") == 19);
+    assert(lookup_pascal_pext("of") == 20);
+    assert(lookup_pascal_pext("goto") == 21);
+    assert(lookup_pascal_pext("forward") == 22);
     assert(lookup_pascal_pext("for") == 23);
+    assert(lookup_pascal_pext("while") == 24);
+    assert(lookup_pascal_pext("file") == 25);
+    assert(lookup_pascal_pext("else") == 26);
+    assert(lookup_pascal_pext("downto") == 27);
+    assert(lookup_pascal_pext("do") == 28);
     assert(lookup_pascal_pext("div") == 29);
+    assert(lookup_pascal_pext("to") == 30);
+    assert(lookup_pascal_pext("type") == 31);
     assert(lookup_pascal_pext("end") == 32);
     assert(lookup_pascal_pext("mod") == 33);
-    assert(lookup_pascal_pext("function") == 3);
-    assert(lookup_pascal_pext("record") == 10);
-    assert(lookup_pascal_pext("packed") == 14);
-    assert(lookup_pascal_pext("repeat") == 19);
-    assert(lookup_pascal_pext("downto") == 27);
-    assert(lookup_pascal_pext("program") == 11);
-    assert(lookup_pascal_pext("forward") == 22);
+    assert(lookup_pascal_pext("begin") == 34);
+    assert(lookup_pascal_pext("if") == 35);
 }
 

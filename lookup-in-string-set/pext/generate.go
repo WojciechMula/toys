@@ -136,6 +136,7 @@ type generateCpp struct {
 }
 
 type generateContext struct {
+	words    []Keyword
 	basename string
 	argname  string
 	defval   string
@@ -196,10 +197,8 @@ func (g *generateCpp) write() {
 	g.ctx.indent += 4
 	{
 		name := g.ctx.lookupName()
-		for _, lookup := range g.lookups {
-			for _, kw := range lookup.words {
-				g.ctx.writeln("assert(%s(%q) == %s);", name, kw.word, kw.value)
-			}
+		for _, kw := range g.ctx.words {
+			g.ctx.writeln("assert(%s(%q) == %s);", name, kw.word, kw.value)
 		}
 	}
 	g.ctx.indent -= 4

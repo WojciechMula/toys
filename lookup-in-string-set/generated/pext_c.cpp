@@ -199,6 +199,10 @@ int lookup_c_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_c_pext, type=pext, dataset=c
 void check_c_pext() {
+    assert(lookup_c_pext("if") == 0);
+    assert(lookup_c_pext("do") == 1);
+    assert(lookup_c_pext("int") == 2);
+    assert(lookup_c_pext("for") == 3);
     assert(lookup_c_pext("case") == 4);
     assert(lookup_c_pext("char") == 5);
     assert(lookup_c_pext("auto") == 6);
@@ -227,9 +231,5 @@ void check_c_pext() {
     assert(lookup_c_pext("continue") == 29);
     assert(lookup_c_pext("register") == 30);
     assert(lookup_c_pext("volatile") == 31);
-    assert(lookup_c_pext("if") == 0);
-    assert(lookup_c_pext("do") == 1);
-    assert(lookup_c_pext("int") == 2);
-    assert(lookup_c_pext("for") == 3);
 }
 

@@ -20,6 +20,7 @@ func generateFunction(buf *bytes.Buffer, basename string, words []Keyword) error
 
 	a := generateCpp{
 		ctx: generateContext{
+			words:                 words,
 			output:                buf,
 			basename:              basename,
 			argname:               "s",

@@ -496,40 +496,40 @@ int lookup_gpc_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_gpc_pext, type=pext, dataset=gpc
 void check_gpc_pext() {
-    assert(lookup_gpc_pext("Function") == 12);
-    assert(lookup_gpc_pext("Procedure") == 23);
-    assert(lookup_gpc_pext("Program") == 24);
     assert(lookup_gpc_pext("And") == 0);
+    assert(lookup_gpc_pext("Array") == 1);
+    assert(lookup_gpc_pext("Begin") == 2);
+    assert(lookup_gpc_pext("Case") == 3);
+    assert(lookup_gpc_pext("Const") == 4);
     assert(lookup_gpc_pext("Div") == 5);
+    assert(lookup_gpc_pext("Do") == 6);
+    assert(lookup_gpc_pext("Downto") == 7);
+    assert(lookup_gpc_pext("Else") == 8);
     assert(lookup_gpc_pext("End") == 9);
+    assert(lookup_gpc_pext("File") == 10);
     assert(lookup_gpc_pext("For") == 11);
+    assert(lookup_gpc_pext("Function") == 12);
+    assert(lookup_gpc_pext("Goto") == 13);
+    assert(lookup_gpc_pext("If") == 14);
+    assert(lookup_gpc_pext("In") == 15);
+    assert(lookup_gpc_pext("Label") == 16);
     assert(lookup_gpc_pext("Mod") == 17);
     assert(lookup_gpc_pext("Nil") == 18);
     assert(lookup_gpc_pext("Not") == 19);
-    assert(lookup_gpc_pext("Set") == 27);
-    assert(lookup_gpc_pext("Var") == 32);
-    assert(lookup_gpc_pext("Array") == 1);
-    assert(lookup_gpc_pext("Begin") == 2);
-    assert(lookup_gpc_pext("Const") == 4);
-    assert(lookup_gpc_pext("Label") == 16);
-    assert(lookup_gpc_pext("Until") == 31);
-    assert(lookup_gpc_pext("While") == 33);
-    assert(lookup_gpc_pext("Case") == 3);
-    assert(lookup_gpc_pext("Else") == 8);
-    assert(lookup_gpc_pext("File") == 10);
-    assert(lookup_gpc_pext("Goto") == 13);
-    assert(lookup_gpc_pext("Then") == 28);
-    assert(lookup_gpc_pext("Type") == 30);
-    assert(lookup_gpc_pext("With") == 34);
-    assert(lookup_gpc_pext("Do") == 6);
-    assert(lookup_gpc_pext("If") == 14);
-    assert(lookup_gpc_pext("In") == 15);
     assert(lookup_gpc_pext("Of") == 20);
     assert(lookup_gpc_pext("Or") == 21);
-    assert(lookup_gpc_pext("To") == 29);
-    assert(lookup_gpc_pext("Downto") == 7);
     assert(lookup_gpc_pext("Packed") == 22);
+    assert(lookup_gpc_pext("Procedure") == 23);
+    assert(lookup_gpc_pext("Program") == 24);
     assert(lookup_gpc_pext("Record") == 25);
     assert(lookup_gpc_pext("Repeat") == 26);
+    assert(lookup_gpc_pext("Set") == 27);
+    assert(lookup_gpc_pext("Then") == 28);
+    assert(lookup_gpc_pext("To") == 29);
+    assert(lookup_gpc_pext("Type") == 30);
+    assert(lookup_gpc_pext("Until") == 31);
+    assert(lookup_gpc_pext("Var") == 32);
+    assert(lookup_gpc_pext("While") == 33);
+    assert(lookup_gpc_pext("With") == 34);
 }
 
