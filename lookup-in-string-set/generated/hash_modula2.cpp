@@ -2,7 +2,7 @@
 //lookup: name=lookup_modula2_hash1, dataset=modula2, type=hash, hash=hash1
 int lookup_modula2_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 61) * 2;
-    constexpr const std::string_view lookup[122] = {
+    static std::string_view lookup[122] = {
         "",
         "",
         "",
@@ -126,7 +126,7 @@ int lookup_modula2_hash1(std::string_view s) {
         "PROCEDURE", // 1341 (0x53d)
         "QUALIFIED", // 1341 (0x53d)
     };
-    constexpr const int values[122] = {
+    static int values[122] = {
         -1,
         -1,
         -1,
@@ -305,7 +305,7 @@ void check_modula2_hash1() {
 //lookup: name=lookup_modula2_hash2, dataset=modula2, type=hash, hash=hash2
 int lookup_modula2_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 61) * 2;
-    constexpr const std::string_view lookup[122] = {
+    static std::string_view lookup[122] = {
         "",
         "",
         "REPEAT", // 6894 (0x1aee)
@@ -429,7 +429,7 @@ int lookup_modula2_hash2(std::string_view s) {
         "EXPORT", // 5794 (0x16a2)
         "",
     };
-    constexpr const int values[122] = {
+    static int values[122] = {
         -1,
         -1,
         30, // 6894 (0x1aee)
@@ -608,7 +608,7 @@ void check_modula2_hash2() {
 //lookup: name=lookup_modula2_hash3, dataset=modula2, type=hash, hash=hash3
 int lookup_modula2_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 187) * 1;
-    constexpr const std::string_view lookup[187] = {
+    static std::string_view lookup[187] = {
         "",
         "",
         "",
@@ -797,7 +797,7 @@ int lookup_modula2_hash3(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[187] = {
+    static int values[187] = {
         -1,
         -1,
         -1,
@@ -1041,7 +1041,7 @@ void check_modula2_hash3() {
 //lookup: name=lookup_modula2_hash_sum0, dataset=modula2, type=hash, hash=hash_sum0
 int lookup_modula2_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 62) * 2;
-    constexpr const std::string_view lookup[124] = {
+    static std::string_view lookup[124] = {
         "",
         "",
         "DEFINITION", // 745 (0x2e9)
@@ -1167,7 +1167,7 @@ int lookup_modula2_hash_sum0(std::string_view s) {
         "ELSIF", // 371 (0x173)
         "PROCEDURE", // 681 (0x2a9)
     };
-    constexpr const int values[124] = {
+    static int values[124] = {
         -1,
         -1,
         6, // 745 (0x2e9)
@@ -1348,7 +1348,7 @@ void check_modula2_hash_sum0() {
 //lookup: name=lookup_modula2_hash_sumN, dataset=modula2, type=hash, hash=hash_sumN
 int lookup_modula2_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 48) * 2;
-    constexpr const std::string_view lookup[96] = {
+    static std::string_view lookup[96] = {
         "CASE", // 288 (0x120)
         "",
         "IF", // 145 (0x91)
@@ -1446,7 +1446,7 @@ int lookup_modula2_hash_sumN(std::string_view s) {
         "SET", // 239 (0xef)
         "",
     };
-    constexpr const int values[96] = {
+    static int values[96] = {
         4, // 288 (0x120)
         -1,
         16, // 145 (0x91)
@@ -1599,7 +1599,7 @@ void check_modula2_hash_sumN() {
 //lookup: name=lookup_modula2_hash_djb2, dataset=modula2, type=hash, hash=hash_djb2
 int lookup_modula2_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 245) * 1;
-    constexpr const std::string_view lookup[245] = {
+    static std::string_view lookup[245] = {
         "",
         "",
         "",
@@ -1846,7 +1846,7 @@ int lookup_modula2_hash_djb2(std::string_view s) {
         "CASE", // 6502514373 (0x183947ec5)
         "",
     };
-    constexpr const int values[245] = {
+    static int values[245] = {
         -1,
         -1,
         -1,
@@ -2148,7 +2148,7 @@ void check_modula2_hash_djb2() {
 //lookup: name=lookup_modula2_hash_sdb, dataset=modula2, type=hash, hash=hash_sdb
 int lookup_modula2_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 204) * 1;
-    constexpr const std::string_view lookup[204] = {
+    static std::string_view lookup[204] = {
         "",
         "",
         "",
@@ -2354,7 +2354,7 @@ int lookup_modula2_hash_sdb(std::string_view s) {
         "TYPE", // 23647527479938354 (0x54034d0b420d32)
         "",
     };
-    constexpr const int values[204] = {
+    static int values[204] = {
         -1,
         -1,
         -1,

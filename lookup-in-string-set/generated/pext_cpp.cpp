@@ -11,7 +11,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[8][3] = {
+            static char lookup[8][3] = {
                 {}, // no match
                 {}, // no match
                 {'a', 's', 'm'},
@@ -21,7 +21,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {'i', 'n', 't'},
                 {'n', 'e', 'w'},
             };
-            constexpr const int value[8] = {
+            static int value[8] = {
                 -1,
                 -1,
                 0,
@@ -39,7 +39,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {'v', 'o', 'i', 'd'},
                 {'c', 'a', 's', 'e'},
@@ -73,7 +73,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 44,
                 3,
@@ -116,7 +116,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[16][5] = {
+            static char lookup[16][5] = {
                 {}, // no match
                 {'c', 'a', 't', 'c', 'h'},
                 {}, // no match
@@ -134,7 +134,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 -1,
                 4,
                 -1,
@@ -161,7 +161,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[64][6] = {
+            static char lookup[64][6] = {
                 {'s', 'i', 'g', 'n', 'e', 'd'},
                 {}, // no match
                 {'f', 'r', 'i', 'e', 'n', 'd'},
@@ -227,7 +227,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[64] = {
+            static int value[64] = {
                 33,
                 -1,
                 18,
@@ -302,7 +302,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 7: {
-            constexpr const char lookup[8][7] = {
+            static char lookup[8][7] = {
                 {'p', 'r', 'i', 'v', 'a', 't', 'e'},
                 {'t', 'y', 'p', 'e', 'd', 'e', 'f'},
                 {'v', 'i', 'r', 't', 'u', 'a', 'l'},
@@ -312,7 +312,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[8] = {
+            static int value[8] = {
                 27,
                 40,
                 43,
@@ -330,7 +330,7 @@ int lookup_cpp_pext(std::string_view s) {
         }
         break;
         case 8: {
-            constexpr const char lookup[32][8] = {
+            static char lookup[32][8] = {
                 {}, // no match
                 {'o', 'v', 'e', 'r', 'l', 'o', 'a', 'd'},
                 {}, // no match
@@ -364,7 +364,7 @@ int lookup_cpp_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 26,
                 -1,
@@ -419,6 +419,21 @@ int lookup_cpp_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_cpp_pext, type=pext, dataset=cpp
 void check_cpp_pext() {
+    assert(lookup_cpp_pext("break") == 2);
+    assert(lookup_cpp_pext("catch") == 4);
+    assert(lookup_cpp_pext("class") == 6);
+    assert(lookup_cpp_pext("const") == 7);
+    assert(lookup_cpp_pext("float") == 16);
+    assert(lookup_cpp_pext("short") == 32);
+    assert(lookup_cpp_pext("union") == 41);
+    assert(lookup_cpp_pext("while") == 46);
+    assert(lookup_cpp_pext("continue") == 8);
+    assert(lookup_cpp_pext("operator") == 25);
+    assert(lookup_cpp_pext("overload") == 26);
+    assert(lookup_cpp_pext("register") == 30);
+    assert(lookup_cpp_pext("template") == 38);
+    assert(lookup_cpp_pext("unsigned") == 42);
+    assert(lookup_cpp_pext("volatile") == 45);
     assert(lookup_cpp_pext("default") == 9);
     assert(lookup_cpp_pext("private") == 27);
     assert(lookup_cpp_pext("typedef") == 40);
@@ -451,20 +466,5 @@ void check_cpp_pext() {
     assert(lookup_cpp_pext("long") == 23);
     assert(lookup_cpp_pext("this") == 39);
     assert(lookup_cpp_pext("void") == 44);
-    assert(lookup_cpp_pext("break") == 2);
-    assert(lookup_cpp_pext("catch") == 4);
-    assert(lookup_cpp_pext("class") == 6);
-    assert(lookup_cpp_pext("const") == 7);
-    assert(lookup_cpp_pext("float") == 16);
-    assert(lookup_cpp_pext("short") == 32);
-    assert(lookup_cpp_pext("union") == 41);
-    assert(lookup_cpp_pext("while") == 46);
-    assert(lookup_cpp_pext("continue") == 8);
-    assert(lookup_cpp_pext("operator") == 25);
-    assert(lookup_cpp_pext("overload") == 26);
-    assert(lookup_cpp_pext("register") == 30);
-    assert(lookup_cpp_pext("template") == 38);
-    assert(lookup_cpp_pext("unsigned") == 42);
-    assert(lookup_cpp_pext("volatile") == 45);
 }
 

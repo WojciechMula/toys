@@ -2,7 +2,7 @@
 //lookup: name=lookup_states_hash1, dataset=states, type=hash, hash=hash1
 int lookup_states_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 81) * 2;
-    constexpr const std::string_view lookup[162] = {
+    static std::string_view lookup[162] = {
         "TENNESSEE", // 1377 (0x561)
         "",
         "MAINE", // 730 (0x2da)
@@ -166,7 +166,7 @@ int lookup_states_hash1(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[162] = {
+    static int values[162] = {
         41, // 1377 (0x561)
         -1,
         18, // 730 (0x2da)
@@ -395,7 +395,7 @@ void check_states_hash1() {
 //lookup: name=lookup_states_hash2, dataset=states, type=hash, hash=hash2
 int lookup_states_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 73) * 2;
-    constexpr const std::string_view lookup[146] = {
+    static std::string_view lookup[146] = {
         "",
         "",
         "ARKANSAS", // 5403 (0x151b)
@@ -543,7 +543,7 @@ int lookup_states_hash2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[146] = {
+    static int values[146] = {
         -1,
         -1,
         3, // 5403 (0x151b)
@@ -756,7 +756,7 @@ void check_states_hash2() {
 //lookup: name=lookup_states_hash3, dataset=states, type=hash, hash=hash3
 int lookup_states_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 303) * 1;
-    constexpr const std::string_view lookup[303] = {
+    static std::string_view lookup[303] = {
         "",
         "MAINE", // 21211 (0x52db)
         "",
@@ -1061,7 +1061,7 @@ int lookup_states_hash3(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[303] = {
+    static int values[303] = {
         -1,
         18, // 21211 (0x52db)
         -1,
@@ -1431,7 +1431,7 @@ void check_states_hash3() {
 //lookup: name=lookup_states_hash_sum0, dataset=states, type=hash, hash=hash_sum0
 int lookup_states_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 225) * 1;
-    constexpr const std::string_view lookup[225] = {
+    static std::string_view lookup[225] = {
         "",
         "",
         "LOUISIANA", // 677 (0x2a5)
@@ -1658,7 +1658,7 @@ int lookup_states_hash_sum0(std::string_view s) {
         "",
         "KANSAS", // 449 (0x1c1)
     };
-    constexpr const int values[225] = {
+    static int values[225] = {
         -1,
         -1,
         17, // 677 (0x2a5)
@@ -1950,7 +1950,7 @@ void check_states_hash_sum0() {
 //lookup: name=lookup_states_hash_sumN, dataset=states, type=hash, hash=hash_sumN
 int lookup_states_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 187) * 1;
-    constexpr const std::string_view lookup[187] = {
+    static std::string_view lookup[187] = {
         "WYOMING", // 561 (0x231)
         "VERMONT", // 562 (0x232)
         "",
@@ -2139,7 +2139,7 @@ int lookup_states_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[187] = {
+    static int values[187] = {
         49, // 561 (0x231)
         44, // 562 (0x232)
         -1,
@@ -2393,7 +2393,7 @@ void check_states_hash_sumN() {
 //lookup: name=lookup_states_hash_djb2, dataset=states, type=hash, hash=hash_djb2
 int lookup_states_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 268) * 1;
-    constexpr const std::string_view lookup[268] = {
+    static std::string_view lookup[268] = {
         "",
         "",
         "",
@@ -2663,7 +2663,7 @@ int lookup_states_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[268] = {
+    static int values[268] = {
         -1,
         -1,
         -1,
@@ -2998,7 +2998,7 @@ void check_states_hash_djb2() {
 //lookup: name=lookup_states_hash_sdb, dataset=states, type=hash, hash=hash_sdb
 int lookup_states_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 274) * 1;
-    constexpr const std::string_view lookup[274] = {
+    static std::string_view lookup[274] = {
         "",
         "CONNECTICUT", // 6880868369768491963 (0x5f7dc1536e45abbb)
         "",
@@ -3274,7 +3274,7 @@ int lookup_states_hash_sdb(std::string_view s) {
         "MICHIGAN", // 716549615513879380 (0x9f1b21430a5c354)
         "",
     };
-    constexpr const int values[274] = {
+    static int values[274] = {
         -1,
         6, // 6880868369768491963 (0x5f7dc1536e45abbb)
         -1,

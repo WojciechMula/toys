@@ -2,7 +2,7 @@
 //lookup: name=lookup_go_hash1, dataset=go, type=hash, hash=hash1
 int lookup_go_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 38) * 2;
-    constexpr const std::string_view lookup[76] = {
+    static std::string_view lookup[76] = {
         "chan", // 836 (0x344)
         "",
         "",
@@ -80,7 +80,7 @@ int lookup_go_hash1(std::string_view s) {
         "break", // 1025 (0x401)
         "",
     };
-    constexpr const int values[76] = {
+    static int values[76] = {
         2, // 836 (0x344)
         -1,
         -1,
@@ -198,7 +198,7 @@ void check_go_hash1() {
 //lookup: name=lookup_go_hash2, dataset=go, type=hash, hash=hash2
 int lookup_go_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 27) * 2;
-    constexpr const std::string_view lookup[54] = {
+    static std::string_view lookup[54] = {
         "select", // 13338 (0x341a)
         "struct", // 13338 (0x341a)
         "continue", // 9991 (0x2707)
@@ -254,7 +254,7 @@ int lookup_go_hash2(std::string_view s) {
         "else", // 10205 (0x27dd)
         "",
     };
-    constexpr const int values[54] = {
+    static int values[54] = {
         20, // 13338 (0x341a)
         21, // 13338 (0x341a)
         4, // 9991 (0x2707)
@@ -350,7 +350,7 @@ void check_go_hash2() {
 //lookup: name=lookup_go_hash3, dataset=go, type=hash, hash=hash3
 int lookup_go_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 107) * 1;
-    constexpr const std::string_view lookup[107] = {
+    static std::string_view lookup[107] = {
         "",
         "",
         "defer", // 27180 (0x6a2c)
@@ -459,7 +459,7 @@ int lookup_go_hash3(std::string_view s) {
         "fallthrough", // 29316 (0x7284)
         "",
     };
-    constexpr const int values[107] = {
+    static int values[107] = {
         -1,
         -1,
         6, // 27180 (0x6a2c)
@@ -608,7 +608,7 @@ void check_go_hash3() {
 //lookup: name=lookup_go_hash_sum0, dataset=go, type=hash, hash=hash_sum0
 int lookup_go_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 73) * 1;
-    constexpr const std::string_view lookup[73] = {
+    static std::string_view lookup[73] = {
         "",
         "switch", // 658 (0x292)
         "",
@@ -683,7 +683,7 @@ int lookup_go_hash_sum0(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[73] = {
+    static int values[73] = {
         -1,
         22, // 658 (0x292)
         -1,
@@ -798,7 +798,7 @@ void check_go_hash_sum0() {
 //lookup: name=lookup_go_hash_sumN, dataset=go, type=hash, hash=hash_sumN
 int lookup_go_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 63) * 1;
-    constexpr const std::string_view lookup[63] = {
+    static std::string_view lookup[63] = {
         "",
         "",
         "",
@@ -863,7 +863,7 @@ int lookup_go_hash_sumN(std::string_view s) {
         "fallthrough", // 1195 (0x4ab)
         "",
     };
-    constexpr const int values[63] = {
+    static int values[63] = {
         -1,
         -1,
         -1,
@@ -968,7 +968,7 @@ void check_go_hash_sumN() {
 //lookup: name=lookup_go_hash_djb2, dataset=go, type=hash, hash=hash_djb2
 int lookup_go_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 107) * 1;
-    constexpr const std::string_view lookup[107] = {
+    static std::string_view lookup[107] = {
         "",
         "",
         "",
@@ -1077,7 +1077,7 @@ int lookup_go_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[107] = {
+    static int values[107] = {
         -1,
         -1,
         -1,
@@ -1226,7 +1226,7 @@ void check_go_hash_djb2() {
 //lookup: name=lookup_go_hash_sdb, dataset=go, type=hash, hash=hash_sdb
 int lookup_go_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 71) * 1;
-    constexpr const std::string_view lookup[71] = {
+    static std::string_view lookup[71] = {
         "goto", // 28996381010759823 (0x67040e0deb108f)
         "",
         "interface", // 12514925068772314305 (0xadadf20b0ace0cc1)
@@ -1299,7 +1299,7 @@ int lookup_go_hash_sdb(std::string_view s) {
         "const", // 365663719708962995 (0x5131937388030b3)
         "",
     };
-    constexpr const int values[71] = {
+    static int values[71] = {
         12, // 28996381010759823 (0x67040e0deb108f)
         -1,
         15, // 12514925068772314305 (0xadadf20b0ace0cc1)

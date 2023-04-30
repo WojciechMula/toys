@@ -2,13 +2,13 @@
 int lookup_cplusplus_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            constexpr const char lookup[4][2] = {
+            static char lookup[4][2] = {
                 {'i', 'f'},
                 {'d', 'o'},
                 {'o', 'r'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 61,
                 48,
                 71,
@@ -22,7 +22,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[32][3] = {
+            static char lookup[32][3] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -56,7 +56,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {'n', 'e', 'w'},
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -104,7 +104,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {'v', 'o', 'i', 'd'},
                 {}, // no match
@@ -138,7 +138,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {'a', 'u', 't', 'o'},
                 {'g', 'o', 't', 'o'},
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 101,
                 -1,
@@ -181,7 +181,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[64][5] = {
+            static char lookup[64][5] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -247,7 +247,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[64] = {
+            static int value[64] = {
                 -1,
                 -1,
                 -1,
@@ -322,7 +322,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[256][6] = {
+            static char lookup[256][6] = {
                 {}, // no match
                 {'s', 'i', 'g', 'n', 'e', 'd'},
                 {'f', 'r', 'i', 'e', 'n', 'd'},
@@ -580,7 +580,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[256] = {
+            static int value[256] = {
                 -1,
                 81,
                 59,
@@ -847,7 +847,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 7: {
-            constexpr const char lookup[16][7] = {
+            static char lookup[16][7] = {
                 {'m', 'u', 't', 'a', 'b', 'l', 'e'},
                 {'p', 'r', 'i', 'v', 'a', 't', 'e'},
                 {'t', 'y', 'p', 'e', 'd', 'e', 'f'},
@@ -865,7 +865,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {}, // no match
                 {'_', '_', 'a', 's', 'm', '_', '_'},
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 65,
                 73,
                 93,
@@ -892,7 +892,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 8: {
-            constexpr const char lookup[64][8] = {
+            static char lookup[64][8] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -958,7 +958,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {'_', '_', 'i', 'n', 'l', 'i', 'n', 'e'},
                 {'v', 'o', 'l', 'a', 't', 'i', 'l', 'e'},
             };
-            constexpr const int value[64] = {
+            static int value[64] = {
                 -1,
                 -1,
                 -1,
@@ -1033,7 +1033,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 9: {
-            constexpr const char lookup[16][9] = {
+            static char lookup[16][9] = {
                 {}, // no match
                 {'_', '_', 'a', 'l', 'i', 'g', 'n', 'o', 'f'},
                 {'p', 'r', 'o', 't', 'e', 'c', 't', 'e', 'd'},
@@ -1051,7 +1051,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {'_', '_', 'c', 'o', 'n', 's', 't', '_', '_'},
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 -1,
                 0,
                 74,
@@ -1078,7 +1078,7 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 10: {
-            constexpr const char lookup[32][10] = {
+            static char lookup[32][10] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -1112,7 +1112,7 @@ int lookup_cplusplus_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -1155,13 +1155,13 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 11: {
-            constexpr const char lookup[4][11] = {
+            static char lookup[4][11] = {
                 {'_', '_', 'a', 'l', 'i', 'g', 'n', 'o', 'f', '_', '_'},
                 {'_', '_', 'c', 'o', 'm', 'p', 'l', 'e', 'x', '_', '_'},
                 {'s', 't', 'a', 't', 'i', 'c', '_', 'c', 'a', 's', 't'},
                 {'_', '_', 'a', 't', 't', 'r', 'i', 'b', 'u', 't', 'e'},
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 1,
                 7,
                 85,
@@ -1176,13 +1176,13 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 12: {
-            constexpr const char lookup[4][12] = {
+            static char lookup[4][12] = {
                 {'_', '_', 'v', 'o', 'l', 'a', 't', 'i', 'l', 'e', '_', '_'},
                 {'_', '_', 'r', 'e', 's', 't', 'r', 'i', 'c', 't', '_', '_'},
                 {'d', 'y', 'n', 'a', 'm', 'i', 'c', '_', 'c', 'a', 's', 't'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 28,
                 20,
                 50,
@@ -1197,13 +1197,13 @@ int lookup_cplusplus_pext(std::string_view s) {
         }
         break;
         case 13: {
-            constexpr const char lookup[4][13] = {
+            static char lookup[4][13] = {
                 {'_', '_', 's', 'i', 'g', 'n', 'a', 't', 'u', 'r', 'e', '_', '_'},
                 {'_', '_', 'a', 't', 't', 'r', 'i', 'b', 'u', 't', 'e', '_', '_'},
                 {}, // no match
                 {'_', '_', 'e', 'x', 't', 'e', 'n', 's', 'i', 'o', 'n', '_', '_'},
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 21,
                 5,
                 -1,
@@ -1230,6 +1230,35 @@ int lookup_cplusplus_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_cplusplus_pext, type=pext, dataset=cplusplus
 void check_cplusplus_pext() {
+    assert(lookup_cplusplus_pext("reinterpret_cast") == 77);
+    assert(lookup_cplusplus_pext("__restrict__") == 20);
+    assert(lookup_cplusplus_pext("__volatile__") == 28);
+    assert(lookup_cplusplus_pext("dynamic_cast") == 50);
+    assert(lookup_cplusplus_pext("__alignof") == 0);
+    assert(lookup_cplusplus_pext("__complex") == 6);
+    assert(lookup_cplusplus_pext("__const__") == 9);
+    assert(lookup_cplusplus_pext("__label__") == 15);
+    assert(lookup_cplusplus_pext("__sigof__") == 24);
+    assert(lookup_cplusplus_pext("__wchar_t") == 29);
+    assert(lookup_cplusplus_pext("namespace") == 66);
+    assert(lookup_cplusplus_pext("protected") == 74);
+    assert(lookup_cplusplus_pext("signature") == 80);
+    assert(lookup_cplusplus_pext("__asm") == 2);
+    assert(lookup_cplusplus_pext("bitor") == 35);
+    assert(lookup_cplusplus_pext("break") == 37);
+    assert(lookup_cplusplus_pext("catch") == 39);
+    assert(lookup_cplusplus_pext("class") == 41);
+    assert(lookup_cplusplus_pext("compl") == 42);
+    assert(lookup_cplusplus_pext("const") == 43);
+    assert(lookup_cplusplus_pext("false") == 56);
+    assert(lookup_cplusplus_pext("float") == 57);
+    assert(lookup_cplusplus_pext("or_eq") == 72);
+    assert(lookup_cplusplus_pext("short") == 79);
+    assert(lookup_cplusplus_pext("sigof") == 82);
+    assert(lookup_cplusplus_pext("throw") == 90);
+    assert(lookup_cplusplus_pext("union") == 97);
+    assert(lookup_cplusplus_pext("using") == 99);
+    assert(lookup_cplusplus_pext("while") == 103);
     assert(lookup_cplusplus_pext("__asm__") == 3);
     assert(lookup_cplusplus_pext("__const") == 8);
     assert(lookup_cplusplus_pext("default") == 46);
@@ -1272,22 +1301,30 @@ void check_cplusplus_pext() {
     assert(lookup_cplusplus_pext("typename") == 94);
     assert(lookup_cplusplus_pext("unsigned") == 98);
     assert(lookup_cplusplus_pext("volatile") == 102);
-    assert(lookup_cplusplus_pext("__asm") == 2);
-    assert(lookup_cplusplus_pext("bitor") == 35);
-    assert(lookup_cplusplus_pext("break") == 37);
-    assert(lookup_cplusplus_pext("catch") == 39);
-    assert(lookup_cplusplus_pext("class") == 41);
-    assert(lookup_cplusplus_pext("compl") == 42);
-    assert(lookup_cplusplus_pext("const") == 43);
-    assert(lookup_cplusplus_pext("false") == 56);
-    assert(lookup_cplusplus_pext("float") == 57);
-    assert(lookup_cplusplus_pext("or_eq") == 72);
-    assert(lookup_cplusplus_pext("short") == 79);
-    assert(lookup_cplusplus_pext("sigof") == 82);
-    assert(lookup_cplusplus_pext("throw") == 90);
-    assert(lookup_cplusplus_pext("union") == 97);
-    assert(lookup_cplusplus_pext("using") == 99);
-    assert(lookup_cplusplus_pext("while") == 103);
+    assert(lookup_cplusplus_pext("do") == 48);
+    assert(lookup_cplusplus_pext("if") == 61);
+    assert(lookup_cplusplus_pext("or") == 71);
+    assert(lookup_cplusplus_pext("__attribute__") == 5);
+    assert(lookup_cplusplus_pext("__extension__") == 10);
+    assert(lookup_cplusplus_pext("__signature__") == 21);
+    assert(lookup_cplusplus_pext("asm") == 30);
+    assert(lookup_cplusplus_pext("and") == 31);
+    assert(lookup_cplusplus_pext("for") == 58);
+    assert(lookup_cplusplus_pext("int") == 63);
+    assert(lookup_cplusplus_pext("new") == 67);
+    assert(lookup_cplusplus_pext("not") == 68);
+    assert(lookup_cplusplus_pext("try") == 92);
+    assert(lookup_cplusplus_pext("xor") == 104);
+    assert(lookup_cplusplus_pext("__alignof__") == 1);
+    assert(lookup_cplusplus_pext("__attribute") == 4);
+    assert(lookup_cplusplus_pext("__complex__") == 7);
+    assert(lookup_cplusplus_pext("static_cast") == 85);
+    assert(lookup_cplusplus_pext("__inline__") == 14);
+    assert(lookup_cplusplus_pext("__restrict") == 19);
+    assert(lookup_cplusplus_pext("__signed__") == 23);
+    assert(lookup_cplusplus_pext("__typeof__") == 26);
+    assert(lookup_cplusplus_pext("__volatile") == 27);
+    assert(lookup_cplusplus_pext("const_cast") == 44);
     assert(lookup_cplusplus_pext("auto") == 33);
     assert(lookup_cplusplus_pext("bool") == 36);
     assert(lookup_cplusplus_pext("case") == 38);
@@ -1299,42 +1336,5 @@ void check_cplusplus_pext() {
     assert(lookup_cplusplus_pext("this") == 89);
     assert(lookup_cplusplus_pext("true") == 91);
     assert(lookup_cplusplus_pext("void") == 101);
-    assert(lookup_cplusplus_pext("reinterpret_cast") == 77);
-    assert(lookup_cplusplus_pext("__alignof__") == 1);
-    assert(lookup_cplusplus_pext("__attribute") == 4);
-    assert(lookup_cplusplus_pext("__complex__") == 7);
-    assert(lookup_cplusplus_pext("static_cast") == 85);
-    assert(lookup_cplusplus_pext("__attribute__") == 5);
-    assert(lookup_cplusplus_pext("__extension__") == 10);
-    assert(lookup_cplusplus_pext("__signature__") == 21);
-    assert(lookup_cplusplus_pext("__alignof") == 0);
-    assert(lookup_cplusplus_pext("__complex") == 6);
-    assert(lookup_cplusplus_pext("__const__") == 9);
-    assert(lookup_cplusplus_pext("__label__") == 15);
-    assert(lookup_cplusplus_pext("__sigof__") == 24);
-    assert(lookup_cplusplus_pext("__wchar_t") == 29);
-    assert(lookup_cplusplus_pext("namespace") == 66);
-    assert(lookup_cplusplus_pext("protected") == 74);
-    assert(lookup_cplusplus_pext("signature") == 80);
-    assert(lookup_cplusplus_pext("__inline__") == 14);
-    assert(lookup_cplusplus_pext("__restrict") == 19);
-    assert(lookup_cplusplus_pext("__signed__") == 23);
-    assert(lookup_cplusplus_pext("__typeof__") == 26);
-    assert(lookup_cplusplus_pext("__volatile") == 27);
-    assert(lookup_cplusplus_pext("const_cast") == 44);
-    assert(lookup_cplusplus_pext("__restrict__") == 20);
-    assert(lookup_cplusplus_pext("__volatile__") == 28);
-    assert(lookup_cplusplus_pext("dynamic_cast") == 50);
-    assert(lookup_cplusplus_pext("asm") == 30);
-    assert(lookup_cplusplus_pext("and") == 31);
-    assert(lookup_cplusplus_pext("for") == 58);
-    assert(lookup_cplusplus_pext("int") == 63);
-    assert(lookup_cplusplus_pext("new") == 67);
-    assert(lookup_cplusplus_pext("not") == 68);
-    assert(lookup_cplusplus_pext("try") == 92);
-    assert(lookup_cplusplus_pext("xor") == 104);
-    assert(lookup_cplusplus_pext("do") == 48);
-    assert(lookup_cplusplus_pext("if") == 61);
-    assert(lookup_cplusplus_pext("or") == 71);
 }
 

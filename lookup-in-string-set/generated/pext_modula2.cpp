@@ -2,7 +2,7 @@
 int lookup_modula2_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            constexpr const char lookup[16][2] = {
+            static char lookup[16][2] = {
                 {'I', 'F'},
                 {'O', 'F'},
                 {}, // no match
@@ -20,7 +20,7 @@ int lookup_modula2_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 16,
                 24,
                 -1,
@@ -47,7 +47,7 @@ int lookup_modula2_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[64][3] = {
+            static char lookup[64][3] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -113,7 +113,7 @@ int lookup_modula2_pext(std::string_view s) {
                 {}, // no match
                 {'D', 'I', 'V'},
             };
-            constexpr const int value[64] = {
+            static int value[64] = {
                 -1,
                 -1,
                 -1,
@@ -193,7 +193,7 @@ int lookup_modula2_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -227,7 +227,7 @@ int lookup_modula2_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -270,7 +270,7 @@ int lookup_modula2_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[8][5] = {
+            static char lookup[8][5] = {
                 {'W', 'H', 'I', 'L', 'E'},
                 {'E', 'L', 'S', 'I', 'F'},
                 {'U', 'N', 'T', 'I', 'L'},
@@ -280,7 +280,7 @@ int lookup_modula2_pext(std::string_view s) {
                 {'A', 'R', 'R', 'A', 'Y'},
                 {}, // no match
             };
-            constexpr const int value[8] = {
+            static int value[8] = {
                 38,
                 10,
                 36,
@@ -298,7 +298,7 @@ int lookup_modula2_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[16][6] = {
+            static char lookup[16][6] = {
                 {'M', 'O', 'D', 'U', 'L', 'E'},
                 {}, // no match
                 {'R', 'E', 'C', 'O', 'R', 'D'},
@@ -316,7 +316,7 @@ int lookup_modula2_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 22,
                 -1,
                 29,
@@ -381,30 +381,8 @@ int lookup_modula2_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_modula2_pext, type=pext, dataset=modula2
 void check_modula2_pext() {
-    assert(lookup_modula2_pext("CASE") == 4);
-    assert(lookup_modula2_pext("ELSE") == 9);
-    assert(lookup_modula2_pext("EXIT") == 12);
-    assert(lookup_modula2_pext("FROM") == 15);
-    assert(lookup_modula2_pext("LOOP") == 20);
-    assert(lookup_modula2_pext("THEN") == 33);
-    assert(lookup_modula2_pext("TYPE") == 35);
-    assert(lookup_modula2_pext("WITH") == 39);
-    assert(lookup_modula2_pext("EXPORT") == 13);
-    assert(lookup_modula2_pext("IMPORT") == 18);
-    assert(lookup_modula2_pext("MODULE") == 22);
-    assert(lookup_modula2_pext("RECORD") == 29);
-    assert(lookup_modula2_pext("REPEAT") == 30);
-    assert(lookup_modula2_pext("RETURN") == 31);
     assert(lookup_modula2_pext("PROCEDURE") == 27);
     assert(lookup_modula2_pext("QUALIFIED") == 28);
-    assert(lookup_modula2_pext("ARRAY") == 1);
-    assert(lookup_modula2_pext("BEGIN") == 2);
-    assert(lookup_modula2_pext("CONST") == 5);
-    assert(lookup_modula2_pext("ELSIF") == 10);
-    assert(lookup_modula2_pext("UNTIL") == 36);
-    assert(lookup_modula2_pext("WHILE") == 38);
-    assert(lookup_modula2_pext("DEFINITION") == 6);
-    assert(lookup_modula2_pext("POINTER") == 26);
     assert(lookup_modula2_pext("AND") == 0);
     assert(lookup_modula2_pext("DIV") == 7);
     assert(lookup_modula2_pext("END") == 11);
@@ -420,6 +398,28 @@ void check_modula2_pext() {
     assert(lookup_modula2_pext("OF") == 24);
     assert(lookup_modula2_pext("OR") == 25);
     assert(lookup_modula2_pext("TO") == 34);
+    assert(lookup_modula2_pext("CASE") == 4);
+    assert(lookup_modula2_pext("ELSE") == 9);
+    assert(lookup_modula2_pext("EXIT") == 12);
+    assert(lookup_modula2_pext("FROM") == 15);
+    assert(lookup_modula2_pext("LOOP") == 20);
+    assert(lookup_modula2_pext("THEN") == 33);
+    assert(lookup_modula2_pext("TYPE") == 35);
+    assert(lookup_modula2_pext("WITH") == 39);
+    assert(lookup_modula2_pext("DEFINITION") == 6);
+    assert(lookup_modula2_pext("EXPORT") == 13);
+    assert(lookup_modula2_pext("IMPORT") == 18);
+    assert(lookup_modula2_pext("MODULE") == 22);
+    assert(lookup_modula2_pext("RECORD") == 29);
+    assert(lookup_modula2_pext("REPEAT") == 30);
+    assert(lookup_modula2_pext("RETURN") == 31);
     assert(lookup_modula2_pext("IMPLEMENTATION") == 17);
+    assert(lookup_modula2_pext("POINTER") == 26);
+    assert(lookup_modula2_pext("ARRAY") == 1);
+    assert(lookup_modula2_pext("BEGIN") == 2);
+    assert(lookup_modula2_pext("CONST") == 5);
+    assert(lookup_modula2_pext("ELSIF") == 10);
+    assert(lookup_modula2_pext("UNTIL") == 36);
+    assert(lookup_modula2_pext("WHILE") == 38);
 }
 

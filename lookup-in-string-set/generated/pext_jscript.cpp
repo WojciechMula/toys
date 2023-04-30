@@ -2,13 +2,13 @@
 int lookup_jscript_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            constexpr const char lookup[4][2] = {
+            static char lookup[4][2] = {
                 {'i', 'f'},
                 {}, // no match
                 {'i', 'n'},
                 {'d', 'o'},
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 22,
                 -1,
                 25,
@@ -22,7 +22,7 @@ int lookup_jscript_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[8][3] = {
+            static char lookup[8][3] = {
                 {'v', 'a', 'r'},
                 {'f', 'o', 'r'},
                 {'n', 'e', 'w'},
@@ -32,7 +32,7 @@ int lookup_jscript_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[8] = {
+            static int value[8] = {
                 49,
                 19,
                 31,
@@ -51,7 +51,7 @@ int lookup_jscript_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {'v', 'o', 'i', 'd'},
                 {}, // no match
@@ -85,7 +85,7 @@ int lookup_jscript_pext(std::string_view s) {
                 {}, // no match
                 {'g', 'o', 't', 'o'},
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 50,
                 -1,
@@ -128,7 +128,7 @@ int lookup_jscript_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[32][5] = {
+            static char lookup[32][5] = {
                 {}, // no match
                 {'c', 'a', 't', 'c', 'h'},
                 {}, // no match
@@ -162,7 +162,7 @@ int lookup_jscript_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 5,
                 -1,
@@ -205,7 +205,7 @@ int lookup_jscript_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[32][6] = {
+            static char lookup[32][6] = {
                 {'p', 'u', 'b', 'l', 'i', 'c'},
                 {'s', 't', 'a', 't', 'i', 'c'},
                 {}, // no match
@@ -239,7 +239,7 @@ int lookup_jscript_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 36,
                 39,
                 -1,
@@ -282,7 +282,7 @@ int lookup_jscript_pext(std::string_view s) {
         }
         break;
         case 7: {
-            constexpr const char lookup[16][7] = {
+            static char lookup[16][7] = {
                 {}, // no match
                 {}, // no match
                 {'p', 'a', 'c', 'k', 'a', 'g', 'e'},
@@ -300,7 +300,7 @@ int lookup_jscript_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 -1,
                 -1,
                 33,
@@ -327,13 +327,13 @@ int lookup_jscript_pext(std::string_view s) {
         }
         break;
         case 8: {
-            constexpr const char lookup[4][8] = {
+            static char lookup[4][8] = {
                 {'c', 'o', 'n', 't', 'i', 'n', 'u', 'e'},
                 {'f', 'u', 'n', 'c', 't', 'i', 'o', 'n'},
                 {'a', 'b', 's', 't', 'r', 'a', 'c', 't'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 9,
                 20,
                 0,
@@ -347,13 +347,13 @@ int lookup_jscript_pext(std::string_view s) {
         }
         break;
         case 9: {
-            constexpr const char lookup[4][9] = {
+            static char lookup[4][9] = {
                 {'p', 'r', 'o', 't', 'e', 'c', 't', 'e', 'd'},
                 {'i', 'n', 't', 'e', 'r', 'f', 'a', 'c', 'e'},
                 {'t', 'r', 'a', 'n', 's', 'i', 'e', 'n', 't'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 35,
                 28,
                 46,
@@ -388,26 +388,15 @@ int lookup_jscript_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_jscript_pext, type=pext, dataset=jscript
 void check_jscript_pext() {
-    assert(lookup_jscript_pext("double") == 12);
-    assert(lookup_jscript_pext("import") == 24);
-    assert(lookup_jscript_pext("native") == 30);
-    assert(lookup_jscript_pext("public") == 36);
-    assert(lookup_jscript_pext("return") == 37);
-    assert(lookup_jscript_pext("static") == 39);
-    assert(lookup_jscript_pext("switch") == 41);
-    assert(lookup_jscript_pext("throws") == 45);
-    assert(lookup_jscript_pext("implements") == 23);
-    assert(lookup_jscript_pext("instanceof") == 26);
-    assert(lookup_jscript_pext("do") == 11);
-    assert(lookup_jscript_pext("if") == 22);
-    assert(lookup_jscript_pext("in") == 25);
-    assert(lookup_jscript_pext("interface") == 28);
-    assert(lookup_jscript_pext("protected") == 35);
-    assert(lookup_jscript_pext("transient") == 46);
     assert(lookup_jscript_pext("synchronized") == 42);
     assert(lookup_jscript_pext("abstract") == 0);
     assert(lookup_jscript_pext("continue") == 9);
     assert(lookup_jscript_pext("function") == 20);
+    assert(lookup_jscript_pext("for") == 19);
+    assert(lookup_jscript_pext("int") == 27);
+    assert(lookup_jscript_pext("new") == 31);
+    assert(lookup_jscript_pext("try") == 48);
+    assert(lookup_jscript_pext("var") == 49);
     assert(lookup_jscript_pext("boolean") == 1);
     assert(lookup_jscript_pext("default") == 10);
     assert(lookup_jscript_pext("extends") == 14);
@@ -425,6 +414,19 @@ void check_jscript_pext() {
     assert(lookup_jscript_pext("true") == 47);
     assert(lookup_jscript_pext("void") == 50);
     assert(lookup_jscript_pext("with") == 52);
+    assert(lookup_jscript_pext("double") == 12);
+    assert(lookup_jscript_pext("import") == 24);
+    assert(lookup_jscript_pext("native") == 30);
+    assert(lookup_jscript_pext("public") == 36);
+    assert(lookup_jscript_pext("return") == 37);
+    assert(lookup_jscript_pext("static") == 39);
+    assert(lookup_jscript_pext("switch") == 41);
+    assert(lookup_jscript_pext("throws") == 45);
+    assert(lookup_jscript_pext("interface") == 28);
+    assert(lookup_jscript_pext("protected") == 35);
+    assert(lookup_jscript_pext("transient") == 46);
+    assert(lookup_jscript_pext("implements") == 23);
+    assert(lookup_jscript_pext("instanceof") == 26);
     assert(lookup_jscript_pext("break") == 2);
     assert(lookup_jscript_pext("catch") == 5);
     assert(lookup_jscript_pext("class") == 7);
@@ -436,10 +438,8 @@ void check_jscript_pext() {
     assert(lookup_jscript_pext("super") == 40);
     assert(lookup_jscript_pext("throw") == 44);
     assert(lookup_jscript_pext("while") == 51);
-    assert(lookup_jscript_pext("for") == 19);
-    assert(lookup_jscript_pext("int") == 27);
-    assert(lookup_jscript_pext("new") == 31);
-    assert(lookup_jscript_pext("try") == 48);
-    assert(lookup_jscript_pext("var") == 49);
+    assert(lookup_jscript_pext("do") == 11);
+    assert(lookup_jscript_pext("if") == 22);
+    assert(lookup_jscript_pext("in") == 25);
 }
 

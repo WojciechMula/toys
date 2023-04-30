@@ -11,13 +11,13 @@ int lookup_java_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[4][3] = {
+            static char lookup[4][3] = {
                 {'t', 'r', 'y'},
                 {'f', 'o', 'r'},
                 {'i', 'n', 't'},
                 {'n', 'e', 'w'},
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 19,
                 40,
                 22,
@@ -31,7 +31,7 @@ int lookup_java_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {'v', 'o', 'i', 'd'},
                 {}, // no match
@@ -65,7 +65,7 @@ int lookup_java_pext(std::string_view s) {
                 {}, // no match
                 {'g', 'o', 't', 'o'},
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 24,
                 -1,
@@ -108,7 +108,7 @@ int lookup_java_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[32][5] = {
+            static char lookup[32][5] = {
                 {}, // no match
                 {'c', 'a', 't', 'c', 'h'},
                 {}, // no match
@@ -142,7 +142,7 @@ int lookup_java_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 25,
                 -1,
@@ -185,7 +185,7 @@ int lookup_java_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[32][6] = {
+            static char lookup[32][6] = {
                 {'p', 'u', 'b', 'l', 'i', 'c'},
                 {'s', 't', 'a', 't', 'i', 'c'},
                 {}, // no match
@@ -219,7 +219,7 @@ int lookup_java_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 13,
                 28,
                 -1,
@@ -262,7 +262,7 @@ int lookup_java_pext(std::string_view s) {
         }
         break;
         case 7: {
-            constexpr const char lookup[16][7] = {
+            static char lookup[16][7] = {
                 {}, // no match
                 {}, // no match
                 {'p', 'a', 'c', 'k', 'a', 'g', 'e'},
@@ -280,7 +280,7 @@ int lookup_java_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 -1,
                 -1,
                 45,
@@ -307,13 +307,13 @@ int lookup_java_pext(std::string_view s) {
         }
         break;
         case 8: {
-            constexpr const char lookup[4][8] = {
+            static char lookup[4][8] = {
                 {'v', 'o', 'l', 'a', 't', 'i', 'l', 'e'},
                 {'c', 'o', 'n', 't', 'i', 'n', 'u', 'e'},
                 {'a', 'b', 's', 't', 'r', 'a', 'c', 't'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 29,
                 43,
                 0,
@@ -328,13 +328,13 @@ int lookup_java_pext(std::string_view s) {
         }
         break;
         case 9: {
-            constexpr const char lookup[4][9] = {
+            static char lookup[4][9] = {
                 {'p', 'r', 'o', 't', 'e', 'c', 't', 'e', 'd'},
                 {'i', 'n', 't', 'e', 'r', 'f', 'a', 'c', 'e'},
                 {'t', 'r', 'a', 'n', 's', 'i', 'e', 'n', 't'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 8,
                 27,
                 14,
@@ -369,6 +369,8 @@ int lookup_java_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_java_pext, type=pext, dataset=java
 void check_java_pext() {
+    assert(lookup_java_pext("if") == 2);
+    assert(lookup_java_pext("do") == 6);
     assert(lookup_java_pext("throw") == 4);
     assert(lookup_java_pext("break") == 10);
     assert(lookup_java_pext("short") == 23);
@@ -379,20 +381,6 @@ void check_java_pext() {
     assert(lookup_java_pext("class") == 35);
     assert(lookup_java_pext("float") == 36);
     assert(lookup_java_pext("const") == 39);
-    assert(lookup_java_pext("synchronized") == 42);
-    assert(lookup_java_pext("protected") == 8);
-    assert(lookup_java_pext("transient") == 14);
-    assert(lookup_java_pext("interface") == 27);
-    assert(lookup_java_pext("byte") == 15);
-    assert(lookup_java_pext("else") == 16);
-    assert(lookup_java_pext("case") == 20);
-    assert(lookup_java_pext("void") == 24);
-    assert(lookup_java_pext("char") == 30);
-    assert(lookup_java_pext("long") == 32);
-    assert(lookup_java_pext("goto") == 44);
-    assert(lookup_java_pext("this") == 46);
-    assert(lookup_java_pext("implements") == 7);
-    assert(lookup_java_pext("instanceof") == 17);
     assert(lookup_java_pext("throws") == 9);
     assert(lookup_java_pext("double") == 11);
     assert(lookup_java_pext("import") == 12);
@@ -401,20 +389,32 @@ void check_java_pext() {
     assert(lookup_java_pext("static") == 28);
     assert(lookup_java_pext("native") == 37);
     assert(lookup_java_pext("switch") == 38);
+    assert(lookup_java_pext("byte") == 15);
+    assert(lookup_java_pext("else") == 16);
+    assert(lookup_java_pext("case") == 20);
+    assert(lookup_java_pext("void") == 24);
+    assert(lookup_java_pext("char") == 30);
+    assert(lookup_java_pext("long") == 32);
+    assert(lookup_java_pext("goto") == 44);
+    assert(lookup_java_pext("this") == 46);
     assert(lookup_java_pext("abstract") == 0);
     assert(lookup_java_pext("volatile") == 29);
     assert(lookup_java_pext("continue") == 43);
-    assert(lookup_java_pext("if") == 2);
-    assert(lookup_java_pext("do") == 6);
-    assert(lookup_java_pext("try") == 19);
-    assert(lookup_java_pext("int") == 22);
-    assert(lookup_java_pext("for") == 40);
-    assert(lookup_java_pext("new") == 41);
     assert(lookup_java_pext("default") == 1);
     assert(lookup_java_pext("private") == 3);
     assert(lookup_java_pext("boolean") == 5);
     assert(lookup_java_pext("extends") == 21);
     assert(lookup_java_pext("finally") == 31);
     assert(lookup_java_pext("package") == 45);
+    assert(lookup_java_pext("protected") == 8);
+    assert(lookup_java_pext("transient") == 14);
+    assert(lookup_java_pext("interface") == 27);
+    assert(lookup_java_pext("implements") == 7);
+    assert(lookup_java_pext("instanceof") == 17);
+    assert(lookup_java_pext("try") == 19);
+    assert(lookup_java_pext("int") == 22);
+    assert(lookup_java_pext("for") == 40);
+    assert(lookup_java_pext("new") == 41);
+    assert(lookup_java_pext("synchronized") == 42);
 }
 

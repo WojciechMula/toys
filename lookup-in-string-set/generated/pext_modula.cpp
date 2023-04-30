@@ -2,7 +2,7 @@
 int lookup_modula_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            constexpr const char lookup[16][2] = {
+            static char lookup[16][2] = {
                 {'I', 'F'},
                 {'O', 'F'},
                 {}, // no match
@@ -20,7 +20,7 @@ int lookup_modula_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 20,
                 31,
                 -1,
@@ -47,7 +47,7 @@ int lookup_modula_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[64][3] = {
+            static char lookup[64][3] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -113,7 +113,7 @@ int lookup_modula_pext(std::string_view s) {
                 {}, // no match
                 {'D', 'I', 'V'},
             };
-            constexpr const int value[64] = {
+            static int value[64] = {
                 -1,
                 -1,
                 -1,
@@ -193,7 +193,7 @@ int lookup_modula_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -227,7 +227,7 @@ int lookup_modula_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -270,7 +270,7 @@ int lookup_modula_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[16][5] = {
+            static char lookup[16][5] = {
                 {'W', 'H', 'I', 'L', 'E'},
                 {'V', 'A', 'L', 'U', 'E'},
                 {'E', 'L', 'S', 'I', 'F'},
@@ -288,7 +288,7 @@ int lookup_modula_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 51,
                 49,
                 10,
@@ -315,7 +315,7 @@ int lookup_modula_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[64][6] = {
+            static char lookup[64][6] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -381,7 +381,7 @@ int lookup_modula_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[64] = {
+            static int value[64] = {
                 -1,
                 -1,
                 -1,
@@ -456,13 +456,13 @@ int lookup_modula_pext(std::string_view s) {
         }
         break;
         case 7: {
-            constexpr const char lookup[4][7] = {
+            static char lookup[4][7] = {
                 {'M', 'E', 'T', 'H', 'O', 'D', 'S'},
                 {'E', 'X', 'P', 'O', 'R', 'T', 'S'},
                 {'F', 'I', 'N', 'A', 'L', 'L', 'Y'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 26,
                 16,
                 17,
@@ -477,13 +477,13 @@ int lookup_modula_pext(std::string_view s) {
         }
         break;
         case 8: {
-            constexpr const char lookup[4][8] = {
+            static char lookup[4][8] = {
                 {'U', 'N', 'T', 'R', 'A', 'C', 'E', 'D'},
                 {'T', 'Y', 'P', 'E', 'C', 'A', 'S', 'E'},
                 {}, // no match
                 {'R', 'E', 'A', 'D', 'O', 'N', 'L', 'Y'},
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 48,
                 45,
                 -1,
@@ -497,13 +497,13 @@ int lookup_modula_pext(std::string_view s) {
         }
         break;
         case 9: {
-            constexpr const char lookup[4][9] = {
+            static char lookup[4][9] = {
                 {'I', 'N', 'T', 'E', 'R', 'F', 'A', 'C', 'E'},
                 {'P', 'R', 'O', 'C', 'E', 'D', 'U', 'R', 'E'},
                 {'E', 'X', 'C', 'E', 'P', 'T', 'I', 'O', 'N'},
                 {}, // no match
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 22,
                 33,
                 14,

@@ -11,13 +11,13 @@ int lookup_go_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[4][3] = {
+            static char lookup[4][3] = {
                 {'m', 'a', 'p'},
                 {}, // no match
                 {'v', 'a', 'r'},
                 {'f', 'o', 'r'},
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 16,
                 -1,
                 24,
@@ -32,7 +32,7 @@ int lookup_go_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -66,7 +66,7 @@ int lookup_go_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -109,13 +109,13 @@ int lookup_go_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[4][5] = {
+            static char lookup[4][5] = {
                 {'b', 'r', 'e', 'a', 'k'},
                 {'r', 'a', 'n', 'g', 'e'},
                 {'d', 'e', 'f', 'e', 'r'},
                 {'c', 'o', 'n', 's', 't'},
             };
-            constexpr const int value[4] = {
+            static int value[4] = {
                 0,
                 18,
                 6,
@@ -129,7 +129,7 @@ int lookup_go_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[8][6] = {
+            static char lookup[8][6] = {
                 {}, // no match
                 {'s', 'w', 'i', 't', 'c', 'h'},
                 {}, // no match
@@ -139,7 +139,7 @@ int lookup_go_pext(std::string_view s) {
                 {'i', 'm', 'p', 'o', 'r', 't'},
                 {}, // no match
             };
-            constexpr const int value[8] = {
+            static int value[8] = {
                 -1,
                 22,
                 -1,
@@ -191,22 +191,6 @@ int lookup_go_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_go_pext, type=pext, dataset=go
 void check_go_pext() {
-    assert(lookup_go_pext("import") == 14);
-    assert(lookup_go_pext("return") == 19);
-    assert(lookup_go_pext("select") == 20);
-    assert(lookup_go_pext("struct") == 21);
-    assert(lookup_go_pext("switch") == 22);
-    assert(lookup_go_pext("continue") == 4);
-    assert(lookup_go_pext("fallthrough") == 8);
-    assert(lookup_go_pext("go") == 11);
-    assert(lookup_go_pext("if") == 13);
-    assert(lookup_go_pext("for") == 9);
-    assert(lookup_go_pext("map") == 16);
-    assert(lookup_go_pext("var") == 24);
-    assert(lookup_go_pext("break") == 0);
-    assert(lookup_go_pext("const") == 3);
-    assert(lookup_go_pext("defer") == 6);
-    assert(lookup_go_pext("range") == 18);
     assert(lookup_go_pext("case") == 1);
     assert(lookup_go_pext("chan") == 2);
     assert(lookup_go_pext("else") == 7);
@@ -215,6 +199,22 @@ void check_go_pext() {
     assert(lookup_go_pext("type") == 23);
     assert(lookup_go_pext("default") == 5);
     assert(lookup_go_pext("package") == 17);
+    assert(lookup_go_pext("fallthrough") == 8);
+    assert(lookup_go_pext("break") == 0);
+    assert(lookup_go_pext("const") == 3);
+    assert(lookup_go_pext("defer") == 6);
+    assert(lookup_go_pext("range") == 18);
+    assert(lookup_go_pext("import") == 14);
+    assert(lookup_go_pext("return") == 19);
+    assert(lookup_go_pext("select") == 20);
+    assert(lookup_go_pext("struct") == 21);
+    assert(lookup_go_pext("switch") == 22);
     assert(lookup_go_pext("interface") == 15);
+    assert(lookup_go_pext("for") == 9);
+    assert(lookup_go_pext("map") == 16);
+    assert(lookup_go_pext("var") == 24);
+    assert(lookup_go_pext("continue") == 4);
+    assert(lookup_go_pext("go") == 11);
+    assert(lookup_go_pext("if") == 13);
 }
 

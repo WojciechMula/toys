@@ -2,7 +2,7 @@
 //lookup: name=lookup_gpc_hash1, dataset=gpc, type=hash, hash=hash1
 int lookup_gpc_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 55) * 2;
-    constexpr const std::string_view lookup[110] = {
+    static std::string_view lookup[110] = {
         "And", // 495 (0x1ef)
         "Begin", // 880 (0x370)
         "Or", // 386 (0x182)
@@ -114,7 +114,7 @@ int lookup_gpc_hash1(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[110] = {
+    static int values[110] = {
         0, // 495 (0x1ef)
         2, // 880 (0x370)
         21, // 386 (0x182)
@@ -276,7 +276,7 @@ void check_gpc_hash1() {
 //lookup: name=lookup_gpc_hash2, dataset=gpc, type=hash, hash=hash2
 int lookup_gpc_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 197) * 1;
-    constexpr const std::string_view lookup[197] = {
+    static std::string_view lookup[197] = {
         "",
         "",
         "And", // 6503 (0x1967)
@@ -475,7 +475,7 @@ int lookup_gpc_hash2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[197] = {
+    static int values[197] = {
         -1,
         -1,
         0, // 6503 (0x1967)
@@ -724,7 +724,7 @@ void check_gpc_hash2() {
 //lookup: name=lookup_gpc_hash3, dataset=gpc, type=hash, hash=hash3
 int lookup_gpc_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 187) * 1;
-    constexpr const std::string_view lookup[187] = {
+    static std::string_view lookup[187] = {
         "",
         "",
         "",
@@ -913,7 +913,7 @@ int lookup_gpc_hash3(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[187] = {
+    static int values[187] = {
         -1,
         -1,
         -1,
@@ -1152,7 +1152,7 @@ void check_gpc_hash3() {
 //lookup: name=lookup_gpc_hash_sum0, dataset=gpc, type=hash, hash=hash_sum0
 int lookup_gpc_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 50) * 2;
-    constexpr const std::string_view lookup[100] = {
+    static std::string_view lookup[100] = {
         "Set", // 300 (0x12c)
         "",
         "",
@@ -1254,7 +1254,7 @@ int lookup_gpc_hash_sum0(std::string_view s) {
         "Then", // 399 (0x18f)
         "",
     };
-    constexpr const int values[100] = {
+    static int values[100] = {
         27, // 300 (0x12c)
         -1,
         -1,
@@ -1406,7 +1406,7 @@ void check_gpc_hash_sum0() {
 //lookup: name=lookup_gpc_hash_sumN, dataset=gpc, type=hash, hash=hash_sumN
 int lookup_gpc_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 40) * 2;
-    constexpr const std::string_view lookup[80] = {
+    static std::string_view lookup[80] = {
         "",
         "",
         "Downto", // 641 (0x281)
@@ -1488,7 +1488,7 @@ int lookup_gpc_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[80] = {
+    static int values[80] = {
         -1,
         -1,
         7, // 641 (0x281)
@@ -1620,7 +1620,7 @@ void check_gpc_hash_sumN() {
 //lookup: name=lookup_gpc_hash_djb2, dataset=gpc, type=hash, hash=hash_djb2
 int lookup_gpc_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 117) * 1;
-    constexpr const std::string_view lookup[117] = {
+    static std::string_view lookup[117] = {
         "Until", // 214605975285 (0x31f7834ef5)
         "",
         "File", // 6502666601 (0x18396d169)
@@ -1739,7 +1739,7 @@ int lookup_gpc_hash_djb2(std::string_view s) {
         "",
         "In", // 5971328 (0x5b1d80)
     };
-    constexpr const int values[117] = {
+    static int values[117] = {
         31, // 214605975285 (0x31f7834ef5)
         -1,
         10, // 6502666601 (0x18396d169)
@@ -1908,7 +1908,7 @@ void check_gpc_hash_djb2() {
 //lookup: name=lookup_gpc_hash_sdb, dataset=gpc, type=hash, hash=hash_sdb
 int lookup_gpc_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 219) * 1;
-    constexpr const std::string_view lookup[219] = {
+    static std::string_view lookup[219] = {
         "",
         "",
         "",
@@ -2129,7 +2129,7 @@ int lookup_gpc_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[219] = {
+    static int values[219] = {
         -1,
         -1,
         -1,

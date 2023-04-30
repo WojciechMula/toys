@@ -2,7 +2,7 @@
 int lookup_gpc_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            constexpr const char lookup[16][2] = {
+            static char lookup[16][2] = {
                 {'I', 'f'},
                 {'O', 'f'},
                 {}, // no match
@@ -20,7 +20,7 @@ int lookup_gpc_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 14,
                 20,
                 -1,
@@ -47,7 +47,7 @@ int lookup_gpc_pext(std::string_view s) {
         }
         break;
         case 3: {
-            constexpr const char lookup[128][3] = {
+            static char lookup[128][3] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -177,7 +177,7 @@ int lookup_gpc_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[128] = {
+            static int value[128] = {
                 -1,
                 -1,
                 -1,
@@ -321,7 +321,7 @@ int lookup_gpc_pext(std::string_view s) {
         }
         break;
         case 4: {
-            constexpr const char lookup[32][4] = {
+            static char lookup[32][4] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -355,7 +355,7 @@ int lookup_gpc_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[32] = {
+            static int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -398,7 +398,7 @@ int lookup_gpc_pext(std::string_view s) {
         }
         break;
         case 5: {
-            constexpr const char lookup[16][5] = {
+            static char lookup[16][5] = {
                 {}, // no match
                 {'W', 'h', 'i', 'l', 'e'},
                 {}, // no match
@@ -416,7 +416,7 @@ int lookup_gpc_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[16] = {
+            static int value[16] = {
                 -1,
                 33,
                 -1,
@@ -443,7 +443,7 @@ int lookup_gpc_pext(std::string_view s) {
         }
         break;
         case 6: {
-            constexpr const char lookup[8][6] = {
+            static char lookup[8][6] = {
                 {'P', 'a', 'c', 'k', 'e', 'd'},
                 {'R', 'e', 'c', 'o', 'r', 'd'},
                 {}, // no match
@@ -453,7 +453,7 @@ int lookup_gpc_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            constexpr const int value[8] = {
+            static int value[8] = {
                 22,
                 25,
                 -1,
@@ -496,6 +496,7 @@ int lookup_gpc_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_gpc_pext, type=pext, dataset=gpc
 void check_gpc_pext() {
+    assert(lookup_gpc_pext("Function") == 12);
     assert(lookup_gpc_pext("Procedure") == 23);
     assert(lookup_gpc_pext("Program") == 24);
     assert(lookup_gpc_pext("And") == 0);
@@ -530,6 +531,5 @@ void check_gpc_pext() {
     assert(lookup_gpc_pext("Packed") == 22);
     assert(lookup_gpc_pext("Record") == 25);
     assert(lookup_gpc_pext("Repeat") == 26);
-    assert(lookup_gpc_pext("Function") == 12);
 }
 

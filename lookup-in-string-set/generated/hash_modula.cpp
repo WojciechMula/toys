@@ -2,7 +2,7 @@
 //lookup: name=lookup_modula_hash1, dataset=modula, type=hash, hash=hash1
 int lookup_modula_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 97) * 2;
-    constexpr const std::string_view lookup[194] = {
+    static std::string_view lookup[194] = {
         "",
         "",
         "NOT", // 486 (0x1e6)
@@ -198,7 +198,7 @@ int lookup_modula_hash1(std::string_view s) {
         "VALUE", // 775 (0x307)
         "",
     };
-    constexpr const int values[194] = {
+    static int values[194] = {
         -1,
         -1,
         29, // 486 (0x1e6)
@@ -462,7 +462,7 @@ void check_modula_hash1() {
 //lookup: name=lookup_modula_hash2, dataset=modula, type=hash, hash=hash2
 int lookup_modula_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 111) * 2;
-    constexpr const std::string_view lookup[222] = {
+    static std::string_view lookup[222] = {
         "",
         "",
         "",
@@ -686,7 +686,7 @@ int lookup_modula_hash2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[222] = {
+    static int values[222] = {
         -1,
         -1,
         -1,
@@ -978,7 +978,7 @@ void check_modula_hash2() {
 //lookup: name=lookup_modula_hash3, dataset=modula, type=hash, hash=hash3
 int lookup_modula_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 351) * 1;
-    constexpr const std::string_view lookup[351] = {
+    static std::string_view lookup[351] = {
         "",
         "",
         "",
@@ -1331,7 +1331,7 @@ int lookup_modula_hash3(std::string_view s) {
         "VALUE", // 23515 (0x5bdb)
         "",
     };
-    constexpr const int values[351] = {
+    static int values[351] = {
         -1,
         -1,
         -1,
@@ -1752,7 +1752,7 @@ void check_modula_hash3() {
 //lookup: name=lookup_modula_hash_sum0, dataset=modula, type=hash, hash=hash_sum0
 int lookup_modula_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 87) * 2;
-    constexpr const std::string_view lookup[174] = {
+    static std::string_view lookup[174] = {
         "",
         "",
         "",
@@ -1928,7 +1928,7 @@ int lookup_modula_hash_sum0(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[174] = {
+    static int values[174] = {
         -1,
         -1,
         -1,
@@ -2172,7 +2172,7 @@ void check_modula_hash_sum0() {
 //lookup: name=lookup_modula_hash_sumN, dataset=modula, type=hash, hash=hash_sumN
 int lookup_modula_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 88) * 2;
-    constexpr const std::string_view lookup[176] = {
+    static std::string_view lookup[176] = {
         "",
         "",
         "",
@@ -2350,7 +2350,7 @@ int lookup_modula_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[176] = {
+    static int values[176] = {
         -1,
         -1,
         -1,
@@ -2596,7 +2596,7 @@ void check_modula_hash_sumN() {
 //lookup: name=lookup_modula_hash_djb2, dataset=modula, type=hash, hash=hash_djb2
 int lookup_modula_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 349) * 1;
-    constexpr const std::string_view lookup[349] = {
+    static std::string_view lookup[349] = {
         "",
         "RAISES", // 7081824841328 (0x670dda76e70)
         "",
@@ -2947,7 +2947,7 @@ int lookup_modula_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[349] = {
+    static int values[349] = {
         -1,
         34, // 7081824841328 (0x670dda76e70)
         -1,
@@ -3366,7 +3366,7 @@ void check_modula_hash_djb2() {
 //lookup: name=lookup_modula_hash_sdb, dataset=modula, type=hash, hash=hash_sdb
 int lookup_modula_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 297) * 1;
-    constexpr const std::string_view lookup[297] = {
+    static std::string_view lookup[297] = {
         "LOCK", // 21395375459994591 (0x4c02fb0a210bdf)
         "",
         "",
@@ -3665,7 +3665,7 @@ int lookup_modula_hash_sdb(std::string_view s) {
         "",
         "EVAL", // 19424810095086428 (0x4502c3098c0b5c)
     };
-    constexpr const int values[297] = {
+    static int values[297] = {
         25, // 21395375459994591 (0x4c02fb0a210bdf)
         -1,
         -1,

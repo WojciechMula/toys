@@ -2,7 +2,7 @@
 //lookup: name=lookup_jscript_hash1, dataset=jscript, type=hash, hash=hash1
 int lookup_jscript_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 87) * 2;
-    constexpr const std::string_view lookup[174] = {
+    static std::string_view lookup[174] = {
         "transient", // 2088 (0x828)
         "var", // 696 (0x2b8)
         "",
@@ -178,7 +178,7 @@ int lookup_jscript_hash1(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[174] = {
+    static int values[174] = {
         46, // 2088 (0x828)
         49, // 696 (0x2b8)
         -1,
@@ -422,7 +422,7 @@ void check_jscript_hash1() {
 //lookup: name=lookup_jscript_hash2, dataset=jscript, type=hash, hash=hash2
 int lookup_jscript_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 88) * 2;
-    constexpr const std::string_view lookup[176] = {
+    static std::string_view lookup[176] = {
         "",
         "",
         "transient", // 13465 (0x3499)
@@ -600,7 +600,7 @@ int lookup_jscript_hash2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[176] = {
+    static int values[176] = {
         -1,
         -1,
         46, // 13465 (0x3499)
@@ -846,7 +846,7 @@ void check_jscript_hash2() {
 //lookup: name=lookup_jscript_hash3, dataset=jscript, type=hash, hash=hash3
 int lookup_jscript_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 392) * 1;
-    constexpr const std::string_view lookup[392] = {
+    static std::string_view lookup[392] = {
         "",
         "",
         "",
@@ -1240,7 +1240,7 @@ int lookup_jscript_hash3(std::string_view s) {
         "char", // 26654 (0x681e)
         "",
     };
-    constexpr const int values[392] = {
+    static int values[392] = {
         -1,
         -1,
         -1,
@@ -1702,7 +1702,7 @@ void check_jscript_hash3() {
 //lookup: name=lookup_jscript_hash_sum0, dataset=jscript, type=hash, hash=hash_sum0
 int lookup_jscript_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 87) * 2;
-    constexpr const std::string_view lookup[174] = {
+    static std::string_view lookup[174] = {
         "final", // 522 (0x20a)
         "function", // 870 (0x366)
         "byte", // 436 (0x1b4)
@@ -1878,7 +1878,7 @@ int lookup_jscript_hash_sum0(std::string_view s) {
         "continue", // 869 (0x365)
         "void", // 434 (0x1b2)
     };
-    constexpr const int values[174] = {
+    static int values[174] = {
         16, // 522 (0x20a)
         20, // 870 (0x366)
         3, // 436 (0x1b4)
@@ -2122,7 +2122,7 @@ void check_jscript_hash_sum0() {
 //lookup: name=lookup_jscript_hash_sumN, dataset=jscript, type=hash, hash=hash_sumN
 int lookup_jscript_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 70) * 2;
-    constexpr const std::string_view lookup[140] = {
+    static std::string_view lookup[140] = {
         "extends", // 770 (0x302)
         "private", // 770 (0x302)
         "",
@@ -2264,7 +2264,7 @@ int lookup_jscript_hash_sumN(std::string_view s) {
         "if", // 209 (0xd1)
         "protected", // 979 (0x3d3)
     };
-    constexpr const int values[140] = {
+    static int values[140] = {
         14, // 770 (0x302)
         34, // 770 (0x302)
         -1,
@@ -2474,7 +2474,7 @@ void check_jscript_hash_sumN() {
 //lookup: name=lookup_jscript_hash_djb2, dataset=jscript, type=hash, hash=hash_djb2
 int lookup_jscript_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 310) * 1;
-    constexpr const std::string_view lookup[310] = {
+    static std::string_view lookup[310] = {
         "",
         "",
         "",
@@ -2786,7 +2786,7 @@ int lookup_jscript_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[310] = {
+    static int values[310] = {
         -1,
         -1,
         -1,
@@ -3166,7 +3166,7 @@ void check_jscript_hash_djb2() {
 //lookup: name=lookup_jscript_hash_sdb, dataset=jscript, type=hash, hash=hash_sdb
 int lookup_jscript_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 390) * 1;
-    constexpr const std::string_view lookup[390] = {
+    static std::string_view lookup[390] = {
         "",
         "",
         "",
@@ -3558,7 +3558,7 @@ int lookup_jscript_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    constexpr const int values[390] = {
+    static int values[390] = {
         -1,
         -1,
         -1,
