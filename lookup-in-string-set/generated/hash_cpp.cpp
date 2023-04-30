@@ -2,7 +2,7 @@
 //lookup: name=lookup_cpp_hash1, dataset=cpp, type=hash, hash=hash1
 int lookup_cpp_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 85) * 2;
-    static std::string_view lookup[170] = {
+    constexpr const std::string_view lookup[170] = {
         "",
         "",
         "",
@@ -174,7 +174,7 @@ int lookup_cpp_hash1(std::string_view s) {
         "",
         "",
     };
-    static int values[170] = {
+    constexpr const int values[170] = {
         -1,
         -1,
         -1,
@@ -408,7 +408,7 @@ void check_cpp_hash1() {
 //lookup: name=lookup_cpp_hash2, dataset=cpp, type=hash, hash=hash2
 int lookup_cpp_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 69) * 2;
-    static std::string_view lookup[138] = {
+    constexpr const std::string_view lookup[138] = {
         "",
         "",
         "",
@@ -548,7 +548,7 @@ int lookup_cpp_hash2(std::string_view s) {
         "auto", // 10763 (0x2a0b)
         "",
     };
-    static int values[138] = {
+    constexpr const int values[138] = {
         -1,
         -1,
         -1,
@@ -750,7 +750,7 @@ void check_cpp_hash2() {
 //lookup: name=lookup_cpp_hash3, dataset=cpp, type=hash, hash=hash3
 int lookup_cpp_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 248) * 1;
-    static std::string_view lookup[248] = {
+    constexpr const std::string_view lookup[248] = {
         "",
         "",
         "",
@@ -1000,7 +1000,7 @@ int lookup_cpp_hash3(std::string_view s) {
         "",
         "",
     };
-    static int values[248] = {
+    constexpr const int values[248] = {
         -1,
         -1,
         -1,
@@ -1312,7 +1312,7 @@ void check_cpp_hash3() {
 //lookup: name=lookup_cpp_hash_sum0, dataset=cpp, type=hash, hash=hash_sum0
 int lookup_cpp_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 90) * 2;
-    static std::string_view lookup[180] = {
+    constexpr const std::string_view lookup[180] = {
         "",
         "",
         "",
@@ -1494,7 +1494,7 @@ int lookup_cpp_hash_sum0(std::string_view s) {
         "",
         "",
     };
-    static int values[180] = {
+    constexpr const int values[180] = {
         -1,
         -1,
         -1,
@@ -1738,7 +1738,7 @@ void check_cpp_hash_sum0() {
 //lookup: name=lookup_cpp_hash_sumN, dataset=cpp, type=hash, hash=hash_sumN
 int lookup_cpp_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 74) * 2;
-    static std::string_view lookup[148] = {
+    constexpr const std::string_view lookup[148] = {
         "this", // 444 (0x1bc)
         "",
         "auto", // 445 (0x1bd)
@@ -1888,7 +1888,7 @@ int lookup_cpp_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[148] = {
+    constexpr const int values[148] = {
         39, // 444 (0x1bc)
         -1,
         1, // 445 (0x1bd)
@@ -2100,7 +2100,7 @@ void check_cpp_hash_sumN() {
 //lookup: name=lookup_cpp_hash_djb2, dataset=cpp, type=hash, hash=hash_djb2
 int lookup_cpp_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 304) * 1;
-    static std::string_view lookup[304] = {
+    constexpr const std::string_view lookup[304] = {
         "",
         "",
         "",
@@ -2406,7 +2406,7 @@ int lookup_cpp_hash_djb2(std::string_view s) {
         "",
         "",
     };
-    static int values[304] = {
+    constexpr const int values[304] = {
         -1,
         -1,
         -1,
@@ -2774,7 +2774,7 @@ void check_cpp_hash_djb2() {
 //lookup: name=lookup_cpp_hash_sdb, dataset=cpp, type=hash, hash=hash_sdb
 int lookup_cpp_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 236) * 1;
-    static std::string_view lookup[236] = {
+    constexpr const std::string_view lookup[236] = {
         "",
         "public", // 3260204451718471445 (0x2d3e92acefd39f15)
         "overload", // 17255079645396769038 (0xef765b8422f2990e)
@@ -3012,7 +3012,7 @@ int lookup_cpp_hash_sdb(std::string_view s) {
         "",
         "virtual", // 2567257810834155947 (0x23a0bb60859de9ab)
     };
-    static int values[236] = {
+    constexpr const int values[236] = {
         -1,
         29, // 3260204451718471445 (0x2d3e92acefd39f15)
         26, // 17255079645396769038 (0xef765b8422f2990e)

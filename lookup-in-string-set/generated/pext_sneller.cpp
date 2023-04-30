@@ -2,7 +2,7 @@
 int lookup_sneller_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            static char lookup[32][2] = {
+            constexpr const char lookup[32][2] = {
                 {'P', 'I'},
                 {}, // no match
                 {}, // no match
@@ -36,7 +36,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 161,
                 -1,
                 -1,
@@ -79,7 +79,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 3: {
-            static char lookup[128][3] = {
+            constexpr const char lookup[128][3] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -209,7 +209,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[128] = {
+            constexpr const int value[128] = {
                 -1,
                 -1,
                 -1,
@@ -353,7 +353,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 4: {
-            static char lookup[512][4] = {
+            constexpr const char lookup[512][4] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -867,7 +867,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[512] = {
+            constexpr const int value[512] = {
                 -1,
                 -1,
                 -1,
@@ -1390,7 +1390,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[256][5] = {
+            constexpr const char lookup[256][5] = {
                 {}, // no match
                 {'E', 'V', 'E', 'R', 'Y'},
                 {}, // no match
@@ -1648,7 +1648,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[256] = {
+            constexpr const int value[256] = {
                 -1,
                 73,
                 -1,
@@ -1918,7 +1918,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[128][6] = {
+            constexpr const char lookup[128][6] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -2048,7 +2048,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[128] = {
+            constexpr const int value[128] = {
                 -1,
                 -1,
                 -1,
@@ -2192,7 +2192,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 7: {
-            static char lookup[128][7] = {
+            constexpr const char lookup[128][7] = {
                 {'D', 'E', 'C', 'I', 'M', 'A', 'L'},
                 {}, // no match
                 {}, // no match
@@ -2322,7 +2322,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {'R', 'A', 'D', 'I', 'A', 'N', 'S'},
                 {}, // no match
             };
-            static int value[128] = {
+            constexpr const int value[128] = {
                 99,
                 -1,
                 -1,
@@ -2461,7 +2461,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 8: {
-            static char lookup[128][8] = {
+            constexpr const char lookup[128][8] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -2591,7 +2591,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[128] = {
+            constexpr const int value[128] = {
                 -1,
                 -1,
                 -1,
@@ -2730,7 +2730,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 9: {
-            static char lookup[32][9] = {
+            constexpr const char lookup[32][9] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -2764,7 +2764,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -2807,7 +2807,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 10: {
-            static char lookup[32][10] = {
+            constexpr const char lookup[32][10] = {
                 {}, // no match
                 {}, // no match
                 {'T', 'A', 'B', 'L', 'E', '_', 'G', 'L', 'O', 'B'},
@@ -2841,7 +2841,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 -1,
                 226,
@@ -2883,7 +2883,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 11: {
-            static char lookup[16][11] = {
+            constexpr const char lookup[16][11] = {
                 {'C', 'O', 'N', 'T', 'A', 'I', 'N', 'S', '_', 'C', 'I'},
                 {}, // no match
                 {}, // no match
@@ -2901,7 +2901,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {'T', 'I', 'M', 'E', '_', 'B', 'U', 'C', 'K', 'E', 'T'},
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 128,
                 -1,
                 -1,
@@ -2928,7 +2928,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 12: {
-            static char lookup[32][12] = {
+            constexpr const char lookup[32][12] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -2962,7 +2962,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -3005,7 +3005,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 13: {
-            static char lookup[8][13] = {
+            constexpr const char lookup[8][13] = {
                 {'T', 'O', '_', 'U', 'N', 'I', 'X', '_', 'E', 'P', 'O', 'C', 'H'},
                 {'T', 'A', 'B', 'L', 'E', '_', 'P', 'A', 'T', 'T', 'E', 'R', 'N'},
                 {'D', 'A', 'T', 'E', '_', 'A', 'D', 'D', '_', 'W', 'E', 'E', 'K'},
@@ -3015,7 +3015,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {'D', 'A', 'T', 'E', '_', 'D', 'I', 'F', 'F', '_', 'D', 'A', 'Y'},
                 {}, // no match
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 215,
                 227,
                 180,
@@ -3034,7 +3034,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 14: {
-            static char lookup[32][14] = {
+            constexpr const char lookup[32][14] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -3068,7 +3068,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -3111,7 +3111,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 15: {
-            static char lookup[16][15] = {
+            constexpr const char lookup[16][15] = {
                 {}, // no match
                 {'D', 'A', 'T', 'E', '_', 'T', 'R', 'U', 'N', 'C', '_', 'Y', 'E', 'A', 'R'},
                 {'D', 'A', 'T', 'E', '_', 'A', 'D', 'D', '_', 'S', 'E', 'C', 'O', 'N', 'D'},
@@ -3129,7 +3129,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 -1,
                 214,
                 176,
@@ -3156,7 +3156,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 16: {
-            static char lookup[32][16] = {
+            constexpr const char lookup[32][16] = {
                 {'D', 'A', 'T', 'E', '_', 'D', 'I', 'F', 'F', '_', 'M', 'I', 'N', 'U', 'T', 'E'},
                 {'D', 'A', 'T', 'E', '_', 'D', 'I', 'F', 'F', '_', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {}, // no match
@@ -3190,7 +3190,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 187,
                 186,
                 -1,
@@ -3236,7 +3236,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 17: {
-            static char lookup[8][17] = {
+            constexpr const char lookup[8][17] = {
                 {}, // no match
                 {'D', 'A', 'T', 'E', '_', 'T', 'R', 'U', 'N', 'C', '_', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {'S', 'N', 'E', 'L', 'L', 'E', 'R', '_', 'D', 'A', 'T', 'A', 'S', 'H', 'A', 'P', 'E'},
@@ -3246,7 +3246,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {'D', 'A', 'T', 'E', '_', 'E', 'X', 'T', 'R', 'A', 'C', 'T', '_', 'H', 'O', 'U', 'R'},
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 -1,
                 207,
                 88,
@@ -3265,7 +3265,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 18: {
-            static char lookup[8][18] = {
+            constexpr const char lookup[8][18] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -3275,7 +3275,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {'D', 'A', 'T', 'E', '_', 'T', 'R', 'U', 'N', 'C', '_', 'Q', 'U', 'A', 'R', 'T', 'E', 'R'},
                 {'S', 'T', 'R', 'U', 'C', 'T', '_', 'R', 'E', 'P', 'L', 'A', 'C', 'E', 'M', 'E', 'N', 'T'},
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 -1,
                 -1,
                 -1,
@@ -3306,7 +3306,7 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 20: {
-            static char lookup[8][20] = {
+            constexpr const char lookup[8][20] = {
                 {'D', 'A', 'T', 'E', '_', 'A', 'D', 'D', '_', 'M', 'I', 'L', 'L', 'I', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {'D', 'A', 'T', 'E', '_', 'A', 'D', 'D', '_', 'M', 'I', 'C', 'R', 'O', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {}, // no match
@@ -3316,7 +3316,7 @@ int lookup_sneller_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 175,
                 174,
                 -1,
@@ -3335,13 +3335,13 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 21: {
-            static char lookup[4][21] = {
+            constexpr const char lookup[4][21] = {
                 {'D', 'A', 'T', 'E', '_', 'D', 'I', 'F', 'F', '_', 'M', 'I', 'L', 'L', 'I', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {'D', 'A', 'T', 'E', '_', 'D', 'I', 'F', 'F', '_', 'M', 'I', 'C', 'R', 'O', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {'A', 'P', 'P', 'R', 'O', 'X', '_', 'C', 'O', 'U', 'N', 'T', '_', 'D', 'I', 'S', 'T', 'I', 'N', 'C', 'T'},
                 {}, // no match
             };
-            static int value[4] = {
+            constexpr const int value[4] = {
                 185,
                 184,
                 87,
@@ -3356,13 +3356,13 @@ int lookup_sneller_pext(std::string_view s) {
         }
         break;
         case 22: {
-            static char lookup[4][22] = {
+            constexpr const char lookup[4][22] = {
                 {'D', 'A', 'T', 'E', '_', 'T', 'R', 'U', 'N', 'C', '_', 'M', 'I', 'L', 'L', 'I', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {'D', 'A', 'T', 'E', '_', 'T', 'R', 'U', 'N', 'C', '_', 'M', 'I', 'C', 'R', 'O', 'S', 'E', 'C', 'O', 'N', 'D'},
                 {}, // no match
                 {'C', 'O', 'N', 'T', 'A', 'I', 'N', 'S', '_', 'F', 'U', 'Z', 'Z', 'Y', '_', 'U', 'N', 'I', 'C', 'O', 'D', 'E'},
             };
-            static int value[4] = {
+            constexpr const int value[4] = {
                 206,
                 205,
                 -1,
@@ -3396,28 +3396,84 @@ void check_sneller_pext() {
     assert(lookup_sneller_pext("DATE_ADD_MICROSECOND") == 174);
     assert(lookup_sneller_pext("DATE_ADD_MILLISECOND") == 175);
     assert(lookup_sneller_pext("DATE_EXTRACT_QUARTER") == 203);
-    assert(lookup_sneller_pext("DATE_ADD_QUARTER") == 182);
-    assert(lookup_sneller_pext("DATE_DIFF_SECOND") == 186);
-    assert(lookup_sneller_pext("DATE_DIFF_MINUTE") == 187);
-    assert(lookup_sneller_pext("DATE_EXTRACT_DAY") == 199);
-    assert(lookup_sneller_pext("DATE_EXTRACT_DOW") == 200);
-    assert(lookup_sneller_pext("DATE_EXTRACT_DOY") == 201);
-    assert(lookup_sneller_pext("DATE_TRUNC_MONTH") == 212);
-    assert(lookup_sneller_pext("HASH_REPLACEMENT") == 230);
-    assert(lookup_sneller_pext("LIST_REPLACEMENT") == 233);
-    assert(lookup_sneller_pext("AS") == 2);
-    assert(lookup_sneller_pext("AT") == 3);
-    assert(lookup_sneller_pext("OR") == 16);
-    assert(lookup_sneller_pext("ON") == 17);
-    assert(lookup_sneller_pext("BY") == 23);
-    assert(lookup_sneller_pext("TO") == 30);
-    assert(lookup_sneller_pext("IS") == 36);
-    assert(lookup_sneller_pext("IN") == 37);
-    assert(lookup_sneller_pext("GV") == 92);
-    assert(lookup_sneller_pext("LN") == 154);
-    assert(lookup_sneller_pext("PI") == 161);
-    assert(lookup_sneller_pext("DATE_EXTRACT_SECOND") == 196);
-    assert(lookup_sneller_pext("DATE_EXTRACT_MINUTE") == 197);
+    assert(lookup_sneller_pext("COALESCE") == 7);
+    assert(lookup_sneller_pext("DATE_ADD") == 8);
+    assert(lookup_sneller_pext("DISTINCT") == 11);
+    assert(lookup_sneller_pext("TRAILING") == 63);
+    assert(lookup_sneller_pext("EARLIEST") == 71);
+    assert(lookup_sneller_pext("BOOL_AND") == 74);
+    assert(lookup_sneller_pext("VARIANCE") == 77);
+    assert(lookup_sneller_pext("GRAPHVIZ") == 93);
+    assert(lookup_sneller_pext("THURSDAY") == 106);
+    assert(lookup_sneller_pext("SATURDAY") == 108);
+    assert(lookup_sneller_pext("CONTAINS") == 127);
+    assert(lookup_sneller_pext("POW_UINT") == 160);
+    assert(lookup_sneller_pext("GREATEST") == 172);
+    assert(lookup_sneller_pext("GEO_HASH") == 217);
+    assert(lookup_sneller_pext("TYPE_BIT") == 237);
+    assert(lookup_sneller_pext("UNION") == 15);
+    assert(lookup_sneller_pext("WHERE") == 20);
+    assert(lookup_sneller_pext("GROUP") == 21);
+    assert(lookup_sneller_pext("ORDER") == 22);
+    assert(lookup_sneller_pext("LIMIT") == 25);
+    assert(lookup_sneller_pext("ILIKE") == 27);
+    assert(lookup_sneller_pext("NULLS") == 32);
+    assert(lookup_sneller_pext("RIGHT") == 42);
+    assert(lookup_sneller_pext("CROSS") == 43);
+    assert(lookup_sneller_pext("INNER") == 45);
+    assert(lookup_sneller_pext("FALSE") == 47);
+    assert(lookup_sneller_pext("VALUE") == 54);
+    assert(lookup_sneller_pext("FIRST") == 55);
+    assert(lookup_sneller_pext("COUNT") == 67);
+    assert(lookup_sneller_pext("EVERY") == 73);
+    assert(lookup_sneller_pext("FLOAT") == 95);
+    assert(lookup_sneller_pext("MONTH") == 120);
+    assert(lookup_sneller_pext("LTRIM") == 123);
+    assert(lookup_sneller_pext("RTRIM") == 124);
+    assert(lookup_sneller_pext("UPPER") == 125);
+    assert(lookup_sneller_pext("LOWER") == 126);
+    assert(lookup_sneller_pext("ROUND") == 142);
+    assert(lookup_sneller_pext("TRUNC") == 144);
+    assert(lookup_sneller_pext("FLOOR") == 145);
+    assert(lookup_sneller_pext("EXPM1") == 150);
+    assert(lookup_sneller_pext("EXP10") == 152);
+    assert(lookup_sneller_pext("HYPOT") == 153);
+    assert(lookup_sneller_pext("LOG10") == 158);
+    assert(lookup_sneller_pext("ATAN2") == 170);
+    assert(lookup_sneller_pext("LEAST") == 171);
+    assert(lookup_sneller_pext("SELECT") == 0);
+    assert(lookup_sneller_pext("CONCAT") == 6);
+    assert(lookup_sneller_pext("EXISTS") == 14);
+    assert(lookup_sneller_pext("HAVING") == 24);
+    assert(lookup_sneller_pext("OFFSET") == 26);
+    assert(lookup_sneller_pext("NULLIF") == 33);
+    assert(lookup_sneller_pext("UTCNOW") == 57);
+    assert(lookup_sneller_pext("FILTER") == 59);
+    assert(lookup_sneller_pext("ESCAPE") == 66);
+    assert(lookup_sneller_pext("LATEST") == 72);
+    assert(lookup_sneller_pext("STDDEV") == 79);
+    assert(lookup_sneller_pext("BIT_OR") == 82);
+    assert(lookup_sneller_pext("STRING") == 98);
+    assert(lookup_sneller_pext("STRUCT") == 100);
+    assert(lookup_sneller_pext("SYMBOL") == 101);
+    assert(lookup_sneller_pext("SUNDAY") == 102);
+    assert(lookup_sneller_pext("MONDAY") == 103);
+    assert(lookup_sneller_pext("FRIDAY") == 107);
+    assert(lookup_sneller_pext("SECOND") == 113);
+    assert(lookup_sneller_pext("MINUTE") == 114);
+    assert(lookup_sneller_pext("DATE_TRUNC") == 12);
+    assert(lookup_sneller_pext("STDDEV_POP") == 80);
+    assert(lookup_sneller_pext("ROW_NUMBER") == 84);
+    assert(lookup_sneller_pext("DENSE_RANK") == 86);
+    assert(lookup_sneller_pext("SPLIT_PART") == 138);
+    assert(lookup_sneller_pext("ROUND_EVEN") == 143);
+    assert(lookup_sneller_pext("GEO_TILE_X") == 218);
+    assert(lookup_sneller_pext("GEO_TILE_Y") == 219);
+    assert(lookup_sneller_pext("ARRAY_SIZE") == 224);
+    assert(lookup_sneller_pext("TABLE_GLOB") == 226);
+    assert(lookup_sneller_pext("APPROX_COUNT_DISTINCT") == 87);
+    assert(lookup_sneller_pext("DATE_DIFF_MICROSECOND") == 184);
+    assert(lookup_sneller_pext("DATE_DIFF_MILLISECOND") == 185);
     assert(lookup_sneller_pext("CONTAINS_FUZZY") == 132);
     assert(lookup_sneller_pext("DATE_ADD_MONTH") == 181);
     assert(lookup_sneller_pext("DATE_DIFF_HOUR") == 188);
@@ -3428,6 +3484,9 @@ void check_sneller_pext() {
     assert(lookup_sneller_pext("ARRAY_CONTAINS") == 223);
     assert(lookup_sneller_pext("ARRAY_POSITION") == 225);
     assert(lookup_sneller_pext("IN_REPLACEMENT") == 229);
+    assert(lookup_sneller_pext("CONTAINS_FUZZY_UNICODE") == 133);
+    assert(lookup_sneller_pext("DATE_TRUNC_MICROSECOND") == 205);
+    assert(lookup_sneller_pext("DATE_TRUNC_MILLISECOND") == 206);
     assert(lookup_sneller_pext("CAST") == 5);
     assert(lookup_sneller_pext("DESC") == 10);
     assert(lookup_sneller_pext("OVER") == 18);
@@ -3463,8 +3522,6 @@ void check_sneller_pext() {
     assert(lookup_sneller_pext("ACOS") == 168);
     assert(lookup_sneller_pext("ATAN") == 169);
     assert(lookup_sneller_pext("SIZE") == 222);
-    assert(lookup_sneller_pext("DATE_EXTRACT_MICROSECOND") == 194);
-    assert(lookup_sneller_pext("DATE_EXTRACT_MILLISECOND") == 195);
     assert(lookup_sneller_pext("DATE_ADD_SECOND") == 176);
     assert(lookup_sneller_pext("DATE_ADD_MINUTE") == 177);
     assert(lookup_sneller_pext("DATE_DIFF_MONTH") == 191);
@@ -3472,47 +3529,13 @@ void check_sneller_pext() {
     assert(lookup_sneller_pext("DATE_TRUNC_YEAR") == 214);
     assert(lookup_sneller_pext("ASSERT_ION_TYPE") == 238);
     assert(lookup_sneller_pext("PARTITION_VALUE") == 239);
-    assert(lookup_sneller_pext("SELECT") == 0);
-    assert(lookup_sneller_pext("CONCAT") == 6);
-    assert(lookup_sneller_pext("EXISTS") == 14);
-    assert(lookup_sneller_pext("HAVING") == 24);
-    assert(lookup_sneller_pext("OFFSET") == 26);
-    assert(lookup_sneller_pext("NULLIF") == 33);
-    assert(lookup_sneller_pext("UTCNOW") == 57);
-    assert(lookup_sneller_pext("FILTER") == 59);
-    assert(lookup_sneller_pext("ESCAPE") == 66);
-    assert(lookup_sneller_pext("LATEST") == 72);
-    assert(lookup_sneller_pext("STDDEV") == 79);
-    assert(lookup_sneller_pext("BIT_OR") == 82);
-    assert(lookup_sneller_pext("STRING") == 98);
-    assert(lookup_sneller_pext("STRUCT") == 100);
-    assert(lookup_sneller_pext("SYMBOL") == 101);
-    assert(lookup_sneller_pext("SUNDAY") == 102);
-    assert(lookup_sneller_pext("MONDAY") == 103);
-    assert(lookup_sneller_pext("FRIDAY") == 107);
-    assert(lookup_sneller_pext("SECOND") == 113);
-    assert(lookup_sneller_pext("MINUTE") == 114);
-    assert(lookup_sneller_pext("APPROX_COUNT_DISTINCT") == 87);
-    assert(lookup_sneller_pext("DATE_DIFF_MICROSECOND") == 184);
-    assert(lookup_sneller_pext("DATE_DIFF_MILLISECOND") == 185);
-    assert(lookup_sneller_pext("DATE_TRUNC") == 12);
-    assert(lookup_sneller_pext("STDDEV_POP") == 80);
-    assert(lookup_sneller_pext("ROW_NUMBER") == 84);
-    assert(lookup_sneller_pext("DENSE_RANK") == 86);
-    assert(lookup_sneller_pext("SPLIT_PART") == 138);
-    assert(lookup_sneller_pext("ROUND_EVEN") == 143);
-    assert(lookup_sneller_pext("GEO_TILE_X") == 218);
-    assert(lookup_sneller_pext("GEO_TILE_Y") == 219);
-    assert(lookup_sneller_pext("ARRAY_SIZE") == 224);
-    assert(lookup_sneller_pext("TABLE_GLOB") == 226);
-    assert(lookup_sneller_pext("DATE_DIFF") == 9);
-    assert(lookup_sneller_pext("PARTITION") == 34);
-    assert(lookup_sneller_pext("TIMESTAMP") == 97);
-    assert(lookup_sneller_pext("WEDNESDAY") == 105);
-    assert(lookup_sneller_pext("EQUALS_CI") == 129);
-    assert(lookup_sneller_pext("SUBSTRING") == 137);
-    assert(lookup_sneller_pext("BIT_COUNT") == 139);
-    assert(lookup_sneller_pext("MAKE_LIST") == 235);
+    assert(lookup_sneller_pext("DATE_ADD_HOUR") == 178);
+    assert(lookup_sneller_pext("DATE_ADD_WEEK") == 180);
+    assert(lookup_sneller_pext("DATE_ADD_YEAR") == 183);
+    assert(lookup_sneller_pext("DATE_DIFF_DAY") == 189);
+    assert(lookup_sneller_pext("TO_UNIX_EPOCH") == 215);
+    assert(lookup_sneller_pext("TO_UNIX_MICRO") == 216);
+    assert(lookup_sneller_pext("TABLE_PATTERN") == 227);
     assert(lookup_sneller_pext("MICROSECOND") == 109);
     assert(lookup_sneller_pext("MILLISECOND") == 111);
     assert(lookup_sneller_pext("CONTAINS_CI") == 128);
@@ -3521,22 +3544,38 @@ void check_sneller_pext() {
     assert(lookup_sneller_pext("IN_SUBQUERY") == 228);
     assert(lookup_sneller_pext("TIME_BUCKET") == 234);
     assert(lookup_sneller_pext("MAKE_STRUCT") == 236);
-    assert(lookup_sneller_pext("DATE_ADD_HOUR") == 178);
-    assert(lookup_sneller_pext("DATE_ADD_WEEK") == 180);
-    assert(lookup_sneller_pext("DATE_ADD_YEAR") == 183);
-    assert(lookup_sneller_pext("DATE_DIFF_DAY") == 189);
-    assert(lookup_sneller_pext("TO_UNIX_EPOCH") == 215);
-    assert(lookup_sneller_pext("TO_UNIX_MICRO") == 216);
-    assert(lookup_sneller_pext("TABLE_PATTERN") == 227);
-    assert(lookup_sneller_pext("VARIANCE_POP") == 78);
-    assert(lookup_sneller_pext("MICROSECONDS") == 110);
-    assert(lookup_sneller_pext("MILLISECONDS") == 112);
-    assert(lookup_sneller_pext("EQUALS_FUZZY") == 130);
-    assert(lookup_sneller_pext("OCTET_LENGTH") == 134);
-    assert(lookup_sneller_pext("IS_SUBNET_OF") == 136);
-    assert(lookup_sneller_pext("WIDTH_BUCKET") == 173);
-    assert(lookup_sneller_pext("DATE_ADD_DAY") == 179);
-    assert(lookup_sneller_pext("GEO_DISTANCE") == 221);
+    assert(lookup_sneller_pext("DATE_EXTRACT_MICROSECOND") == 194);
+    assert(lookup_sneller_pext("DATE_EXTRACT_MILLISECOND") == 195);
+    assert(lookup_sneller_pext("AS") == 2);
+    assert(lookup_sneller_pext("AT") == 3);
+    assert(lookup_sneller_pext("OR") == 16);
+    assert(lookup_sneller_pext("ON") == 17);
+    assert(lookup_sneller_pext("BY") == 23);
+    assert(lookup_sneller_pext("TO") == 30);
+    assert(lookup_sneller_pext("IS") == 36);
+    assert(lookup_sneller_pext("IN") == 37);
+    assert(lookup_sneller_pext("GV") == 92);
+    assert(lookup_sneller_pext("LN") == 154);
+    assert(lookup_sneller_pext("PI") == 161);
+    assert(lookup_sneller_pext("SNELLER_DATASHAPE") == 88);
+    assert(lookup_sneller_pext("DATE_DIFF_QUARTER") == 192);
+    assert(lookup_sneller_pext("DATE_EXTRACT_HOUR") == 198);
+    assert(lookup_sneller_pext("DATE_EXTRACT_YEAR") == 204);
+    assert(lookup_sneller_pext("DATE_TRUNC_SECOND") == 207);
+    assert(lookup_sneller_pext("DATE_TRUNC_MINUTE") == 208);
+    assert(lookup_sneller_pext("DATE_EXTRACT_MONTH") == 202);
+    assert(lookup_sneller_pext("DATE_TRUNC_QUARTER") == 213);
+    assert(lookup_sneller_pext("SCALAR_REPLACEMENT") == 231);
+    assert(lookup_sneller_pext("STRUCT_REPLACEMENT") == 232);
+    assert(lookup_sneller_pext("DATE_ADD_QUARTER") == 182);
+    assert(lookup_sneller_pext("DATE_DIFF_SECOND") == 186);
+    assert(lookup_sneller_pext("DATE_DIFF_MINUTE") == 187);
+    assert(lookup_sneller_pext("DATE_EXTRACT_DAY") == 199);
+    assert(lookup_sneller_pext("DATE_EXTRACT_DOW") == 200);
+    assert(lookup_sneller_pext("DATE_EXTRACT_DOY") == 201);
+    assert(lookup_sneller_pext("DATE_TRUNC_MONTH") == 212);
+    assert(lookup_sneller_pext("HASH_REPLACEMENT") == 230);
+    assert(lookup_sneller_pext("LIST_REPLACEMENT") == 233);
     assert(lookup_sneller_pext("AND") == 1);
     assert(lookup_sneller_pext("ASC") == 4);
     assert(lookup_sneller_pext("NOT") == 39);
@@ -3556,64 +3595,23 @@ void check_sneller_pext() {
     assert(lookup_sneller_pext("SIN") == 164);
     assert(lookup_sneller_pext("COS") == 165);
     assert(lookup_sneller_pext("TAN") == 166);
-    assert(lookup_sneller_pext("UNION") == 15);
-    assert(lookup_sneller_pext("WHERE") == 20);
-    assert(lookup_sneller_pext("GROUP") == 21);
-    assert(lookup_sneller_pext("ORDER") == 22);
-    assert(lookup_sneller_pext("LIMIT") == 25);
-    assert(lookup_sneller_pext("ILIKE") == 27);
-    assert(lookup_sneller_pext("NULLS") == 32);
-    assert(lookup_sneller_pext("RIGHT") == 42);
-    assert(lookup_sneller_pext("CROSS") == 43);
-    assert(lookup_sneller_pext("INNER") == 45);
-    assert(lookup_sneller_pext("FALSE") == 47);
-    assert(lookup_sneller_pext("VALUE") == 54);
-    assert(lookup_sneller_pext("FIRST") == 55);
-    assert(lookup_sneller_pext("COUNT") == 67);
-    assert(lookup_sneller_pext("EVERY") == 73);
-    assert(lookup_sneller_pext("FLOAT") == 95);
-    assert(lookup_sneller_pext("MONTH") == 120);
-    assert(lookup_sneller_pext("LTRIM") == 123);
-    assert(lookup_sneller_pext("RTRIM") == 124);
-    assert(lookup_sneller_pext("UPPER") == 125);
-    assert(lookup_sneller_pext("LOWER") == 126);
-    assert(lookup_sneller_pext("ROUND") == 142);
-    assert(lookup_sneller_pext("TRUNC") == 144);
-    assert(lookup_sneller_pext("FLOOR") == 145);
-    assert(lookup_sneller_pext("EXPM1") == 150);
-    assert(lookup_sneller_pext("EXP10") == 152);
-    assert(lookup_sneller_pext("HYPOT") == 153);
-    assert(lookup_sneller_pext("LOG10") == 158);
-    assert(lookup_sneller_pext("ATAN2") == 170);
-    assert(lookup_sneller_pext("LEAST") == 171);
-    assert(lookup_sneller_pext("DATE_EXTRACT_MONTH") == 202);
-    assert(lookup_sneller_pext("DATE_TRUNC_QUARTER") == 213);
-    assert(lookup_sneller_pext("SCALAR_REPLACEMENT") == 231);
-    assert(lookup_sneller_pext("STRUCT_REPLACEMENT") == 232);
-    assert(lookup_sneller_pext("SNELLER_DATASHAPE") == 88);
-    assert(lookup_sneller_pext("DATE_DIFF_QUARTER") == 192);
-    assert(lookup_sneller_pext("DATE_EXTRACT_HOUR") == 198);
-    assert(lookup_sneller_pext("DATE_EXTRACT_YEAR") == 204);
-    assert(lookup_sneller_pext("DATE_TRUNC_SECOND") == 207);
-    assert(lookup_sneller_pext("DATE_TRUNC_MINUTE") == 208);
-    assert(lookup_sneller_pext("CONTAINS_FUZZY_UNICODE") == 133);
-    assert(lookup_sneller_pext("DATE_TRUNC_MICROSECOND") == 205);
-    assert(lookup_sneller_pext("DATE_TRUNC_MILLISECOND") == 206);
-    assert(lookup_sneller_pext("COALESCE") == 7);
-    assert(lookup_sneller_pext("DATE_ADD") == 8);
-    assert(lookup_sneller_pext("DISTINCT") == 11);
-    assert(lookup_sneller_pext("TRAILING") == 63);
-    assert(lookup_sneller_pext("EARLIEST") == 71);
-    assert(lookup_sneller_pext("BOOL_AND") == 74);
-    assert(lookup_sneller_pext("VARIANCE") == 77);
-    assert(lookup_sneller_pext("GRAPHVIZ") == 93);
-    assert(lookup_sneller_pext("THURSDAY") == 106);
-    assert(lookup_sneller_pext("SATURDAY") == 108);
-    assert(lookup_sneller_pext("CONTAINS") == 127);
-    assert(lookup_sneller_pext("POW_UINT") == 160);
-    assert(lookup_sneller_pext("GREATEST") == 172);
-    assert(lookup_sneller_pext("GEO_HASH") == 217);
-    assert(lookup_sneller_pext("TYPE_BIT") == 237);
+    assert(lookup_sneller_pext("VARIANCE_POP") == 78);
+    assert(lookup_sneller_pext("MICROSECONDS") == 110);
+    assert(lookup_sneller_pext("MILLISECONDS") == 112);
+    assert(lookup_sneller_pext("EQUALS_FUZZY") == 130);
+    assert(lookup_sneller_pext("OCTET_LENGTH") == 134);
+    assert(lookup_sneller_pext("IS_SUBNET_OF") == 136);
+    assert(lookup_sneller_pext("WIDTH_BUCKET") == 173);
+    assert(lookup_sneller_pext("DATE_ADD_DAY") == 179);
+    assert(lookup_sneller_pext("GEO_DISTANCE") == 221);
+    assert(lookup_sneller_pext("DATE_DIFF") == 9);
+    assert(lookup_sneller_pext("PARTITION") == 34);
+    assert(lookup_sneller_pext("TIMESTAMP") == 97);
+    assert(lookup_sneller_pext("WEDNESDAY") == 105);
+    assert(lookup_sneller_pext("EQUALS_CI") == 129);
+    assert(lookup_sneller_pext("SUBSTRING") == 137);
+    assert(lookup_sneller_pext("BIT_COUNT") == 139);
+    assert(lookup_sneller_pext("MAKE_LIST") == 235);
     assert(lookup_sneller_pext("EXTRACT") == 13);
     assert(lookup_sneller_pext("SIMILAR") == 29);
     assert(lookup_sneller_pext("MISSING") == 35);
@@ -3632,5 +3630,7 @@ void check_sneller_pext() {
     assert(lookup_sneller_pext("QUARTER") == 121);
     assert(lookup_sneller_pext("DEGREES") == 162);
     assert(lookup_sneller_pext("RADIANS") == 163);
+    assert(lookup_sneller_pext("DATE_EXTRACT_SECOND") == 196);
+    assert(lookup_sneller_pext("DATE_EXTRACT_MINUTE") == 197);
 }
 

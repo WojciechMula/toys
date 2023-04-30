@@ -2,7 +2,7 @@
 //lookup: name=lookup_c_hash1, dataset=c, type=hash, hash=hash1
 int lookup_c_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 151) * 1;
-    static std::string_view lookup[151] = {
+    constexpr const std::string_view lookup[151] = {
         "",
         "",
         "default", // 1512 (0x5e8)
@@ -155,7 +155,7 @@ int lookup_c_hash1(std::string_view s) {
         "double", // 1206 (0x4b6)
         "",
     };
-    static int values[151] = {
+    constexpr const int values[151] = {
         -1,
         -1,
         27, // 1512 (0x5e8)
@@ -355,7 +355,7 @@ void check_c_hash1() {
 //lookup: name=lookup_c_hash2, dataset=c, type=hash, hash=hash2
 int lookup_c_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 152) * 1;
-    static std::string_view lookup[152] = {
+    constexpr const std::string_view lookup[152] = {
         "",
         "",
         "",
@@ -509,7 +509,7 @@ int lookup_c_hash2(std::string_view s) {
         "",
         "",
     };
-    static int values[152] = {
+    constexpr const int values[152] = {
         -1,
         -1,
         -1,
@@ -710,7 +710,7 @@ void check_c_hash2() {
 //lookup: name=lookup_c_hash3, dataset=c, type=hash, hash=hash3
 int lookup_c_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 121) * 1;
-    static std::string_view lookup[121] = {
+    constexpr const std::string_view lookup[121] = {
         "",
         "",
         "register", // 31583 (0x7b5f)
@@ -833,7 +833,7 @@ int lookup_c_hash3(std::string_view s) {
         "",
         "",
     };
-    static int values[121] = {
+    constexpr const int values[121] = {
         -1,
         -1,
         30, // 31583 (0x7b5f)
@@ -1003,7 +1003,7 @@ void check_c_hash3() {
 //lookup: name=lookup_c_hash_sum0, dataset=c, type=hash, hash=hash_sum0
 int lookup_c_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 45) * 2;
-    static std::string_view lookup[90] = {
+    constexpr const std::string_view lookup[90] = {
         "",
         "",
         "",
@@ -1095,7 +1095,7 @@ int lookup_c_hash_sum0(std::string_view s) {
         "",
         "",
     };
-    static int values[90] = {
+    constexpr const int values[90] = {
         -1,
         -1,
         -1,
@@ -1234,7 +1234,7 @@ void check_c_hash_sum0() {
 //lookup: name=lookup_c_hash_sumN, dataset=c, type=hash, hash=hash_sumN
 int lookup_c_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 50) * 2;
-    static std::string_view lookup[100] = {
+    constexpr const std::string_view lookup[100] = {
         "",
         "",
         "",
@@ -1336,7 +1336,7 @@ int lookup_c_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[100] = {
+    constexpr const int values[100] = {
         -1,
         -1,
         -1,
@@ -1485,7 +1485,7 @@ void check_c_hash_sumN() {
 //lookup: name=lookup_c_hash_djb2, dataset=c, type=hash, hash=hash_djb2
 int lookup_c_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 109) * 1;
-    static std::string_view lookup[109] = {
+    constexpr const std::string_view lookup[109] = {
         "",
         "do", // 5972220 (0x5b20fc)
         "int", // 197088788 (0xbbf5614)
@@ -1596,7 +1596,7 @@ int lookup_c_hash_djb2(std::string_view s) {
         "auto", // 6503650242 (0x183a5d3c2)
         "",
     };
-    static int values[109] = {
+    constexpr const int values[109] = {
         -1,
         1, // 5972220 (0x5b20fc)
         2, // 197088788 (0xbbf5614)
@@ -1754,7 +1754,7 @@ void check_c_hash_djb2() {
 //lookup: name=lookup_c_hash_sdb, dataset=c, type=hash, hash=hash_sdb
 int lookup_c_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 131) * 1;
-    static std::string_view lookup[131] = {
+    constexpr const std::string_view lookup[131] = {
         "",
         "",
         "",
@@ -1887,7 +1887,7 @@ int lookup_c_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[131] = {
+    constexpr const int values[131] = {
         -1,
         -1,
         -1,

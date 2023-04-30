@@ -2,7 +2,7 @@
 int lookup_ada_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            static char lookup[16][2] = {
+            constexpr const char lookup[16][2] = {
                 {}, // no match
                 {}, // no match
                 {'i', 'f'},
@@ -20,7 +20,7 @@ int lookup_ada_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 -1,
                 -1,
                 54,
@@ -47,7 +47,7 @@ int lookup_ada_pext(std::string_view s) {
         }
         break;
         case 3: {
-            static char lookup[128][3] = {
+            constexpr const char lookup[128][3] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -177,7 +177,7 @@ int lookup_ada_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[128] = {
+            constexpr const int value[128] = {
                 -1,
                 -1,
                 -1,
@@ -321,7 +321,7 @@ int lookup_ada_pext(std::string_view s) {
         }
         break;
         case 4: {
-            static char lookup[32][4] = {
+            constexpr const char lookup[32][4] = {
                 {}, // no match
                 {'w', 'i', 't', 'h'},
                 {'l', 'o', 'o', 'p'},
@@ -355,7 +355,7 @@ int lookup_ada_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 62,
                 49,
@@ -398,7 +398,7 @@ int lookup_ada_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[64][5] = {
+            constexpr const char lookup[64][5] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -464,7 +464,7 @@ int lookup_ada_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[64] = {
+            constexpr const int value[64] = {
                 -1,
                 -1,
                 -1,
@@ -539,7 +539,7 @@ int lookup_ada_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[32][6] = {
+            constexpr const char lookup[32][6] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -573,7 +573,7 @@ int lookup_ada_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -616,7 +616,7 @@ int lookup_ada_pext(std::string_view s) {
         }
         break;
         case 7: {
-            static char lookup[16][7] = {
+            constexpr const char lookup[16][7] = {
                 {'s', 'u', 'b', 't', 'y', 'p', 'e'},
                 {'g', 'e', 'n', 'e', 'r', 'i', 'c'},
                 {'d', 'e', 'c', 'l', 'a', 'r', 'e'},
@@ -634,7 +634,7 @@ int lookup_ada_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 18,
                 61,
                 7,
@@ -661,13 +661,13 @@ int lookup_ada_pext(std::string_view s) {
         }
         break;
         case 8: {
-            static char lookup[4][8] = {
+            constexpr const char lookup[4][8] = {
                 {'s', 'e', 'p', 'a', 'r', 'a', 't', 'e'},
                 {'f', 'u', 'n', 'c', 't', 'i', 'o', 'n'},
                 {'c', 'o', 'n', 's', 't', 'a', 'n', 't'},
                 {}, // no match
             };
-            static int value[4] = {
+            constexpr const int value[4] = {
                 14,
                 20,
                 31,
@@ -681,13 +681,13 @@ int lookup_ada_pext(std::string_view s) {
         }
         break;
         case 9: {
-            static char lookup[4][9] = {
+            constexpr const char lookup[4][9] = {
                 {'p', 'r', 'o', 'c', 'e', 'd', 'u', 'r', 'e'},
                 {'t', 'e', 'r', 'm', 'i', 'n', 'a', 't', 'e'},
                 {}, // no match
                 {'e', 'x', 'c', 'e', 'p', 't', 'i', 'o', 'n'},
             };
-            static int value[4] = {
+            constexpr const int value[4] = {
                 23,
                 2,
                 -1,
@@ -708,31 +708,6 @@ int lookup_ada_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_ada_pext, type=pext, dataset=ada
 void check_ada_pext() {
-    assert(lookup_ada_pext("else") == 0);
-    assert(lookup_ada_pext("exit") == 1);
-    assert(lookup_ada_pext("type") == 3);
-    assert(lookup_ada_pext("then") == 12);
-    assert(lookup_ada_pext("when") == 26);
-    assert(lookup_ada_pext("case") == 30);
-    assert(lookup_ada_pext("loop") == 49);
-    assert(lookup_ada_pext("null") == 50);
-    assert(lookup_ada_pext("task") == 51);
-    assert(lookup_ada_pext("body") == 58);
-    assert(lookup_ada_pext("goto") == 60);
-    assert(lookup_ada_pext("with") == 62);
-    assert(lookup_ada_pext("terminate") == 2);
-    assert(lookup_ada_pext("exception") == 10);
-    assert(lookup_ada_pext("procedure") == 23);
-    assert(lookup_ada_pext("raise") == 4);
-    assert(lookup_ada_pext("range") == 5);
-    assert(lookup_ada_pext("elsif") == 19);
-    assert(lookup_ada_pext("while") == 25);
-    assert(lookup_ada_pext("entry") == 28);
-    assert(lookup_ada_pext("delay") == 29);
-    assert(lookup_ada_pext("abort") == 33);
-    assert(lookup_ada_pext("delta") == 36);
-    assert(lookup_ada_pext("array") == 40);
-    assert(lookup_ada_pext("begin") == 57);
     assert(lookup_ada_pext("reverse") == 6);
     assert(lookup_ada_pext("declare") == 7);
     assert(lookup_ada_pext("renames") == 17);
@@ -771,5 +746,30 @@ void check_ada_pext() {
     assert(lookup_ada_pext("in") == 52);
     assert(lookup_ada_pext("is") == 53);
     assert(lookup_ada_pext("if") == 54);
+    assert(lookup_ada_pext("else") == 0);
+    assert(lookup_ada_pext("exit") == 1);
+    assert(lookup_ada_pext("type") == 3);
+    assert(lookup_ada_pext("then") == 12);
+    assert(lookup_ada_pext("when") == 26);
+    assert(lookup_ada_pext("case") == 30);
+    assert(lookup_ada_pext("loop") == 49);
+    assert(lookup_ada_pext("null") == 50);
+    assert(lookup_ada_pext("task") == 51);
+    assert(lookup_ada_pext("body") == 58);
+    assert(lookup_ada_pext("goto") == 60);
+    assert(lookup_ada_pext("with") == 62);
+    assert(lookup_ada_pext("terminate") == 2);
+    assert(lookup_ada_pext("exception") == 10);
+    assert(lookup_ada_pext("procedure") == 23);
+    assert(lookup_ada_pext("raise") == 4);
+    assert(lookup_ada_pext("range") == 5);
+    assert(lookup_ada_pext("elsif") == 19);
+    assert(lookup_ada_pext("while") == 25);
+    assert(lookup_ada_pext("entry") == 28);
+    assert(lookup_ada_pext("delay") == 29);
+    assert(lookup_ada_pext("abort") == 33);
+    assert(lookup_ada_pext("delta") == 36);
+    assert(lookup_ada_pext("array") == 40);
+    assert(lookup_ada_pext("begin") == 57);
 }
 

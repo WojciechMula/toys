@@ -15,7 +15,7 @@ type Lookup struct {
 func (l *Lookup) write(ctx *generateContext) {
 	var buf strings.Builder
 
-	ctx.writeln("static char lookup[%d][%d] = {", len(l.indices), len(l.words[0].word))
+	ctx.writeln("constexpr const char lookup[%d][%d] = {", len(l.indices), len(l.words[0].word))
 	ctx.indent += 4
 	for _, idx := range l.indices {
 		if idx == -1 {
@@ -34,7 +34,7 @@ func (l *Lookup) write(ctx *generateContext) {
 	ctx.indent -= 4
 	ctx.writeln("};")
 
-	ctx.writeln("static %s value[%d] = {", ctx.valtype, len(l.indices))
+	ctx.writeln("constexpr const %s value[%d] = {", ctx.valtype, len(l.indices))
 	ctx.indent += 4
 	for _, idx := range l.indices {
 		if idx == -1 {

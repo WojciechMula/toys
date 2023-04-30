@@ -55,7 +55,7 @@ func generateFunction(ctx *generateContext) error {
 	{
 		size := len(ctx.lookup) / ctx.collisions
 		ctx.writeln("const uint64_t idx = (%s(%s) %% %d) * %d;", ctx.hashfn, ctx.argname, size, ctx.collisions)
-		ctx.writeln("static std::string_view lookup[%d] = {", len(ctx.lookup))
+		ctx.writeln("constexpr const std::string_view lookup[%d] = {", len(ctx.lookup))
 		ctx.indent += 4
 		for _, e := range ctx.lookup {
 			if e.value != "" {
@@ -67,7 +67,7 @@ func generateFunction(ctx *generateContext) error {
 		ctx.indent -= 4
 		ctx.writeln("};")
 
-		ctx.writeln("static %s values[%d] = {", ctx.valtype, len(ctx.lookup))
+		ctx.writeln("constexpr const %s values[%d] = {", ctx.valtype, len(ctx.lookup))
 		ctx.indent += 4
 		for _, e := range ctx.lookup {
 			if e.value != "" {

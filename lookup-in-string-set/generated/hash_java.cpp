@@ -2,7 +2,7 @@
 //lookup: name=lookup_java_hash1, dataset=java, type=hash, hash=hash1
 int lookup_java_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 97) * 2;
-    static std::string_view lookup[194] = {
+    constexpr const std::string_view lookup[194] = {
         "",
         "",
         "boolean", // 1456 (0x5b0)
@@ -198,7 +198,7 @@ int lookup_java_hash1(std::string_view s) {
         "void", // 872 (0x368)
         "",
     };
-    static int values[194] = {
+    constexpr const int values[194] = {
         -1,
         -1,
         5, // 1456 (0x5b0)
@@ -456,7 +456,7 @@ void check_java_hash1() {
 //lookup: name=lookup_java_hash2, dataset=java, type=hash, hash=hash2
 int lookup_java_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 65) * 2;
-    static std::string_view lookup[130] = {
+    constexpr const std::string_view lookup[130] = {
         "else", // 10205 (0x27dd)
         "",
         "interface", // 10596 (0x2964)
@@ -588,7 +588,7 @@ int lookup_java_hash2(std::string_view s) {
         "try", // 14039 (0x36d7)
         "",
     };
-    static int values[130] = {
+    constexpr const int values[130] = {
         16, // 10205 (0x27dd)
         -1,
         27, // 10596 (0x2964)
@@ -782,7 +782,7 @@ void check_java_hash2() {
 //lookup: name=lookup_java_hash3, dataset=java, type=hash, hash=hash3
 int lookup_java_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 328) * 1;
-    static std::string_view lookup[328] = {
+    constexpr const std::string_view lookup[328] = {
         "",
         "",
         "",
@@ -1112,7 +1112,7 @@ int lookup_java_hash3(std::string_view s) {
         "",
         "",
     };
-    static int values[328] = {
+    constexpr const int values[328] = {
         -1,
         -1,
         -1,
@@ -1504,7 +1504,7 @@ void check_java_hash3() {
 //lookup: name=lookup_java_hash_sum0, dataset=java, type=hash, hash=hash_sum0
 int lookup_java_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 56) * 2;
-    static std::string_view lookup[112] = {
+    constexpr const std::string_view lookup[112] = {
         "return", // 672 (0x2a0)
         "short", // 560 (0x230)
         "",
@@ -1618,7 +1618,7 @@ int lookup_java_hash_sum0(std::string_view s) {
         "super", // 559 (0x22f)
         "",
     };
-    static int values[112] = {
+    constexpr const int values[112] = {
         18, // 672 (0x2a0)
         23, // 560 (0x230)
         -1,
@@ -1794,7 +1794,7 @@ void check_java_hash_sum0() {
 //lookup: name=lookup_java_hash_sumN, dataset=java, type=hash, hash=hash_sumN
 int lookup_java_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 63) * 2;
-    static std::string_view lookup[126] = {
+    constexpr const std::string_view lookup[126] = {
         "",
         "",
         "synchronized", // 1324 (0x52c)
@@ -1922,7 +1922,7 @@ int lookup_java_hash_sumN(std::string_view s) {
         "byte", // 440 (0x1b8)
         "",
     };
-    static int values[126] = {
+    constexpr const int values[126] = {
         -1,
         -1,
         42, // 1324 (0x52c)
@@ -2112,7 +2112,7 @@ void check_java_hash_sumN() {
 //lookup: name=lookup_java_hash_djb2, dataset=java, type=hash, hash=hash_djb2
 int lookup_java_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 230) * 1;
-    static std::string_view lookup[230] = {
+    constexpr const std::string_view lookup[230] = {
         "",
         "",
         "",
@@ -2344,7 +2344,7 @@ int lookup_java_hash_djb2(std::string_view s) {
         "",
         "final", // 214625949459 (0x31f8b41713)
     };
-    static int values[230] = {
+    constexpr const int values[230] = {
         -1,
         -1,
         -1,
@@ -2638,7 +2638,7 @@ void check_java_hash_djb2() {
 //lookup: name=lookup_java_hash_sdb, dataset=java, type=hash, hash=hash_sdb
 int lookup_java_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 365) * 1;
-    static std::string_view lookup[365] = {
+    constexpr const std::string_view lookup[365] = {
         "interface", // 12514925068772314305 (0xadadf20b0ace0cc1)
         "",
         "",
@@ -3005,7 +3005,7 @@ int lookup_java_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[365] = {
+    constexpr const int values[365] = {
         27, // 12514925068772314305 (0xadadf20b0ace0cc1)
         -1,
         -1,

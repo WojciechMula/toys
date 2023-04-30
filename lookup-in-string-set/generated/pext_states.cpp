@@ -2,13 +2,13 @@
 int lookup_states_pext(std::string_view s) {
     switch (s.size()) {
         case 4: {
-            static char lookup[4][4] = {
+            constexpr const char lookup[4][4] = {
                 {'I', 'O', 'W', 'A'},
                 {}, // no match
                 {'U', 'T', 'A', 'H'},
                 {'O', 'H', 'I', 'O'},
             };
-            static int value[4] = {
+            constexpr const int value[4] = {
                 14,
                 -1,
                 43,
@@ -22,13 +22,13 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[4][5] = {
+            constexpr const char lookup[4][5] = {
                 {'M', 'A', 'I', 'N', 'E'},
                 {'I', 'D', 'A', 'H', 'O'},
                 {'T', 'E', 'X', 'A', 'S'},
                 {}, // no match
             };
-            static int value[4] = {
+            constexpr const int value[4] = {
                 18,
                 11,
                 42,
@@ -42,7 +42,7 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[16][6] = {
+            constexpr const char lookup[16][6] = {
                 {'N', 'E', 'V', 'A', 'D', 'A'},
                 {'A', 'L', 'A', 'S', 'K', 'A'},
                 {}, // no match
@@ -60,7 +60,7 @@ int lookup_states_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 27,
                 1,
                 -1,
@@ -87,7 +87,7 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 7: {
-            static char lookup[16][7] = {
+            constexpr const char lookup[16][7] = {
                 {'A', 'L', 'A', 'B', 'A', 'M', 'A'},
                 {'G', 'E', 'O', 'R', 'G', 'I', 'A'},
                 {}, // no match
@@ -105,7 +105,7 @@ int lookup_states_pext(std::string_view s) {
                 {'V', 'E', 'R', 'M', 'O', 'N', 'T'},
                 {}, // no match
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 0,
                 9,
                 -1,
@@ -132,7 +132,7 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 8: {
-            static char lookup[32][8] = {
+            constexpr const char lookup[32][8] = {
                 {}, // no match
                 {'D', 'E', 'L', 'A', 'W', 'A', 'R', 'E'},
                 {}, // no match
@@ -166,7 +166,7 @@ int lookup_states_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 7,
                 -1,
@@ -209,7 +209,7 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 9: {
-            static char lookup[8][9] = {
+            constexpr const char lookup[8][9] = {
                 {'L', 'O', 'U', 'I', 'S', 'I', 'A', 'N', 'A'},
                 {'M', 'I', 'N', 'N', 'E', 'S', 'O', 'T', 'A'},
                 {'T', 'E', 'N', 'N', 'E', 'S', 'S', 'E', 'E'},
@@ -219,7 +219,7 @@ int lookup_states_pext(std::string_view s) {
                 {'W', 'I', 'S', 'C', 'O', 'N', 'S', 'I', 'N'},
                 {}, // no match
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 17,
                 22,
                 41,
@@ -238,7 +238,7 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 10: {
-            static char lookup[8][10] = {
+            constexpr const char lookup[8][10] = {
                 {}, // no match
                 {'C', 'A', 'L', 'I', 'F', 'O', 'R', 'N', 'I', 'A'},
                 {'W', 'A', 'S', 'H', 'I', 'N', 'G', 'T', 'O', 'N'},
@@ -248,7 +248,7 @@ int lookup_states_pext(std::string_view s) {
                 {}, // no match
                 {'N', 'E', 'W', ' ', 'J', 'E', 'R', 'S', 'E', 'Y'},
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 -1,
                 4,
                 46,
@@ -275,7 +275,7 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 12: {
-            static char lookup[8][12] = {
+            constexpr const char lookup[8][12] = {
                 {}, // no match
                 {'P', 'E', 'N', 'N', 'S', 'Y', 'L', 'V', 'A', 'N', 'I', 'A'},
                 {'N', 'O', 'R', 'T', 'H', ' ', 'D', 'A', 'K', 'O', 'T', 'A'},
@@ -285,7 +285,7 @@ int lookup_states_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 -1,
                 37,
                 33,
@@ -307,13 +307,13 @@ int lookup_states_pext(std::string_view s) {
         }
         break;
         case 13: {
-            static char lookup[4][13] = {
+            constexpr const char lookup[4][13] = {
                 {'W', 'E', 'S', 'T', ' ', 'V', 'I', 'R', 'G', 'I', 'N', 'I', 'A'},
                 {'N', 'E', 'W', ' ', 'H', 'A', 'M', 'P', 'S', 'H', 'I', 'R', 'E'},
                 {'M', 'A', 'S', 'S', 'A', 'C', 'H', 'U', 'S', 'E', 'T', 'T', 'S'},
                 {}, // no match
             };
-            static int value[4] = {
+            constexpr const int value[4] = {
                 47,
                 28,
                 20,
@@ -342,39 +342,6 @@ int lookup_states_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_states_pext, type=pext, dataset=states
 void check_states_pext() {
-    assert(lookup_states_pext("CALIFORNIA") == 4);
-    assert(lookup_states_pext("NEW JERSEY") == 29);
-    assert(lookup_states_pext("NEW MEXICO") == 30);
-    assert(lookup_states_pext("WASHINGTON") == 46);
-    assert(lookup_states_pext("ALASKA") == 1);
-    assert(lookup_states_pext("HAWAII") == 10);
-    assert(lookup_states_pext("KANSAS") == 15);
-    assert(lookup_states_pext("NEVADA") == 27);
-    assert(lookup_states_pext("OREGON") == 36);
-    assert(lookup_states_pext("IOWA") == 14);
-    assert(lookup_states_pext("OHIO") == 34);
-    assert(lookup_states_pext("UTAH") == 43);
-    assert(lookup_states_pext("LOUISIANA") == 17);
-    assert(lookup_states_pext("MINNESOTA") == 22);
-    assert(lookup_states_pext("TENNESSEE") == 41);
-    assert(lookup_states_pext("WISCONSIN") == 48);
-    assert(lookup_states_pext("NORTH DAKOTA") == 33);
-    assert(lookup_states_pext("PENNSYLVANIA") == 37);
-    assert(lookup_states_pext("RHODE ISLAND") == 38);
-    assert(lookup_states_pext("SOUTH DAKOTA") == 40);
-    assert(lookup_states_pext("ALABAMA") == 0);
-    assert(lookup_states_pext("ARIZONA") == 2);
-    assert(lookup_states_pext("FLORIDA") == 8);
-    assert(lookup_states_pext("GEORGIA") == 9);
-    assert(lookup_states_pext("INDIANA") == 13);
-    assert(lookup_states_pext("MONTANA") == 25);
-    assert(lookup_states_pext("VERMONT") == 44);
-    assert(lookup_states_pext("WYOMING") == 49);
-    assert(lookup_states_pext("CONNECTICUT") == 6);
-    assert(lookup_states_pext("MISSISSIPPI") == 23);
-    assert(lookup_states_pext("MASSACHUSETTS") == 20);
-    assert(lookup_states_pext("NEW HAMPSHIRE") == 28);
-    assert(lookup_states_pext("WEST VIRGINIA") == 47);
     assert(lookup_states_pext("ARKANSAS") == 3);
     assert(lookup_states_pext("COLORADO") == 5);
     assert(lookup_states_pext("DELAWARE") == 7);
@@ -387,10 +354,43 @@ void check_states_pext() {
     assert(lookup_states_pext("NEW YORK") == 31);
     assert(lookup_states_pext("OKLAHOMA") == 35);
     assert(lookup_states_pext("VIRGINIA") == 45);
+    assert(lookup_states_pext("CALIFORNIA") == 4);
+    assert(lookup_states_pext("NEW JERSEY") == 29);
+    assert(lookup_states_pext("NEW MEXICO") == 30);
+    assert(lookup_states_pext("WASHINGTON") == 46);
+    assert(lookup_states_pext("CONNECTICUT") == 6);
+    assert(lookup_states_pext("MISSISSIPPI") == 23);
+    assert(lookup_states_pext("LOUISIANA") == 17);
+    assert(lookup_states_pext("MINNESOTA") == 22);
+    assert(lookup_states_pext("TENNESSEE") == 41);
+    assert(lookup_states_pext("WISCONSIN") == 48);
+    assert(lookup_states_pext("NORTH CAROLINA") == 32);
+    assert(lookup_states_pext("SOUTH CAROLINA") == 39);
+    assert(lookup_states_pext("MASSACHUSETTS") == 20);
+    assert(lookup_states_pext("NEW HAMPSHIRE") == 28);
+    assert(lookup_states_pext("WEST VIRGINIA") == 47);
+    assert(lookup_states_pext("ALABAMA") == 0);
+    assert(lookup_states_pext("ARIZONA") == 2);
+    assert(lookup_states_pext("FLORIDA") == 8);
+    assert(lookup_states_pext("GEORGIA") == 9);
+    assert(lookup_states_pext("INDIANA") == 13);
+    assert(lookup_states_pext("MONTANA") == 25);
+    assert(lookup_states_pext("VERMONT") == 44);
+    assert(lookup_states_pext("WYOMING") == 49);
+    assert(lookup_states_pext("ALASKA") == 1);
+    assert(lookup_states_pext("HAWAII") == 10);
+    assert(lookup_states_pext("KANSAS") == 15);
+    assert(lookup_states_pext("NEVADA") == 27);
+    assert(lookup_states_pext("OREGON") == 36);
     assert(lookup_states_pext("IDAHO") == 11);
     assert(lookup_states_pext("MAINE") == 18);
     assert(lookup_states_pext("TEXAS") == 42);
-    assert(lookup_states_pext("NORTH CAROLINA") == 32);
-    assert(lookup_states_pext("SOUTH CAROLINA") == 39);
+    assert(lookup_states_pext("IOWA") == 14);
+    assert(lookup_states_pext("OHIO") == 34);
+    assert(lookup_states_pext("UTAH") == 43);
+    assert(lookup_states_pext("NORTH DAKOTA") == 33);
+    assert(lookup_states_pext("PENNSYLVANIA") == 37);
+    assert(lookup_states_pext("RHODE ISLAND") == 38);
+    assert(lookup_states_pext("SOUTH DAKOTA") == 40);
 }
 

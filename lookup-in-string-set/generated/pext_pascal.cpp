@@ -2,7 +2,7 @@
 int lookup_pascal_pext(std::string_view s) {
     switch (s.size()) {
         case 2: {
-            static char lookup[16][2] = {
+            constexpr const char lookup[16][2] = {
                 {'i', 'f'},
                 {'o', 'f'},
                 {}, // no match
@@ -20,7 +20,7 @@ int lookup_pascal_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 35,
                 20,
                 -1,
@@ -47,7 +47,7 @@ int lookup_pascal_pext(std::string_view s) {
         }
         break;
         case 3: {
-            static char lookup[128][3] = {
+            constexpr const char lookup[128][3] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -177,7 +177,7 @@ int lookup_pascal_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[128] = {
+            constexpr const int value[128] = {
                 -1,
                 -1,
                 -1,
@@ -321,7 +321,7 @@ int lookup_pascal_pext(std::string_view s) {
         }
         break;
         case 4: {
-            static char lookup[32][4] = {
+            constexpr const char lookup[32][4] = {
                 {}, // no match
                 {}, // no match
                 {}, // no match
@@ -355,7 +355,7 @@ int lookup_pascal_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[32] = {
+            constexpr const int value[32] = {
                 -1,
                 -1,
                 -1,
@@ -398,7 +398,7 @@ int lookup_pascal_pext(std::string_view s) {
         }
         break;
         case 5: {
-            static char lookup[16][5] = {
+            constexpr const char lookup[16][5] = {
                 {}, // no match
                 {'w', 'h', 'i', 'l', 'e'},
                 {}, // no match
@@ -416,7 +416,7 @@ int lookup_pascal_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[16] = {
+            constexpr const int value[16] = {
                 -1,
                 24,
                 -1,
@@ -443,7 +443,7 @@ int lookup_pascal_pext(std::string_view s) {
         }
         break;
         case 6: {
-            static char lookup[8][6] = {
+            constexpr const char lookup[8][6] = {
                 {'p', 'a', 'c', 'k', 'e', 'd'},
                 {'r', 'e', 'c', 'o', 'r', 'd'},
                 {}, // no match
@@ -453,7 +453,7 @@ int lookup_pascal_pext(std::string_view s) {
                 {}, // no match
                 {}, // no match
             };
-            static int value[8] = {
+            constexpr const int value[8] = {
                 14,
                 10,
                 -1,
@@ -499,19 +499,6 @@ int lookup_pascal_pext(std::string_view s) {
 #include <cassert>
 //check: name=check_pascal_pext, type=pext, dataset=pascal
 void check_pascal_pext() {
-    assert(lookup_pascal_pext("record") == 10);
-    assert(lookup_pascal_pext("packed") == 14);
-    assert(lookup_pascal_pext("repeat") == 19);
-    assert(lookup_pascal_pext("downto") == 27);
-    assert(lookup_pascal_pext("program") == 11);
-    assert(lookup_pascal_pext("forward") == 22);
-    assert(lookup_pascal_pext("procedure") == 12);
-    assert(lookup_pascal_pext("or") == 13);
-    assert(lookup_pascal_pext("in") == 18);
-    assert(lookup_pascal_pext("of") == 20);
-    assert(lookup_pascal_pext("do") == 28);
-    assert(lookup_pascal_pext("to") == 30);
-    assert(lookup_pascal_pext("if") == 35);
     assert(lookup_pascal_pext("with") == 0);
     assert(lookup_pascal_pext("case") == 4);
     assert(lookup_pascal_pext("then") == 8);
@@ -535,5 +522,18 @@ void check_pascal_pext() {
     assert(lookup_pascal_pext("end") == 32);
     assert(lookup_pascal_pext("mod") == 33);
     assert(lookup_pascal_pext("function") == 3);
+    assert(lookup_pascal_pext("record") == 10);
+    assert(lookup_pascal_pext("packed") == 14);
+    assert(lookup_pascal_pext("repeat") == 19);
+    assert(lookup_pascal_pext("downto") == 27);
+    assert(lookup_pascal_pext("program") == 11);
+    assert(lookup_pascal_pext("forward") == 22);
+    assert(lookup_pascal_pext("procedure") == 12);
+    assert(lookup_pascal_pext("or") == 13);
+    assert(lookup_pascal_pext("in") == 18);
+    assert(lookup_pascal_pext("of") == 20);
+    assert(lookup_pascal_pext("do") == 28);
+    assert(lookup_pascal_pext("to") == 30);
+    assert(lookup_pascal_pext("if") == 35);
 }
 

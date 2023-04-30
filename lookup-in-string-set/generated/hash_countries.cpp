@@ -2,7 +2,7 @@
 //lookup: name=lookup_countries_hash1, dataset=countries, type=hash, hash=hash1
 int lookup_countries_hash1(std::string_view s) {
     const uint64_t idx = (hash1(s) % 193) * 5;
-    static std::string_view lookup[965] = {
+    constexpr const std::string_view lookup[965] = {
         "",
         "",
         "",
@@ -969,7 +969,7 @@ int lookup_countries_hash1(std::string_view s) {
         "",
         "",
     };
-    static int values[965] = {
+    constexpr const int values[965] = {
         -1,
         -1,
         -1,
@@ -2143,7 +2143,7 @@ void check_countries_hash1() {
 //lookup: name=lookup_countries_hash2, dataset=countries, type=hash, hash=hash2
 int lookup_countries_hash2(std::string_view s) {
     const uint64_t idx = (hash2(s) % 192) * 5;
-    static std::string_view lookup[960] = {
+    constexpr const std::string_view lookup[960] = {
         "GEORGIA", // 4608 (0x1200)
         "GRENADA", // 4608 (0x1200)
         "PAPUA NEW GUINEA", // 5184 (0x1440)
@@ -3105,7 +3105,7 @@ int lookup_countries_hash2(std::string_view s) {
         "",
         "",
     };
-    static int values[960] = {
+    constexpr const int values[960] = {
         113, // 4608 (0x1200)
         154, // 4608 (0x1200)
         174, // 5184 (0x1440)
@@ -4274,7 +4274,7 @@ void check_countries_hash2() {
 //lookup: name=lookup_countries_hash3, dataset=countries, type=hash, hash=hash3
 int lookup_countries_hash3(std::string_view s) {
     const uint64_t idx = (hash3(s) % 207) * 3;
-    static std::string_view lookup[621] = {
+    constexpr const std::string_view lookup[621] = {
         "NICARAGUA", // 22563 (0x5823)
         "",
         "",
@@ -4897,7 +4897,7 @@ int lookup_countries_hash3(std::string_view s) {
         "",
         "",
     };
-    static int values[621] = {
+    constexpr const int values[621] = {
         160, // 22563 (0x5823)
         -1,
         -1,
@@ -5727,7 +5727,7 @@ void check_countries_hash3() {
 //lookup: name=lookup_countries_hash_sum0, dataset=countries, type=hash, hash=hash_sum0
 int lookup_countries_hash_sum0(std::string_view s) {
     const uint64_t idx = (hash_sum0(s) % 192) * 4;
-    static std::string_view lookup[768] = {
+    constexpr const std::string_view lookup[768] = {
         "UZBEKISTAN", // 768 (0x300)
         "",
         "",
@@ -6497,7 +6497,7 @@ int lookup_countries_hash_sum0(std::string_view s) {
         "",
         "",
     };
-    static int values[768] = {
+    constexpr const int values[768] = {
         95, // 768 (0x300)
         -1,
         -1,
@@ -7474,7 +7474,7 @@ void check_countries_hash_sum0() {
 //lookup: name=lookup_countries_hash_sumN, dataset=countries, type=hash, hash=hash_sumN
 int lookup_countries_hash_sumN(std::string_view s) {
     const uint64_t idx = (hash_sumN(s) % 192) * 4;
-    static std::string_view lookup[768] = {
+    constexpr const std::string_view lookup[768] = {
         "SUDAN", // 384 (0x180)
         "SPAIN", // 384 (0x180)
         "",
@@ -8244,7 +8244,7 @@ int lookup_countries_hash_sumN(std::string_view s) {
         "",
         "",
     };
-    static int values[768] = {
+    constexpr const int values[768] = {
         45, // 384 (0x180)
         138, // 384 (0x180)
         -1,
@@ -9221,7 +9221,7 @@ void check_countries_hash_sumN() {
 //lookup: name=lookup_countries_hash_djb2, dataset=countries, type=hash, hash=hash_djb2
 int lookup_countries_hash_djb2(std::string_view s) {
     const uint64_t idx = (hash_djb2(s) % 557) * 2;
-    static std::string_view lookup[1114] = {
+    constexpr const std::string_view lookup[1114] = {
         "",
         "",
         "",
@@ -10337,7 +10337,7 @@ int lookup_countries_hash_djb2(std::string_view s) {
         "KOREA, SOUTH", // 14479673311740625434 (0xc8f222291201021a)
         "",
     };
-    static int values[1114] = {
+    constexpr const int values[1114] = {
         -1,
         -1,
         -1,
@@ -11660,7 +11660,7 @@ void check_countries_hash_djb2() {
 //lookup: name=lookup_countries_hash_sdb, dataset=countries, type=hash, hash=hash_sdb
 int lookup_countries_hash_sdb(std::string_view s) {
     const uint64_t idx = (hash_sdb(s) % 482) * 2;
-    static std::string_view lookup[964] = {
+    constexpr const std::string_view lookup[964] = {
         "",
         "",
         "",
@@ -12626,7 +12626,7 @@ int lookup_countries_hash_sdb(std::string_view s) {
         "",
         "",
     };
-    static int values[964] = {
+    constexpr const int values[964] = {
         -1,
         -1,
         -1,
