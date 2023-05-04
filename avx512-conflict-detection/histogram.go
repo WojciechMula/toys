@@ -1,7 +1,7 @@
 package conflictdetection
 
-const bits = 8
-const bins = 1 << bits
+const valueBits = 8
+const bins = 1 << valueBits
 
 // Procedure implements histogram schema showed in "Intel 64 and IA-32 Architectures
 // Optimization Reference Manual", section "Example 18-19. Scatter Implementation
@@ -15,7 +15,7 @@ func histogramIntel(input []uint32, output []uint32) {
 	histogramIntelAsm(&input[0], uint64(len(input)), &output[0])
 }
 
-// Procedure implements alternative histogram procedure
+// Procedure implements alternative histogram algorithm
 
 // go:noescape
 // go:nosplit

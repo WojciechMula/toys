@@ -41,7 +41,7 @@ cmp ecx, ebx
 jb histogram_loop
 */
 
-TEXT ·histogramIntelAsm(SB), NOSPLIT|NOFRAME, $0-32
+TEXT ·histogramIntelAsm(SB), NOSPLIT|NOFRAME, $0-24
     // set constants
     VPTERNLOGD  $0xff, Z5, Z5, Z5       // Z5 = uint32(0xffffffff) = int32(-1)
     VPABSD      Z5, Z4                  // Z4 = uint32(1)
@@ -61,7 +61,7 @@ histogram_loop:
     VMOVDQA64   Z4, Z2
     VPXORD      Z1, Z1, Z1
     VPGATHERDD  0(R15)(Z3*4), K1, Z1    // Z1 = indices
-    
+
     VPTESTMD    Z0, Z0, K1              // K1 = all conflict words are 0? no conficts then
     KORTESTW    K1, K1
     JZ          update
