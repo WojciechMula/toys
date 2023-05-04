@@ -3,7 +3,6 @@ package conflictdetection
 import (
 	"fmt"
 	"math/rand"
-	"reflect"
 	"sort"
 	"testing"
 )
