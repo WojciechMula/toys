@@ -53,15 +53,6 @@ func testCompareHistograms(t *testing.T, want, got []uint32) {
 		if want[i] != got[i] {
 			t.Errorf("%d: want=%d, got=%d", i, want[i], got[i])
 		}
-
-	}
-
-	return
-
-	if !reflect.DeepEqual(want[:256], got[:256]) {
-		t.Logf("want = %v", want[:256])
-		t.Logf("got  = %v", got[:256])
-		t.Errorf("wrong histogram")
 	}
 }
 
