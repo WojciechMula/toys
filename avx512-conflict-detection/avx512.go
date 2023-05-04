@@ -84,6 +84,13 @@ func vec_sub(v1, v2 vector) (res vector) {
 	return
 }
 
+func vec_sll(v vector, n uint) (res vector) {
+	for i := range v {
+		res[i] = v[i] << n
+	}
+	return
+}
+
 func vec_conflicts(v vector) (res vector) {
 	for i := 0; i < 16; i++ {
 		mask := uint32(0)
@@ -133,21 +140,6 @@ func vec_mask(v vector, k kreg) (res vector) {
 }
 
 func (vec vector) format(f string) string {
-	buf := &strings.Builder{}
-	signed := (f[len(f)-1] == 'd')
-	for i := 15; i >= 0; i-- {
-		buf.WriteByte(' ')
-		if signed {
-			fmt.Fprintf(buf, f, int32(vec[i]))
-		} else {
-			fmt.Fprintf(buf, f, vec[i])
-		}
-	}
-
-	return buf.String()
-}
-
-func (vec vector) formatPrint(f string) string {
 	buf := &strings.Builder{}
 	signed := (f[len(f)-1] == 'd')
 	for i := 15; i >= 0; i-- {
