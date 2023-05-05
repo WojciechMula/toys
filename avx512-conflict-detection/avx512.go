@@ -61,14 +61,20 @@ func vec_lzcnt(v vector) (res vector) {
 }
 
 func vec_add(v1, v2 vector) (res vector) {
-	return vec_add_masked(v1, v2, maskFull)
+	for i := range v1 {
+		res[i] = v1[i] + v2[i]
+	}
+	return
 }
 
 func vec_add_masked(v1, v2 vector, mask kreg) (res vector) {
 	bit := kreg(1)
+	AVX512Statistics.total += 16
+
 	for i := range v1 {
 		if mask&bit != 0 {
 			res[i] = v1[i] + v2[i]
+			AVX512Statistics.active += 1
 		} else {
 			res[i] = v1[i]
 		}
@@ -110,7 +116,6 @@ func vec_conflicts(v vector) (res vector) {
 
 func vec_permute_masked(values, indices vector, mask kreg) (res vector) {
 	bit := kreg(1)
-
 	for i := range indices {
 		if mask&bit != 0 {
 			idx := indices[i] & 0xf

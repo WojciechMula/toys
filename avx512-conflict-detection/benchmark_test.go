@@ -59,9 +59,9 @@ func BenchmarkHistogram(b *testing.B) {
 		tc := &testcases[i]
 		for _, size := range []int{1 * K, 5 * K, 10 * K, 100 * K, 500 * K, 1 * M, 2 * M, 5 * M, 10 * M} {
 			spec := fmt.Sprintf("%d-%d-%t", size, tc.maxint, tc.sorted)
-			input := testRandomData(size, tc.maxint)
+			input := RandomData(size, tc.maxint)
 			if tc.sorted {
-				testSort(input)
+				Sort(input)
 			}
 			for j := range functions {
 				tc := functions[j]

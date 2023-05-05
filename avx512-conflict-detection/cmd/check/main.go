@@ -16,17 +16,6 @@ func main() {
 		22, 22,
 	}
 
-    if false {
-    n := 0
-	for i := 0; i < 16; i++ {
-        input[i] = uint32(n)
-        n += 1
-        if n == 16 {
-            n = 0
-        }
-	}
-    }
-
 	conflictdetection.HistogramIntelReference(input, output)
 
 	count := 0

@@ -2,8 +2,6 @@ package conflictdetection
 
 import (
 	"fmt"
-	"math/rand"
-	"sort"
 	"testing"
 )
 
@@ -28,10 +26,10 @@ func testHistogramFunction(t *testing.T, histogramFunc func(input, output []uint
 			size = i
 		}
 
-		data := testRandomData(16*3, 256)
+		data := RandomData(16*3, 256)
 		name := fmt.Sprintf("%dKB", size)
 		if sorted {
-			testSort(data)
+			Sort(data)
 			name = fmt.Sprintf("%s-sorted", name)
 		}
 
@@ -53,29 +51,4 @@ func testCompareHistograms(t *testing.T, want, got []uint32) {
 			t.Errorf("%d: want=%d, got=%d", i, want[i], got[i])
 		}
 	}
-}
-
-func testRandomData(size int, maxval int) []uint32 {
-	if size%16 != 0 {
-		panic("size has to be multiply of 16")
-	}
-
-	s := rand.NewSource(42)
-	r := rand.New(s)
-
-	res := make([]uint32, size)
-	for i := 0; i < size; i++ {
-		res[i] = uint32(r.Intn(maxval)) & 0xff
-		res[i] = 1
-	}
-
-	return res
-}
-
-func testSort(arr []uint32) []uint32 {
-	sort.Slice(arr, func(i, j int) bool {
-		return arr[i] < arr[j]
-	})
-
-	return arr
 }
