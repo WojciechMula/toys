@@ -3,7 +3,8 @@
 FLAGS=-Wall -Wextra -std=c++11 -O3 -march=native
 
 DEPS=reference.o \
-     better.o
+     better.o \
+     subtract.o
 
 ALL=unittest \
     benchmark
@@ -24,3 +25,6 @@ reference.o: reference.cpp reference.h
 
 better.o: better.cpp better.h
 	$(CXX) $(FLAGS) better.cpp -c -o $@
+
+subtract.o: subtract.cpp subtract.h
+	$(CXX) $(FLAGS) subtract.cpp -c -o $@

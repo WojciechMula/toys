@@ -4,6 +4,7 @@
 
 #include "reference.h"
 #include "better.h"
+#include "subtract.h"
 
 char chars[] = "@/?\\abcdefgh\xff\x81";
 
@@ -21,10 +22,18 @@ int main() {
     for (int i=0; i < count; i++) {
         const auto want = find_authority_delimiter_special_reference(word);
         const auto got  = find_authority_delimiter_special_better(word);
+        const auto got2 = find_authority_delimiter_special_subtract(word);
 
         if (want != got) {
             printf("case %d, value %016lx\n", i, word);
             printf("got : %d\n", got);
+            printf("want: %d\n", want);
+            ok = false;
+        }
+
+        if (want != got2) {
+            printf("case %d, value %016lx\n", i, word);
+            printf("got : %d (subtract)\n", got2);
             printf("want: %d\n", want);
             ok = false;
         }
