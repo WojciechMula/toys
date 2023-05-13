@@ -1,4 +1,4 @@
-FLAGS=-I. -std=c99 -pedantic -Wall -O3 -m32
+FLAGS=-I. -std=c99 -pedantic -Wall -O3
 RM=rm
 
 COMMON=trie.h trie.c test.c
@@ -27,8 +27,8 @@ bin/linear-mtf-incr: $(COMMON) c/trie-linear-mtf-incr.c
 bin/binary: $(COMMON) c/trie-binary.c
 	$(CC) $(FLAGS) c/trie-binary.c trie.c test.c -o bin/binary
 
-bin/sse: $(COMMON) 32/trie-sse.c
-	$(CC) $(FLAGS) 32/trie-sse.c trie.c test.c -o bin/sse
+bin/sse: $(COMMON) trie-sse.c
+	$(CC) $(FLAGS) trie-sse.c trie.c test.c -o bin/sse
 
 test: $(PROG) dictionary.txt input-words.txt
 	sh testall.sh
@@ -37,7 +37,7 @@ dictionary.txt: /usr/share/dict/words
 	ln -s $^ $@
 
 input-words.txt: dictionary.txt
-	cat $^ | shuf | head -n 1000 > $@
+	cat $^ | shuf | head -n 10000 > $@
 
 clean:
 	$(RM) -f *.o c/*.o 32/*.o histogram

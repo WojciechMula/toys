@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
         FILE *f = fopen(argv[2], "rt");
         assert(f != NULL);
         load_words(f, &words);
-		printf("%d words loaded\n", words.count);
+		printf("%ld words loaded\n", words.count);
         fclose(f);
     }
 
