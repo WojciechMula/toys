@@ -1,0 +1,60 @@
+%{
+#include "http_verb.h"
+
+using ::boost::beast::http::verb;
+%}
+struct httpverb {
+    const char* name;
+    verb v;
+};
+
+%%
+ACL, verb::acl
+BIND, verb::bind
+CHECKOUT, verb::checkout
+CONNECT, verb::connect
+COPY, verb::copy
+DELETE, verb::delete_
+GET, verb::get
+HEAD, verb::head
+LINK, verb::link
+LOCK, verb::lock
+M-SEARCH, verb::msearch
+MERGE, verb::merge
+MKACTIVITY, verb::mkactivity
+MKCALENDAR, verb::mkcalendar
+MKCOL, verb::mkcol
+MOVE, verb::move
+NOTIFY, verb::notify
+OPTIONS, verb::options
+PATCH, verb::patch
+POST, verb::post
+PROPFIND, verb::propfind
+PROPPATCH, verb::proppatch
+PURGE, verb::purge
+PUT, verb::put
+REBIND, verb::rebind
+REPORT, verb::report
+SEARCH, verb::search
+SUBSCRIBE, verb::subscribe
+TRACE, verb::trace
+UNBIND, verb::unbind
+UNLINK, verb::unlink
+UNLOCK, verb::unlock
+UNSUBSCRIBE, verb::unsubscribe
+%%
+class perfect_hash
+{
+  using verb = boost::beast::http::verb;
+private:
+  static inline unsigned int hash(std::string_view str);
+public:
+  static verb string_to_verb(std::string_view str) {
+    const httpverb* ret = perfect_hash_aux::string_to_verb(str.data(), str.size());
+    if (ret != nullptr) {
+        return ret->v;
+    }
+
+    return boost::beast::http::verb::unknown;
+  }
+};
