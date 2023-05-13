@@ -80,6 +80,9 @@ func checkWords(words []Keyword, n int, lookupLo, lookupHi [16]byte) bool {
 	m := make(map[string]struct{})
 
 	transform := func(word []byte) {
+		for i := range word {
+			w[i] = 0
+		}
 		for i, b := range word {
 			lo := b & 0x0f
 			hi := b >> 4
