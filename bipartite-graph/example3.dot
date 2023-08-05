@@ -1,0 +1,6 @@
+// not a bipartite graph -- a cycle
+graph {
+    A -- B
+    B -- C
+    C -- A
+}

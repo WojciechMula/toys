@@ -1,0 +1,30 @@
+// https://en.wikipedia.org/wiki/Heawood_graph
+graph {
+    1 -- A
+    1 -- B
+    1 -- C
+
+    2 -- A
+    2 -- B
+    2 -- C
+
+    3 -- A
+    3 -- B
+    3 -- C
+
+    4 -- D
+    5 -- E
+    6 -- F
+
+    1 -- D
+    2 -- E
+    3 -- F
+
+    7 -- D
+    7 -- E
+    7 -- F
+
+    G -- 4
+    G -- 5
+    G -- 6
+}

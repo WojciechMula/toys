@@ -1,0 +1,6 @@
+// not a bipartite graph -- multigraph
+graph {
+    1 -- A
+    2 -- B
+    3 -- C
+}
