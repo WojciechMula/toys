@@ -66,14 +66,6 @@ void benchmark_ada(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/ada_1M_000perc.txt");
     printf("benchmark for testdata/ada_1M_000perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -137,18 +129,18 @@ void benchmark_ada(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada_1M_010perc.txt");
     printf("benchmark for testdata/ada_1M_010perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -212,18 +204,18 @@ void benchmark_ada(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada_1M_025perc.txt");
     printf("benchmark for testdata/ada_1M_025perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -287,18 +279,18 @@ void benchmark_ada(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada_1M_050perc.txt");
     printf("benchmark for testdata/ada_1M_050perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -362,18 +354,18 @@ void benchmark_ada(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada_1M_075perc.txt");
     printf("benchmark for testdata/ada_1M_075perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -437,6 +429,14 @@ void benchmark_ada(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pext", repeat, testdata.size());
     }
 }
 
@@ -447,6 +447,14 @@ void benchmark_ada_pred(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/ada-pred_1M_000perc.txt");
     printf("benchmark for testdata/ada-pred_1M_000perc.txt\n");
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pred_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -510,18 +518,18 @@ void benchmark_ada_pred(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pred_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-pred_1M_010perc.txt");
     printf("benchmark for testdata/ada-pred_1M_010perc.txt\n");
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pred_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -585,18 +593,18 @@ void benchmark_ada_pred(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pred_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-pred_1M_025perc.txt");
     printf("benchmark for testdata/ada-pred_1M_025perc.txt\n");
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pred_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -660,18 +668,18 @@ void benchmark_ada_pred(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pred_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-pred_1M_050perc.txt");
     printf("benchmark for testdata/ada-pred_1M_050perc.txt\n");
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pred_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -735,18 +743,18 @@ void benchmark_ada_pred(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pred_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-pred_1M_075perc.txt");
     printf("benchmark for testdata/ada-pred_1M_075perc.txt\n");
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_pred_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -810,14 +818,6 @@ void benchmark_ada_pred(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_pred_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_pred_split", repeat, testdata.size());
     }
 }
 
@@ -836,6 +836,14 @@ void benchmark_ada_res(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_split", repeat, testdata.size());
     }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_res_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -891,14 +899,6 @@ void benchmark_ada_res(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_res_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-res_1M_010perc.txt");
@@ -911,6 +911,14 @@ void benchmark_ada_res(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_split", repeat, testdata.size());
     }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_res_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -966,14 +974,6 @@ void benchmark_ada_res(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_res_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-res_1M_025perc.txt");
@@ -986,6 +986,14 @@ void benchmark_ada_res(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_split", repeat, testdata.size());
     }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_res_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1041,14 +1049,6 @@ void benchmark_ada_res(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_res_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-res_1M_050perc.txt");
@@ -1061,6 +1061,14 @@ void benchmark_ada_res(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_split", repeat, testdata.size());
     }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_res_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1116,14 +1124,6 @@ void benchmark_ada_res(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_res_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/ada-res_1M_075perc.txt");
@@ -1136,6 +1136,14 @@ void benchmark_ada_res(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_split", repeat, testdata.size());
     }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_ada_res_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1192,14 +1200,6 @@ void benchmark_ada_res(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_ada_res_hash_sdb", repeat, testdata.size());
     }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_ada_res_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_ada_res_pext", repeat, testdata.size());
-    }
 }
 
 void benchmark_adadefs(const Filter& filter) {
@@ -1209,14 +1209,6 @@ void benchmark_adadefs(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/adadefs_1M_000perc.txt");
     printf("benchmark for testdata/adadefs_1M_000perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_adadefs_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1224,6 +1216,14 @@ void benchmark_adadefs(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_adadefs_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_adadefs_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -1284,14 +1284,6 @@ void benchmark_adadefs(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/adadefs_1M_010perc.txt");
     printf("benchmark for testdata/adadefs_1M_010perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_adadefs_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1299,6 +1291,14 @@ void benchmark_adadefs(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_adadefs_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_adadefs_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -1359,14 +1359,6 @@ void benchmark_adadefs(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/adadefs_1M_025perc.txt");
     printf("benchmark for testdata/adadefs_1M_025perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_adadefs_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1374,6 +1366,14 @@ void benchmark_adadefs(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_adadefs_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_adadefs_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -1434,14 +1434,6 @@ void benchmark_adadefs(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/adadefs_1M_050perc.txt");
     printf("benchmark for testdata/adadefs_1M_050perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_adadefs_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1449,6 +1441,14 @@ void benchmark_adadefs(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_adadefs_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_adadefs_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -1509,14 +1509,6 @@ void benchmark_adadefs(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/adadefs_1M_075perc.txt");
     printf("benchmark for testdata/adadefs_1M_075perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_adadefs_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1524,6 +1516,14 @@ void benchmark_adadefs(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_adadefs_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_adadefs_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_adadefs_split", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -1590,22 +1590,6 @@ void benchmark_c(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/c_1M_000perc.txt");
     printf("benchmark for testdata/c_1M_000perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1661,26 +1645,26 @@ void benchmark_c(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_c_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/c_1M_010perc.txt");
     printf("benchmark for testdata/c_1M_010perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1736,26 +1720,26 @@ void benchmark_c(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_c_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/c_1M_025perc.txt");
     printf("benchmark for testdata/c_1M_025perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1811,26 +1795,26 @@ void benchmark_c(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_c_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/c_1M_050perc.txt");
     printf("benchmark for testdata/c_1M_050perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1886,26 +1870,26 @@ void benchmark_c(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_c_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/c_1M_075perc.txt");
     printf("benchmark for testdata/c_1M_075perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_c_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -1961,6 +1945,22 @@ void benchmark_c(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_c_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_c_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_c_pext", repeat, testdata.size());
     }
 }
 
@@ -1979,14 +1979,6 @@ void benchmark_countries(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_split", repeat, testdata.size());
     }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_countries_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2042,6 +2034,14 @@ void benchmark_countries(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_countries_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/countries_1M_010perc.txt");
@@ -2054,14 +2054,6 @@ void benchmark_countries(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_split", repeat, testdata.size());
     }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_countries_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2117,6 +2109,14 @@ void benchmark_countries(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_countries_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/countries_1M_025perc.txt");
@@ -2129,14 +2129,6 @@ void benchmark_countries(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_split", repeat, testdata.size());
     }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_countries_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2192,6 +2184,14 @@ void benchmark_countries(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_countries_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/countries_1M_050perc.txt");
@@ -2204,14 +2204,6 @@ void benchmark_countries(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_split", repeat, testdata.size());
     }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_countries_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2267,6 +2259,14 @@ void benchmark_countries(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_countries_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/countries_1M_075perc.txt");
@@ -2279,14 +2279,6 @@ void benchmark_countries(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_split", repeat, testdata.size());
     }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_countries_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2343,6 +2335,14 @@ void benchmark_countries(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_countries_hash_sdb", repeat, testdata.size());
     }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_countries_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_countries_pext", repeat, testdata.size());
+    }
 }
 
 void benchmark_cplusplus(const Filter& filter) {
@@ -2352,22 +2352,6 @@ void benchmark_cplusplus(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/cplusplus_1M_000perc.txt");
     printf("benchmark for testdata/cplusplus_1M_000perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2423,26 +2407,26 @@ void benchmark_cplusplus(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cplusplus_1M_010perc.txt");
     printf("benchmark for testdata/cplusplus_1M_010perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2498,26 +2482,26 @@ void benchmark_cplusplus(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cplusplus_1M_025perc.txt");
     printf("benchmark for testdata/cplusplus_1M_025perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2573,26 +2557,26 @@ void benchmark_cplusplus(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cplusplus_1M_050perc.txt");
     printf("benchmark for testdata/cplusplus_1M_050perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2648,26 +2632,26 @@ void benchmark_cplusplus(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cplusplus_1M_075perc.txt");
     printf("benchmark for testdata/cplusplus_1M_075perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cplusplus_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2723,6 +2707,22 @@ void benchmark_cplusplus(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cplusplus_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cplusplus_pext", repeat, testdata.size());
     }
 }
 
@@ -2741,6 +2741,14 @@ void benchmark_cpp(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_pext", repeat, testdata.size());
     }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cpp_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2796,14 +2804,6 @@ void benchmark_cpp(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cpp_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cpp_1M_010perc.txt");
@@ -2816,6 +2816,14 @@ void benchmark_cpp(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_pext", repeat, testdata.size());
     }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cpp_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2871,14 +2879,6 @@ void benchmark_cpp(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cpp_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cpp_1M_025perc.txt");
@@ -2891,6 +2891,14 @@ void benchmark_cpp(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_pext", repeat, testdata.size());
     }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cpp_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -2946,14 +2954,6 @@ void benchmark_cpp(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cpp_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cpp_1M_050perc.txt");
@@ -2966,6 +2966,14 @@ void benchmark_cpp(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_pext", repeat, testdata.size());
     }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cpp_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3021,14 +3029,6 @@ void benchmark_cpp(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_hash_sdb", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cpp_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/cpp_1M_075perc.txt");
@@ -3041,6 +3041,14 @@ void benchmark_cpp(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_pext", repeat, testdata.size());
     }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_cpp_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
+    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3097,14 +3105,6 @@ void benchmark_cpp(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_cpp_hash_sdb", repeat, testdata.size());
     }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_cpp_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_cpp_split", repeat, testdata.size());
-    }
 }
 
 void benchmark_go(const Filter& filter) {
@@ -3114,22 +3114,6 @@ void benchmark_go(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/go_1M_000perc.txt");
     printf("benchmark for testdata/go_1M_000perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3185,26 +3169,26 @@ void benchmark_go(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_go_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/go_1M_010perc.txt");
     printf("benchmark for testdata/go_1M_010perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3260,26 +3244,26 @@ void benchmark_go(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_go_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/go_1M_025perc.txt");
     printf("benchmark for testdata/go_1M_025perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3335,26 +3319,26 @@ void benchmark_go(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_go_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/go_1M_050perc.txt");
     printf("benchmark for testdata/go_1M_050perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3410,26 +3394,26 @@ void benchmark_go(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_go_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/go_1M_075perc.txt");
     printf("benchmark for testdata/go_1M_075perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_go_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3485,6 +3469,22 @@ void benchmark_go(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_go_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_go_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_go_split", repeat, testdata.size());
     }
 }
 
@@ -3495,14 +3495,6 @@ void benchmark_gpc(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/gpc_1M_000perc.txt");
     printf("benchmark for testdata/gpc_1M_000perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_gpc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3566,18 +3558,18 @@ void benchmark_gpc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_gpc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_gpc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/gpc_1M_010perc.txt");
     printf("benchmark for testdata/gpc_1M_010perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_gpc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3641,18 +3633,18 @@ void benchmark_gpc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_gpc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_gpc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/gpc_1M_025perc.txt");
     printf("benchmark for testdata/gpc_1M_025perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_gpc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3716,18 +3708,18 @@ void benchmark_gpc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_gpc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_gpc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/gpc_1M_050perc.txt");
     printf("benchmark for testdata/gpc_1M_050perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_gpc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3791,18 +3783,18 @@ void benchmark_gpc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_gpc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_gpc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/gpc_1M_075perc.txt");
     printf("benchmark for testdata/gpc_1M_075perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_gpc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3866,6 +3858,14 @@ void benchmark_gpc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_gpc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_gpc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_gpc_split", repeat, testdata.size());
     }
 }
 
@@ -3876,14 +3876,6 @@ void benchmark_irc(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/irc_1M_000perc.txt");
     printf("benchmark for testdata/irc_1M_000perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_irc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -3947,18 +3939,18 @@ void benchmark_irc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_irc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_irc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/irc_1M_010perc.txt");
     printf("benchmark for testdata/irc_1M_010perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_irc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4022,18 +4014,18 @@ void benchmark_irc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_irc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_irc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/irc_1M_025perc.txt");
     printf("benchmark for testdata/irc_1M_025perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_irc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4097,18 +4089,18 @@ void benchmark_irc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_irc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_irc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/irc_1M_050perc.txt");
     printf("benchmark for testdata/irc_1M_050perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_irc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4172,18 +4164,18 @@ void benchmark_irc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_irc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_irc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/irc_1M_075perc.txt");
     printf("benchmark for testdata/irc_1M_075perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_irc_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4247,6 +4239,14 @@ void benchmark_irc(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_irc_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_irc_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_irc_split", repeat, testdata.size());
     }
 }
 
@@ -4257,22 +4257,6 @@ void benchmark_java(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/java_1M_000perc.txt");
     printf("benchmark for testdata/java_1M_000perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4328,26 +4312,26 @@ void benchmark_java(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_java_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/java_1M_010perc.txt");
     printf("benchmark for testdata/java_1M_010perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4403,26 +4387,26 @@ void benchmark_java(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_java_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/java_1M_025perc.txt");
     printf("benchmark for testdata/java_1M_025perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4478,26 +4462,26 @@ void benchmark_java(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_java_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/java_1M_050perc.txt");
     printf("benchmark for testdata/java_1M_050perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4553,26 +4537,26 @@ void benchmark_java(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_java_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/java_1M_075perc.txt");
     printf("benchmark for testdata/java_1M_075perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_java_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4628,6 +4612,22 @@ void benchmark_java(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_java_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_java_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_java_split", repeat, testdata.size());
     }
 }
 
@@ -4638,22 +4638,6 @@ void benchmark_jscript(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/jscript_1M_000perc.txt");
     printf("benchmark for testdata/jscript_1M_000perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4709,26 +4693,26 @@ void benchmark_jscript(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_jscript_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/jscript_1M_010perc.txt");
     printf("benchmark for testdata/jscript_1M_010perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4784,26 +4768,26 @@ void benchmark_jscript(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_jscript_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/jscript_1M_025perc.txt");
     printf("benchmark for testdata/jscript_1M_025perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4859,26 +4843,26 @@ void benchmark_jscript(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_jscript_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/jscript_1M_050perc.txt");
     printf("benchmark for testdata/jscript_1M_050perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -4934,26 +4918,26 @@ void benchmark_jscript(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_jscript_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/jscript_1M_075perc.txt");
     printf("benchmark for testdata/jscript_1M_075perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
-    }
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_jscript_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5009,6 +4993,22 @@ void benchmark_jscript(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_jscript_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_jscript_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_jscript_split", repeat, testdata.size());
     }
 }
 
@@ -5075,14 +5075,6 @@ void benchmark_modula(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_hash_sdb", repeat, testdata.size());
     }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5090,6 +5082,14 @@ void benchmark_modula(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula_1M_010perc.txt");
@@ -5150,14 +5150,6 @@ void benchmark_modula(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_hash_sdb", repeat, testdata.size());
     }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5165,6 +5157,14 @@ void benchmark_modula(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula_1M_025perc.txt");
@@ -5225,14 +5225,6 @@ void benchmark_modula(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_hash_sdb", repeat, testdata.size());
     }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5240,6 +5232,14 @@ void benchmark_modula(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula_1M_050perc.txt");
@@ -5300,14 +5300,6 @@ void benchmark_modula(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_hash_sdb", repeat, testdata.size());
     }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5315,6 +5307,14 @@ void benchmark_modula(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula_1M_075perc.txt");
@@ -5375,14 +5375,6 @@ void benchmark_modula(const Filter& filter) {
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_hash_sdb", repeat, testdata.size());
     }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
-    }
     if (filter.type("pext")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5390,6 +5382,14 @@ void benchmark_modula(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula_split", repeat, testdata.size());
     }
 }
 
@@ -5781,22 +5781,6 @@ void benchmark_modula3(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/modula3_1M_000perc.txt");
     printf("benchmark for testdata/modula3_1M_000perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5852,26 +5836,26 @@ void benchmark_modula3(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula3_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula3_1M_010perc.txt");
     printf("benchmark for testdata/modula3_1M_010perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -5927,26 +5911,26 @@ void benchmark_modula3(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula3_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula3_1M_025perc.txt");
     printf("benchmark for testdata/modula3_1M_025perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6002,26 +5986,26 @@ void benchmark_modula3(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula3_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula3_1M_050perc.txt");
     printf("benchmark for testdata/modula3_1M_050perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6077,26 +6061,26 @@ void benchmark_modula3(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula3_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/modula3_1M_075perc.txt");
     printf("benchmark for testdata/modula3_1M_075perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_modula3_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6152,6 +6136,22 @@ void benchmark_modula3(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_modula3_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_modula3_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_modula3_pext", repeat, testdata.size());
     }
 }
 
@@ -6162,14 +6162,6 @@ void benchmark_pascal(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/pascal_1M_000perc.txt");
     printf("benchmark for testdata/pascal_1M_000perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_pascal_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
-    }
     if (filter.type("split")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6177,6 +6169,14 @@ void benchmark_pascal(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_pascal_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_pascal_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -6237,14 +6237,6 @@ void benchmark_pascal(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/pascal_1M_010perc.txt");
     printf("benchmark for testdata/pascal_1M_010perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_pascal_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
-    }
     if (filter.type("split")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6252,6 +6244,14 @@ void benchmark_pascal(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_pascal_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_pascal_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -6312,14 +6312,6 @@ void benchmark_pascal(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/pascal_1M_025perc.txt");
     printf("benchmark for testdata/pascal_1M_025perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_pascal_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
-    }
     if (filter.type("split")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6327,6 +6319,14 @@ void benchmark_pascal(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_pascal_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_pascal_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -6387,14 +6387,6 @@ void benchmark_pascal(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/pascal_1M_050perc.txt");
     printf("benchmark for testdata/pascal_1M_050perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_pascal_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
-    }
     if (filter.type("split")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6402,6 +6394,14 @@ void benchmark_pascal(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_pascal_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_pascal_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -6462,14 +6462,6 @@ void benchmark_pascal(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/pascal_1M_075perc.txt");
     printf("benchmark for testdata/pascal_1M_075perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_pascal_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
-    }
     if (filter.type("split")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6477,6 +6469,14 @@ void benchmark_pascal(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_pascal_split", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_pascal_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_pascal_pext", repeat, testdata.size());
     }
     if (filter.type("hash")) {
         auto fn = [](){
@@ -6543,14 +6543,6 @@ void benchmark_sneller(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/sneller_1M_000perc.txt");
     printf("benchmark for testdata/sneller_1M_000perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_sneller_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6606,6 +6598,14 @@ void benchmark_sneller(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_sneller_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_sneller_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
     }
     if (filter.type("split")) {
         auto fn = [](){
@@ -6618,14 +6618,6 @@ void benchmark_sneller(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/sneller_1M_010perc.txt");
     printf("benchmark for testdata/sneller_1M_010perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_sneller_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6681,6 +6673,14 @@ void benchmark_sneller(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_sneller_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_sneller_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
     }
     if (filter.type("split")) {
         auto fn = [](){
@@ -6693,14 +6693,6 @@ void benchmark_sneller(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/sneller_1M_025perc.txt");
     printf("benchmark for testdata/sneller_1M_025perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_sneller_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6756,6 +6748,14 @@ void benchmark_sneller(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_sneller_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_sneller_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
     }
     if (filter.type("split")) {
         auto fn = [](){
@@ -6768,14 +6768,6 @@ void benchmark_sneller(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/sneller_1M_050perc.txt");
     printf("benchmark for testdata/sneller_1M_050perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_sneller_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6831,6 +6823,14 @@ void benchmark_sneller(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_sneller_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_sneller_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
     }
     if (filter.type("split")) {
         auto fn = [](){
@@ -6843,14 +6843,6 @@ void benchmark_sneller(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/sneller_1M_075perc.txt");
     printf("benchmark for testdata/sneller_1M_075perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_sneller_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6906,6 +6898,14 @@ void benchmark_sneller(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_sneller_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_sneller_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_sneller_pext", repeat, testdata.size());
     }
     if (filter.type("split")) {
         auto fn = [](){
@@ -6924,14 +6924,6 @@ void benchmark_snellerbuiltin(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/snellerbuiltin_1M_000perc.txt");
     printf("benchmark for testdata/snellerbuiltin_1M_000perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_snellerbuiltin_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -6995,18 +6987,18 @@ void benchmark_snellerbuiltin(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_snellerbuiltin_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/snellerbuiltin_1M_010perc.txt");
     printf("benchmark for testdata/snellerbuiltin_1M_010perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_snellerbuiltin_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7070,18 +7062,18 @@ void benchmark_snellerbuiltin(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_snellerbuiltin_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/snellerbuiltin_1M_025perc.txt");
     printf("benchmark for testdata/snellerbuiltin_1M_025perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_snellerbuiltin_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7145,18 +7137,18 @@ void benchmark_snellerbuiltin(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_snellerbuiltin_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/snellerbuiltin_1M_050perc.txt");
     printf("benchmark for testdata/snellerbuiltin_1M_050perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_snellerbuiltin_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7220,18 +7212,18 @@ void benchmark_snellerbuiltin(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_snellerbuiltin_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/snellerbuiltin_1M_075perc.txt");
     printf("benchmark for testdata/snellerbuiltin_1M_075perc.txt\n");
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_snellerbuiltin_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7295,6 +7287,14 @@ void benchmark_snellerbuiltin(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_snellerbuiltin_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_snellerbuiltin_split", repeat, testdata.size());
     }
 }
 
@@ -7305,22 +7305,6 @@ void benchmark_states(const Filter& filter) {
     testdata.clear();
     testdata = read_lines("testdata/states_1M_000perc.txt");
     printf("benchmark for testdata/states_1M_000perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7376,26 +7360,26 @@ void benchmark_states(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_states_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/states_1M_010perc.txt");
     printf("benchmark for testdata/states_1M_010perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7451,26 +7435,26 @@ void benchmark_states(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_states_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/states_1M_025perc.txt");
     printf("benchmark for testdata/states_1M_025perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7526,26 +7510,26 @@ void benchmark_states(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_states_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/states_1M_050perc.txt");
     printf("benchmark for testdata/states_1M_050perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7601,26 +7585,26 @@ void benchmark_states(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_states_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
     }
     testdata.clear();
     testdata = read_lines("testdata/states_1M_075perc.txt");
     printf("benchmark for testdata/states_1M_075perc.txt\n");
-    if (filter.type("pext")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_pext(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
-    }
-    if (filter.type("split")) {
-        auto fn = [](){
-            for (const auto& s: testdata) {
-                total += lookup_states_split(s);
-            }
-        };
-        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
-    }
     if (filter.type("hash")) {
         auto fn = [](){
             for (const auto& s: testdata) {
@@ -7676,6 +7660,22 @@ void benchmark_states(const Filter& filter) {
             }
         };
         BEST_TIME(/*pre*/, fn(), "lookup_states_hash_sdb", repeat, testdata.size());
+    }
+    if (filter.type("pext")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_pext(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_pext", repeat, testdata.size());
+    }
+    if (filter.type("split")) {
+        auto fn = [](){
+            for (const auto& s: testdata) {
+                total += lookup_states_split(s);
+            }
+        };
+        BEST_TIME(/*pre*/, fn(), "lookup_states_split", repeat, testdata.size());
     }
 }
 
