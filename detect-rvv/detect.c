@@ -8,10 +8,11 @@ void print_extensions(uint64_t);
 
 int main() {
     struct riscv_hwprobe probes[] = {
-        {RISCV_HWPROBE_KEY_IMA_EXT_0, 0}
+        {RISCV_HWPROBE_KEY_IMA_EXT_0, 0},
+        {12345, 0},
     };
 
-    const size_t probes_count = 1; 
+    const size_t probes_count = 2; 
 #if 0
     const long ret = sys_riscv_hwprobe(&probes, probes_count, 0, NULL, 0);
 #else
