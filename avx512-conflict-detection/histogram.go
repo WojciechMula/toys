@@ -39,6 +39,27 @@ func histogramV2(input []uint32, output []uint32) {
 	}
 }
 
+func histogramV3Asm(ptr *uint32, ptr2 *uint32, count uint64, output *uint32)
+
+func histogramV3(input []uint32, output []uint32) {
+	id := []uint32{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
+	histogramV3Asm(&input[0], &id[0], uint64(len(input)), &output[0])
+	if cap(output) != bins*16 {
+		panic("wrong output size")
+	}
+
+	// the final step
+	for i := 0; i < bins; i++ {
+		pos := i * 16
+		sum := uint32(0)
+		for j := 0; j < 16; j++ {
+			sum += output[pos+j]
+		}
+
+		output[i] = sum
+	}
+}
+
 func histogramReference(input []uint32, output []uint32) {
 	for _, idx := range input {
 		output[idx] += 1

@@ -19,6 +19,10 @@ var functions = []struct {
 		name: "V2",
 		fn:   histogramV2,
 	},
+	{
+		name: "V3",
+		fn:   histogramV3,
+	},
 }
 
 func TestHistogram(t *testing.T) {
