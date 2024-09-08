@@ -20,6 +20,10 @@ func TestHistogramIntelReference(t *testing.T) {
 	testHistogramFunction(t, HistogramIntelReference)
 }
 
+func TestHistogramIntelPopcReference(t *testing.T) {
+	testHistogramFunction(t, HistogramIntelPopcReference)
+}
+
 func testHistogramFunction(t *testing.T, histogramFunc func(input, output []uint32)) {
 	t.Helper()
 	for i := 1; i < 21; i++ {

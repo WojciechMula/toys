@@ -16,6 +16,10 @@ var functions = []struct {
 		fn:   histogramIntel,
 	},
 	{
+		name: "IntelPopc",
+		fn:   histogramIntelPopc,
+	},
+	{
 		name: "V2",
 		fn:   histogramV2,
 	},

@@ -15,6 +15,17 @@ func histogramIntel(input []uint32, output []uint32) {
 	histogramIntelAsm(&input[0], uint64(len(input)), &output[0])
 }
 
+// Procedure implements histogram schema using vpconflictd and vpopcntd
+// as inspired by the generation from the icx compiler
+
+// go:noescape
+// go:nosplit
+func histogramIntelPopcAsm(ptr *uint32, count uint64, output *uint32)
+
+func histogramIntelPopc(input []uint32, output []uint32) {
+	histogramIntelPopcAsm(&input[0], uint64(len(input)), &output[0])
+}
+
 // Procedure implements alternative histogram algorithm
 
 // go:noescape
@@ -39,6 +50,10 @@ func histogramV2(input []uint32, output []uint32) {
 	}
 }
 
+// Procedure implements alternative histogram algorithm without vpconflictd
+
+// go:noescape
+// go:nosplit
 func histogramV3Asm(ptr *uint32, ptr2 *uint32, count uint64, output *uint32)
 
 func histogramV3(input []uint32, output []uint32) {

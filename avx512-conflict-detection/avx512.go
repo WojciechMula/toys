@@ -60,6 +60,15 @@ func vec_lzcnt(v vector) (res vector) {
 	return
 }
 
+
+func vec_popcnt(v vector) (res vector) {
+	for i, x := range v {
+		res[i] = uint32(bits.OnesCount32(x))
+	}
+	return
+}
+
+
 func vec_add(v1, v2 vector) (res vector) {
 	for i := range v1 {
 		res[i] = v1[i] + v2[i]
