@@ -8,6 +8,10 @@ import (
 const KB = 1024
 
 
+func TestHistogramScalarReference(t *testing.T) {
+	testHistogramFunction(t, HistogramScalarReference)
+}
+
 func TestHistogramV3Reference(t *testing.T) {
 	testHistogramFunction(t, HistogramV3Reference)
 }
