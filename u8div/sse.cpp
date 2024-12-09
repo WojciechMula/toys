@@ -47,11 +47,11 @@ void sse_div_u8_no_rounding(const uint8_t* a, const uint8_t* b, uint8_t* out, si
         const __m128i b_u32 = _mm_cvtepu8_epi32(b_u8);
         const __m128  b_f32 = _mm_cvtepi32_ps(b_u32);
 
-        const __m128  c_f32   = _mm_div_ps(a_f32, b_f32);
+        const __m128  c_f32 = _mm_div_ps(a_f32, b_f32);
         const __m128i c_i32 = _mm_cvtps_epi32(c_f32);
 
-        const __m128i c_u8  = _mm_shuffle_epi8(_mm_srli_epi32(c_i32, 8), _mm_setr_epi8(
-            0, 4, 8, 12,
+        const __m128i c_u8  = _mm_shuffle_epi8(c_i32, _mm_setr_epi8(
+            0 + 1, 4 + 1, 8 + 1, 12 + 1,
             -1, -1, -1, -1,
             -1, -1, -1, -1,
             -1, -1, -1, -1
