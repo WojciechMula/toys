@@ -33,8 +33,9 @@ public:
         check("SSE", sse_div_u8);
         check("SSE (no rounding)", sse_div_u8_no_rounding);
         check("AVX2", avx2_div_u8);
-        check("manual (ver1)", manual_div_u8);
-        check("manual (ver2)", manual_div_u8_ver2);
+        check("manual (SSE: ver1)", manual_div_u8);
+        check("manual (SSE: ver2)", manual_div_u8_ver2);
+        check("manual (AVX: ver2)", manual_div_u8_ver2_avx);
 
         if (all_ok) {
             puts("All OK");

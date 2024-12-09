@@ -15,6 +15,7 @@ def div_ver1(a, b):
 
     return res
 
+
 def div_ver2(a, b):
     b <<= 7
     bit = 0x0080
