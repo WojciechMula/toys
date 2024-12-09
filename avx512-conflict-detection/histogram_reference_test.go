@@ -7,12 +7,25 @@ import (
 
 const KB = 1024
 
+
+func TestHistogramScalarReference(t *testing.T) {
+	testHistogramFunction(t, HistogramScalarReference)
+}
+
+func TestHistogramV3Reference(t *testing.T) {
+	testHistogramFunction(t, HistogramV3Reference)
+}
+
 func TestHistogramV2Reference(t *testing.T) {
 	testHistogramFunction(t, HistogramV2Reference)
 }
 
 func TestHistogramIntelReference(t *testing.T) {
 	testHistogramFunction(t, HistogramIntelReference)
+}
+
+func TestHistogramIntelPopcReference(t *testing.T) {
+	testHistogramFunction(t, HistogramIntelPopcReference)
 }
 
 func testHistogramFunction(t *testing.T, histogramFunc func(input, output []uint32)) {
