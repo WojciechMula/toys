@@ -1,8 +1,3 @@
-#include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <immintrin.h>
-
 void avx2_div_u8(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
     const __m128i t0 = _mm_setr_epi8(
         0, 4, 8, 12,

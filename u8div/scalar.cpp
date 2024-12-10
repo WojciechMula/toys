@@ -1,6 +1,3 @@
-#include <cstdint>
-#include <cstdlib>
-
 void scalar_div_u8(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
     for (size_t i=0; i < n; i++) {
         out[i] = a[i] / b[i];

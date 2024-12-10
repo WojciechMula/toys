@@ -1,8 +1,3 @@
-#include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <immintrin.h>
-
 void sse_div_u8(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
     for (size_t i=0; i < n; i += 4) {
         uint32_t buf_a;

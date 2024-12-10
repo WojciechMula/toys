@@ -1,4 +1,8 @@
-unittest
-benchmark
+unittest_sse
+unittest_avx2
+unittest_avx512
+benchmark_sse
+benchmark_avx2
+benchmark_avx512
 rcp_tests
 rcp_diff
