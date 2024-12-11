@@ -1,0 +1,41 @@
+body {
+    font-family: sans-serif;
+}
+
+td.decimal {
+    text-align: right;
+}
+
+td.bit {
+    margin: 0px;
+    padding: 0px;
+    border-width: 1px;
+    border-style: solid;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+}
+
+.divident .inactive {
+    color: green;
+    border-color: lightgray;
+}
+
+.inactive {
+    color: lightgray;
+    border-style: dashed !important;
+}
+
+.active {
+    font-weight: bold;
+    color: black;
+}
+
+#bits {
+    margin-top: 1em;
+}
+
+#bits td {
+    padding: 0px;
+    margin: 0px;
+}

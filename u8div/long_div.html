@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="long_div.css"/>
+    <script src="long_div.js"></script>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td>divident:</td>
+                <td><input id="input_divident" value="217"></td>
+            </tr>
+            <tr>
+                <td>divisor:</td>
+                <td><input id="input_divisor" value="13"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="start">start</button>
+                    <button id="prev">prev</button>
+                    <button id="next">next</button>
+                    <span id="status"></span>
+                </td>
+            </tr>
+        </table>
+
+        <table padding="0" id="bits">
+            <tr class="divident">
+                <td>divident</td>
+                <td class="bit" id="divident_15"></td>
+                <td class="bit" id="divident_14"></td>
+                <td class="bit" id="divident_13"></td>
+                <td class="bit" id="divident_12"></td>
+                <td class="bit" id="divident_11"></td>
+                <td class="bit" id="divident_10"></td>
+                <td class="bit" id="divident_9"></td>
+                <td class="bit" id="divident_8"></td>
+                <td class="bit" id="divident_7"></td>
+                <td class="bit" id="divident_6"></td>
+                <td class="bit" id="divident_5"></td>
+                <td class="bit" id="divident_4"></td>
+                <td class="bit" id="divident_3"></td>
+                <td class="bit" id="divident_2"></td>
+                <td class="bit" id="divident_1"></td>
+                <td class="bit" id="divident_0"></td>
+                <td class="decimal" id="divident"></td>
+            </tr>
+            <tr>
+                <td>divisor</td>
+                <td class="bit" id="divisor_15"></td>
+                <td class="bit" id="divisor_14"></td>
+                <td class="bit" id="divisor_13"></td>
+                <td class="bit" id="divisor_12"></td>
+                <td class="bit" id="divisor_11"></td>
+                <td class="bit" id="divisor_10"></td>
+                <td class="bit" id="divisor_9"></td>
+                <td class="bit" id="divisor_8"></td>
+                <td class="bit" id="divisor_7"></td>
+                <td class="bit" id="divisor_6"></td>
+                <td class="bit" id="divisor_5"></td>
+                <td class="bit" id="divisor_4"></td>
+                <td class="bit" id="divisor_3"></td>
+                <td class="bit" id="divisor_2"></td>
+                <td class="bit" id="divisor_1"></td>
+                <td class="bit" id="divisor_0"></td>
+                <td class="decimal" id="divisor"></td>
+            </tr>
+            <tr>
+                <td>result</td>
+                <td class="bit" id="result_15"></td>
+                <td class="bit" id="result_14"></td>
+                <td class="bit" id="result_13"></td>
+                <td class="bit" id="result_12"></td>
+                <td class="bit" id="result_11"></td>
+                <td class="bit" id="result_10"></td>
+                <td class="bit" id="result_9"></td>
+                <td class="bit" id="result_8"></td>
+                <td class="bit" id="result_7"></td>
+                <td class="bit" id="result_6"></td>
+                <td class="bit" id="result_5"></td>
+                <td class="bit" id="result_4"></td>
+                <td class="bit" id="result_3"></td>
+                <td class="bit" id="result_2"></td>
+                <td class="bit" id="result_1"></td>
+                <td class="bit" id="result_0"></td>
+                <td class="decimal" id="result"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
