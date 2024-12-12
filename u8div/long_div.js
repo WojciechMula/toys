@@ -18,7 +18,7 @@ class Word {
         return c
     }
 
-    is_active(pos) {
+    is_bit_active(pos) {
         if (pos < this.lsb_index) {
             return false;
         }
@@ -91,8 +91,9 @@ class Word {
 }
 
 class State {
-    constructor(comment, a, b, c) {
-        this.comment = comment
+    constructor(comment, relation, a, b, c) {
+        this.comment  = comment
+        this.relation = relation
         this.a = a.clone();
         this.b = b.clone();
         this.c = c.clone();
@@ -122,29 +123,38 @@ function long_divide(a, b) {
     result.lsb_index = 16;
     result.bit_count = 0;
 
-    states.push(new State("initial state", a, b, result));
+    states.push(new State("initial state", "", a, b, result));
 
     for (let i=7; i >= 0; i--) {
         a.shift_left_inplace();
-        states.push(new State("include bit #" + i + " of divident", a, b, result));
+
+        let av = a.number();
+        let bv = b.number();
+        let relation = "";
+        if (av >= bv) {
+            relation = av + " ≥ " + bv + " ⇒ " + "1"
+        } else {
+            relation = av + " < " + bv + " ⇒ " + "0"
+        }
+
+        states.push(new State("include bit #" + i + " of divident", relation, a, b, result));
 
         if (a.ge(b)) {
-            let comment = a.number() + " ≥ " + b.number() + ", subtracting divisor";
             a = a.sub(b);
-            states.push(new State(comment, a, b, result));
+            states.push(new State("subtracting divisor", relation, a, b, result));
 
             result.set_bit(i + 8);
             result.lsb_index -= 1;
             result.bit_count += 1;
-            states.push(new State("set bit #" + i + " of result", a, b, result));
+            states.push(new State("set bit #" + i + " of result", relation, a, b, result));
         } else {
             result.lsb_index -= 1;
             result.bit_count += 1;
-            states.push(new State("reset bit #" + i + " of result", a, b, result));
+            states.push(new State("reset bit #" + i + " of result", relation, a, b, result));
         }
     }
 
-    states.push(new State("divident contains the remainder", a, b, result))
+    states.push(new State("divident contains the remainder", "", a, b, result))
 
     return states;
 }
@@ -163,9 +173,11 @@ class WordView {
     unset() {
         for (let i=0; i < 16; i++) {
             let cell = this.bits[i];
-            cell.innerText = "";
-            cell.classList.remove("active");
-            cell.classList.add("inactive");
+            if (cell) {
+                cell.innerText = "";
+                cell.classList.remove("active");
+                cell.classList.add("inactive");
+            }
         }
 
         this.number.innerText = "";
@@ -174,13 +186,15 @@ class WordView {
     set(word) {
         for (let i=0; i < 16; i++) {
             let cell = this.bits[i];
-            cell.innerText = word.bits[i];
-            if (word.is_active(i)) {
-                cell.classList.add("active");
-                cell.classList.remove("inactive");
-            } else {
-                cell.classList.remove("active");
-                cell.classList.add("inactive");
+            if (cell) {
+                cell.innerText = word.bits[i];
+                if (word.is_bit_active(i)) {
+                    cell.classList.add("active");
+                    cell.classList.remove("inactive");
+                } else {
+                    cell.classList.remove("active");
+                    cell.classList.add("inactive");
+                }
             }
         }
 
@@ -197,10 +211,11 @@ class View {
         this.divisor  = new WordView(doc, "divisor");
         this.result   = new WordView(doc, "result");
 
-        this.start_button = doc.getElementById("start");
-        this.prev_button = doc.getElementById("prev");
-        this.next_button = doc.getElementById("next");
-        this.status_line = doc.getElementById("status");
+        this.start_button  = doc.getElementById("start");
+        this.prev_button   = doc.getElementById("prev");
+        this.next_button   = doc.getElementById("next");
+        this.status_line   = doc.getElementById("status");
+        this.relation_line = doc.getElementById("relation");
     }
 
     update() {
@@ -212,19 +227,19 @@ class View {
             this.divisor.set(state.b);
             this.result.set(state.c);
 
-            this.start_button.disabled = false;
             this.prev_button.disabled = this.state_id == 0;
             this.next_button.disabled = this.state_id >= len - 1;
             this.status_line.innerText = state.comment;
+            this.relation_line.innerText = state.relation;
         } else {
             this.divident.unset();
             this.divisor.unset();
             this.result.unset();
 
-            this.start_button.disabled = true;
             this.prev_button.disabled = true;
             this.next_button.disabled = true;
             this.status_line.innerText = this.error;
+            this.relation_line.innerText = "";
         }
     }
 
@@ -264,22 +279,37 @@ class View {
 
 document.addEventListener('DOMContentLoaded', function() {
     let view = new View(document);
+    let input_divident = document.getElementById("input_divident");
+    let input_divisor = document.getElementById("input_divisor");
 
     function start() {
-        let divident = parseInt(document.getElementById("input_divident").value);
+        input_divident.classList.remove("error");
+        input_divisor.classList.remove("error");
+
+        let divident = parseInt(input_divident.value);
         if (isNaN(divident)) {
             view.set_error("wrong divident");
-            return
+            input_divident.classList.add("error");
+            return;
         }
 
         if (divident < 0 || divident > 255) {
             view.set_error("divident must be in range [0, 255]");
+            input_divident.classList.add("error");
+            return;
         }
 
-        let divisor = parseInt(document.getElementById("input_divisor").value);
+        let divisor = parseInt(input_divisor.value);
+        if (isNaN(divisor)) {
+            view.set_error("wrong divisor");
+            input_divisor.classList.add("error");
+            return;
+        }
 
         if (divisor < 1 || divisor > 255) {
             view.set_error("divisor must be in range [1, 255]");
+            input_divisor.classList.add("error");
+            return;
         }
 
         let states = long_divide(new Word(divident), new Word(divisor));

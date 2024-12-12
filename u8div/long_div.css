@@ -16,6 +16,10 @@ td.bit {
     text-align: center;
 }
 
+input.error {
+    background-color: lightpink;
+}
+
 .divident .inactive {
     color: green;
     border-color: lightgray;
