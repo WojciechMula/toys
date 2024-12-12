@@ -23,7 +23,7 @@ void avx2_div_u8(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
 
         const __m256  c_f32   = _mm256_div_ps(a_f32, b_f32);
         const __m256  c_f32_2 = _mm256_round_ps(c_f32, _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC);
-        const __m256i c_i32 = _mm256_cvtps_epi32(c_f32_2);
+        const __m256i c_i32   = _mm256_cvtps_epi32(c_f32_2);
 
         const __m256i c_u8 = _mm256_shuffle_epi8(c_i32, u32_u8);
 

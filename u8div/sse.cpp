@@ -33,8 +33,15 @@ void sse_div_u8_no_rounding(const uint8_t* a, const uint8_t* b, uint8_t* out, si
         uint32_t buf_a;
         memcpy(&buf_a, &a[i], 4);
         const __m128i a_u8  = _mm_cvtsi32_si128(buf_a);
-        const __m128i a_u32 = _mm_cvtepu8_epi32(a_u8);
-        const __m128  a_f32 = _mm_cvtepi32_ps(_mm_slli_epi32(a_u32, 8));
+
+        // convert (u8 << 8) into u32
+        const __m128i a_u32 = _mm_shuffle_epi8(a_u8, _mm_setr_epi8(
+            -1, 0, -1, -1,
+            -1, 1, -1, -1,
+            -1, 2, -1, -1,
+            -1, 3, -1, -1
+        ));
+        const __m128  a_f32 = _mm_cvtepi32_ps(a_u32);
 
         uint32_t buf_b;
         memcpy(&buf_b, &b[i], 4);
