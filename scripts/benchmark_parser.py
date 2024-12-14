@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 __all__ = ['parse', 'update_speedup', 'get_maximum_speedup', 'merge_many']
 
 class Measurement(object):
@@ -68,7 +66,7 @@ def parse(file):
         name, measurement = tmp
 
         if d.dict is None:
-            d.dict = OrderedDict()
+            d.dict = {}
 
         d.dict[name] = measurement
     else:
@@ -91,9 +89,9 @@ def parse_line(line):
 
 def merge_many(measurements):
     m1 = measurements[0]
-    assert type(m1) is OrderedDict
+    assert type(m1) is dict
     for m2 in measurements[1:]:
-        assert type(m2) is OrderedDict
+        assert type(m2) is dict
         for key in m2:
             m1[key].min(m2[key])
 
@@ -101,7 +99,7 @@ def merge_many(measurements):
 
 
 def update_speedup_aux(measurements, reference_key = None, field = None):
-    assert type(measurements) is OrderedDict
+    assert type(measurements) is dict
 
     if reference_key is None:
         reference_key = measurements.keys()[0]
@@ -113,30 +111,30 @@ def update_speedup_aux(measurements, reference_key = None, field = None):
 
     reference_value = getattr(measurements[reference_key], field)
 
-    for m in measurements.itervalues():
+    for m in measurements.values():
         m.speedup = reference_value / getattr(m, field)
 
 
 def update_speedup(x, reference_key = None, field = None):
-    if type(x) is OrderedDict:
+    if type(x) is dict:
         update_speedup_aux(x, reference_key, field)
     else:
         for item in x:
-            if type(item) is OrderedDict:
+            if type(item) is dict:
                 update_speedup_aux(item, reference_key, field)
 
 
 def get_maximum_speedup(x):
 
     def maximum_speedup(measurement):
-        return max(m.speedup for m in measurement.itervalues())
+        return max(m.speedup for m in measurement.values())
 
-    if type(x) is OrderedDict:
+    if type(x) is dict:
         return maximum_speedup(x)
     else:
         tmp = []
         for item in x:
-            if type(item) is OrderedDict:
+            if type(item) is dict:
                 tmp.append(maximum_speedup(item))
 
         if tmp:
@@ -168,8 +166,8 @@ def test():
     assert len(res) == 4
     assert type(res[0]) is str
     assert type(res[2]) is str
-    assert type(res[1]) is OrderedDict
-    assert type(res[3]) is OrderedDict
+    assert type(res[1]) is dict
+    assert type(res[3]) is dict
 
     m = res[1]
     for v in m.values():
