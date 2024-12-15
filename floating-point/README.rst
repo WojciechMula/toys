@@ -6,6 +6,7 @@ Programs for article `Floating point tricks`__:
 
 * ``float2int.c`` --- conversion float to integers
 * ``round2.c`` --- rounding double precision numbers
+* ``convert_int52_double.c`` --- branch-less signed 52-bit word to double conversion
 
 __ http://0x80.pl/articles/fptricks.html 
 
