@@ -6,3 +6,4 @@ benchmark_avx2
 benchmark_avx512
 rcp_tests
 rcp_diff
+cmp_check
