@@ -137,7 +137,7 @@ function long_divide(a, b) {
             relation = av + " < " + bv + " ⇒ " + "0"
         }
 
-        states.push(new State("include bit #" + i + " of divident", relation, a, b, result));
+        states.push(new State("include bit #" + i + " of dividend", relation, a, b, result));
 
         if (a.ge(b)) {
             a = a.sub(b);
@@ -154,7 +154,7 @@ function long_divide(a, b) {
         }
     }
 
-    states.push(new State("divident contains the remainder", "", a, b, result))
+    states.push(new State("dividend contains the remainder", "", a, b, result))
 
     return states;
 }
@@ -207,7 +207,7 @@ class View {
         this.states   = [];
         this.state_id = 0;
         this.error    = "";
-        this.divident = new WordView(doc, "divident");
+        this.dividend = new WordView(doc, "dividend");
         this.divisor  = new WordView(doc, "divisor");
         this.result   = new WordView(doc, "result");
 
@@ -223,7 +223,7 @@ class View {
         if (len > 0) {
             let state = this.states[this.state_id];
 
-            this.divident.set(state.a);
+            this.dividend.set(state.a);
             this.divisor.set(state.b);
             this.result.set(state.c);
 
@@ -232,7 +232,7 @@ class View {
             this.status_line.innerText = state.comment;
             this.relation_line.innerText = state.relation;
         } else {
-            this.divident.unset();
+            this.dividend.unset();
             this.divisor.unset();
             this.result.unset();
 
@@ -279,23 +279,23 @@ class View {
 
 document.addEventListener('DOMContentLoaded', function() {
     let view = new View(document);
-    let input_divident = document.getElementById("input_divident");
+    let input_dividend = document.getElementById("input_dividend");
     let input_divisor = document.getElementById("input_divisor");
 
     function start() {
-        input_divident.classList.remove("error");
+        input_dividend.classList.remove("error");
         input_divisor.classList.remove("error");
 
-        let divident = parseInt(input_divident.value);
-        if (isNaN(divident)) {
-            view.set_error("wrong divident");
-            input_divident.classList.add("error");
+        let dividend = parseInt(input_dividend.value);
+        if (isNaN(dividend)) {
+            view.set_error("wrong dividend");
+            input_dividend.classList.add("error");
             return;
         }
 
-        if (divident < 0 || divident > 255) {
-            view.set_error("divident must be in range [0, 255]");
-            input_divident.classList.add("error");
+        if (dividend < 0 || dividend > 255) {
+            view.set_error("dividend must be in range [0, 255]");
+            input_dividend.classList.add("error");
             return;
         }
 
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        let states = long_divide(new Word(divident), new Word(divisor));
+        let states = long_divide(new Word(dividend), new Word(divisor));
         view.set_states(states);
 
         view.start();

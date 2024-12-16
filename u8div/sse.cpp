@@ -66,7 +66,7 @@ void sse_div_u8_no_rounding(const uint8_t* a, const uint8_t* b, uint8_t* out, si
 
 void sse_div_u8_rcp(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
     // Note: The magic constant 1.0002403 was devised from rcp_test utility output.
-    //       This tiny correction applied for the divident masks RPC errors for
+    //       This tiny correction applied for the dividend masks RPC errors for
     //       small divisors (1..28) and fortunatelly does not affect the remaining
     //       divisors.
     const __m128 coef = _mm_set1_ps(1.0002403 * 256);
