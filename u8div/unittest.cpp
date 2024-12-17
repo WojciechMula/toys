@@ -48,6 +48,7 @@ public:
 
         #ifdef HAVE_AVX512
             check("AVX512 long div", avx512_long_div_u8);
+            check("AVX512 long div (ver2)", avx512_long_div_u8_ver2);
         #endif
 
         if (all_ok) {
