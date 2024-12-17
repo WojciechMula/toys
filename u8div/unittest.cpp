@@ -34,21 +34,17 @@ public:
             check("SSE", sse_div_u8);
             check("SSE (no rounding)", sse_div_u8_no_rounding);
             check("SSE (rcp)", sse_div_u8_rcp);
-            check("SSE long div (ver1)", sse_long_div_u8_ver1);
-            check("SSE long div (ver2)", sse_long_div_u8_ver2);
-            check("SSE long div (ver3)", sse_long_div_u8_ver3);
+            check("SSE long div", sse_long_div_u8);
         #endif
 
         #ifdef HAVE_AVX2
             check("AVX2", avx2_div_u8);
             check("AVX2 (rcp)", avx2_div_u8_rcp);
-            check("AVX2 long div (ver2)", avx2_long_div_u8_ver2);
-            check("AVX2 long div (ver3)", avx2_long_div_u8_ver3);
+            check("AVX2 long div", avx2_long_div_u8);
         #endif
 
         #ifdef HAVE_AVX512
             check("AVX512 long div", avx512_long_div_u8);
-            check("AVX512 long div (ver2)", avx512_long_div_u8_ver2);
         #endif
 
         if (all_ok) {

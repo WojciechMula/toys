@@ -23,20 +23,16 @@ int main() {
         BEST_TIME(/**/, sse_div_u8(a, b, c, SIZE), "SSE", repeat, SIZE);
         BEST_TIME(/**/, sse_div_u8_no_rounding(a, b, c, SIZE), "SSE (no rounding)", repeat, SIZE);
         BEST_TIME(/**/, sse_div_u8_rcp(a, b, c, SIZE), "SSE (rcp)", repeat, SIZE);
-        BEST_TIME(/**/, sse_long_div_u8_ver1(a, b, c, SIZE), "SSE long div (ver1)", repeat, SIZE);
-        BEST_TIME(/**/, sse_long_div_u8_ver2(a, b, c, SIZE), "SSE long div (ver2)", repeat, SIZE);
-        BEST_TIME(/**/, sse_long_div_u8_ver3(a, b, c, SIZE), "SSE long div (ver3)", repeat, SIZE);
+        BEST_TIME(/**/, sse_long_div_u8(a, b, c, SIZE), "SSE long div", repeat, SIZE);
     #endif
 
     #ifdef HAVE_AVX2
         BEST_TIME(/**/, avx2_div_u8(a, b, c, SIZE), "AVX2", repeat, SIZE);
         BEST_TIME(/**/, avx2_div_u8_rcp(a, b, c, SIZE), "AVX2 (rcp)", repeat, SIZE);
-        BEST_TIME(/**/, avx2_long_div_u8_ver2(a, b, c, SIZE), "AVX2 long div (ver2)", repeat, SIZE);
-        BEST_TIME(/**/, avx2_long_div_u8_ver3(a, b, c, SIZE), "AVX2 long div (ver3)", repeat, SIZE);
+        BEST_TIME(/**/, avx2_long_div_u8(a, b, c, SIZE), "AVX2 long div", repeat, SIZE);
     #endif
 
     #ifdef HAVE_AVX512
         BEST_TIME(/**/, avx512_long_div_u8(a, b, c, SIZE), "AVX512 long div", repeat, SIZE);
-        BEST_TIME(/**/, avx512_long_div_u8_ver2(a, b, c, SIZE), "AVX512 long div (ver2)", repeat, SIZE);
     #endif
 }
