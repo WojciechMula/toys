@@ -1,13 +1,3 @@
-# -*- coding: iso-8859-2 -*-
-#
-# reST roles helpers
-#
-# Wojciech Mu³a, http://0x80.pl/
-# Public domain
-#
-# $Date: 2007-03-26 19:56:15 $, $Revision: 1.7 $
-
-
 #=== wiki links =========================================================
 
 def wikilink(text, wikilang="pl"):
@@ -200,64 +190,3 @@ def simplemath(string):
     and does some additional replacements.  Small letters are italized.
     """
     return process_expression(string)[1]
-
-
-
-#=== Python code snippets ===============================================
-import re
-
-def py_getdef(filename, pattern, numbers=True):
-    f = open(filename, 'r')
-    lines = [(lineno+1, line.rstrip()) for (lineno, line) in enumerate(f)]
-
-    for block in pattern.replace('\t',' ').split(' '):
-        kind, name = block.split(':')
-        lines = py_grep(lines, name.strip(), kind.strip())
-    f.close()
-
-    if numbers:
-        return '\n'.join("%4d %s" % item for item in lines)
-    else:
-        return '\n'.join( (line for (lineno,line) in lines) )
-
-def py_grep(list, name, type="def"):
-    regexp = re.compile(r"^\s*%s\s+%s" % (type, name))
-
-    for i, (lineno, line) in enumerate(list):
-        if regexp.match(line):
-            return py_getblock(list[i:])
-    return []
-
-def py_getblock(code):
-    if len(code) == 0:
-        return []
-
-    def get_indention(line, expandtabs=True):
-        """Get line's indention"""
-        l = len(line)
-        if expandtabs:
-            t = len(line.expandtabs().lstrip())
-            return l-t
-        else:
-            t = len(line.lstrip())
-            return l-t
-    
-    initial_indent = get_indention(code[0][1])
-    result = [code[0]]
-    for lineno, line in code[1:]:
-        indent = get_indention(line)
-        if line != '' and indent == initial_indent:
-            break
-        else:
-            result.append( (lineno, line) )
-    
-    while len(result) and result[-1][1] == '':
-        result.pop()
-    
-    return result
-
-
-#print py_getdef('roles_aux.py', 'def:py_grep')
-#print py_getdef('roles_aux.py', 'def:py_getblock def:get_indention')
-
-# vim: ts=4 sw=4

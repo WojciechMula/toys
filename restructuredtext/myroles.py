@@ -1,4 +1,4 @@
-from roles_aux import wikilink, simplemath, py_getdef
+from roles_aux import wikilink, simplemath
 from docutils.parsers.rst.roles import set_classes, nodes, register_canonical_role
 
 def plwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
