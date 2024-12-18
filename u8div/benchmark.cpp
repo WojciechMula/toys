@@ -18,6 +18,7 @@ int main() {
 
     BEST_TIME(/**/, scalar_div_u8(a, b, c, SIZE), "scalar", repeat, SIZE);
     BEST_TIME(/**/, scalar_div_u8_unrolled4(a, b, c, SIZE), "scalar (unrolled x 4)", repeat, SIZE);
+    BEST_TIME(/**/, scalar_long_div_u8(a, b, c, SIZE), "scalar (long div)", repeat, SIZE);
 
     #ifdef HAVE_SSE
         BEST_TIME(/**/, sse_div_u8(a, b, c, SIZE), "SSE", repeat, SIZE);

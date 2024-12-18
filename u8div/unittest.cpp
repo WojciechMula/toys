@@ -30,6 +30,8 @@ public:
     void run() {
         all_ok = true;
 
+        check("scalar long div", scalar_long_div_u8);
+
         #ifdef HAVE_SSE
             check("SSE", sse_div_u8);
             check("SSE (no rounding)", sse_div_u8_no_rounding);
