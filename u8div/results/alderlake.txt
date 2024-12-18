@@ -1,0 +1,15 @@
+12th Gen Intel(R) Core(TM) i7-1255U
+gcc (Debian 13.2.0-25) 13.2.0
+
+scalar                          :     7.173 cycle/op (best)    7.939 cycle/op (avg)
+scalar (unrolled x 4)           :     7.173 cycle/op (best)    7.418 cycle/op (avg)
+SSE                             :     0.992 cycle/op (best)    1.150 cycle/op (avg)
+SSE (no rounding)               :     0.892 cycle/op (best)    1.007 cycle/op (avg)
+SSE (rcp)                       :     0.896 cycle/op (best)    1.037 cycle/op (avg)
+SSE long div (ver1)             :     2.801 cycle/op (best)    3.077 cycle/op (avg)
+SSE long div (ver2)             :     2.609 cycle/op (best)    2.851 cycle/op (avg)
+SSE long div (ver3)             :     2.264 cycle/op (best)    2.781 cycle/op (avg)
+AVX2                            :     0.843 cycle/op (best)    1.024 cycle/op (avg)
+AVX2 (rcp)                      :     0.690 cycle/op (best)    0.820 cycle/op (avg)
+AVX2 long div (ver2)            :     1.411 cycle/op (best)    2.062 cycle/op (avg)
+AVX2 long div (ver3)            :     1.189 cycle/op (best)    1.310 cycle/op (avg)
