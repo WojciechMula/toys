@@ -23,7 +23,7 @@ float sse_rcp(uint32_t x) {
     return _mm_cvtss_f32(y);
 }
 
-int main() {
+void print_table() {
     printf("+-----+-------------------------+-------------------------+-----------+\n");
     printf("|     |        1 / x            |    approx 1 / x         |           |\n");
     printf("|  x  +----------+--------------+----------+--------------+   error   |\n");
@@ -42,4 +42,14 @@ int main() {
         printf("| %3d | %7.6f | ``%08x`` | %7.6f | ``%08x`` | %9.6f |\n", b, div.fp, div.img, rcp.fp, rcp.img, div.fp - rcp.fp);
         printf("+-----+----------+--------------+----------+--------------+-----------+\n");
     }
+}
+
+void print_raw_data() {
+    for (uint32_t b=1; b < 256; b++) {
+        printf("%d, %0.6f, %0.6f\n", b, sse_div(b), sse_rcp(b));
+    }
+}
+
+int main() {
+    print_raw_data();
 }
