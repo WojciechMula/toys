@@ -1,15 +1,15 @@
 from roles_aux import wikilink, simplemath, py_getdef
-from docutils.parsers.rst.roles import set_classes, nodes, utils, register_canonical_role
+from docutils.parsers.rst.roles import set_classes, nodes, register_canonical_role
 
 def plwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 	set_classes(options)
 	ref, text = wikilink(text, 'pl')
-	return [nodes.reference(rawtext, utils.unescape(text), refuri=ref, **options)], []
+	return [nodes.reference(rawtext, nodes.unescape(text), refuri=ref, **options)], []
 
 def enwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 	set_classes(options)
 	ref, text = wikilink(text, 'en')
-	return [nodes.reference(rawtext, utils.unescape(text), refuri=ref, **options)], []
+	return [nodes.reference(rawtext, nodes.unescape(text), refuri=ref, **options)], []
 
 def inlinemath_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 	set_classes(options)
