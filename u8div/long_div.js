@@ -119,11 +119,11 @@ function long_divide(a, b) {
     a.lsb_index = b.lsb_index;
     a.bit_count = 8;
 
-    let result = new Word(0);
-    result.lsb_index = 16;
-    result.bit_count = 0;
+    let quotient = new Word(0);
+    quotient.lsb_index = 16;
+    quotient.bit_count = 0;
 
-    states.push(new State("initial state", "", a, b, result));
+    states.push(new State("initial state", "", a, b, quotient));
 
     for (let i=7; i >= 0; i--) {
         a.shift_left_inplace();
@@ -137,24 +137,24 @@ function long_divide(a, b) {
             relation = av + " < " + bv + " ⇒ " + "0"
         }
 
-        states.push(new State("include bit #" + i + " of dividend", relation, a, b, result));
+        states.push(new State("include bit #" + i + " of dividend", relation, a, b, quotient));
 
         if (a.ge(b)) {
             a = a.sub(b);
-            states.push(new State("subtracting divisor", relation, a, b, result));
+            states.push(new State("subtracting divisor", relation, a, b, quotient));
 
-            result.set_bit(i + 8);
-            result.lsb_index -= 1;
-            result.bit_count += 1;
-            states.push(new State("set bit #" + i + " of result", relation, a, b, result));
+            quotient.set_bit(i + 8);
+            quotient.lsb_index -= 1;
+            quotient.bit_count += 1;
+            states.push(new State("set bit #" + i + " of quotient", relation, a, b, quotient));
         } else {
-            result.lsb_index -= 1;
-            result.bit_count += 1;
-            states.push(new State("reset bit #" + i + " of result", relation, a, b, result));
+            quotient.lsb_index -= 1;
+            quotient.bit_count += 1;
+            states.push(new State("reset bit #" + i + " of quotient", relation, a, b, quotient));
         }
     }
 
-    states.push(new State("dividend contains the remainder", "", a, b, result))
+    states.push(new State("dividend contains the remainder", "", a, b, quotient))
 
     return states;
 }
@@ -209,7 +209,7 @@ class View {
         this.error    = "";
         this.dividend = new WordView(doc, "dividend");
         this.divisor  = new WordView(doc, "divisor");
-        this.result   = new WordView(doc, "result");
+        this.quotient = new WordView(doc, "quotient");
 
         this.start_button  = doc.getElementById("start");
         this.prev_button   = doc.getElementById("prev");
@@ -225,7 +225,7 @@ class View {
 
             this.dividend.set(state.a);
             this.divisor.set(state.b);
-            this.result.set(state.c);
+            this.quotient.set(state.c);
 
             this.prev_button.disabled = this.state_id == 0;
             this.next_button.disabled = this.state_id >= len - 1;
@@ -234,7 +234,7 @@ class View {
         } else {
             this.dividend.unset();
             this.divisor.unset();
-            this.result.unset();
+            this.quotient.unset();
 
             this.prev_button.disabled = true;
             this.next_button.disabled = true;
