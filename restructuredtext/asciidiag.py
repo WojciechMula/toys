@@ -58,6 +58,10 @@ DEMO1 = """
 b: blue
 r: red
 g: green
+R: lightred
+B: lightblue
+G: lightgreen
+*: bold
 
 
       +==+====+     +---- baz
@@ -68,7 +72,7 @@ g: green
                     v v
     +----------+----------+==========+
     | 10001000 | 01011110 | 10000001 #  <---- bar
-^     bbbgggrr              bbbbgggg
+^     bbbgggrr      * *     bbbbgggg
     |          +===+      |          #
     |          |   |      |          #
     +==========+---+------+----------+
@@ -82,7 +86,7 @@ g: green
 
 
         -----> RGB <---
-^             rgb
+^              RGB
 
 """
 
@@ -98,13 +102,16 @@ def main():
         DEMO1,
     ]
 
-    for test in tests:
+    for test in tests[-1:]:
         lines = test.splitlines()
         canvas, styles = parse(lines, unindent=True)
         rules = RuleMatcher(all_rules)
         transformed = apply_rules(canvas, rules)
 
-        transformed.dump()
+        if styles:
+            print_ansi(transformed, styles)
+        else:
+            transformed.dump()
 
 
 def apply_rules(canvas, rules):
@@ -161,9 +168,9 @@ def parse_styles(lines):
 
         assert sep == ':'
         assert len(name) == 1
-        assert val
         assert name not in style
-        style[name] = val
+        style[name] = set(s.strip() for s in val.split(','))
+        assert '' not in style[name]
 
     return style
 
@@ -800,6 +807,69 @@ class RuleMatcher:
         for rule in rule_list:
             if rule.match(canvas, x, y):
                 return rule.repl
+
+
+def apply_styles(canvas, styles, callback):
+    result = []
+    for (chars, attributes) in zip(canvas.lines, canvas.attributes):
+        line = ''
+        prev_style = None
+        for i, char in enumerate(chars):
+            try:
+                curr_style = attributes[i]
+            except IndexError:
+                curr_style = None
+
+            if prev_style != curr_style:
+                if prev_style is not None:
+                    line += callback(None)
+                
+                if curr_style is not None:
+                    line += callback(styles[curr_style])
+
+                prev_style = curr_style
+
+            line += char
+
+        if prev_style is not None:
+            line += callback(None)
+
+        result.append(line)
+
+    return result
+
+
+def print_ansi(canvas, styles):
+    console_codes = {
+        None            : '\033[0m',
+        'black'         : '\033[30m',
+        'red'           : '\033[31m',
+        'green'         : '\033[32m',
+        'brown'         : '\033[33m',
+        'blue'          : '\033[34m',
+        'magenta'       : '\033[35m',
+        'cyan'          : '\033[36m',
+        'white'         : '\033[37m',
+        'lightblack'    : '\033[90m',
+        'lightred'      : '\033[91m',
+        'lightgreen'    : '\033[92m',
+        'lightbrown'    : '\033[93m',
+        'lightblue'     : '\033[94m',
+        'lightmagenta'  : '\033[95m',
+        'lightcyan'     : '\033[96m',
+        'lightwhite'    : '\033[97m',
+        'bold'          : '\033[1m',
+    }
+
+    def callback(style):
+        if style is None:
+            return console_codes[None]
+
+        return ''.join(console_codes[item] for item in style)
+
+    res = apply_styles(canvas, styles, callback)
+    for line in res:
+        print(line)
 
 
 if __name__ == '__main__':
