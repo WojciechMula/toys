@@ -1,0 +1,806 @@
+LIGHT_BOXES = """
+         +--+----+   +--+----+   +--+----+  +--+----+
+         |  |    |   |  |    |   |  |    |  |  |    |
+         +--+----+   +--+----+   |  |    |  |  |    |
+                     |  |    |   +--+----+  |  |    |
+                     +--+----+              +--+----+
+
+"""
+
+DOUBLE_BOXES = """
+
+         +==+====+   +==+====+   +==+====+  +==+====+
+         #  #    #   #  #    #   #  #    #  #  #    #
+         +==+====+   +==+====+   #  #    #  #  #    #
+                     #  #    #   +==+====+  #  #    #
+                     +==+====+              +==+====+
+
+"""
+
+MIXED_BOXES_1 = """
+         +==+====+   +==+====+   +==+====+  +==+====+
+         |  |    |   |  |    |   |  |    |  |  |    |
+         +==+====+   +==+====+   |  |    |  |  |    |
+                     |  |    |   +==+====+  |  |    |
+                     +==+====+              +==+====+
+"""
+
+MIXED_BOXES_2 = """
+         +--+----+   +--+----+   +--+----+  +--+----+
+         #  #    #   #  #    #   #  #    #  #  #    #
+         +--+----+   +--+----+   #  #    #  #  #    #
+                     #  #    #   +--+----+  #  #    #
+                     +--+----+              +--+----+
+"""
+
+ROUNDED_BOXES = r"""
+
+    /-----\   /-----\   /-----\
+    |     |   |     |   |     |
+    \-----/   +-----+   |     |
+              |     |   |     |
+              \-----/   \-----/
+
+"""
+
+ARROWS = r"""
+
+
+                  ^ ^
+    ->     <-     | |  |
+    -->    <--      |  | |
+    --->   <---        | | |
+                       v v v
+"""
+
+
+DEMO1 = """
+b: blue
+r: red
+g: green
+
+
+      +==+====+     +---- baz
+^                         bbb
+      #  #    #     | +-- bit #2
+^                         rrrrrrrr
+      +==+====+     | |
+                    v v
+    +----------+----------+==========+
+    | 10001000 | 01011110 | 10000001 #  <---- bar
+^     bbbgggrr              bbbbgggg
+    |          +===+      |          #
+    |          |   |      |          #
+    +==========+---+------+----------+
+         ^
+         |              +--+----+
+         |              |  |    | <-+
+         |              +--+----+   |
+         |                         this
+      fooooooo
+^     bbbbbbbb
+
+
+        -----> RGB <---
+^             rgb
+
+"""
+
+
+def main():
+    tests = [
+        LIGHT_BOXES,
+        DOUBLE_BOXES,
+        MIXED_BOXES_1,
+        MIXED_BOXES_2,
+        ROUNDED_BOXES,
+        ARROWS,
+        DEMO1,
+    ]
+
+    for test in tests:
+        lines = test.splitlines()
+        canvas, styles = parse(lines, unindent=True)
+        rules = RuleMatcher(all_rules)
+        transformed = apply_rules(canvas, rules)
+
+        transformed.dump()
+
+
+def apply_rules(canvas, rules):
+    transformed = Canvas()
+    transformed.lines = []
+    transformed.attributes = canvas.attributes
+
+    for y, line in enumerate(canvas.lines):
+        copy = line[:]
+        for x, char in enumerate(line):
+            repl = rules.match(canvas, x, y)
+            if repl is not None:
+                copy[x] = repl
+
+        transformed.lines.append(copy)
+
+    return transformed
+
+
+def parse(lines, unindent):
+    while lines:
+        if lines[0] != '':
+            break
+        else:
+            lines = lines[1:]
+
+    while lines:
+        if lines[-1] != '':
+            break
+        else:
+            lines = lines[:-1]
+
+    try:
+        pos = lines.index('')
+    except ValueError:
+        pos = None
+
+    if pos is not None:
+        styles = parse_styles(lines[:pos])
+        canvas = parse_drawing(lines[pos+1:], styles, unindent)
+    else:
+        styles = {}
+        canvas = parse_drawing(lines, styles, unindent)
+
+    return (canvas, styles)
+
+
+def parse_styles(lines):
+    style = {}
+    for line in lines:
+        name, sep, val = line.partition(':')
+        name = name.strip()
+        val  = val.strip()
+
+        assert sep == ':'
+        assert len(name) == 1
+        assert val
+        assert name not in style
+        style[name] = val
+
+    return style
+
+
+def parse_drawing(lines, styles, unindent):
+    canvas = Canvas()
+    canvas.lines = []
+    canvas.attributes = []
+
+    for line in lines:
+        if line and line[0] == '^':
+            canvas.attributes[-1] = parse_attributes(line, styles)
+        else:
+            canvas.lines.append(line)
+            canvas.attributes.append([])
+
+    assert len(canvas.lines) == len(canvas.attributes)
+
+    if unindent:
+        indent = min(len(line) - len(line.lstrip()) for line in canvas.lines if line)
+        for i in range(len(canvas.lines)):
+            canvas.lines[i] = list(canvas.lines[i][indent:])
+            canvas.attributes[i] = canvas.attributes[i][indent:]
+
+    return canvas
+
+
+def parse_attributes(line, styles):
+    tmp = [None] * len(line)
+    for i, char in enumerate(line):
+        if char not in ('^', ' '):
+            assert char in styles, (char, styles)
+            tmp[i] = char
+
+    return tmp
+
+
+class Canvas:
+    def __getitem__(self, xy):
+        try:
+            x, y = xy
+            if x < 0 or y < 0:
+                return ' '
+            return self.lines[y][x]
+        except IndexError:
+            return ' '
+
+    def dump(self):
+        for line in self.lines:
+            print('"%s"' % (''.join(line)))
+
+
+class Rule:
+    def __init__(self, coords, char, repl):
+        self.coords = coords
+        self.repl   = repl
+        self.char   = char
+
+    def match(self, canvas, x, y):
+        for (dx, dy, char) in self.coords:
+            if canvas[x + dx, y + dy] != char:
+                return False
+
+        return True
+
+    def dump(self):
+        tmp = {}
+        for (dx, dy, char) in self.coords:
+            tmp[(dx + 1, dy + 1)] = char
+
+        print()
+        for y in range(3):
+            print('"', end='')
+            for x in range(3):
+                print(tmp.get((x, y), ' '), end='')
+
+            if y == 1:
+                print('" =>', self.repl)
+            else:
+                print('"')
+
+    def __len__(self):
+        return len(self.coords)
+
+
+def mkrule(prev, curr, next, repl):
+    assert len(prev) == 3
+    assert len(curr) == 3
+    assert len(next) == 3
+    assert len(repl) == 1
+
+    coords = []
+    for (dy, row) in enumerate([prev, curr, next], -1):
+        for (dx, char) in enumerate(row, -1):
+            if char != ' ':
+                coords.append((dx, dy, char))
+
+    return Rule(coords, curr[1], repl)
+
+
+all_rules = [
+    # arrows
+    mkrule(
+        "   ",
+        " <-",
+        "   ", '◀'
+    ),
+    mkrule(
+        "   ",
+        "-> ",
+        "   ", '▶'
+    ),
+    mkrule(
+        " | ",
+        " v ",
+        "   ", '▼'
+    ),
+    mkrule(
+        "   ",
+        " ^ ",
+        " | ", '▲'
+    ),
+    mkrule(
+        "   ",
+        "<- ",
+        "   ", '─'
+    ),
+    mkrule(
+        "   ",
+        " ->",
+        "   ", '─'
+    ),
+    mkrule(
+        " ^ ",
+        " | ",
+        "   ", '│'
+    ),
+    mkrule(
+        "   ",
+        " | ",
+        " v ", '│'
+    ),
+
+    # lines
+    mkrule(
+        "   ",
+        " -+",
+        "   ", '─'
+    ),
+    mkrule(
+        "   ",
+        " -+",
+        "   ", '─'
+    ),
+    mkrule(
+        " + ",
+        " | ",
+        "   ", '│'
+    ),
+    mkrule(
+        "   ",
+        " | ",
+        " + ", '│'
+    ),
+
+
+    # half lines
+    mkrule(
+        "   ",
+        "-- ",
+        "   ", '╴'
+    ),
+    mkrule(
+        "   ",
+        " --",
+        "   ", '╶'
+    ),
+    mkrule(
+        " | ",
+        " | ",
+        "   ", '╵'
+    ),
+    mkrule(
+        " | ",
+        " | ",
+        "   ", '╷'
+    ),
+
+    # rounded boxes
+    mkrule(
+        " | ",
+        " \\-",
+        "   ", '╰'
+    ),
+    mkrule(
+        " | ",
+        "-/ ",
+        "   ", '╯'
+    ),
+    mkrule(
+        "   ",
+        " /-",
+        " | ", '╭'
+    ),
+    mkrule(
+        "   ",
+        "-\\ ",
+        " | ", '╮'
+    ),
+
+    mkrule(
+        "|  ",
+        "\\- ",
+        "   ", '─'
+    ),
+    mkrule(
+        "   ",
+        "/- ",
+        "|  ", '─'
+    ),
+    mkrule(
+        "   ",
+        " -\\",
+        "  |", '─'
+    ),
+    mkrule(
+        "  |",
+        " -/",
+        "   ", '─'
+    ),
+
+    mkrule(
+        "   ",
+        " | ",
+        " \\-", '│'
+    ),
+    mkrule(
+        "   ",
+        " | ",
+        "-/ ", '│'
+    ),
+    mkrule(
+        "-\\ ",
+        " | ",
+        "   ", '│'
+    ),
+    mkrule(
+        " /-",
+        " | ",
+        "   ", '│'
+    ),
+
+    # light boxes
+    mkrule(
+        "   ",
+        "---",
+        "   ", '─'
+    ),
+    mkrule(
+        "   ",
+        "+--",
+        "|  ", '─'
+    ),
+    mkrule(
+        "|  ",
+        "+--",
+        "   ", '─'
+    ),
+    mkrule(
+        "|  ",
+        "+--",
+        "|  ", '─'
+    ),
+    mkrule(
+        "   ",
+        "--+",
+        "  |", '─'
+    ),
+    mkrule(
+        "  |",
+        "--+",
+        "   ", '─'
+    ),
+    mkrule(
+        "  |",
+        "--+",
+        "  |", '─'
+    ),
+    mkrule(
+        " | ",
+        " | ",
+        " | ", '│'
+    ),
+    mkrule(
+        " + ",
+        " | ",
+        " | ", '│'
+    ),
+    mkrule(
+        " + ",
+        " | ",
+        " + ", '│'
+    ),
+    mkrule(
+        " | ",
+        " | ",
+        " + ", '│'
+    ),
+    mkrule(
+        "   ",
+        " +-",
+        " | ", '┌'
+    ),
+    mkrule(
+        "   ",
+        "-+ ",
+        " | ", '┐'
+    ),
+    mkrule(
+        " | ",
+        "-+ ",
+        "   ", '┘'
+    ),
+    mkrule(
+        " | ",
+        " +-",
+        "   ", '└'
+    ),
+    mkrule(
+        " | ",
+        "-+-",
+        "   ", '┴'
+    ),
+    mkrule(
+        "   ",
+        "-+-",
+        " | ", '┬'
+    ),
+    mkrule(
+        " | ",
+        "-+-",
+        " | ", '┼'
+    ),
+    mkrule(
+        " | ",
+        " +-",
+        " | ", '├'
+    ),
+    mkrule(
+        " | ",
+        "-+ ",
+        " | ", '┤'
+    ),
+
+    # double boxes
+    mkrule(
+        "   ",
+        "===",
+        "   ", '═'
+    ),
+    mkrule(
+        "   ",
+        "+==",
+        "#  ", '═'
+    ),
+    mkrule(
+        "#  ",
+        "+==",
+        "   ", '═'
+    ),
+    mkrule(
+        "#  ",
+        "+==",
+        "#  ", '═'
+    ),
+    mkrule(
+        "   ",
+        "==+",
+        "  #", '═'
+    ),
+    mkrule(
+        "  #",
+        "==+",
+        "   ", '═'
+    ),
+    mkrule(
+        "  #",
+        "==+",
+        "  #", '═'
+    ),
+    mkrule(
+        " # ",
+        " # ",
+        " # ", '║'
+    ),
+    mkrule(
+        " + ",
+        " # ",
+        " # ", '║'
+    ),
+    mkrule(
+        " + ",
+        " # ",
+        " + ", '║'
+    ),
+    mkrule(
+        " # ",
+        " # ",
+        " + ", '║'
+    ),
+    mkrule(
+        "   ",
+        " +=",
+        " # ", '╔'
+    ),
+    mkrule(
+        "   ",
+        "=+ ",
+        " # ", '╗'
+    ),
+    mkrule(
+        " # ",
+        "=+ ",
+        "   ", '╝'
+    ),
+    mkrule(
+        " # ",
+        " +=",
+        "   ", '╚'
+    ),
+    mkrule(
+        " # ",
+        "=+=",
+        "   ", '╩'
+    ),
+    mkrule(
+        "   ",
+        "=+=",
+        " # ", '╦'
+    ),
+    mkrule(
+        " # ",
+        "=+=",
+        " # ", '╬'
+    ),
+    mkrule(
+        " # ",
+        " +=",
+        " # ", '╠'
+    ),
+    mkrule(
+        " # ",
+        "=+ ",
+        " # ", '╣'
+    ),
+
+    # boxes: horizontal double, vertical light
+    mkrule(
+        "   ",
+        " +=",
+        " | ", '╒'
+    ),
+    mkrule(
+        " | ",
+        " +=",
+        "   ", '╘'
+    ),
+    mkrule(
+        " | ",
+        "=+ ",
+        "   ", '╛'
+    ),
+    mkrule(
+        "   ",
+        "=+ ",
+        " | ", '╕'
+    ),
+    mkrule(
+        "   ",
+        "=+=",
+        " | ", '╤'
+    ),
+    mkrule(
+        " | ",
+        "=+=",
+        "   ", '╧'
+    ),
+    mkrule(
+        " | ",
+        " +=",
+        " | ", '╞'
+    ),
+    mkrule(
+        " | ",
+        "=+ ",
+        " | ", '╡'
+    ),
+    mkrule(
+        " | ",
+        "=+=",
+        " | ", '╪'
+    ),
+
+    ###
+    mkrule(
+        "   ",
+        "+= ",
+        "|  ", '═'
+    ),
+    mkrule(
+        "|  ",
+        "+= ",
+        "   ", '═'
+    ),
+    mkrule(
+        "  |",
+        " =+",
+        "   ", '═'
+    ),
+    mkrule(
+        "   ",
+        " =+",
+        "  |", '═'
+    ),
+    mkrule(
+        "  |",
+        " =+",
+        "  |", '═'
+    ),
+    mkrule(
+        "|  ",
+        "+= ",
+        "|  ", '═'
+    ),
+
+    # boxes: horizontal light, vertical double
+    mkrule(
+        "   ",
+        " +-",
+        " # ", '╓'
+    ),
+    mkrule(
+        " # ",
+        " +-",
+        "   ", '╙'
+    ),
+    mkrule(
+        " # ",
+        "-+ ",
+        "   ", '╜'
+    ),
+    mkrule(
+        "   ",
+        "-+ ",
+        " # ", '╖'
+    ),
+    mkrule(
+        " # ",
+        " +-",
+        " # ", '╟'
+    ),
+    mkrule(
+        " # ",
+        "-+ ",
+        " # ", '╢'
+    ),
+    mkrule(
+        " # ",
+        "-+-",
+        " # ", '╫'
+    ),
+    mkrule(
+        "   ",
+        "-+-",
+        " # ", '╥'
+    ),
+    mkrule(
+        " # ",
+        "-+-",
+        "   ", '╨'
+    ),
+    mkrule(
+        "   ",
+        "+--",
+        "#  ", '─'
+    ),
+    mkrule(
+        "#  ",
+        "+--",
+        "   ", '─'
+    ),
+    mkrule(
+        "#  ",
+        "+--",
+        "#  ", '─'
+    ),
+    mkrule(
+        "   ",
+        "--+",
+        "  #", '─'
+    ),
+    mkrule(
+        "  #",
+        "--+",
+        "   ", '─'
+    ),
+    mkrule(
+        "  #",
+        "--+",
+        "  #", '─'
+    ),
+]
+
+
+class RuleMatcher:
+    def __init__(self, rules):
+        self.lookup = {}
+        for rule in rules:
+            if rule.char not in self.lookup:
+                self.lookup[rule.char] = []
+
+            self.lookup[rule.char].append(rule)
+
+        for rule_list in self.lookup.values():
+            rule_list.sort(key=lambda rule: len(rule), reverse=True)
+
+    def match(self, canvas, x, y):
+        char = canvas[x, y]
+        try:
+            rule_list = self.lookup[char]
+        except KeyError:
+            return None
+
+        for rule in rule_list:
+            if rule.match(canvas, x, y):
+                return rule.repl
+
+
+if __name__ == '__main__':
+    main()
