@@ -114,6 +114,35 @@ def main():
             transformed.dump()
 
 
+def make_converter(cssclass):
+    rules = RuleMatcher(all_rules)
+
+    def convert(lines):
+        canvas, styles = parse(lines, unindent=True)
+        transformed = apply_rules(canvas, rules)
+
+        def callback(styles):
+            if styles is None:
+                return '</span>'
+
+            css = []
+            for style in styles:
+                if style == 'bold':
+                    css.append('font-weight: bold')
+                else:
+                    css.append(f'color: {style}')
+
+            return '<span style="%s">' % ('; '.join(css))
+
+        s  = f'<pre class="{cssclass}">'
+        s += '\n'.join(apply_styles(transformed, styles, callback))
+        s += f'</pre>'
+
+        return s
+
+    return convert
+
+
 def apply_rules(canvas, rules):
     transformed = Canvas()
     transformed.lines = []
@@ -823,7 +852,7 @@ def apply_styles(canvas, styles, callback):
             if prev_style != curr_style:
                 if prev_style is not None:
                     line += callback(None)
-                
+
                 if curr_style is not None:
                     line += callback(styles[curr_style])
 

@@ -1,4 +1,7 @@
 from docutils.parsers.rst.roles import set_classes, nodes, register_canonical_role
+from docutils.parsers.rst import Directive
+from docutils.parsers.rst.directives import register_directive
+from asciidiag import make_converter
 
 def plwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
@@ -25,10 +28,25 @@ def centermath_role(role, rawtext, text, lineno, inliner, options={}, content=[]
     return [node], []
 
 
+ascii_diag = make_converter('')
+
+class AsciiDiag(Directive):
+    has_content = True
+
+    def run(self):
+        set_classes(self.options)
+        node = nodes.raw('', ascii_diag(self.content), **self.options)
+        node['format']  = 'html'
+
+        return [node]
+
+
 register_canonical_role('math',   inlinemath_role)
 register_canonical_role('cmath',  centermath_role)
 register_canonical_role('plwiki', plwiki_link_role)
 register_canonical_role('enwiki', enwiki_link_role)
+register_directive('asciidiag', AsciiDiag)
+
 
 #=== wiki links =========================================================
 
