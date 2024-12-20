@@ -6,6 +6,18 @@ td.decimal {
     text-align: right;
 }
 
+td.copy0 {
+    background-color: lightpink;
+}
+
+td.copy1 {
+    background-color: lightgreen;
+}
+
+td.compare {
+    background-color: lightblue;
+}
+
 td.bit {
     margin: 0px;
     padding: 0px;

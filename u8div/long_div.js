@@ -1,7 +1,7 @@
 class Word {
     constructor(val) {
         this.bits = []
-        for (let i=0; i < 16; i++) {
+        for (let i=0; i < 8; i++) {
             let bit = val % 2;
             val = Math.trunc(val / 2);
 
@@ -9,13 +9,33 @@ class Word {
         }
 
         this.lsb_index = 0;
-        this.bit_count = 16;
+        this.bit_count = 8;
+        this.highlighted = new Map();
     }
 
     clone() {
         let c = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
-        c.bits = [...this.bits]
+        c.bits = [...this.bits];
+        c.highlighted = new Map(this.highlighted);
         return c
+    }
+
+    highlight_active(val) {
+        this.clear_highlight()
+        for (let i=0; i < 8; i++) {
+            if (this.is_bit_active(i)) {
+                this.highlighted.set(i, val);
+            }
+        }
+    }
+
+    highlight_single(pos, val) {
+        this.clear_highlight()
+        this.highlighted.set(pos, val);
+    }
+
+    clear_highlight() {
+        this.highlighted.clear();
     }
 
     is_bit_active(pos) {
@@ -32,8 +52,8 @@ class Word {
 
     number() {
         let res = 0;
-        for (let i=0; i < this.bit_count; i++) {
-            res += this.bits[i + this.lsb_index] << i;
+        for (let i=0; i < 8; i++) {
+            res += this.bits[i] << i;
         }
 
         return res;
@@ -48,7 +68,7 @@ class Word {
         let borrow_in = 0;
         let borrow_out = 0;
 
-        for (let i=0; i < 16; i++) {
+        for (let i=0; i < 8; i++) {
             let a = this.bits[i];
             let b = B.bits[i];
 
@@ -68,7 +88,7 @@ class Word {
         let borrow_in = 0;
         let borrow_out = 0;
 
-        for (let i=0; i < 16; i++) {
+        for (let i=0; i < 8; i++) {
             let a = this.bits[i];
             let b = B.bits[i];
 
@@ -85,76 +105,117 @@ class Word {
         return res;
     }
 
+    get_bit(pos) {
+        return this.bits[pos];
+    }
+
     set_bit(pos) {
         this.bits[pos] = 1;
     }
 }
 
 class State {
-    constructor(comment, relation, a, b, c) {
+    constructor(comment, relation, dividend, divisor, reminder, quotient) {
         this.comment  = comment
         this.relation = relation
-        this.a = a.clone();
-        this.b = b.clone();
-        this.c = c.clone();
+        this.dividend = dividend.clone();
+        this.divisor  = divisor.clone();
+        this.reminder = reminder.clone();
+        this.quotient = quotient.clone();
     }
 }
 
-function long_divide(a, b) {
+function long_divide(dividend, divisor) {
     let states = [];
 
-    for (let i=0; i < 8; i++) {
-        b.shift_left_inplace();
-    }
-    b.lsb_index = 8;
-    b.bit_count = 8;
-    for (let i=15; i >= 0; i--) {
-        if (b.bits[i] == 1) {
+    divisor.lsb_index = 0;
+    divisor.bit_count = 8;
+    for (let i=7; i >= 0; i--) {
+        if (divisor.bits[i] == 1) {
             break;
         }
 
-        b.bit_count -= 1;
+        divisor.bit_count -= 1;
     }
 
-    a.lsb_index = b.lsb_index;
-    a.bit_count = 8;
+    let dv = divisor.number();
+
+    let reminder = new Word(0);
+    reminder.lsb_index = 0;
+    reminder.bit_count = 0;
 
     let quotient = new Word(0);
-    quotient.lsb_index = 16;
+    quotient.lsb_index = 8;
     quotient.bit_count = 0;
 
-    states.push(new State("initial state", "", a, b, quotient));
-
-    for (let i=7; i >= 0; i--) {
-        a.shift_left_inplace();
-
-        let av = a.number();
-        let bv = b.number();
-        let relation = "";
-        if (av >= bv) {
-            relation = av + " ≥ " + bv + " ⇒ " + "1"
-        } else {
-            relation = av + " < " + bv + " ⇒ " + "0"
+    function capture_state(caption, relation) {
+        if (relation == undefined) {
+            relation = "";
         }
 
-        states.push(new State("include bit #" + i + " of dividend", relation, a, b, quotient));
+        states.push(new State(caption, relation, dividend, divisor, reminder, quotient));
 
-        if (a.ge(b)) {
-            a = a.sub(b);
-            states.push(new State("subtracting divisor", relation, a, b, quotient));
+        dividend.clear_highlight();
+        divisor.clear_highlight();
+        reminder.clear_highlight();
+        quotient.clear_highlight();
+    }
 
-            quotient.set_bit(i + 8);
+    capture_state("initial state");
+
+    for (let i=7; i >= 0; i--) {
+        reminder.shift_left_inplace();
+        reminder.lsb_index = 1;
+
+        if (i < 7) {
+            capture_state("make room for the next bit #" + i + " of dividend");
+        }
+
+        bit = dividend.get_bit(i)
+        if (bit) {
+            dividend.highlight_single(i, "copy1");
+            reminder.highlight_single(0, "copy1");
+            reminder.set_bit(0);
+        } else {
+            dividend.highlight_single(i, "copy0");
+            reminder.highlight_single(0, "copy0");
+        }
+
+        reminder.lsb_index = 0;
+        reminder.bit_count += 1;
+        capture_state("copy bit #" + i + " of dividend", "")
+
+        let rv = reminder.number();
+        let relation = "";
+        if (rv >= dv) {
+            relation = rv + " ≥ " + dv + " ⇒ " + "1"
+        } else {
+            relation = rv + " < " + dv + " ⇒ " + "0"
+        }
+
+        divisor.highlight_active("compare");
+        reminder.highlight_active("compare");
+        capture_state("compare divisor and reminder", relation);
+
+        if (reminder.ge(divisor)) {
+            reminder = reminder.sub(divisor);
+            capture_state("subtracting divisor", relation);
+
+            quotient.set_bit(i);
             quotient.lsb_index -= 1;
             quotient.bit_count += 1;
-            states.push(new State("set bit #" + i + " of quotient", relation, a, b, quotient));
+
+            quotient.highlight_single(i, "copy1");
+            capture_state("set bit #" + i + " of quotient", relation);
         } else {
             quotient.lsb_index -= 1;
             quotient.bit_count += 1;
-            states.push(new State("reset bit #" + i + " of quotient", relation, a, b, quotient));
+            quotient.highlight_single(i, "copy0");
+            capture_state("reset bit #" + i + " of quotient", relation);
         }
     }
 
-    states.push(new State("dividend contains the remainder", "", a, b, quotient))
+    capture_state("finished");
 
     return states;
 }
@@ -162,7 +223,7 @@ function long_divide(a, b) {
 class WordView {
     constructor(doc, name) {
         this.bits = []
-        for (let i=0; i < 16; i++) {
+        for (let i=0; i < 8; i++) {
             let id = name + "_" + i;
             this.bits.push(doc.getElementById(id));
         }
@@ -171,11 +232,12 @@ class WordView {
     }
 
     unset() {
-        for (let i=0; i < 16; i++) {
+        for (let i=0; i < 8; i++) {
             let cell = this.bits[i];
             if (cell) {
                 cell.innerText = "";
                 cell.classList.remove("active");
+                cell.classList.remove("highlighted");
                 cell.classList.add("inactive");
             }
         }
@@ -184,15 +246,18 @@ class WordView {
     }
 
     set(word) {
-        for (let i=0; i < 16; i++) {
+        for (let i=0; i < 8; i++) {
             let cell = this.bits[i];
             if (cell) {
                 cell.innerText = word.bits[i];
+                cell.classList.remove("active", "inactive", "copy0", "copy1", "compare");
                 if (word.is_bit_active(i)) {
                     cell.classList.add("active");
-                    cell.classList.remove("inactive");
+                    let cls = word.highlighted.get(i);
+                    if (cls != undefined) {
+                        cell.classList.add(cls);
+                    }
                 } else {
-                    cell.classList.remove("active");
                     cell.classList.add("inactive");
                 }
             }
@@ -209,6 +274,7 @@ class View {
         this.error    = "";
         this.dividend = new WordView(doc, "dividend");
         this.divisor  = new WordView(doc, "divisor");
+        this.reminder = new WordView(doc, "reminder");
         this.quotient = new WordView(doc, "quotient");
 
         this.start_button  = doc.getElementById("start");
@@ -223,9 +289,10 @@ class View {
         if (len > 0) {
             let state = this.states[this.state_id];
 
-            this.dividend.set(state.a);
-            this.divisor.set(state.b);
-            this.quotient.set(state.c);
+            this.dividend.set(state.dividend);
+            this.divisor.set(state.divisor);
+            this.reminder.set(state.reminder);
+            this.quotient.set(state.quotient);
 
             this.prev_button.disabled = this.state_id == 0;
             this.next_button.disabled = this.state_id >= len - 1;
