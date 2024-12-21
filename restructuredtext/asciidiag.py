@@ -114,12 +114,15 @@ def main():
             transformed.dump()
 
 
-def make_converter(cssclass):
+def make_converter():
     rules = RuleMatcher(all_rules)
 
-    def convert(lines):
+    def convert(lines, cssclass, transform):
         canvas, styles = parse(lines, unindent=True)
-        transformed = apply_rules(canvas, rules)
+        if transform:
+            transformed = apply_rules(canvas, rules)
+        else:
+            transformed = canvas
 
         def callback(styles):
             if styles is None:
