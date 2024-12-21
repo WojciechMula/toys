@@ -1,6 +1,6 @@
 void avx2_long_div_u8(const uint8_t* A, const uint8_t* B, uint8_t* C, size_t n) {
-    const __m256i msb = _mm256_set1_epi8(int8_t(0x80));
-    const __m256i lsb = _mm256_set1_epi8(0x01);
+    const __m256i msb  = _mm256_set1_epi8(int8_t(0x80));
+    const __m256i zero = _mm256_set1_epi8(0x00);
 
     for (size_t i=0; i < n; i += 32) {
         __m256i aa = _mm256_loadu_si256((__m256i*)(&A[i]));
@@ -13,10 +13,9 @@ void avx2_long_div_u8(const uint8_t* A, const uint8_t* B, uint8_t* C, size_t n) 
         __m256i c   = _mm256_set1_epi16(0);
         for (int j=0; j < 8; j++) {
             {
-                const __m256i t0 = _mm256_and_si256(aa, msb);
-                const __m256i t1 = _mm256_min_epu8(t0, lsb);
+                const __m256i t0 = _mm256_cmpgt_epi8(zero, aa);
                 aa = _mm256_add_epi8(aa, aa);
-                a  = _mm256_add_epi8(a, t1);
+                a  = _mm256_sub_epi8(a, t0);
             }
 
             const __m256i a_shifted = _mm256_xor_si256(a, msb);

@@ -1,6 +1,6 @@
 void sse_long_div_u8(const uint8_t* A, const uint8_t* B, uint8_t* C, size_t n) {
-    const __m128i msb = _mm_set1_epi8(int8_t(0x80));
-    const __m128i lsb = _mm_set1_epi8(0x01);
+    const __m128i msb  = _mm_set1_epi8(int8_t(0x80));
+    const __m128i zero = _mm_set1_epi8(0x00);
 
     for (size_t i=0; i < n; i += 16) {
         __m128i aa = _mm_loadu_si128((__m128i*)(&A[i]));
@@ -13,9 +13,8 @@ void sse_long_div_u8(const uint8_t* A, const uint8_t* B, uint8_t* C, size_t n) {
         __m128i c   = _mm_set1_epi16(0);
         for (int j=0; j < 8; j++) {
             {
-                const __m128i t0 = _mm_and_si128(aa, msb);
-                const __m128i t1 = _mm_min_epu8(t0, lsb);
-                a  = _mm_add_epi8(a, t1);
+                const __m128i t0 = _mm_cmplt_epi8(aa, zero);
+                a  = _mm_sub_epi8(a, t0);
             }
 
             const __m128i a_shifted = _mm_xor_si128(a, msb);
