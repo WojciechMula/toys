@@ -102,7 +102,7 @@ def main():
         DEMO1,
     ]
 
-    for test in tests[-1:]:
+    for test in tests:
         lines = test.splitlines()
         canvas, styles = parse(lines, unindent=True)
         rules = RuleMatcher(all_rules)
