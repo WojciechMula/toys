@@ -13,7 +13,6 @@ void scalar_div_u8_unrolled4(const uint8_t* a, const uint8_t* b, uint8_t* out, s
     }
 }
 
-__attribute__((optimize("no-tree-vectorize")))
 uint8_t long_div_u8(uint8_t dividend, uint8_t divisor) {
     uint8_t reminder = 0;
     uint8_t quotient = 0;
@@ -39,6 +38,12 @@ uint8_t long_div_u8(uint8_t dividend, uint8_t divisor) {
 
 __attribute__((optimize("no-tree-vectorize")))
 void scalar_long_div_u8(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
+    for (size_t i=0; i < n; i++) {
+        out[i] = long_div_u8(a[i], b[i]);
+    }
+}
+
+void scalar_long_div_u8_autovect(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
     for (size_t i=0; i < n; i++) {
         out[i] = long_div_u8(a[i], b[i]);
     }
