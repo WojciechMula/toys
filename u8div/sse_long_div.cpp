@@ -12,7 +12,7 @@ void sse_long_div_u8(const uint8_t* A, const uint8_t* B, uint8_t* C, size_t n) {
         __m128i reminder = _mm_set1_epi16(0);
         __m128i quotient = _mm_set1_epi16(0);
         for (int j=0; j < 8; j++) {
-            // copy msb of divident into reminder
+            // copy msb of dividend into reminder
             const __m128i t0 = _mm_cmplt_epi8(dividend, zero);
             reminder = _mm_sub_epi8(reminder, t0);
 
