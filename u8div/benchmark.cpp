@@ -33,12 +33,14 @@ int main() {
         BEST_TIME(/**/, avx2_div_u8(a, b, c, SIZE), "AVX2", repeat, SIZE);
         BEST_TIME(/**/, avx2_div_u8_cvtt(a, b, c, SIZE), "AVX2 (cvtt)", repeat, SIZE);
         BEST_TIME(/**/, avx2_div_u8_rcp(a, b, c, SIZE), "AVX2 (rcp)", repeat, SIZE);
+        BEST_TIME(/**/, avx2_div_u8_rcp_4x(a, b, c, SIZE), "AVX2 (4x rcp)", repeat, SIZE);
         BEST_TIME(/**/, avx2_long_div_u8(a, b, c, SIZE), "AVX2 long div", repeat, SIZE);
     #endif
 
     #ifdef HAVE_AVX512
         BEST_TIME(/**/, avx512_div_u8_cvtt(a, b, c, SIZE), "AVX512 (cvtt)", repeat, SIZE);
         BEST_TIME(/**/, avx512_div_u8_rcp(a, b, c, SIZE), "AVX512 (rcp)", repeat, SIZE);
+        BEST_TIME(/**/, avx2_div_u8_rcp_4x(a, b, c, SIZE), "AVX512 (4x rcp)", repeat, SIZE);
         BEST_TIME(/**/, avx512_long_div_u8(a, b, c, SIZE), "AVX512 long div", repeat, SIZE);
     #endif
 }

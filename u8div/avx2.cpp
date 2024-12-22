@@ -109,3 +109,36 @@ void avx2_div_u8_rcp(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n)
         memcpy(&out[i], &buf, 8);
     }
 }
+
+static __m256i divlo_u8_i32x8(__m256i a, __m256i b, float mul) {
+    __m256 af = _mm256_cvtepi32_ps(a);
+    __m256 bf = _mm256_cvtepi32_ps(b);
+    __m256 m1 = _mm256_mul_ps(af, _mm256_set1_ps(1.001f * mul));
+    __m256 m2 = _mm256_rcp_ps(bf);
+    return _mm256_cvttps_epi32(_mm256_mul_ps(m1, m2));
+}
+static __m256i div_u8x32(__m256i a, __m256i b) {
+    __m256i m0 = _mm256_set1_epi32(0x000000ff);
+    __m256i m1 = _mm256_set1_epi32(0x0000ff00);
+    __m256i m2 = _mm256_set1_epi32(0x00ff0000);
+
+    __m256i r0 = divlo_u8_i32x8(_mm256_and_si256(a, m0), _mm256_and_si256(b, m0), 1);
+    __m256i r1 = divlo_u8_i32x8(_mm256_and_si256(a, m1), _mm256_and_si256(b, m1), 1);
+    r1 = _mm256_slli_epi32(r1, 8);
+
+    __m256i r2 = divlo_u8_i32x8(_mm256_and_si256(a, m2), _mm256_and_si256(b, m2), 1<<16);
+    __m256i r3 = divlo_u8_i32x8(_mm256_srli_epi32(a, 24), _mm256_srli_epi32(b, 24), 1);
+    r3 = _mm256_slli_epi32(r3, 24);
+
+    __m256i r01 = _mm256_or_si256(r0, r1);
+    __m256i r23 = _mm256_or_si256(r2, r3);
+    return _mm256_blend_epi16(r01, r23, 0xAA);
+}
+void avx2_div_u8_rcp_4x(const uint8_t* a, const uint8_t* b, uint8_t* out, size_t n) {
+    for (size_t i=0; i < n; i += 32) {
+        __m256i av = _mm256_loadu_si256((__m256i*)(a+i));
+        __m256i bv = _mm256_loadu_si256((__m256i*)(b+i));
+        __m256i rv = div_u8x32(av, bv);
+        _mm256_storeu_si256((__m256i*)(out+i), rv);
+    }
+}
