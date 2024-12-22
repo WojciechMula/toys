@@ -212,6 +212,10 @@ def parse_drawing(lines, styles, unindent):
     canvas.lines = []
     canvas.attributes = []
 
+    indent = min(len(line) - len(line.lstrip()) for line in lines if line)
+    if indent:
+        lines = [line[indent:] for line in lines]
+
     for line in lines:
         if line and line[0] == '^':
             canvas.attributes[-1] = parse_attributes(line, styles)
