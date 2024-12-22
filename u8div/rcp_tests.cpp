@@ -21,28 +21,32 @@ uint8_t sse_div_u8_rcp(uint32_t a, uint32_t b, float a_coef) {
     return buf >> 8;
 }
 
+uint8_t ref[256];
+
+
+bool check_coef(uint32_t b, float coef) {
+    for (uint32_t a=0; a < 256; a++) {
+        const uint32_t got = sse_div_u8_rcp(a, b, coef);
+        if (got != ref[a]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
 int main() {
-    uint8_t ref[256];
     for (uint32_t b=1; b < 256; b++) {
         for (uint32_t a=0; a < 256; a++) {
             ref[a] = a / b;
         }
 
-        bool ok = true;
+        bool ok = false;
         float a_shift = 0.0;
         for (a_shift=1.0; a_shift < 2.0; a_shift += 0.00001) {
-            ok = true;
-            for (uint32_t a=0; a < 256; a++) {
-                const uint32_t got = sse_div_u8_rcp(a, b, a_shift);
-                if (got != ref[a]) {
-                    //printf("a=%d, b=%d, ref=%d, got=%d\n", a, b, ref[a], got);
-                    ok = false;
-                    break;
-                }
-            }
-
-            if (ok) {
+            if (check_coef(b, a_shift)) {
+                ok = true;
                 break;
             }
         }
