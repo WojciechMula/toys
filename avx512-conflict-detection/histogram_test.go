@@ -12,12 +12,24 @@ var functions = []struct {
 	fn   func(input []uint32, output []uint32)
 }{
 	{
+		name: "scalar",
+		fn:   HistogramScalarReference,
+	},
+	{
 		name: "Intel",
 		fn:   histogramIntel,
 	},
 	{
+		name: "IntelPopc",
+		fn:   histogramIntelPopc,
+	},
+	{
 		name: "V2",
 		fn:   histogramV2,
+	},
+	{
+		name: "V3",
+		fn:   histogramV3,
 	},
 }
 
