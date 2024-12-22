@@ -35,12 +35,14 @@ public:
         #ifdef HAVE_SSE
             check("SSE", sse_div_u8);
             check("SSE (no rounding)", sse_div_u8_no_rounding);
+            check("SSE (cvtt)", sse_div_u8_cvtt);
             check("SSE (rcp)", sse_div_u8_rcp);
             check("SSE long div", sse_long_div_u8);
         #endif
 
         #ifdef HAVE_AVX2
             check("AVX2", avx2_div_u8);
+            check("AVX2 (cvtt)", avx2_div_u8_cvtt);
             check("AVX2 (rcp)", avx2_div_u8_rcp);
             check("AVX2 long div", avx2_long_div_u8);
         #endif
