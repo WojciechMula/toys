@@ -16,5 +16,6 @@
 #endif
 
 #ifdef HAVE_AVX512
+#   include "avx512.cpp"
 #   include "avx512_long_div.cpp"
 #endif

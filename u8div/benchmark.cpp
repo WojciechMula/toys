@@ -37,6 +37,8 @@ int main() {
     #endif
 
     #ifdef HAVE_AVX512
+        BEST_TIME(/**/, avx512_div_u8_cvtt(a, b, c, SIZE), "AVX512 (cvtt)", repeat, SIZE);
+        BEST_TIME(/**/, avx512_div_u8_rcp(a, b, c, SIZE), "AVX512 (rcp)", repeat, SIZE);
         BEST_TIME(/**/, avx512_long_div_u8(a, b, c, SIZE), "AVX512 long div", repeat, SIZE);
     #endif
 }

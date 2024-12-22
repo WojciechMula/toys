@@ -3,9 +3,9 @@ void sse_long_div_u8(const uint8_t* A, const uint8_t* B, uint8_t* C, size_t n) {
     const __m128i zero = _mm_set1_epi8(0x00);
 
     for (size_t i=0; i < n; i += 16) {
-        __m128i dividend = _mm_loadu_si128((__m128i*)(&A[i]));
+        __m128i dividend = _mm_loadu_si128((const __m128i*)(&A[i]));
 
-        const __m128i divisor = _mm_loadu_si128((__m128i*)(&B[i]));
+        const __m128i divisor = _mm_loadu_si128((const __m128i*)(&B[i]));
         __m128i divisor_xored = _mm_xor_si128(divisor, msb);
 
         __m128i bit      = msb;

@@ -48,6 +48,8 @@ public:
         #endif
 
         #ifdef HAVE_AVX512
+            check("AVX512 (cvtt)", avx512_div_u8_cvtt);
+            check("AVX512 (rcp)", avx512_div_u8_rcp);
             check("AVX512 long div", avx512_long_div_u8);
         #endif
 

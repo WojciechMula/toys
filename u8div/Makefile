@@ -16,7 +16,7 @@ ALL=unittest_sse \
 DEPS=scalar.cpp impl.cpp
 SSE_DEPS=sse.cpp sse_long_div.cpp
 AVX2_DEPS=avx2.cpp avx2_long_div.cpp
-AVX512_DEPS=avx512_long_div.cpp
+AVX512_DEPS=avx512.cpp avx512_long_div.cpp
 
 all: $(ALL)
 
