@@ -1,15 +1,80 @@
 #include <cstdio>
+#include <map>
 #include <vector>
+#include <thread>
 
 #include "impl.cpp"
 
 #define SIZE 65536
 
-class Application {
-    uint16_t dividend[SIZE + 64];
-    uint16_t divisor[SIZE + 64];
+unsigned int thread_count() {
+    const unsigned int n = std::thread::hardware_concurrency();
+    if (n == 0) {
+        return 1;
+    }
+
+    return n;
+}
+
+struct Error {
+    size_t   index;
+    uint32_t dividend;
+    uint32_t divisor;
+    uint16_t got;
+    uint16_t want;
+};
+
+struct State {
+    std::vector<Error> errors;
+
+    const bool is_ok() {
+        return errors.empty();
+    }
+};
+
+void check_range(uint32_t bmin, uint32_t bmax, signature_t func, State* state) {
+    uint16_t dividend_arr[SIZE + 64];
+    uint16_t divisor_arr[SIZE + 64];
     uint16_t reference[SIZE + 64];
-    bool    all_ok;
+    uint16_t got[SIZE + 64];
+
+    // 1. all values of dividend
+    for (size_t i = 0; i < 65536; i++) {
+        dividend_arr[i] = i;
+    }
+
+    // 2. iterate over divisor range
+    int errors = 0;
+    for (uint32_t divisor=bmin; divisor <= bmax; divisor++) {
+        for (size_t i=0; i < 65536; i++) {
+            divisor_arr[i] = divisor;
+        }
+
+        memset(got, 0, SIZE);
+        scalar_div_u16(dividend_arr, divisor_arr, reference, SIZE);
+        func(dividend_arr, divisor_arr, got, SIZE);
+
+        for (size_t i=0; i < SIZE; i++) {
+            if (got[i] != reference[i]) {
+                auto err = Error{};
+                err.index    = i;
+                err.dividend = dividend_arr[i];
+                err.divisor  = divisor_arr[i];
+                err.got      = got[i];
+                err.want     = reference[i];
+                state->errors.push_back(err);
+
+                errors += 1;
+                if (errors == 10) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
+class Application {
+    bool all_ok;
     function_names_t names;
 
 public:
@@ -20,6 +85,7 @@ public:
 
     void run() {
         all_ok = true;
+
 
         #ifdef HAVE_AVX2
             check(avx2_div_u16_cvtt);
@@ -38,45 +104,52 @@ private:
         printf("checking %s... ", names[func].c_str());
         fflush(stdout);
 
-        uint16_t got[SIZE + 64];
+        const unsigned int num_cpus = thread_count();
+        std::vector<State> state;
+        std::vector<std::thread> threads;
+        threads.reserve(num_cpus);
 
-        // 1. all values of dividend
-        for (size_t i = 0; i < 65536; i++) {
-            dividend[i] = i;
+        for (unsigned int i=0; i < num_cpus; i++) {
+            state.push_back(State{});
         }
 
-        // 2. iterate over all divisor
-        int errors = 0;
-        for (uint32_t divisor = 1; divisor < 65536; divisor++) {
-            for (size_t i=0; i < 65536; i++) {
-                this->divisor[i] = divisor;
+        const uint32_t max = 65535;
+        const uint32_t b_inc = max / num_cpus;
+
+        uint32_t bmin = 1;
+        for (unsigned int i=0; i < num_cpus; i++) {
+            uint32_t bmax = bmin + b_inc;
+            if (i + 1 == num_cpus) {
+                bmax = max;
             }
 
-            memset(got, 0, SIZE);
-            scalar_div_u16(this->dividend, this->divisor, reference, SIZE);
-            func(this->dividend, this->divisor, got, SIZE);
+            threads.push_back(std::thread(check_range, bmin, bmax, func, &state[i]));
 
-            for (size_t i=0; i < SIZE; i++) {
-                if (got[i] != reference[i]) {
-                    if (errors == 0) {
-                        putchar('\n');
-                    }
+            bmin = bmax + 1;
+        }
 
-                    printf("item #%lu (%d/%d)\n", i, this->dividend[i], this->divisor[i]);
-                    printf(" got: %d\n", got[i]);
-                    printf("want: %d\n", reference[i]);
+        bool first = true;
+        bool ok = true;
+        for (unsigned int i=0; i < num_cpus; i++) {
+            threads[i].join();
+            if (state[i].is_ok()) {
+                continue;
+            }
 
-                    errors += 1;
-                    if (errors == 10) {
-                        puts("more than 10 errors, bailing out");
-                        divisor = 0x10000; // force the outer loop to exit too
-                        break;
-                    }
-                }
+            ok = false;
+
+            if (first) {
+                putchar('\n');
+                first = false;
+            }
+            for (const auto& err: state[i].errors) {
+                printf("item #%lu (%d/%d)\n", err.index, err.dividend, err.divisor);
+                printf(" got: %d\n", err.got);
+                printf("want: %d\n", err.want);
             }
         }
 
-        if (errors == 0) {
+        if (ok) {
             puts("OK");
         } else {
             all_ok = false;
