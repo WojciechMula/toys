@@ -15,7 +15,7 @@ class Application {
 public:
     Application()
         : all_ok(false)
-        , names(function_names_t())
+        , names(function_names())
     {}
 
     void run() {
@@ -23,6 +23,7 @@ public:
 
         #ifdef HAVE_AVX2
             check(avx2_div_u16_cvtt);
+            check(avx2_div_u16_cvtt_ver2);
             check(avx2_div_u16_rcp);
         #endif
 

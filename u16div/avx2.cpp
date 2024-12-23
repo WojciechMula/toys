@@ -33,6 +33,37 @@ void avx2_div_u16_cvtt(const uint16_t* a, const uint16_t* b, uint16_t* out, size
     }
 }
 
+void avx2_div_u16_cvtt_ver2(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
+    const __m256i mask_lo = _mm256_set1_epi32(0x0000ffff);
+
+    for (size_t i=0; i < n; i += 16) {
+        const __m256i a_u16 = _mm256_loadu_si256((const __m256i*)(&a[i]));
+        const __m256i b_u16 = _mm256_loadu_si256((const __m256i*)(&b[i]));
+
+        const __m256i a_lo_u32 = _mm256_and_si256(a_u16, mask_lo);
+        const __m256i b_lo_u32 = _mm256_and_si256(b_u16, mask_lo);
+
+        const __m256i a_hi_u32 = _mm256_srli_epi32(a_u16, 16);
+        const __m256i b_hi_u32 = _mm256_srli_epi32(b_u16, 16);
+
+        const __m256  a_lo_f32 = _mm256_cvtepi32_ps(a_lo_u32);
+        const __m256  a_hi_f32 = _mm256_cvtepi32_ps(a_hi_u32);
+        const __m256  b_lo_f32 = _mm256_cvtepi32_ps(b_lo_u32);
+        const __m256  b_hi_f32 = _mm256_cvtepi32_ps(b_hi_u32);
+
+        const __m256  c_lo_f32 = _mm256_div_ps(a_lo_f32, b_lo_f32);
+        const __m256  c_hi_f32 = _mm256_div_ps(a_hi_f32, b_hi_f32);
+
+        const __m256i c_lo_i32   = _mm256_cvttps_epi32(c_lo_f32); // values in the u16 range
+        const __m256i c_hi_i32_0 = _mm256_cvttps_epi32(c_hi_f32); // values in the u16 range
+        const __m256i c_hi_i32   = _mm256_slli_epi32(c_hi_i32_0, 16);
+
+        const __m256i c_u16 = _mm256_or_si256(c_lo_i32, c_hi_i32);
+
+        _mm256_storeu_si256((__m256i*)(&out[i]), c_u16);
+    }
+}
+
 __m256 nr_step(const __m256 x0, const __m256 a) {
     const __m256 t0 = _mm256_add_ps(x0, x0);
     const __m256 t1 = _mm256_mul_ps(x0, x0);
@@ -62,7 +93,6 @@ void avx2_div_u16_rcp(const uint16_t* a, const uint16_t* b, uint16_t* out, size_
         const __m128i a_u16 = _mm_loadu_si128((const __m128i*)(&a[i]));
         const __m128i b_u16 = _mm_loadu_si128((const __m128i*)(&b[i]));
 
-
         const __m256i a_u32 = _mm256_cvtepu16_epi32(a_u16);
         const __m256  a_f32 = _mm256_cvtepi32_ps(a_u32);
 
@@ -70,8 +100,9 @@ void avx2_div_u16_rcp(const uint16_t* a, const uint16_t* b, uint16_t* out, size_
         const __m256  b_f32 = _mm256_cvtepi32_ps(b_u32);
 
         const __m256  b_inv_f32 = nr_inv(b_f32);
-        const __m256  c_f32   = _mm256_mul_ps(a_f32, b_inv_f32);
-        const __m256i c_i32   = _mm256_cvttps_epi32(c_f32);
+        const __m256  as_f32    = _mm256_mul_ps(a_f32, _mm256_set1_ps(1.000001));
+        const __m256  c_f32     = _mm256_mul_ps(as_f32, b_inv_f32);
+        const __m256i c_i32     = _mm256_cvttps_epi32(c_f32);
 
         const __m256i c_u16   = _mm256_shuffle_epi8(c_i32, u32_u8);
 

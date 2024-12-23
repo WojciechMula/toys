@@ -24,6 +24,7 @@ int main() {
 
     #ifdef HAVE_AVX2
         BENCH(avx2_div_u16_cvtt);
+        BENCH(avx2_div_u16_cvtt_ver2);
         BENCH(avx2_div_u16_rcp);
     #endif
 }

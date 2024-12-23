@@ -21,6 +21,7 @@ function_names_t function_names() {
 
     #ifdef HAVE_AVX2
         names[avx2_div_u16_cvtt] = "AVX2 (cvtt)";
+        names[avx2_div_u16_cvtt_ver2] = "AVX2 (cvtt, v2)";
         names[avx2_div_u16_rcp] = "AVX2 (rcp)";
     #endif
 

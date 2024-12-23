@@ -53,7 +53,6 @@ struct Stats {
     std::map<int, uint64_t> hist;
 };
 
-
 void check(uint32_t bmin, uint32_t bmax, Stats* stats) {
     for (uint32_t b=bmin; b <= bmax; b++) {
         for (uint32_t a=0; a < 65536; a++) {
@@ -66,7 +65,6 @@ void check(uint32_t bmin, uint32_t bmax, Stats* stats) {
     }
 }
 
-
 unsigned int thread_count() {
     const unsigned int n = std::thread::hardware_concurrency();
     if (n == 0) {
@@ -75,7 +73,6 @@ unsigned int thread_count() {
 
     return n;
 }
-
 
 int main() {
     const unsigned int num_cpus = thread_count();
