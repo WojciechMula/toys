@@ -16,11 +16,16 @@ def enwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[
 
 def x86doc_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
-    name = text.upper()
+
+    name, sep, title = text.partition('|')
+    name = name.upper()
+    if sep == '':
+        title = name
+
     url, _ = x86doc.OPCODES[name]
     uri = f"{x86doc.URL}/{url}"
 
-    return [nodes.reference(rawtext, nodes.unescape(name), refuri=uri, **options)], []
+    return [nodes.reference(rawtext, nodes.unescape(title), refuri=uri, **options)], []
 
 def inlinemath_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
