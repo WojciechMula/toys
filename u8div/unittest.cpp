@@ -44,12 +44,14 @@ public:
             check("AVX2", avx2_div_u8);
             check("AVX2 (cvtt)", avx2_div_u8_cvtt);
             check("AVX2 (rcp)", avx2_div_u8_rcp);
+            check("AVX2 (4x rcp)", avx2_div_u8_rcp_4x);
             check("AVX2 long div", avx2_long_div_u8);
         #endif
 
         #ifdef HAVE_AVX512
             check("AVX512 (cvtt)", avx512_div_u8_cvtt);
             check("AVX512 (rcp)", avx512_div_u8_rcp);
+            check("AVX512 (4x rcp)", avx512_div_u8_rcp_4x);
             check("AVX512 long div", avx512_long_div_u8);
         #endif
 
