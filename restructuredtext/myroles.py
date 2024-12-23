@@ -2,6 +2,7 @@ from docutils.parsers.rst.roles import set_classes, nodes, register_canonical_ro
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst.directives import register_directive, flag, class_option
 from asciidiag import make_converter
+import x86doc
 
 def plwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
@@ -12,6 +13,14 @@ def enwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[
     set_classes(options)
     ref, text = wikilink(text, 'en')
     return [nodes.reference(rawtext, nodes.unescape(text), refuri=ref, **options)], []
+
+def x86doc_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    set_classes(options)
+    name = text.upper()
+    url, _ = x86doc.OPCODES[name]
+    uri = f"{x86doc.URL}/{url}"
+
+    return [nodes.reference(rawtext, nodes.unescape(name), refuri=uri, **options)], []
 
 def inlinemath_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
@@ -54,6 +63,7 @@ register_canonical_role('math',   inlinemath_role)
 register_canonical_role('cmath',  centermath_role)
 register_canonical_role('plwiki', plwiki_link_role)
 register_canonical_role('enwiki', enwiki_link_role)
+register_canonical_role('x86',    x86doc_link_role)
 register_directive('asciidiag', AsciiDiag)
 
 
