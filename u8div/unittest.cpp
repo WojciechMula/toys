@@ -10,9 +10,13 @@ class Application {
     uint8_t b[SIZE];
     uint8_t reference[SIZE];
     bool    all_ok;
+    function_names_t names;
 
 public:
-    Application() : all_ok(false) {
+    Application()
+        : all_ok(false)
+        , names(function_names())
+    {
         printf("preparing reference data... ");
         fflush(stdout);
 
@@ -30,29 +34,29 @@ public:
     void run() {
         all_ok = true;
 
-        check("scalar long div", scalar_long_div_u8);
+        check(scalar_long_div_u8);
 
         #ifdef HAVE_SSE
-            check("SSE", sse_div_u8);
-            check("SSE (no rounding)", sse_div_u8_no_rounding);
-            check("SSE (cvtt)", sse_div_u8_cvtt);
-            check("SSE (rcp)", sse_div_u8_rcp);
-            check("SSE long div", sse_long_div_u8);
+            check(sse_div_u8);
+            check(sse_div_u8_no_rounding);
+            check(sse_div_u8_cvtt);
+            check(sse_div_u8_rcp);
+            check(sse_long_div_u8);
         #endif
 
         #ifdef HAVE_AVX2
-            check("AVX2", avx2_div_u8);
-            check("AVX2 (cvtt)", avx2_div_u8_cvtt);
-            check("AVX2 (rcp)", avx2_div_u8_rcp);
-            check("AVX2 (4x rcp)", avx2_div_u8_rcp_4x);
-            check("AVX2 long div", avx2_long_div_u8);
+            check(avx2_div_u8);
+            check(avx2_div_u8_cvtt);
+            check(avx2_div_u8_rcp);
+            check(avx2_div_u8_rcp_4x);
+            check(avx2_long_div_u8);
         #endif
 
         #ifdef HAVE_AVX512
-            check("AVX512 (cvtt)", avx512_div_u8_cvtt);
-            check("AVX512 (rcp)", avx512_div_u8_rcp);
-            check("AVX512 (4x rcp)", avx512_div_u8_rcp_4x);
-            check("AVX512 long div", avx512_long_div_u8);
+            check(avx512_div_u8_cvtt);
+            check(avx512_div_u8_rcp);
+            check(avx512_div_u8_rcp_4x);
+            check(avx512_long_div_u8);
         #endif
 
         if (all_ok) {
@@ -62,8 +66,8 @@ public:
 
 private:
     template<typename T>
-    void check(const char* name, T func) {
-        printf("checking %s... ", name);
+    void check(T func) {
+        printf("checking %s... ", names[func].c_str());
         fflush(stdout);
 
         uint8_t got[SIZE + 64];
