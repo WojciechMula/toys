@@ -52,7 +52,7 @@ function_names_t function_names() {
     #ifdef HAVE_AVX512
         names[avx512_div_u8_cvtt] = "AVX512 (cvtt)";
         names[avx512_div_u8_rcp] = "AVX512 (rcp)";
-        names[avx2_div_u8_rcp_4x] = "AVX512 (4x rcp)";
+        names[avx512_div_u8_rcp_4x] = "AVX512 (4x rcp)";
         names[avx512_long_div_u8] = "AVX512 long div";
     #endif
 
