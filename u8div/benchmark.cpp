@@ -45,7 +45,7 @@ int main() {
     #ifdef HAVE_AVX512
         BENCH(avx512_div_u8_cvtt);
         BENCH(avx512_div_u8_rcp);
-        BENCH(avx2_div_u8_rcp_4x);
+        BENCH(avx512_div_u8_rcp_4x);
         BENCH(avx512_long_div_u8);
     #endif
 }
