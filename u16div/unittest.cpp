@@ -94,6 +94,7 @@ public:
 
         #ifdef HAVE_AVX512
             check(avx512_div_u16_cvtt);
+            check(avx512_div_u16_cvtt_x4);
         #endif
 
         if (all_ok) {

@@ -30,5 +30,6 @@ int main() {
 
     #ifdef HAVE_AVX512
         BENCH(avx512_div_u16_cvtt);
+        BENCH(avx512_div_u16_cvtt_x4);
     #endif
 }
