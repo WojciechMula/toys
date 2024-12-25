@@ -51,7 +51,7 @@ void check_range(uint32_t bmin, uint32_t bmax, signature_t func, State* state) {
             divisor_arr[i] = divisor;
         }
 
-        memset(got, 0, SIZE);
+        memset(got, -1, SIZE);
         scalar_div_u16(dividend_arr, divisor_arr, reference, SIZE);
         func(dividend_arr, divisor_arr, got, SIZE);
 
@@ -94,6 +94,8 @@ public:
         #ifdef HAVE_AVX2
             check(avx2_div_u16_cvtt);
             check(avx2_div_u16_cvtt_ver2);
+            check(avx2_div_u16_cvtt_x4);
+            check(avx2_div_u16_cvtt_x2);
             check(avx2_div_u16_rcp);
         #endif
 
