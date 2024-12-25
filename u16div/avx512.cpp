@@ -1,7 +1,7 @@
 void avx512_div_u16_cvtt(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
     const __m512i mask_lo = _mm512_set1_epi32(0x0000ffff);
 
-    for (size_t i=0; i < n; i += 16) {
+    for (size_t i=0; i < n; i += 32) {
         const __m512i a_u16 = _mm512_loadu_si512((const __m512i*)(&a[i]));
         const __m512i b_u16 = _mm512_loadu_si512((const __m512i*)(&b[i]));
 
@@ -29,19 +29,18 @@ void avx512_div_u16_cvtt(const uint16_t* a, const uint16_t* b, uint16_t* out, si
     }
 }
 
-
 void avx512_div_u16_cvtt_x4(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
     const __m512i mask_lo = _mm512_set1_epi32(0x0000ffff);
 
-    for (size_t i=0; i < n; i += 16*4) {
+    for (size_t i=0; i < n; i += 32*4) {
         const __m512i a0_u16 = _mm512_loadu_si512((const __m512i*)(&a[i]));
         const __m512i b0_u16 = _mm512_loadu_si512((const __m512i*)(&b[i]));
-        const __m512i a1_u16 = _mm512_loadu_si512((const __m512i*)(&a[i + 1*16]));
-        const __m512i b1_u16 = _mm512_loadu_si512((const __m512i*)(&b[i + 1*16]));
-        const __m512i a2_u16 = _mm512_loadu_si512((const __m512i*)(&a[i + 2*16]));
-        const __m512i b2_u16 = _mm512_loadu_si512((const __m512i*)(&b[i + 2*16]));
-        const __m512i a3_u16 = _mm512_loadu_si512((const __m512i*)(&a[i + 3*16]));
-        const __m512i b3_u16 = _mm512_loadu_si512((const __m512i*)(&b[i + 3*16]));
+        const __m512i a1_u16 = _mm512_loadu_si512((const __m512i*)(&a[i + 1*32]));
+        const __m512i b1_u16 = _mm512_loadu_si512((const __m512i*)(&b[i + 1*32]));
+        const __m512i a2_u16 = _mm512_loadu_si512((const __m512i*)(&a[i + 2*32]));
+        const __m512i b2_u16 = _mm512_loadu_si512((const __m512i*)(&b[i + 2*32]));
+        const __m512i a3_u16 = _mm512_loadu_si512((const __m512i*)(&a[i + 3*32]));
+        const __m512i b3_u16 = _mm512_loadu_si512((const __m512i*)(&b[i + 3*32]));
 
         const __m512i a0_lo_u32 = _mm512_and_si512(a0_u16, mask_lo);
         const __m512i b0_lo_u32 = _mm512_and_si512(b0_u16, mask_lo);
@@ -106,8 +105,8 @@ void avx512_div_u16_cvtt_x4(const uint16_t* a, const uint16_t* b, uint16_t* out,
         const __m512i c3_u16 = _mm512_or_si512(c3_lo_i32, c3_hi_i32);
 
         _mm512_storeu_si512((__m512i*)(&out[i]), c0_u16);
-        _mm512_storeu_si512((__m512i*)(&out[i + 1*16]), c1_u16);
-        _mm512_storeu_si512((__m512i*)(&out[i + 2*16]), c2_u16);
-        _mm512_storeu_si512((__m512i*)(&out[i + 3*16]), c3_u16);
+        _mm512_storeu_si512((__m512i*)(&out[i + 1*32]), c1_u16);
+        _mm512_storeu_si512((__m512i*)(&out[i + 2*32]), c2_u16);
+        _mm512_storeu_si512((__m512i*)(&out[i + 3*32]), c3_u16);
     }
 }
