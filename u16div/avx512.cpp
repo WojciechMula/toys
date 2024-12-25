@@ -1,4 +1,4 @@
-void avx512_div_u16_cvtt(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
+void avx512_div_u16(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
     const __m512i mask_lo = _mm512_set1_epi32(0x0000ffff);
 
     for (size_t i=0; i < n; i += 32) {
@@ -29,7 +29,7 @@ void avx512_div_u16_cvtt(const uint16_t* a, const uint16_t* b, uint16_t* out, si
     }
 }
 
-void avx512_div_u16_cvtt_x2(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
+void avx512_div_u16_x2(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
     const __m512i mask_lo = _mm512_set1_epi32(0x0000ffff);
 
     for (size_t i=0; i < n; i += 32*2) {
@@ -77,7 +77,7 @@ void avx512_div_u16_cvtt_x2(const uint16_t* a, const uint16_t* b, uint16_t* out,
     }
 }
 
-void avx512_div_u16_cvtt_x4(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
+void avx512_div_u16_x4(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
     const __m512i mask_lo = _mm512_set1_epi32(0x0000ffff);
 
     for (size_t i=0; i < n; i += 32*4) {

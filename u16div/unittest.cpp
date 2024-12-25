@@ -92,16 +92,16 @@ public:
         all_ok = true;
 
         #ifdef HAVE_AVX2
-            check(avx2_div_u16_cvtt);
-            check(avx2_div_u16_cvtt_ver2);
-            check(avx2_div_u16_cvtt_x4);
-            check(avx2_div_u16_cvtt_x2);
+            check(avx2_div_u16);
+            check(avx2_div_u16_x2);
+            check(avx2_div_u16_x4);
             check(avx2_div_u16_rcp);
         #endif
 
         #ifdef HAVE_AVX512
-            check(avx512_div_u16_cvtt);
-            check(avx512_div_u16_cvtt_x4);
+            check(avx512_div_u16);
+            check(avx512_div_u16_x2);
+            check(avx512_div_u16_x4);
         #endif
 
         if (any_run) {
