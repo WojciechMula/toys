@@ -26,11 +26,13 @@ int main() {
         BENCH(avx2_div_u16_cvtt);
         BENCH(avx2_div_u16_cvtt_ver2);
         BENCH(avx2_div_u16_cvtt_x4);
+        BENCH(avx2_div_u16_cvtt_x2);
         BENCH(avx2_div_u16_rcp);
     #endif
 
     #ifdef HAVE_AVX512
         BENCH(avx512_div_u16_cvtt);
         BENCH(avx512_div_u16_cvtt_x4);
+        BENCH(avx512_div_u16_cvtt_x2);
     #endif
 }

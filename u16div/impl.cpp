@@ -34,6 +34,7 @@ function_names_t function_names() {
     #ifdef HAVE_AVX512
         names[avx512_div_u16_cvtt] = "AVX512 (cvtt)";
         names[avx512_div_u16_cvtt_x4] = "AVX512 (cvtt, x4)";
+        names[avx512_div_u16_cvtt_x2] = "AVX512 (cvtt, x2)";
     #endif
 
     return names;
