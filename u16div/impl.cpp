@@ -11,6 +11,10 @@
 #   include "avx2.cpp"
 #endif
 
+#ifdef HAVE_AVX512
+#   include "avx512.cpp"
+#endif
+
 using signature_t = void(*)(const uint16_t*, const uint16_t*, uint16_t*, size_t);
 using function_names_t = std::map<signature_t, std::string>;
 
@@ -23,6 +27,10 @@ function_names_t function_names() {
         names[avx2_div_u16_cvtt] = "AVX2 (cvtt)";
         names[avx2_div_u16_cvtt_ver2] = "AVX2 (cvtt, v2)";
         names[avx2_div_u16_rcp] = "AVX2 (rcp)";
+    #endif
+
+    #ifdef HAVE_AVX512
+        names[avx512_div_u16_cvtt] = "AVX512 (cvtt)";
     #endif
 
     return names;

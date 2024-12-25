@@ -27,7 +27,7 @@ struct Error {
 struct State {
     std::vector<Error> errors;
 
-    const bool is_ok() {
+    bool is_ok() const {
         return errors.empty();
     }
 };
@@ -86,11 +86,14 @@ public:
     void run() {
         all_ok = true;
 
-
         #ifdef HAVE_AVX2
             check(avx2_div_u16_cvtt);
             check(avx2_div_u16_cvtt_ver2);
             check(avx2_div_u16_rcp);
+        #endif
+
+        #ifdef HAVE_AVX512
+            check(avx512_div_u16_cvtt);
         #endif
 
         if (all_ok) {
@@ -161,5 +164,4 @@ int main() {
     Application app;
 
     app.run();
-
 }

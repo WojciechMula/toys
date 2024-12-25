@@ -1,5 +1,3 @@
-#include "../000helpers/avx2-dump.h"
-
 void avx2_div_u16_cvtt(const uint16_t* a, const uint16_t* b, uint16_t* out, size_t n) {
     const __m128i t0 = _mm_setr_epi8(
         0, 1, 4, 5,
