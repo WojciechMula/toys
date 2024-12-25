@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <map>
+#include <string>
 #include <vector>
 #include <thread>
 
@@ -74,12 +75,16 @@ void check_range(uint32_t bmin, uint32_t bmax, signature_t func, State* state) {
 }
 
 class Application {
+    std::vector<std::string> args;
     bool all_ok;
+    bool any_run;
     function_names_t names;
 
 public:
-    Application()
-        : all_ok(false)
+    Application(std::vector<std::string> args)
+        : args{args}
+        , all_ok(false)
+        , any_run(false)
         , names(function_names())
     {}
 
@@ -97,15 +102,27 @@ public:
             check(avx512_div_u16_cvtt_x4);
         #endif
 
-        if (all_ok) {
-            puts("All OK");
+        if (any_run) {
+            if (all_ok) {
+                puts("All OK");
+            }
+        } else {
+            puts("none of tests matched arguments");
         }
     }
 
 private:
     template<typename T>
     void check(T func) {
-        printf("checking %s... ", names[func].c_str());
+        const auto name = names[func];
+        for (const auto& arg: args) {
+            if (name.find(arg) == std::string::npos) {
+                return;
+            }
+        }
+
+        any_run = true;
+        printf("checking %s... ", name.c_str());
         fflush(stdout);
 
         const unsigned int num_cpus = thread_count();
@@ -161,8 +178,13 @@ private:
     }
 };
 
-int main() {
-    Application app;
+int main(int argc, char* argv[]) {
+    std::vector<std::string> args;
+    for (int i=1; i < argc; i++) {
+        args.push_back(argv[i]);
+    }
+
+    Application app{args};
 
     app.run();
 }

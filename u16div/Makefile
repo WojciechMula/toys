@@ -1,3 +1,4 @@
+# Note: -lpthread may be needed on some systems
 FLAGS=-Wall -Wextra -pedantic -std=c++17 -O3 -ggdb
 AVX2_FLAGS=-march=native -D HAVE_AVX2
 AVX512_FLAGS=-march=icelake-server -D HAVE_AVX512 -D HAVE_AVX2
