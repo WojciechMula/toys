@@ -14,22 +14,22 @@ void scalar_div_u8_unrolled4(const uint8_t* a, const uint8_t* b, uint8_t* out, s
 }
 
 uint8_t long_div_u8(uint8_t dividend, uint8_t divisor) {
-    uint8_t reminder = 0;
+    uint8_t remainder = 0;
     uint8_t quotient = 0;
 
     for (int i=7; i >= 0; i--) {
         // make room for i-th bit of dividend at 0-th position
-        reminder <<= 1;
+        remainder <<= 1;
 
         // inject that bit
-        reminder |= (dividend >> i) & 1;
+        remainder |= (dividend >> i) & 1;
 
-        if (reminder >= divisor) {
+        if (remainder >= divisor) {
             // set i-th bit in quotient
             quotient |= 1 << i;
 
-            // adjust reminder
-            reminder -= divisor;
+            // adjust remainder
+            remainder -= divisor;
         }
     }
 

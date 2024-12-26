@@ -115,12 +115,12 @@ class Word {
 }
 
 class State {
-    constructor(comment, relation, dividend, divisor, reminder, quotient) {
+    constructor(comment, relation, dividend, divisor, remainder, quotient) {
         this.comment  = comment
         this.relation = relation
         this.dividend = dividend.clone();
         this.divisor  = divisor.clone();
-        this.reminder = reminder.clone();
+        this.remainder = remainder.clone();
         this.quotient = quotient.clone();
     }
 }
@@ -140,9 +140,9 @@ function long_divide(dividend, divisor) {
 
     let dv = divisor.number();
 
-    let reminder = new Word(0);
-    reminder.lsb_index = 0;
-    reminder.bit_count = 0;
+    let remainder = new Word(0);
+    remainder.lsb_index = 0;
+    remainder.bit_count = 0;
 
     let quotient = new Word(0);
     quotient.lsb_index = 8;
@@ -153,19 +153,19 @@ function long_divide(dividend, divisor) {
             relation = "";
         }
 
-        states.push(new State(caption, relation, dividend, divisor, reminder, quotient));
+        states.push(new State(caption, relation, dividend, divisor, remainder, quotient));
 
         dividend.clear_highlight();
         divisor.clear_highlight();
-        reminder.clear_highlight();
+        remainder.clear_highlight();
         quotient.clear_highlight();
     }
 
     capture_state("initial state");
 
     for (let i=7; i >= 0; i--) {
-        reminder.shift_left_inplace();
-        reminder.lsb_index = 1;
+        remainder.shift_left_inplace();
+        remainder.lsb_index = 1;
 
         if (i < 7) {
             capture_state("make room for the next bit #" + i + " of dividend");
@@ -174,18 +174,18 @@ function long_divide(dividend, divisor) {
         bit = dividend.get_bit(i)
         if (bit) {
             dividend.highlight_single(i, "copy1");
-            reminder.highlight_single(0, "copy1");
-            reminder.set_bit(0);
+            remainder.highlight_single(0, "copy1");
+            remainder.set_bit(0);
         } else {
             dividend.highlight_single(i, "copy0");
-            reminder.highlight_single(0, "copy0");
+            remainder.highlight_single(0, "copy0");
         }
 
-        reminder.lsb_index = 0;
-        reminder.bit_count += 1;
+        remainder.lsb_index = 0;
+        remainder.bit_count += 1;
         capture_state("copy bit #" + i + " of dividend", "")
 
-        let rv = reminder.number();
+        let rv = remainder.number();
         let relation = "";
         if (rv >= dv) {
             relation = rv + " ≥ " + dv + " ⇒ " + "1"
@@ -194,11 +194,11 @@ function long_divide(dividend, divisor) {
         }
 
         divisor.highlight_active("compare");
-        reminder.highlight_active("compare");
-        capture_state("compare divisor and reminder", relation);
+        remainder.highlight_active("compare");
+        capture_state("compare divisor and remainder", relation);
 
-        if (reminder.ge(divisor)) {
-            reminder = reminder.sub(divisor);
+        if (remainder.ge(divisor)) {
+            remainder = remainder.sub(divisor);
             capture_state("subtracting divisor", relation);
 
             quotient.set_bit(i);
@@ -274,7 +274,7 @@ class View {
         this.error    = "";
         this.dividend = new WordView(doc, "dividend");
         this.divisor  = new WordView(doc, "divisor");
-        this.reminder = new WordView(doc, "reminder");
+        this.remainder = new WordView(doc, "remainder");
         this.quotient = new WordView(doc, "quotient");
 
         this.start_button  = doc.getElementById("start");
@@ -291,7 +291,7 @@ class View {
 
             this.dividend.set(state.dividend);
             this.divisor.set(state.divisor);
-            this.reminder.set(state.reminder);
+            this.remainder.set(state.remainder);
             this.quotient.set(state.quotient);
 
             this.prev_button.disabled = this.state_id == 0;

@@ -15,81 +15,81 @@ void avx512_long_div_u8(const uint8_t* A, const uint8_t* B, uint8_t* C, size_t n
         const __m512i dividend_bit0 = _mm512_and_epi32(_mm512_srli_epi32(dividend, 0), one);
 
         __m512i quotient = _mm512_set1_epi32(0);
-        __m512i reminder = dividend_bit7;
+        __m512i remainder = dividend_bit7;
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
 
-        reminder = _mm512_add_epi32(reminder, reminder);
-        reminder = _mm512_or_epi32(reminder, dividend_bit6);
+        remainder = _mm512_add_epi32(remainder, remainder);
+        remainder = _mm512_or_epi32(remainder, dividend_bit6);
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_add_epi32(quotient, quotient);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
 
-        reminder = _mm512_add_epi32(reminder, reminder);
-        reminder = _mm512_or_epi32(reminder, dividend_bit5);
+        remainder = _mm512_add_epi32(remainder, remainder);
+        remainder = _mm512_or_epi32(remainder, dividend_bit5);
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_add_epi32(quotient, quotient);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
 
-        reminder = _mm512_add_epi32(reminder, reminder);
-        reminder = _mm512_or_epi32(reminder, dividend_bit4);
+        remainder = _mm512_add_epi32(remainder, remainder);
+        remainder = _mm512_or_epi32(remainder, dividend_bit4);
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_add_epi32(quotient, quotient);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
 
-        reminder = _mm512_add_epi32(reminder, reminder);
-        reminder = _mm512_or_epi32(reminder, dividend_bit3);
+        remainder = _mm512_add_epi32(remainder, remainder);
+        remainder = _mm512_or_epi32(remainder, dividend_bit3);
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_add_epi32(quotient, quotient);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
 
-        reminder = _mm512_add_epi32(reminder, reminder);
-        reminder = _mm512_or_epi32(reminder, dividend_bit2);
+        remainder = _mm512_add_epi32(remainder, remainder);
+        remainder = _mm512_or_epi32(remainder, dividend_bit2);
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_add_epi32(quotient, quotient);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
 
-        reminder = _mm512_add_epi32(reminder, reminder);
-        reminder = _mm512_or_epi32(reminder, dividend_bit1);
+        remainder = _mm512_add_epi32(remainder, remainder);
+        remainder = _mm512_or_epi32(remainder, dividend_bit1);
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_add_epi32(quotient, quotient);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
 
-        reminder = _mm512_add_epi32(reminder, reminder);
-        reminder = _mm512_or_epi32(reminder, dividend_bit0);
+        remainder = _mm512_add_epi32(remainder, remainder);
+        remainder = _mm512_or_epi32(remainder, dividend_bit0);
 
 
         {
-            const __mmask64 ge = _mm512_cmpge_epu8_mask(reminder, divisor);
-            reminder = _mm512_mask_sub_epi8(reminder, ge, reminder, divisor);
+            const __mmask64 ge = _mm512_cmpge_epu8_mask(remainder, divisor);
+            remainder = _mm512_mask_sub_epi8(remainder, ge, remainder, divisor);
             quotient = _mm512_add_epi8(quotient, quotient);
             quotient = _mm512_mask_add_epi8(quotient, ge, quotient, one);
         }
