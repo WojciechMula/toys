@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="ternarylogic.css"/>
+    <script src="expr.js"></script>
+    <script src="ternarylogic.js"></script>
+</head>
+<body>
+<h1>AVX-512 ternary functions</h1>
+
+<table id="main" cellpadding="5ex" cellspacing="0">
+<tr><td valign="top">
+    <p>boolean function: <input id="input" value="a or (b ^ c")/></p>
+    <p id="expression"></p>
+    <p id="message"></p>
+
+    <ul>
+        <li>up to three variables are allowed</li>
+        <li>allowed operators: <tt>not</tt>, <tt>and</tt>, <tt>or</tt>,
+        <tt>xor</tt>, alternatively <tt>~</tt>, <tt>&amp;</tt>, <tt>|</tt>, <tt>^</tt></li>
+        <li>for one- or two-variable functions values marked with <b>?</b> are ignored</li>
+    </ul>
+
+    <h2>How to use ternarylogic in code?</h2>
+    <table>
+        <tr>
+            <td>C/C++:</td>
+            <td><tt>_mm512_ternarylogic_epi32(<span class="var_a">a</span>, <span class="var_b">b</span>, <span class="var_c">var_c</span>, 0x<span class="hex">??</span>)</tt></td>
+        </tr>
+        <tr>
+            <td>GNU as:</td>
+            <td><tt>vpternlogd $0x<span class="hex">??</span>, <span class="var_a">a</span>, <span class="var_b">b</span>, <span class="var_c">c</span></tt></td>
+        </tr>
+        <tr>
+            <td>GO asm:</td>
+            <td><tt>VPTERNLOGD $0x<span class="hex">??</span>, <span class="var_a">a</span>, <span class="var_b">b</span>, <span class="var_c">c</span> </tt></td>
+    </table>
+</td><td valign="top">
+    <table border="1" cellpadding="3px" cellspacing="0" id="truthtable">
+    <thead>
+        <tr>
+            <td class="var_a" title="weight 4">a</td>
+            <td class="var_b" title="weight 2">b</td>
+            <td class="var_c" title="weight 1">c</td>
+            <td id="function"></td>
+        </tr>
+    </thead>
+        <tr id="row0"><td>0</td><td>0</td><td>0</td><td id="func0">&mdash;</td>
+        <tr id="row1"><td>0</td><td>0</td><td>1</td><td id="func1">&mdash;</td></tr>
+        <tr id="row2"><td>0</td><td>1</td><td>0</td><td id="func2">&mdash;</td></tr>
+        <tr id="row3"><td>0</td><td>1</td><td>1</td><td id="func3">&mdash;</td></tr>
+        <tr id="row4"><td>1</td><td>0</td><td>0</td><td id="func4">&mdash;</td></tr>
+        <tr id="row5"><td>1</td><td>0</td><td>1</td><td id="func5">&mdash;</td></tr>
+        <tr id="row6"><td>1</td><td>1</td><td>0</td><td id="func6">&mdash;</td></tr>
+        <tr id="row7"><td>1</td><td>1</td><td>1</td><td id="func7">&mdash;</td></tr>
+        <tr><td colspan="3">hex</td><td><tt class="hex"></tt></td></tr>
+    <tbody>
+    </tbody>
+    </table>
+</tr>
+</table>
+</body>
+</html>

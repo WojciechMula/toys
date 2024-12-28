@@ -1,0 +1,40 @@
+body {
+    font-family: sans-serif;
+	margin: 2em;
+}
+
+h1 {
+    color: darkblue;
+    text-align: center;
+}
+
+h2 {
+    color: darkblue;
+}
+
+.error {
+    color: red;
+}
+
+#main {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#truthtable thead {
+    font-weight: bold;
+    background: #ccf;
+}
+
+#truthtable tr.zero {
+    background: #eee;
+}
+
+#truthtable tr.one {
+    background: #cfc;
+}
+
+#truthtable td {
+    width: 4em;
+    text-align: center;
+}
