@@ -1,0 +1,8 @@
+benchmark_pdep_avx2
+benchmark_pext_avx2
+benchmark_pdep_avx512
+benchmark_pext_avx512
+unittest_pdep_avx2
+unittest_pext_avx2
+unittest_pdep_avx512
+unittest_pext_avx512
