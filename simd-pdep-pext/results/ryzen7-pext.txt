@@ -1,0 +1,20 @@
+testing any mask
+pext scalar                   	:     0.915 cycle/op (best)    1.012 cycle/op (avg)
+pext AVX2                     	:     4.536 cycle/op (best)    4.549 cycle/op (avg)
+pext AVX2 (early exit)        	:     6.133 cycle/op (best)    6.174 cycle/op (avg)
+testing mask having no more than 6 bits set
+pext scalar                   	:     0.918 cycle/op (best)    0.957 cycle/op (avg)
+pext AVX2 (6 bit)             	:     0.834 cycle/op (best)    0.862 cycle/op (avg)
+pext AVX2 (6 bit, early exit) 	:     0.896 cycle/op (best)    0.923 cycle/op (avg)
+testing mask having no more than 8 bits set
+pext scalar                   	:     0.909 cycle/op (best)    0.938 cycle/op (avg)
+pext AVX2 (8 bit)             	:     0.896 cycle/op (best)    0.914 cycle/op (avg)
+pext AVX2 (8 bit, early exit) 	:     1.195 cycle/op (best)    1.207 cycle/op (avg)
+testing mask having no more than 16 bits set
+pext scalar                   	:     0.909 cycle/op (best)    0.938 cycle/op (avg)
+pext AVX2 (16 bit)            	:     2.005 cycle/op (best)    2.022 cycle/op (avg)
+pext AVX2 (16 bit, early exit)	:     4.160 cycle/op (best)    4.169 cycle/op (avg)
+testing mask having no more than 24 bits set
+pext scalar                   	:     0.911 cycle/op (best)    0.939 cycle/op (avg)
+pext AVX2 (24 bit)            	:     3.297 cycle/op (best)    3.314 cycle/op (avg)
+pext AVX2 (24 bit, early exit)	:     5.310 cycle/op (best)    5.322 cycle/op (avg)

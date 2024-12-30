@@ -1,0 +1,19 @@
+pdep scalar                     :     1.276 cycle/op (best)    1.512 cycle/op (avg)
+pdep AVX2                       :     7.091 cycle/op (best)    7.857 cycle/op (avg)
+pdep AVX2 (early exit)          :     7.452 cycle/op (best)    8.317 cycle/op (avg)
+testing mask having no more than 6 bits set
+pdep scalar                     :     1.246 cycle/op (best)    1.479 cycle/op (avg)
+pdep AVX2 (6 bit)               :     1.318 cycle/op (best)    1.472 cycle/op (avg)
+pdep AVX2 (6 bit, early exit)   :     1.498 cycle/op (best)    1.699 cycle/op (avg)
+testing mask having no more than 8 bits set
+pdep scalar                     :     1.250 cycle/op (best)    1.441 cycle/op (avg)
+pdep AVX2 (8 bit)               :     1.517 cycle/op (best)    1.768 cycle/op (avg)
+pdep AVX2 (8 bit, early exit)   :     2.038 cycle/op (best)    2.282 cycle/op (avg)
+testing mask having no more than 16 bits set
+pdep scalar                     :     1.270 cycle/op (best)    1.476 cycle/op (avg)
+pdep AVX2 (16 bit)              :     3.130 cycle/op (best)    3.472 cycle/op (avg)
+pdep AVX2 (16 bit, early exit)  :     5.497 cycle/op (best)    6.062 cycle/op (avg)
+testing mask having no more than 24 bits set
+pdep scalar                     :     1.282 cycle/op (best)    1.484 cycle/op (avg)
+pdep AVX2 (24 bit)              :     5.244 cycle/op (best)    5.795 cycle/op (avg)
+pdep AVX2 (24 bit, early exit)  :     6.835 cycle/op (best)    7.715 cycle/op (avg)
