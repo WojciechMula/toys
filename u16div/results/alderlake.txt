@@ -1,0 +1,5 @@
+scalar                          :     3.368 cycle/op (best)    3.714 cycle/op (avg)
+AVX2                            :     0.389 cycle/op (best)    0.507 cycle/op (avg)
+AVX2 (x2)                       :     0.384 cycle/op (best)    0.477 cycle/op (avg)
+AVX2 (x4)                       :     0.376 cycle/op (best)    0.518 cycle/op (avg)
+AVX2 (rcp)                      :     0.440 cycle/op (best)    0.531 cycle/op (avg)
