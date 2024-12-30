@@ -60,6 +60,7 @@ class AsciiDiag(Directive):
 
         node = nodes.raw('', ascii_diag(self.content, cssclass, transform), **self.options)
         node['format']  = 'html'
+        node['classes'] = ['asciidiag']
 
         return [node]
 
