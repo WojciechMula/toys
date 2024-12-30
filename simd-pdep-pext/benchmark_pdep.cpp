@@ -32,24 +32,6 @@ int main() {
     #endif
 
     {
-        constexpr int bits = 8;
-        printf("testing mask having no more than %d bits set\n", bits);
-        for (size_t i=0; i < SIZE; i++) {
-            mask[i] = rand(random_engine, bits);
-        }
-
-        BENCH(scalar_pdep_u32);
-        #ifdef HAVE_AVX2
-            BENCH(avx2_pdep_u32_8bits);
-            BENCH(avx2_pdep_u32_8bits_ee);
-        #endif
-        #ifdef HAVE_AVX512
-            BENCH(avx512_pdep_u32_8bits);
-            BENCH(avx512_pdep_u32_8bits_ee);
-        #endif
-    }
-
-    {
         constexpr int bits = 6;
         printf("testing mask having no more than %d bits set\n", bits);
         for (size_t i=0; i < SIZE; i++) {
