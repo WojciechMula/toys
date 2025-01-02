@@ -22,8 +22,9 @@ def x86doc_link_role(role, rawtext, text, lineno, inliner, options={}, content=[
     if sep == '':
         title = name
 
-    url, _ = x86doc.OPCODES[name]
-    uri = f"{x86doc.URL}/{url}"
+    print(x86doc.OPCODES)
+    base_url, rel = x86doc.OPCODES[name]
+    uri = f"{base_url}/{rel}"
 
     return [nodes.reference(rawtext, nodes.unescape(title), refuri=uri, **options)], []
 
