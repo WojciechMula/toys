@@ -4,15 +4,18 @@ from docutils.parsers.rst.directives import register_directive, flag, class_opti
 from asciidiag import make_converter
 import x86doc
 
+
 def plwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
     ref, text = wikilink(text, 'pl')
     return [nodes.reference(rawtext, nodes.unescape(text), refuri=ref, **options)], []
 
+
 def enwiki_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
     ref, text = wikilink(text, 'en')
     return [nodes.reference(rawtext, nodes.unescape(text), refuri=ref, **options)], []
+
 
 def x86doc_link_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
@@ -28,12 +31,14 @@ def x86doc_link_role(role, rawtext, text, lineno, inliner, options={}, content=[
 
     return [nodes.reference(rawtext, nodes.unescape(title), refuri=uri, **options)], []
 
+
 def inlinemath_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
     node = nodes.raw(rawtext, simplemath(text), **options)
     node['classes'] = ['math']
     node['format']  = 'html'
     return [node], []
+
 
 def centermath_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
@@ -45,9 +50,10 @@ def centermath_role(role, rawtext, text, lineno, inliner, options={}, content=[]
 
 ascii_diag = make_converter()
 
+
 class AsciiDiag(Directive):
     has_content = True
-    optional_arguments = 2;
+    optional_arguments = 2
     option_spec = {
         'notransform': flag,
         'class': class_option,
@@ -99,7 +105,6 @@ class Trie(object):
         self.next = {}
         self.val = None
 
-
     def add_word(self, word, value):
         assert value is not None
         node = self
@@ -109,7 +114,6 @@ class Trie(object):
             node = node.next[c]
 
         node.val = value
-
 
     def longest_prefix(self, word):
         node  = self
@@ -237,7 +241,8 @@ def process_part(s):
         n = len(s)
         i = 0
         while i < n:
-            if not pred(s[i]): break
+            if not pred(s[i]):
+                break
             i += 1
 
         if i:

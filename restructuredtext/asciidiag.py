@@ -139,7 +139,7 @@ def make_converter():
 
         s  = f'<pre class="{cssclass}">'
         s += '\n'.join(apply_styles(transformed, styles, callback))
-        s += f'</pre>'
+        s += '</pre>'
 
         return s
 

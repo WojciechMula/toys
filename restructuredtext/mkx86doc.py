@@ -3,6 +3,7 @@ from pathlib import Path
 from io import StringIO
 import sys
 
+
 def main():
     base_url1 = sys.argv[1].removesuffix('/')
     html1     = Path(sys.argv[2])
@@ -29,6 +30,7 @@ def main():
             struct.title = title
 
     f = StringIO()
+
     def writeln(s):
         f.write(s + '\n')
 
@@ -42,14 +44,14 @@ def main():
             writeln(f' "{name}": (URL2, "{struct.url2}"),')
     writeln("}")
 
-    update_file(Path("x86doc.py"), f.getvalue())
+    update_file(py, f.getvalue())
 
 
 class Struct:
     def __init__(self):
-       self.url1 = None
-       self.url2 = None
-       self.title = None
+        self.url1 = None
+        self.url2 = None
+        self.title = None
 
 
 def parse_henk(path):
