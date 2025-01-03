@@ -38,6 +38,7 @@ uint64_t rdtsc_overhead_func(uint64_t dummy) {
 }
 
 uint64_t global_rdtsc_overhead = (uint64_t) UINT64_MAX;
+int global_label_width = 30;
 
 #define RDTSC_SET_OVERHEAD(test, repeat)			                \
   do {								                                \
@@ -67,7 +68,8 @@ uint64_t global_rdtsc_overhead = (uint64_t) UINT64_MAX;
         if (global_rdtsc_overhead == UINT64_MAX) {                      \
            RDTSC_SET_OVERHEAD(rdtsc_overhead_func(1), repeat);          \
         }                                                               \
-        printf("%-30s\t: ", test_name); fflush(stdout);                 \
+        printf("%-*s\t: ", global_label_width, test_name);              \
+        fflush(stdout);                                                 \
         uint64_t cycles_start, cycles_final, cycles_diff;               \
         uint64_t min_diff = (uint64_t)-1;                               \
         uint64_t sum_diff = 0;                                          \

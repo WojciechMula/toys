@@ -17,6 +17,7 @@ int main() {
     }
 
     auto names = function_names();
+    global_label_width = (int)longest_function_label(names);
 
     const size_t repeat = 100;
 
