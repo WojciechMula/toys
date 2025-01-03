@@ -29,6 +29,8 @@ int main() {
     #ifdef HAVE_AVX512
         BENCH(avx512_pdep_u32);
         BENCH(avx512_pdep_u32_ee);
+        BENCH(avx512_pdep_u32_ver2);
+        BENCH(avx512_pdep_u32_ver2_ee);
     #endif
 
     {
