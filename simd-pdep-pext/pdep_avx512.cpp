@@ -94,3 +94,88 @@ void avx512_pdep_u32_16bits_ee(const uint32_t* data_arr, const uint32_t* mask_ar
 void avx512_pdep_u32_24bits_ee(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
     avx512_pdep_u32_reference<24, early_exit>(data_arr, mask_arr, out_arr, n);
 }
+
+
+template <int MAX_MASK_BITS, bool EARLY_EXIT>
+void avx512_pdep_u32_ver2_reference(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    static_assert(MAX_MASK_BITS > 0);
+    static_assert(MAX_MASK_BITS <= 32);
+
+    const __m512i one  = _mm512_set1_epi32(1);
+    const __m512i zero = _mm512_set1_epi32(0);
+    for (size_t i=0; i < n; i += 16) {
+        __m512i data = _mm512_loadu_si512((const __m512i*)(&data_arr[i]));
+        __m512i mask = _mm512_loadu_si512((const __m512i*)(&mask_arr[i]));
+        __m512i out  = _mm512_set1_epi32(0);
+
+        __m512i bit = one;
+
+        for (int j=0; j < MAX_MASK_BITS; j++) {
+            // 1. get k-th data bits in a mask register
+            const __mmask64 m = _mm512_test_epi32_mask(data, bit);
+
+            // 2. isolate the first non-zoro bit set of mask (at m)
+
+            //                                                 mask = [0101_1001_1100_0000|0000_1110_1100_1000|...]
+            const __m512i m0 = _mm512_sub_epi32(mask, one); // m0   = [0101_1001_1011_1111|0000_1110_1100_0111|...]
+            const __m512i m1 = _mm512_and_si512(mask, m0);  // m1   = [0101_1001_1000_0000|0000_1110_1100_0000|...]
+
+            // 3. out = out | (mask ^ m1)
+            out = _mm512_mask_ternarylogic_epi32(out, m, mask, m1, 0xf6);
+
+            // 4. the next mask value
+            mask = m1;
+
+            // 5. the next bit in data to check
+            bit = _mm512_add_epi32(bit, bit);
+
+            // 6. all are zeros?
+            if (EARLY_EXIT && (_mm512_cmpeq_epi32_mask(zero, mask) == 0xffff)) {
+                break;
+            }
+        }
+
+        _mm512_storeu_si512((__m512i*)(&out_arr[i]), out);
+    }
+}
+
+
+void avx512_pdep_u32_ver2(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<32, no_early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_6bits(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<6, no_early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_8bits(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<8, no_early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_16bits(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<16, no_early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_24bits(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<24, no_early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_ee(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<32, early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_6bits_ee(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<6, early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_8bits_ee(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<8, early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_16bits_ee(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<16, early_exit>(data_arr, mask_arr, out_arr, n);
+}
+
+void avx512_pdep_u32_ver2_24bits_ee(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    avx512_pdep_u32_ver2_reference<24, early_exit>(data_arr, mask_arr, out_arr, n);
+}

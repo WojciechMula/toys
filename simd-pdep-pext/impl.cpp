@@ -76,6 +76,17 @@ function_names_t function_names() {
         names[avx512_pdep_u32_8bits_ee] = "pdep AVX512 (8 bit, early exit)";
         names[avx512_pdep_u32_16bits_ee] = "pdep AVX512 (16 bit, early exit)";
         names[avx512_pdep_u32_24bits_ee] = "pdep AVX512 (24 bit, early exit)";
+
+        names[avx512_pdep_u32_ver2] = "pdep AVX512 v2";
+        names[avx512_pdep_u32_ver2_6bits] = "pdep AVX512 v2 (6 bit)";
+        names[avx512_pdep_u32_ver2_8bits] = "pdep AVX512 v2 (8 bit)";
+        names[avx512_pdep_u32_ver2_16bits] = "pdep AVX512 v2 (16 bit)";
+        names[avx512_pdep_u32_ver2_24bits] = "pdep AVX512 v2 (24 bit)";
+        names[avx512_pdep_u32_ver2_ee] = "pdep AVX512 v2 (early exit)";
+        names[avx512_pdep_u32_ver2_6bits_ee] = "pdep AVX512 v2 (6 bit, early exit)";
+        names[avx512_pdep_u32_ver2_8bits_ee] = "pdep AVX512 v2 (8 bit, early exit)";
+        names[avx512_pdep_u32_ver2_16bits_ee] = "pdep AVX512 v2 (16 bit, early exit)";
+        names[avx512_pdep_u32_ver2_24bits_ee] = "pdep AVX512 v2 (24 bit, early exit)";
     #endif
 
     return names;

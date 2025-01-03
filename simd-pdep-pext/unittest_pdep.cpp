@@ -30,10 +30,11 @@ unsigned int thread_count() {
 }
 
 class Application {
+    std::vector<std::string> args;
     function_names_t names;
 
 public:
-    Application() : names(function_names()) {}
+    Application(std::vector<std::string> args) : args{args}, names{function_names()} {}
 
     void run() {
         std::random_device random_device;
@@ -46,12 +47,17 @@ public:
         #ifdef HAVE_AVX512
             test(avx512_pdep_u32, cases_count, random_device);
             test(avx512_pdep_u32_ee, cases_count, random_device);
+            test(avx512_pdep_u32_ver2, cases_count, random_device);
+            test(avx512_pdep_u32_ver2_ee, cases_count, random_device);
         #endif
     }
 
 private:
     void test(signature_t func, size_t cases_count, std::random_device& rd) {
-        const auto name = names[func];
+        const auto& name = names.at(func);
+        if (not can_run(name)) {
+            return;
+        }
         printf("checking %s... ", name.c_str());
         fflush(stdout);
 
@@ -89,9 +95,24 @@ private:
             }
         }
     }
+
+    bool can_run(const std::string& name) const {
+        for (const auto& arg: args) {
+            if (name.find(arg) == std::string::npos) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 };
 
-int main() {
-    auto app = Application();
+int main(int argc, char* argv[]) {
+    std::vector<std::string> args;
+    for (int i=1; i < argc; i++) {
+        args.push_back(argv[i]);
+    }
+
+    auto app = Application{args};
     app.run();
 }

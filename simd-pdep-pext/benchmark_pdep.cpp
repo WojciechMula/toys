@@ -46,6 +46,8 @@ int main() {
         #ifdef HAVE_AVX512
             BENCH(avx512_pdep_u32_6bits);
             BENCH(avx512_pdep_u32_6bits_ee);
+            BENCH(avx512_pdep_u32_ver2_6bits);
+            BENCH(avx512_pdep_u32_ver2_6bits_ee);
         #endif
     }
 
@@ -64,6 +66,8 @@ int main() {
         #ifdef HAVE_AVX512
             BENCH(avx512_pdep_u32_8bits);
             BENCH(avx512_pdep_u32_8bits_ee);
+            BENCH(avx512_pdep_u32_ver2_8bits);
+            BENCH(avx512_pdep_u32_ver2_8bits_ee);
         #endif
     }
 
@@ -82,6 +86,8 @@ int main() {
         #ifdef HAVE_AVX512
             BENCH(avx512_pdep_u32_16bits);
             BENCH(avx512_pdep_u32_16bits_ee);
+            BENCH(avx512_pdep_u32_ver2_16bits);
+            BENCH(avx512_pdep_u32_ver2_16bits_ee);
         #endif
     }
 
@@ -100,6 +106,8 @@ int main() {
         #ifdef HAVE_AVX512
             BENCH(avx512_pdep_u32_24bits);
             BENCH(avx512_pdep_u32_24bits_ee);
+            BENCH(avx512_pdep_u32_ver2_24bits);
+            BENCH(avx512_pdep_u32_ver2_24bits_ee);
         #endif
     }
 }
