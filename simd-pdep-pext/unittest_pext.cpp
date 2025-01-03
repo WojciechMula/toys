@@ -20,20 +20,9 @@ void check_pext(signature_t func, size_t iters, State* state) {
     }
 }
 
-unsigned int thread_count() {
-    const unsigned int n = std::thread::hardware_concurrency();
-    if (n == 0) {
-        return 1;
-    }
-
-    return n;
-}
-
-class Application {
-    function_names_t names;
-
+class Application: public ApplicationBase {
 public:
-    Application() : names(function_names()) {}
+    using ApplicationBase::ApplicationBase;
 
     void run() {
         std::random_device random_device;
@@ -46,12 +35,14 @@ public:
         #ifdef HAVE_AVX512
             test(avx512_pext_u32, cases_count, random_device);
             test(avx512_pext_u32_ee, cases_count, random_device);
+            test(avx512_pext_u32_ver2, cases_count, random_device);
+            test(avx512_pext_u32_ver2_ee, cases_count, random_device);
         #endif
     }
 
 private:
     void test(signature_t func, size_t cases_count, std::random_device& rd) {
-        const auto name = names[func];
+        const auto& name = names.at(func);
         printf("checking %s... ", name.c_str());
         fflush(stdout);
 
@@ -91,7 +82,12 @@ private:
     }
 };
 
-int main() {
-    auto app = Application();
+int main(int argc, char* argv[]) {
+    std::vector<std::string> args;
+    for (int i=1; i < argc; i++) {
+        args.push_back(argv[i]);
+    }
+
+    auto app = Application(args);
     app.run();
 }

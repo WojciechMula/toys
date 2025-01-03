@@ -20,21 +20,9 @@ void check_pdep(signature_t func, size_t iters, State* state) {
     }
 }
 
-unsigned int thread_count() {
-    const unsigned int n = std::thread::hardware_concurrency();
-    if (n == 0) {
-        return 1;
-    }
-
-    return n;
-}
-
-class Application {
-    std::vector<std::string> args;
-    function_names_t names;
-
+class Application: public ApplicationBase {
 public:
-    Application(std::vector<std::string> args) : args{args}, names{function_names()} {}
+    using ApplicationBase::ApplicationBase;
 
     void run() {
         std::random_device random_device;
@@ -94,16 +82,6 @@ private:
                     err.data, err.mask, err.got, err.want);
             }
         }
-    }
-
-    bool can_run(const std::string& name) const {
-        for (const auto& arg: args) {
-            if (name.find(arg) == std::string::npos) {
-                return false;
-            }
-        }
-
-        return true;
     }
 };
 

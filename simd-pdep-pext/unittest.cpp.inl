@@ -64,3 +64,32 @@ struct State {
         return true;
     }
 };
+
+class ApplicationBase {
+protected:
+    std::vector<std::string> args;
+    function_names_t names;
+
+public:
+    ApplicationBase(std::vector<std::string> args) : args{args}, names{function_names()} {}
+
+protected:
+    unsigned int thread_count() {
+        const unsigned int n = std::thread::hardware_concurrency();
+        if (n == 0) {
+            return 1;
+        }
+
+        return n;
+    }
+
+    bool can_run(const std::string& name) const {
+        for (const auto& arg: args) {
+            if (name.find(arg) == std::string::npos) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
