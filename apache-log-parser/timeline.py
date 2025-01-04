@@ -95,25 +95,25 @@ def main():
             data.update(parse_log(f, url))
 
     if not data:
-        print "wrong query"
+        print("wrong query")
         return
 
-    max_count = float(max(map(len, data.itervalues())))
+    max_count = float(max(map(len, data.values())))
 
     def bar(count, width=60):
         n = int(width*count/max_count)
         return '=' * n
 
-    print url
+    print(url)
     total = 0
     for key in sorted(data.keys()):
         y, m, d = key
         count = len(data[key])
-        print "%04d-%02d-%02d: %5d %s" % (y, m, d, count, bar(count))
+        print("%04d-%02d-%02d: %5d %s" % (y, m, d, count, bar(count)))
 
         total += count
 
-    print "total: %d" % (total,)
+    print("total: %d" % (total,))
 
 if __name__ == '__main__':
     main()

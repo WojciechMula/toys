@@ -65,11 +65,11 @@ def main():
     L.sort(key=lambda item: item[2], reverse=True) # by visits
 
     for url, visits, visitors in L:
-        print "%-6d %-6d %s" % (visits, visitors, url)
+        print("%-6d %-6d %s" % (visits, visitors, url))
 
     total_visits   = len(all_visitors)
     total_visitors = len(set(all_visitors))
-    print "%-6d %-6d" % (total_visits, total_visitors)
+    print("%-6d %-6d" % (total_visits, total_visitors))
 
 if __name__ == '__main__':
     main()
