@@ -5,17 +5,9 @@
 #include <thread>
 
 #include "impl.cpp"
+#include "argparse.cpp"
 
 #define SIZE 65536
-
-unsigned int thread_count() {
-    const unsigned int n = std::thread::hardware_concurrency();
-    if (n == 0) {
-        return 1;
-    }
-
-    return n;
-}
 
 struct Error {
     size_t   index;
@@ -75,14 +67,16 @@ void check_range(uint32_t bmin, uint32_t bmax, signature_t func, State* state) {
 }
 
 class Application {
-    std::vector<std::string> args;
+    std::optional<size_t> max_threads;
+    std::vector<std::string> fragments;
     bool all_ok;
     bool any_run;
     function_names_t names;
 
 public:
-    Application(std::vector<std::string> args)
-        : args{args}
+    Application(std::optional<size_t> max_threads, std::vector<std::string> fragments)
+        : max_threads{max_threads}
+        , fragments{fragments}
         , all_ok(false)
         , any_run(false)
         , names(function_names())
@@ -117,8 +111,8 @@ private:
     template<typename T>
     void check(T func) {
         const auto name = names[func];
-        for (const auto& arg: args) {
-            if (name.find(arg) == std::string::npos) {
+        for (const auto& frag: fragments) {
+            if (name.find(frag) == std::string::npos) {
                 return;
             }
         }
@@ -178,15 +172,27 @@ private:
             all_ok = false;
         }
     }
+
+    unsigned int thread_count() {
+        if (max_threads) {
+            return max_threads.value();
+        }
+
+        const unsigned int n = std::thread::hardware_concurrency();
+        if (n == 0) {
+            return 1;
+        }
+
+        return n;
+    }
 };
 
 int main(int argc, char* argv[]) {
-    std::vector<std::string> args;
-    for (int i=1; i < argc; i++) {
-        args.push_back(argv[i]);
-    }
+    auto args = Arguments(argc, argv);
+    const auto max_threads = args.consume_usize("--max-threads", 1);
+    const auto fragments   = args.consume_remaining();
 
-    Application app{args};
+    Application app{max_threads, fragments};
 
     app.run();
 }

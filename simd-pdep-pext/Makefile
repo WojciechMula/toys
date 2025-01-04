@@ -17,7 +17,7 @@ ALL=$(BENCH) $(UT)
 
 DEPS=scalar.cpp impl.cpp
 BENCH_DEPS=$(DEPS) benchmark.cpp.inl
-UT_DEPS=$(DEPS) unittest.cpp.inl
+UT_DEPS=$(DEPS) unittest.cpp.inl argparse.cpp
 AVX2_DEPS=pext_avx2.cpp pdep_avx2.cpp
 AVX512_DEPS=pext_avx512.cpp pdep_avx512.cpp
 

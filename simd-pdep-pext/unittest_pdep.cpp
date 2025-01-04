@@ -86,11 +86,7 @@ private:
 };
 
 int main(int argc, char* argv[]) {
-    std::vector<std::string> args;
-    for (int i=1; i < argc; i++) {
-        args.push_back(argv[i]);
-    }
-
-    auto app = Application{args};
+    auto opts = parse_args(argc, argv);
+    auto app = Application{opts};
     app.run();
 }

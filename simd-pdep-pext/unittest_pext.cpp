@@ -43,6 +43,9 @@ public:
 private:
     void test(signature_t func, size_t cases_count, std::random_device& rd) {
         const auto& name = names.at(func);
+        if (not can_run(name)) {
+            return;
+        }
         printf("checking %s... ", name.c_str());
         fflush(stdout);
 
@@ -83,11 +86,7 @@ private:
 };
 
 int main(int argc, char* argv[]) {
-    std::vector<std::string> args;
-    for (int i=1; i < argc; i++) {
-        args.push_back(argv[i]);
-    }
-
-    auto app = Application(args);
+    auto opts = parse_args(argc, argv);
+    auto app = Application(opts);
     app.run();
 }

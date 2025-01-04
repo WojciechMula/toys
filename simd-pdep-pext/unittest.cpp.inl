@@ -5,6 +5,8 @@
 #include <cstdio>
 #include <cassert>
 
+#include "argparse.cpp"
+
 constexpr size_t max_errors = 3;
 constexpr size_t buffer_size = 32*1024;
 constexpr size_t cases_count = 10 * 1024 * buffer_size;
@@ -65,16 +67,25 @@ struct State {
     }
 };
 
+struct Options {
+    std::vector<std::string> fragments;
+    std::optional<size_t> max_threads;
+};
+
 class ApplicationBase {
 protected:
-    std::vector<std::string> args;
+    Options opts;
     function_names_t names;
 
 public:
-    ApplicationBase(std::vector<std::string> args) : args{args}, names{function_names()} {}
+    ApplicationBase(Options opts) : opts{opts}, names{function_names()} {}
 
 protected:
     unsigned int thread_count() {
+        if (opts.max_threads) {
+            return opts.max_threads.value();
+        }
+
         const unsigned int n = std::thread::hardware_concurrency();
         if (n == 0) {
             return 1;
@@ -84,7 +95,7 @@ protected:
     }
 
     bool can_run(const std::string& name) const {
-        for (const auto& arg: args) {
+        for (const auto& arg: opts.fragments) {
             if (name.find(arg) == std::string::npos) {
                 return false;
             }
@@ -93,3 +104,13 @@ protected:
         return true;
     }
 };
+
+Options parse_args(int argc, char* argv[]) {
+    Arguments args{argc, argv};
+
+    Options ret;
+    ret.max_threads = args.consume_usize("--max-threads", 1);
+    ret.fragments = args.consume_remaining();
+
+    return ret;
+}
