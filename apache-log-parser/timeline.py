@@ -48,11 +48,9 @@ def parse_line(line, filter):
 
 
 def parse_log(file, query):
-
     freq = {}
 
     def global_filter(url, ip, code):
-        
         if code != "200":
             return False
 
@@ -83,7 +81,6 @@ def parse_log(file, query):
 
 
 def main():
-    
     import sys
 
     data = {}

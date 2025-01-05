@@ -56,7 +56,7 @@ def main():
 
     L = []
     all_visitors = []
-    for url, ips in d.iteritems():
+    for url, ips in d.items():
         all_visitors.extend(ips)
         visitors = len(set(ips))
         visits   = len(ips)
