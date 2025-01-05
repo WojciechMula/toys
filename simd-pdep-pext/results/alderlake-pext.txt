@@ -1,3 +1,4 @@
+testing any mask
 pext scalar                     :     1.286 cycle/op (best)    1.527 cycle/op (avg)
 pext AVX2                       :     6.846 cycle/op (best)    7.556 cycle/op (avg)
 pext AVX2 (early exit)          :     8.001 cycle/op (best)    8.778 cycle/op (avg)

@@ -1,3 +1,4 @@
+testing any mask
 pdep scalar                     :     1.276 cycle/op (best)    1.512 cycle/op (avg)
 pdep AVX2                       :     7.091 cycle/op (best)    7.857 cycle/op (avg)
 pdep AVX2 (early exit)          :     7.452 cycle/op (best)    8.317 cycle/op (avg)
