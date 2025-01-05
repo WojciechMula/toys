@@ -31,6 +31,9 @@ function_names_t function_names() {
     names[scalar_pdep_u32] = "pdep scalar";
 
     #ifdef HAVE_AVX2
+        names[avx2_pext_u32_mixed_ver1] = "pext AVX2 mixed ver1";
+        names[avx2_pext_u32_mixed_ver2] = "pext AVX2 mixed ver2";
+
         names[avx2_pext_u32] = "pext AVX2";
         names[avx2_pext_u32_6bits] = "pext AVX2 (6 bit)";
         names[avx2_pext_u32_8bits] = "pext AVX2 (8 bit)";

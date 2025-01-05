@@ -82,3 +82,76 @@ void avx2_pext_u32_16bits_ee(const uint32_t* data_arr, const uint32_t* mask_arr,
 void avx2_pext_u32_24bits_ee(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
     avx2_pext_u32_reference<24, early_exit>(data_arr, mask_arr, out_arr, n);
 }
+
+// --------------------------------------------------
+
+void avx2_pext_u32_mixed_ver1(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    const __m256i magic1 = _mm256_set1_epi32(33);
+    const __m256i magic2 = _mm256_set1_epi32(42);
+
+    uint32_t data_tmp[8];
+    for (size_t i=0; i < n; i += 8) {
+        __m256i data = _mm256_loadu_si256((const __m256i*)(&data_arr[i]));
+        __m256i out  = _mm256_set1_epi32(0);
+
+        // some artifical calculations on data
+        data = _mm256_srli_epi32(data, 1);
+        data = _mm256_add_epi32(data, magic1);
+        // end
+
+        // do pext
+        _mm256_storeu_si256((__m256i*)data_tmp, data);
+        for (int j=0; j < 8; j++) {
+            data_tmp[j] = _pext_u32(data_tmp[j], mask_arr[i + j]);
+        }
+        data = _mm256_loadu_si256((const __m256i*)data_tmp);
+        // end
+
+        // get back to the vector world
+        out = _mm256_sub_epi32(data, magic2);
+        // end
+
+        _mm256_storeu_si256((__m256i*)(&out_arr[i]), out);
+    }
+}
+
+void avx2_pext_u32_mixed_ver2(const uint32_t* data_arr, const uint32_t* mask_arr, uint32_t* out_arr, size_t n) {
+    const __m256i magic1 = _mm256_set1_epi32(33);
+    const __m256i magic2 = _mm256_set1_epi32(42);
+
+    for (size_t i=0; i < n; i += 8) {
+        __m256i data = _mm256_loadu_si256((const __m256i*)(&data_arr[i]));
+        __m256i out  = _mm256_set1_epi32(0);
+
+        // some artifical calculations on data
+        data = _mm256_srli_epi32(data, 1);
+        data = _mm256_add_epi32(data, magic1);
+        // end
+
+        // do pext
+        const uint32_t r0 = _pext_u32(_mm256_extract_epi32(data, 0), mask_arr[i + 0]);
+        const uint32_t r1 = _pext_u32(_mm256_extract_epi32(data, 1), mask_arr[i + 1]);
+        const uint32_t r2 = _pext_u32(_mm256_extract_epi32(data, 2), mask_arr[i + 2]);
+        const uint32_t r3 = _pext_u32(_mm256_extract_epi32(data, 3), mask_arr[i + 3]);
+        const uint32_t r4 = _pext_u32(_mm256_extract_epi32(data, 4), mask_arr[i + 4]);
+        const uint32_t r5 = _pext_u32(_mm256_extract_epi32(data, 5), mask_arr[i + 5]);
+        const uint32_t r6 = _pext_u32(_mm256_extract_epi32(data, 6), mask_arr[i + 6]);
+        const uint32_t r7 = _pext_u32(_mm256_extract_epi32(data, 7), mask_arr[i + 7]);
+
+        data = _mm256_insert_epi32(data, r0, 0);
+        data = _mm256_insert_epi32(data, r1, 1);
+        data = _mm256_insert_epi32(data, r2, 2);
+        data = _mm256_insert_epi32(data, r3, 3);
+        data = _mm256_insert_epi32(data, r4, 4);
+        data = _mm256_insert_epi32(data, r5, 5);
+        data = _mm256_insert_epi32(data, r6, 6);
+        data = _mm256_insert_epi32(data, r7, 7);
+        // end
+
+        // get back to the vector world
+        out = _mm256_sub_epi32(data, magic2);
+        // end
+
+        _mm256_storeu_si256((__m256i*)(&out_arr[i]), out);
+    }
+}

@@ -126,7 +126,7 @@ void avx512_pdep_u32_ver2_reference(const uint32_t* data_arr, const uint32_t* ma
             // 4. the next mask value
             mask = m1;
 
-            // 5. the next bit in data to check
+            // 5. the next bit in data to update
             bit = _mm512_add_epi32(bit, bit);
 
             // 6. all are zeros?

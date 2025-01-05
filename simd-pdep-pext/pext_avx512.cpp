@@ -100,9 +100,7 @@ void avx512_pext_u32_ver2_reference(const uint32_t* data_arr, const uint32_t* ma
         __m512i bit = one;
 
         for (int j=0; j < MAX_MASK_BITS; j++) {
-
-            // 2. isolate the first bit set of mask
-
+            // 1. isolate the first bit set of mask
             //                                                 mask = [0101_1001_1100_0000|...]
             const __m512i m0 = _mm512_sub_epi32(mask, one); // m0   = [0101_1001_1011_1111|...]
             const __m512i m1 = _mm512_and_si512(mask, m0);  // m1   = [0101_1001_1000_0000|...]

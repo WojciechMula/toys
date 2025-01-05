@@ -24,6 +24,8 @@ int main() {
     puts("testing any mask");
     BENCH(scalar_pext_u32);
     #ifdef HAVE_AVX2
+        BENCH(avx2_pext_u32_mixed_ver1);
+        BENCH(avx2_pext_u32_mixed_ver2);
         BENCH(avx2_pext_u32);
         BENCH(avx2_pext_u32_ee);
     #endif
