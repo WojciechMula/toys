@@ -1,0 +1,22 @@
+body {
+    font-family: sans-serif;
+}
+
+div#menu {
+    padding: 10px;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    width: 300px;
+    background: #ddd;
+    height: 100%;
+}
+
+div#content {
+    margin-left: 320px;
+}
+
+svg {
+    border-style: dotted;
+    border-width: 1px;
+}
