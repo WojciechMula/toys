@@ -16,6 +16,11 @@ class Edge {
     }
 }
 
+const VERTEX0 = 0;
+const VERTEX1 = 1;
+const VERTEX2 = 2;
+const NORMAL  = 3;
+
 function giftwrapping3d(vertices) {
     // 1. the first step of 2D convex hull (we project the 3D cloud on the XY plane)
     const ch2d = giftwrapping2d(vertices);
@@ -58,14 +63,13 @@ function giftwrapping3d(vertices) {
                 add_edge(idx0, idx);
                 add_edge(idx1, idx);
 
-                triangles.push([idx0, idx1, idx]);
+                triangles.push([idx0, idx1, idx, normalize(N)]);
                 break;
             }
         }
 
         if (triangles.length == old) {
             // no progress
-            //throw Error("no progress");
             break;
         }
     }
@@ -111,4 +115,17 @@ function normal3d(A, B, C) {
     const z = dx1*dy2 - dy1*dx2;
 
     return new Point(x, y, z);
+}
+
+function normalize(p) {
+    const dx2 = p.x * p.x;
+    const dy2 = p.y * p.y;
+    const dz2 = p.z * p.z;
+    const len = Math.sqrt(dx2 + dy2 + dz2);
+
+    return new Point(p.x / len, p.y / len, p.z / len);
+}
+
+function dot(p1, p2) {
+    return p1.x * p2.x + p1.y * p2.y + p1.z * p2.z;
 }
