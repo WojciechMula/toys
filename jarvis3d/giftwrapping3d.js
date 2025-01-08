@@ -1,7 +1,18 @@
+"use strict";
+
 class Edge {
     constructor(a, b) {
-        this.idx0 = a;
-        this.idx1 = b;
+        if (a < b) {
+            this.idx0 = a;
+            this.idx1 = b;
+        } else {
+            this.idx0 = b;
+            this.idx1 = a;
+        }
+    }
+
+    hash() {
+        return this.idx0 + " " + this.idx1;
     }
 }
 
@@ -15,13 +26,13 @@ function giftwrapping3d(vertices) {
 
     function add_edge(idx0, idx1) {
         const e = new Edge(idx0, idx1);
-        const tmp = idx0 + " " + idx1;
-        if (analysed.has(tmp)) {
+        const h = e.hash();
+        if (analysed.has(h)) {
             return;
         }
 
         queue.push(e);
-        analysed.add(tmp);
+        analysed.add(h);
     }
 
     add_edge(ch2d[0], ch2d[1]);

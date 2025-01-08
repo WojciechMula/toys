@@ -49,8 +49,45 @@ class View {
         this.scale = Math.max(width, height) / 3;
         this.width = width;
         this.height = height;
+
+        this.show_edges  = true;
+        this.show_points = true;
     }
-    
+
+    select_next_triangle() {
+        const n = this.triangles.length;
+        if (n == 0) {
+            return;
+        }
+
+        this.selected_triangle = (this.selected_triangle + 1) % n;
+    }
+
+    select_prev_triangle() {
+        const n = this.triangles.length;
+        if (n == 0) {
+            return;
+        }
+
+        if (this.selected_triangle > 0) {
+            this.selected_triangle -= 1;
+        } else {
+            this.selected_triangle = n - 1;
+        }
+    }
+
+    set_show_edges(flag) {
+        this.show_edges = flag;
+    }
+
+    set_show_points(flag) {
+        this.show_points = flag;
+    }
+
+    force_refresh() {
+        this.svg.innerHTML = '';
+    }
+
     world2view_x(x) {
         return x * this.scale + this.dx;
     }
@@ -78,6 +115,11 @@ class View {
             let ys = this.world2view_y(y);
             el.setAttributeNS(null, "cx", xs);
             el.setAttributeNS(null, "cy", ys);
+            if (this.show_points) {
+                el.style.display = "";
+            } else {
+                el.style.display = "none";
+            }
         }
 
         for (let i=0; i < this.triangles.length; i++) {
@@ -103,8 +145,14 @@ class View {
             if (i == this.selected_triangle) {
                 el.setAttributeNS(null, "fill", "green");
                 el.setAttributeNS(null, "opacity", 0.7);
+                el.style.display = "";
             } else {
                 el.setAttributeNS(null, "fill", "none");
+                if (this.show_edges) {
+                    el.style.display = "";
+                } else {
+                    el.style.display = "none";
+                }
             }
         }
     }
@@ -112,27 +160,12 @@ class View {
     set_data(vertices, triangles) {
         this.vertices = vertices;
         this.triangles = triangles;
-        this.svg.innerHTML = '';
+        this.selected_triangle = 0;
+        this.force_refresh();
     }
 }
 
-
-function random_points(n, seed) {
-    const a = 1103515245;
-    const c = 12345;
-    const m = 1 << 31;
-    const rand_max = 1 << 30;
-
-    let v = seed;
-    function rand_int() {
-        v = (a*v + c) % m;
-        return v;
-    }
-
-    function rand() {
-        return rand_int();
-    }
-
+function random_points(n, rand) {
     let res = new Array(n);
     for (let i=0; i < n; i++) {
         const x = rand();
@@ -167,15 +200,15 @@ function center_and_scale(vertices) {
 
     const dim2 = Math.max(dx, Math.max(dy, dz)) / 2.0;
     const scale = 1.0 / dim2;
-    const dx2 = dx / 2.0;
-    const dy2 = dy / 2.0;
-    const dz2 = dz / 2.0;
+    const dx2 = 0.5 * dx;
+    const dy2 = 0.5 * dy;
+    const dz2 = 0.5 * dz;
 
     for (let i=0; i < vertices.length; i++) {
         let p = vertices[i];
-        p.x = (p.x - dx2) * scale;
-        p.y = (p.y - dy2) * scale;
-        p.z = (p.z - dz2) * scale;
+        p.x = (p.x - min.x - dx2) * scale;
+        p.y = (p.y - min.y - dy2) * scale;
+        p.z = (p.z - min.z - dz2) * scale;
     }
 
     return vertices;
@@ -183,7 +216,20 @@ function center_and_scale(vertices) {
 
 
 if (typeof document !== 'undefined') {
-    let l = console.log;
+    const a = 1103515245;
+    const c = 12345;
+    const m = 1 << 31;
+    const rand_max = 1 << 30;
+
+    let seed = 42;
+    function rand_int() {
+        seed = (a*seed + c) % m;
+        return seed;
+    }
+
+    function rand() {
+        return rand_int() / rand_max - 0.5;
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         let svg = document.getElementById("display");
@@ -196,10 +242,9 @@ if (typeof document !== 'undefined') {
                 return;
             }
 
-            const seed = 42;
-            let vertices  = random_points(n_points, seed);
+            let vertices  = random_points(n_points, rand);
             let vertices2 = center_and_scale(vertices);
-            let triangles = giftwrapping3d(vertices);
+            let triangles = giftwrapping3d(vertices2);
             view.set_data(vertices, triangles);
             view.update();
         }
@@ -208,31 +253,43 @@ if (typeof document !== 'undefined') {
             generate();
         }, false);
 
-        let rotate = false;
-        svg.addEventListener("click", function() {
-            rotate = !rotate;
-        });
-
+        const angle_x_step = Math.PI / 180;
+        const angle_y_step = Math.PI / 180;
         svg.addEventListener("mousemove", function(ev) {
-            if (rotate) {
-                view.anglex = (ev.x / view.width) * 2 * Math.PI;
-                view.angley = (ev.y / view.height) * 2 * Math.PI;
+            if (ev.buttons != 0) {
+                const dx = ev.clientX - last_x;
+                const dy = ev.clientY - last_y;
+                console.log(dx, dy)
+                view.anglex +=  dx * angle_x_step;
+                view.angley += -dy * angle_y_step;
             }
+            last_x = ev.clientX;
+            last_y = ev.clientY;
             view.update();
         }, false);
 
         document.addEventListener("keypress", function(ev) {
             if (ev.key == "n") {
-                view.selected_triangle += 1;
+                view.select_next_triangle();
                 view.update();
                 ev.preventDefault();
             }
             if (ev.key == "p") {
-                view.selected_triangle -= 1;
+                view.select_prev_triangle();
                 view.update();
                 ev.preventDefault();
             }
         }, false);
+
+        document.getElementById("show_edges").addEventListener("click", function(ev) {
+            view.set_show_edges(ev.target.checked);
+            view.update();
+        });
+
+        document.getElementById("show_points").addEventListener("click", function(ev) {
+            view.set_show_points(ev.target.checked);
+            view.update();
+        });
 
         generate();
     }, false);

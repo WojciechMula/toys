@@ -7,13 +7,13 @@ div#menu {
     left: 0px;
     top: 0px;
     position: fixed;
-    width: 300px;
+    width: 400px;
     background: #ddd;
     height: 100%;
 }
 
 div#content {
-    margin-left: 320px;
+    margin-left: 420px;
 }
 
 svg {
