@@ -22,6 +22,18 @@ void dump_epi32(__m256i v) {
 }
 
 
+void dump_epi32_hex(__m256i v) {
+    int32_t tmp[8];
+
+    _mm256_storeu_si256((__m256i*)tmp, v);
+    printf("[ %08x ", tmp[0]);
+    for (int i=1; i < 8; i++)
+        printf("| %08x ", tmp[i]);
+
+    printf(" ]\n");
+}
+
+
 void dump_ps(__m256 v) {
     float tmp[8];
 
