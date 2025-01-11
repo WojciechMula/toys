@@ -176,17 +176,8 @@ def parse(lines, unindent):
         else:
             lines = lines[:-1]
 
-    try:
-        pos = lines.index('')
-    except ValueError:
-        pos = None
-
-    if pos is not None:
-        styles = parse_styles(lines[:pos])
-        canvas = parse_drawing(lines[pos+1:], styles, unindent)
-    else:
-        styles = {}
-        canvas = parse_drawing(lines, styles, unindent)
+    styles = parse_styles(lines)
+    canvas = parse_drawing(lines[len(styles):], styles, unindent)
 
     return (canvas, styles)
 
@@ -195,14 +186,21 @@ def parse_styles(lines):
     style = {}
     for line in lines:
         name, sep, val = line.partition(':')
+        if sep == '':
+            break
+
         name = name.strip()
         val  = val.strip()
 
-        assert sep == ':'
-        assert len(name) == 1
-        assert name not in style
-        style[name] = set(s.strip() for s in val.split(','))
-        assert '' not in style[name]
+        if len(name) != 1:
+            break
+
+        if name in style:
+            raise ValueError(f"style '{name}' defined twice")
+
+        s = {s.strip() for s in val.split(',')}
+        s.discard('')
+        style[name] = s
 
     return style
 
