@@ -132,6 +132,8 @@ def make_converter():
             for style in styles:
                 if style == 'bold':
                     css.append('font-weight: bold')
+                elif style == 'italic':
+                    css.append('font-style: italic')
                 else:
                     css.append(f'color: {style}')
 
