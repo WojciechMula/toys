@@ -257,68 +257,113 @@ class Atom {
     }
 }
 
-function parse(lex, terminator) {
-    let arg1 = parse_expression(lex);
+function parse(lex) {
+    let stack = new Array();
 
+    let expr = undefined;
     while (!lex.is_empty()) {
-        token = lex.peek();
-        let op = undefined;
-        switch (token.type) {
-            case TOKEN_AND:
-                op = OP_AND;
-                break;
+        const token = lex.peek();
 
-            case TOKEN_OR:
-                op = OP_OR;
-                break;
-
-            case TOKEN_XOR:
-                op = OP_XOR;
-                break;
-
-            default:
-                if (token.type == terminator) {
-                    return arg1;
-                }
-
-                throw Error(PARSE_ERROR, {cause: ["unexpected " + token.to_string(), token.position, token.length]});
+        function report_unexpected() {
+            throw Error(PARSE_ERROR, {cause: ["unexpected " + token.to_string(), token.position, token.length]});
         }
 
         lex.consume();
+        let update = false;
+        switch (token.type) {
+            case TOKEN_AND:
+            case TOKEN_OR:
+            case TOKEN_XOR:
+                if (expr === undefined) {
+                    report_unexpected();
+                }
 
-        let arg2 = parse_expression(lex);
+                stack.push(expr);
+                stack.push(token);
+                expr = undefined;
+                break;
 
-        arg1 = new Node(op, arg1, arg2)
-    }
+            case TOKEN_NOT:
+                stack.push(token);
+                break;
 
-    return arg1;
-}
+            case TOKEN_ATOM:
+                if (expr !== undefined) {
+                    report_unexpected();
+                }
 
-function parse_expression(lex) {
-    let token = lex.peek();
-    switch (token.type) {
-        case TOKEN_NOT:
-            lex.consume();
-            return new Node(OP_NOT, parse_expression(lex));
+                expr = new Atom(token);
+                update = true;
+                break;
 
-        case TOKEN_LPAREN:
-            let pos = lex.position();
-            lex.consume();
-            let expr = parse(lex, TOKEN_RPAREN);
-            if (lex.peek().type != TOKEN_RPAREN) {
-                throw Error(PARSE_ERROR, {cause: ["missing the closing parenthesis", token.position, token.length]});
+            case TOKEN_LPAREN:
+                if (expr !== undefined) {
+                    report_unexpected();
+                }
+
+                stack.push(token);
+                expr = undefined;
+                break;
+
+            case TOKEN_RPAREN:
+                const lparen = stack.pop();
+
+                let ok = false;
+                if (lparen instanceof Token) {
+                    ok = (lparen.type == TOKEN_LPAREN);
+                }
+
+                if (!ok) {
+                    throw Error(PARSE_ERROR, {cause: ["unbalanced parenthesis", token.position, token.length]});
+                }
+
+                update = true;
+                break;
+
+            default:
+                report_unexpected();
+                break;
+        } // switch
+
+        if (update) {
+            while (stack.length > 0 && stack[stack.length - 1].type == TOKEN_NOT) {
+                expr = new Node(OP_NOT, expr);
+                stack.pop();
             }
 
-            lex.consume();
-            return expr;
+            if (stack.length > 0 && stack[stack.length - 1].type != TOKEN_LPAREN) {
+                const op = stack.pop();
+                const arg1 = stack.pop();
 
-        case TOKEN_ATOM:
-            lex.consume();
-            return new Atom(token);
-
-        default:
-            throw Error(PARSE_ERROR, {cause: ["unexpected " + token.to_string(), token.position, token.length]});
+                switch (op.type) {
+                    case TOKEN_AND:
+                        expr = new Node(OP_AND, arg1, expr);
+                        break;
+                    case TOKEN_OR:
+                        expr = new Node(OP_OR, arg1, expr);
+                        break;
+                    case TOKEN_XOR:
+                        expr = new Node(OP_XOR, arg1, expr);
+                        break;
+                    default:
+                        report_unexpected();
+                        break;
+                }
+            }
+        }
     }
+
+    if (stack.length > 0) {
+        const token = stack.pop();
+        if (token.type == TOKEN_LPAREN && expr !== undefined) {
+            throw Error(PARSE_ERROR, {cause: ["missing the closing parenthesis", token.position, token.length]});
+        } else {
+            const token = lex.peek();
+            throw Error(PARSE_ERROR, {cause: ["unexpected " + token.to_string(), token.position, token.length]});
+        }
+    }
+
+    return expr;
 }
 
 if (typeof document === 'undefined') {
@@ -387,7 +432,9 @@ if (typeof document === 'undefined') {
             ["a AND b", "(a and b)"],
             ["a and b and c and d", "(((a and b) and c) and d)"],
             ["a and not b", "(a and (not b))"],
+            ["(a and b) or (c and d)", "((a and b) or (c and d))"],
             ["!!!x", "(not (not (not x)))"],
+            ["!!!(a xor b)", "(not (not (not (a xor b))))"],
         ];
 
         for (const i in cases) {
@@ -410,6 +457,8 @@ if (typeof document === 'undefined') {
             ["a (b or c)", "unexpected (", 2, 1],
             ["   (", "unexpected end of string", undefined, undefined],
             ["x or (a xor b ", "missing the closing parenthesis", 5, 1],
+            ["a & b)", "unbalanced parenthesis", 5, 1],
+            ["a && b", "unexpected and", 3, 1],
         ];
 
         for (const i in cases) {
