@@ -210,7 +210,7 @@ class View {
             const p0 = t[triangle[VERTEX0]];
             const p1 = t[triangle[VERTEX1]];
             const p2 = t[triangle[VERTEX2]];
-            const z  = (p0[2] + p1[2] + p2[2]) / 3.0;
+            const z  = Math.min(p0[2], Math.min(p1[2], p2[2]));
             triangles[i] = [z, p0, p1, p2, normals[i]];
         }
 
@@ -398,10 +398,10 @@ if (typeof document !== 'undefined') {
                 const dy = ev.clientY - last_y;
                 view.anglex +=  dx * angle_x_step;
                 view.angley += -dy * angle_y_step;
+                view.update();
             }
             last_x = ev.clientX;
             last_y = ev.clientY;
-            view.update();
         }, false);
 
         document.addEventListener("keypress", function(ev) {
