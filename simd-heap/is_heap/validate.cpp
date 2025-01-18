@@ -5,6 +5,9 @@
 #include "is_heap_scalar.h"
 #include "is_heap_sse.cpp"
 #include "is_heap_avx2.cpp"
+#ifdef HAVE_AVX512
+#   include "is_heap_avx512.cpp"
+#endif
 
 using Type = int32_t;
 
@@ -49,6 +52,9 @@ public:
                 ok = test("is_heap_rnd", is_heap_rnd_wrapper, reference) and ok;
                 ok = test("SSE",         is_heap_sse_epi32, reference) and ok;
                 ok = test("AVX2",        is_heap_avx2_epi32, reference) and ok;
+                #ifdef HAVE_AVX512
+                ok = test("AVX-512",     is_heap_avx512_epi32, reference) and ok;
+                #endif
             }
 
             if (ok)

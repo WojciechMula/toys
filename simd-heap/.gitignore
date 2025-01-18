@@ -1,2 +1,4 @@
 benchmark
 validate
+benchmark_avx512
+validate_avx512

@@ -7,6 +7,9 @@
 #include "is_heap_scalar.h"
 #include "is_heap_sse.cpp"
 #include "is_heap_avx2.cpp"
+#ifdef HAVE_AVX512
+#   include "is_heap_avx512.cpp"
+#endif
 
 using Type = int32_t;
 
@@ -40,11 +43,14 @@ public:
             printf("Input size %lu\n", size);
             prepare_input_data(size);
 
-            benchmark("std",        is_heap_std_wrapper);
-            benchmark("fwd scalar", is_heap_fwd_wrapper);
-            benchmark("rnd scalar", is_heap_rnd_wrapper);
-            benchmark("fwd SSE",    is_heap_sse_epi32);
-            benchmark("fwd AVX2",   is_heap_avx2_epi32);
+            benchmark("std",         is_heap_std_wrapper);
+            benchmark("fwd scalar" , is_heap_fwd_wrapper);
+            benchmark("rnd scalar",  is_heap_rnd_wrapper);
+            benchmark("fwd SSE",     is_heap_sse_epi32);
+            benchmark("fwd AVX2",    is_heap_avx2_epi32);
+            #ifdef HAVE_AVX512
+            benchmark("fwd AVX-512", is_heap_avx512_epi32);
+            #endif
         }
 
         return true;
