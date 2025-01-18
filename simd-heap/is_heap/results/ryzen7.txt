@@ -1,0 +1,19 @@
+Input size 1024
+rdtsc_overhead set to 20
+std                           	:     1.016 cycle/op (best)    1.024 cycle/op (avg)
+fwd scalar                    	:     0.449 cycle/op (best)    0.454 cycle/op (avg)
+rnd scalar                    	:     0.645 cycle/op (best)    0.646 cycle/op (avg)
+fwd SSE                       	:     0.215 cycle/op (best)    0.229 cycle/op (avg)
+fwd AVX2                      	:     0.137 cycle/op (best)    0.142 cycle/op (avg)
+Input size 4096
+std                           	:     0.879 cycle/op (best)    0.886 cycle/op (avg)
+fwd scalar                    	:     0.439 cycle/op (best)    0.451 cycle/op (avg)
+rnd scalar                    	:     0.439 cycle/op (best)    0.443 cycle/op (avg)
+fwd SSE                       	:     0.166 cycle/op (best)    0.169 cycle/op (avg)
+fwd AVX2                      	:     0.098 cycle/op (best)    0.103 cycle/op (avg)
+Input size 8192
+std                           	:     0.881 cycle/op (best)    0.892 cycle/op (avg)
+fwd scalar                    	:     0.439 cycle/op (best)    0.452 cycle/op (avg)
+rnd scalar                    	:     0.444 cycle/op (best)    0.446 cycle/op (avg)
+fwd SSE                       	:     0.166 cycle/op (best)    0.168 cycle/op (avg)
+fwd AVX2                      	:     0.098 cycle/op (best)    0.101 cycle/op (avg)
