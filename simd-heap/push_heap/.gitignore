@@ -1,0 +1,4 @@
+validate_avx2
+validate_avx512
+benchmark_avx2
+benchmark_avx512
