@@ -30,7 +30,7 @@ bool is_heap_avx512_epi32(const int32_t* begin, const int32_t* end) {
         const __mmask16 lt0 = _mm512_cmpgt_epi32_mask(children0, p0);
         const __mmask16 lt1 = _mm512_cmpgt_epi32_mask(children1, p1);
 
-        if (!_kortest_mask16_u8(lt0, lt1, nullptr)) {
+        if (!_kortestz_mask16_u8(lt0, lt1)) {
             return false;
         }
 
