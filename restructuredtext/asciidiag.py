@@ -149,6 +149,7 @@ def make_converter():
 
             return '<span style="%s">' % ('; '.join(css))
 
+        apply_html_entities(transformed)
         s  = f'<pre class="{cssclass}">'
         s += '\n'.join(apply_styles(transformed, styles, callback))
         s += '</pre>'
@@ -156,6 +157,20 @@ def make_converter():
         return s
 
     return convert
+
+
+html_entities = {
+    '&' : '&amp;',
+    '<' : '&lt;',
+    '>' : '&gt;',
+    '"' : '&quot;',
+    "'" : '&apos;',
+}
+
+def apply_html_entities(canvas):
+    for line in canvas.lines:
+        for i in range(len(line)):
+            line[i] = html_entities.get(line[i], line[i])
 
 
 def apply_rules(canvas, rules):
