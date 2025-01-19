@@ -12,7 +12,7 @@ void Manual_AVX_SoA_improved(
     __m256i vecTrisCulled = _mm256_setzero_si256();
  
     // Loop Through 8 Triangles Per Pass
-    for (int i = 0; i < 1000000; i += 8)
+    for (int i = 0; i < N; i += 8)
     { 
         // Load Per-Triangle X-Components
         const __m256 i0x0 = _mm256_load_ps(x0 + i);

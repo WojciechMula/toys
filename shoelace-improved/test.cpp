@@ -12,6 +12,7 @@
 #define FRONT_CCW 3
 
 #define SIZE 1000000 // to match with Intel's code
+#define N SIZE
 
 #include "intel.cpp"
 #include "improved.cpp"
@@ -51,7 +52,7 @@ public:
 
     int run()
     {
-        const int repeat_count = 3;
+        const int repeat_count = 5;
 
         Data original;
         auto original_fn = [this, &original]() -> bool {
