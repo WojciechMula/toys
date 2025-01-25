@@ -5,9 +5,13 @@
 #include <cstdio>
 #include <cassert>
 
+#include <immintrin.h>
+
 #include "load_file.cpp"
-#include "scalar.cpp"
 #include "benchmark.h"
+
+#include "scalar.cpp"
+#include "avx2.cpp"
 
 class File {
     std::filesystem::path path;
@@ -85,18 +89,19 @@ std::vector<Testcase> load_testcases(const std::filesystem::path& rootdir) {
 
 template <typename CONV_CASE>
 void bench(const char* name, CONV_CASE conv, const File& input) {
-    const std::string label = std::format("{} ({})", name, input.name());
-
     std::vector<uint32_t> output;
     output.resize(input.size() * 3);
     
     constexpr size_t repeat = 100;
-    BEST_TIME(/**/, conv(input.u32(), input.size(), output.data()), label.c_str(), repeat, input.size());
+    BEST_TIME(/**/, conv(input.u32(), input.size(), output.data()), name, repeat, input.size());
 }
 
 int main() {
     const auto testcases = load_testcases("datasets");
     for (const auto& tc: testcases) {
+        printf("testcase %s\n", tc.utf32.name().c_str());
+        bench("uppercase AVX2 plain", avx2_utf32_uppercase_plain, tc.utf32);
+        bench("uppercase AVX2 compressed", avx2_utf32_uppercase_compressed, tc.utf32);
         bench("uppercase scalar plain", utf32_uppercase_plain, tc.utf32);
         bench("uppercase scalar compressed", utf32_uppercase_compressed, tc.utf32);
         bench("lowercase scalar plain", utf32_lowercase_plain, tc.utf32);

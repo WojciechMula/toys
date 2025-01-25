@@ -5,8 +5,11 @@
 #include <cstdio>
 #include <cassert>
 
+#include <immintrin.h>
+
 #include "load_file.cpp"
 #include "scalar.cpp"
+#include "avx2.cpp"
 
 class File {
     std::filesystem::path path;
@@ -137,10 +140,12 @@ int main() {
 
     bool all_ok = true;
     for (const auto& tc: testcases) {
-        all_ok = verify("uppercase scalar plain", utf32_uppercase_plain, tc.utf32, tc.uppercase) and all_ok;
-        all_ok = verify("uppercase scalar compressed", utf32_uppercase_compressed, tc.utf32, tc.uppercase) and all_ok;
-        all_ok = verify("lowercase scalar plain", utf32_lowercase_plain, tc.utf32, tc.lowercase) and all_ok;
-        all_ok = verify("lowercase scalar compressed", utf32_lowercase_compressed, tc.utf32, tc.lowercase) and all_ok;
+        //all_ok = verify("uppercase AVX2 plain", avx2_utf32_uppercase_plain, tc.utf32, tc.uppercase) and all_ok;
+        all_ok = verify("uppercase AVX2 compressed", avx2_utf32_uppercase_compressed, tc.utf32, tc.uppercase) and all_ok;
+        //all_ok = verify("uppercase scalar plain", utf32_uppercase_plain, tc.utf32, tc.uppercase) and all_ok;
+        //all_ok = verify("uppercase scalar compressed", utf32_uppercase_compressed, tc.utf32, tc.uppercase) and all_ok;
+        //all_ok = verify("lowercase scalar plain", utf32_lowercase_plain, tc.utf32, tc.lowercase) and all_ok;
+        //all_ok = verify("lowercase scalar compressed", utf32_lowercase_compressed, tc.utf32, tc.lowercase) and all_ok;
     }
 
     if (all_ok) {

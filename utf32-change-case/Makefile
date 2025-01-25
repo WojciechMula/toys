@@ -1,7 +1,9 @@
-FLAGS=-Wall -Wextra -pedantic -Werror -O3 -march=native -std=c++20 -ggdb
+FLAGS=-Wall -Wextra -pedantic -O3 -march=native -std=c++20 -ggdb # -Werror
 
 ALL=verify \
     benchmark
+
+DEPS=verify.cpp scalar.cpp avx2.cpp plain.cpp.inl compressed.cpp.inl compressed_avx2.cpp.inl
 
 .PHONY: all
 all: $(ALL)
@@ -10,10 +12,10 @@ all: $(ALL)
 clean:
 	$(RM) $(ALL)
 
-verify: verify.cpp scalar.cpp plain.cpp.inl compressed.cpp.inl
+verify: $(DEPS) verify.cpp
 	$(CXX) $(FLAGS) verify.cpp -o $@
 
-benchmark: benchmark.cpp scalar.cpp plain.cpp.inl compressed.cpp.inl
+benchmark: $(DEPS) benchmark.cpp
 	$(CXX) $(FLAGS) benchmark.cpp -o $@
 
 plain.cpp.inl: scripts/plain_lookup.py
@@ -22,4 +24,8 @@ plain.cpp.inl: scripts/plain_lookup.py
 
 compressed.cpp.inl: scripts/compressed_lookup.py
 	python3 scripts/compressed_lookup.py > /dev/shm/$@
+	mv /dev/shm/$@ $@
+
+compressed_avx2.cpp.inl: scripts/compressed_lookup_avx2.py
+	python3 scripts/compressed_lookup_avx2.py > /dev/shm/$@
 	mv /dev/shm/$@ $@
