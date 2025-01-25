@@ -3,7 +3,21 @@ size_t avx2_utf32_uppercase_plain(const uint32_t* input, size_t n, uint32_t* out
     size_t i=0;
 
     for (i=0; i < 8*(n / 8); i += 8) {
-        const __m256i t0      = _mm256_loadu_si256((const __m256i*)(&input[i]));
+        const __m256i t0 = _mm256_loadu_si256((const __m256i*)(&input[i]));
+
+        if (_mm256_testz_si256(t0, _mm256_set1_epi32(0xffffff80))) {
+            const __m256i ge_a = _mm256_cmpgt_epi32(t0, _mm256_set1_epi32('a' - 1)); // char >= 'a'
+            const __m256i le_z = _mm256_cmpgt_epi32(_mm256_set1_epi32('z' + 1), t0); // char <= 'z'
+
+            const __m256i v0 = _mm256_and_si256(ge_a, le_z);
+            const __m256i v1 = _mm256_and_si256(v0, _mm256_set1_epi32(0x20));
+            const __m256i v2 = _mm256_xor_si256(t0, v1);
+
+            _mm256_storeu_si256((__m256i*)(&output[j]), v2);
+            j += 8;
+            continue;
+        }
+
         const __m256i hi      = _mm256_and_si256(t0, _mm256_set1_epi32((int32_t)0xfffe'0000));
         const __m256i below   = _mm256_cmpeq_epi32(hi, _mm256_setzero_si256());
         const __m256i indices = _mm256_and_si256(below, t0);
@@ -36,7 +50,21 @@ size_t avx2_utf32_uppercase_compressed(const uint32_t* input, size_t n, uint32_t
     const __m256i fallback_key = _mm256_set1_epi32(UTF32_UPPERCASE_MAX_HI_BITS_AVX2);
 
     for (i=0; i < 8*(n / 8); i += 8) {
-        const __m256i t0          = _mm256_loadu_si256((const __m256i*)(&input[i]));
+        const __m256i t0 = _mm256_loadu_si256((const __m256i*)(&input[i]));
+
+        if (_mm256_testz_si256(t0, _mm256_set1_epi32(0xffffff80))) {
+            const __m256i ge_a = _mm256_cmpgt_epi32(t0, _mm256_set1_epi32('a' - 1)); // char >= 'a'
+            const __m256i le_z = _mm256_cmpgt_epi32(_mm256_set1_epi32('z' + 1), t0); // char <= 'z'
+
+            const __m256i v0 = _mm256_and_si256(ge_a, le_z);
+            const __m256i v1 = _mm256_and_si256(v0, _mm256_set1_epi32(0x20));
+            const __m256i v2 = _mm256_xor_si256(t0, v1);
+
+            _mm256_storeu_si256((__m256i*)(&output[j]), v2);
+            j += 8;
+            continue;
+        }
+
         const __m256i key_0       = _mm256_srli_epi32(t0, 7);
         const __m256i key_indices = _mm256_min_epi32(key_0, fallback_key);
 
