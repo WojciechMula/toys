@@ -4,6 +4,7 @@
 
 #include "scalar.cpp"
 #include "avx2.cpp"
+#include "cpp_lookup.cpp.inl"
 
 using signature_t = size_t(*)(const uint32_t*, size_t, uint32_t*);
 using function_names_t = std::map<signature_t, std::string>;
@@ -18,6 +19,9 @@ function_names_t function_names() {
 
     names[avx2_utf32_uppercase_plain] = "AVX2 uppercase [plain]";
     names[avx2_utf32_uppercase_compressed] = "AVX2 uppercase [compressed]";
+
+    names[cpp_utf32_uppercase] = "c++ uppercase";
+    names[cpp_utf32_lowercase] = "c++ lowercase";
 
     return names;
 }

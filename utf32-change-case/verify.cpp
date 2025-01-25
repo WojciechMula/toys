@@ -41,6 +41,8 @@ public:
             verify(utf32_uppercase_compressed, tc.utf32, tc.uppercase);
             verify(utf32_lowercase_plain, tc.utf32, tc.lowercase);
             verify(utf32_lowercase_compressed, tc.utf32, tc.lowercase);
+            verify(cpp_utf32_uppercase, tc.utf32, tc.uppercase);
+            verify(cpp_utf32_lowercase, tc.utf32, tc.lowercase);
         }
 
         if (failed + passed == 0) {

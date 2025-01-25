@@ -40,6 +40,8 @@ public:
             bench(utf32_uppercase_compressed, tc.utf32);
             bench(utf32_lowercase_plain, tc.utf32);
             bench(utf32_lowercase_compressed, tc.utf32);
+            bench(cpp_utf32_uppercase, tc.utf32);
+            bench(cpp_utf32_lowercase, tc.utf32);
         }
     }
 
@@ -54,7 +56,6 @@ private:
         std::vector<uint32_t> output;
         output.resize(input.size() * 3);
 
-        constexpr size_t repeat = 100;
         BEST_TIME(/**/, conv(input.u32(), input.size(), output.data()), name.c_str(), repeat, input.size());
     }
 };
