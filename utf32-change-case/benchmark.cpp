@@ -5,107 +5,75 @@
 #include <cstdio>
 #include <cassert>
 
-#include <immintrin.h>
-
-#include "load_file.cpp"
+#include "impl.cpp"
+#include "testcase.cpp"
+#include "argparse.cpp"
 #include "benchmark.h"
 
-#include "scalar.cpp"
-#include "avx2.cpp"
 
-class File {
-    std::filesystem::path path;
-    std::string data;
-    std::string filename;
+class Application {
+    std::optional<std::string> procedure;
+    std::optional<std::string> testcase;
+    size_t repeat;
+
+    function_names_t fn_names;
+    std::vector<Testcase> testcases;
 
 public:
-    File(const std::filesystem::path& path) : path(path) {
-        filename = path.stem();
-        data = load_file(path);
-        if (data.size() % 4 != 0) {
-            throw std::runtime_error(std::format("'{}' size is not multiple of 4, likely it's not UTF-32 bit encoded", path.string()));
+    Application(std::optional<std::string> procedure, std::optional<std::string> testcase, size_t repeat)
+        : procedure{procedure}
+        , testcase{testcase}
+        , repeat{repeat}
+        , fn_names(function_names())
+        , testcases{load_testcases("datasets")} {}
+
+    void run() {
+        for (const auto& tc: testcases) {
+            if (testcase and tc.utf32.name().find(testcase.value()) == std::string::npos) {
+                continue;
+            }
+
+            printf("testcase %s\n", tc.utf32.name().c_str());
+            bench(avx2_utf32_uppercase_plain, tc.utf32);
+            bench(avx2_utf32_uppercase_compressed, tc.utf32);
+            bench(utf32_uppercase_plain, tc.utf32);
+            bench(utf32_uppercase_compressed, tc.utf32);
+            bench(utf32_lowercase_plain, tc.utf32);
+            bench(utf32_lowercase_compressed, tc.utf32);
         }
     }
 
-    const uint32_t* u32() const {
-        return (const uint32_t*)data.data();
-    }
-
-    size_t size() const {
-        return data.size() / 4;
-    }
-
-    const std::string& name() const {
-        return filename;
-    }
-};
-
-struct Testcase {
-    File utf32;
-    File uppercase;
-    File lowercase;
-
-    Testcase(const std::filesystem::path& utf32, const std::filesystem::path& uppercase, const std::filesystem::path& lowercase)
-        : utf32{utf32}
-        , uppercase{uppercase}
-        , lowercase{lowercase} {}
-};
-
-#define assert_eq(left, right) do {             \
-    if ((left) != (right)) {                    \
-        printf("%s != %s\n", #left, #right);    \
-        abort();                                \
-    }                                           \
-} while (0);
-
-std::filesystem::path append_extension(const std::filesystem::path& path, std::string extension) {
-    return path.string() + extension;
-}
-
-std::vector<Testcase> load_testcases(const std::filesystem::path& rootdir) {
-    std::vector<Testcase> result;
-
-    for (const auto& entry: std::filesystem::directory_iterator{rootdir}) {
-        const auto& path = entry.path();
-        if (path.extension() == ".utf32") {
-            const auto uppercase = append_extension(path, ".uppercase");
-            const auto lowercase = append_extension(path, ".lowercase");
-            if (not std::filesystem::exists(uppercase)) {
-                const auto err = std::format("path '{}' not found, run `make` in '{}'", uppercase.string(), rootdir.string());
-                throw std::runtime_error(err);
-            }
-
-            if (not std::filesystem::exists(lowercase)) {
-                const auto err = std::format("path '{}' not found, run `make` in '{}'", lowercase.string(), rootdir.string());
-                throw std::runtime_error(err);
-            }
-
-            result.emplace_back(Testcase{path, uppercase, lowercase});
+private:
+    template <typename CONV_CASE>
+    void bench(CONV_CASE conv, const File& input) {
+        const auto& name = fn_names.at(conv);
+        if (procedure and name.find(procedure.value()) == std::string::npos) {
+            return;
         }
+
+        std::vector<uint32_t> output;
+        output.resize(input.size() * 3);
+
+        constexpr size_t repeat = 100;
+        BEST_TIME(/**/, conv(input.u32(), input.size(), output.data()), name.c_str(), repeat, input.size());
+    }
+};
+
+
+int main(int argc, char* argv[]) {
+    Arguments args(argc, argv);
+    if (args.consume_flag("-h") or args.consume_flag("--help")) {
+        printf("usage %s [--procedure name] [--testcase name] [--repeat count]\n", argv[0]);
+        return EXIT_SUCCESS;
     }
 
-    return result;
-}
+    auto procedure = args.consume_argument("--procedure");
+    auto testcase = args.consume_argument("--testcase");
+    auto repeat = args.consume_usize("--repeat").value_or(100);
 
-template <typename CONV_CASE>
-void bench(const char* name, CONV_CASE conv, const File& input) {
-    std::vector<uint32_t> output;
-    output.resize(input.size() * 3);
-    
-    constexpr size_t repeat = 100;
-    BEST_TIME(/**/, conv(input.u32(), input.size(), output.data()), name, repeat, input.size());
-}
+    Application app{procedure, testcase, repeat};
 
-int main() {
-    const auto testcases = load_testcases("datasets");
-    for (const auto& tc: testcases) {
-        printf("testcase %s\n", tc.utf32.name().c_str());
-        bench("uppercase AVX2 plain", avx2_utf32_uppercase_plain, tc.utf32);
-        bench("uppercase AVX2 compressed", avx2_utf32_uppercase_compressed, tc.utf32);
-        bench("uppercase scalar plain", utf32_uppercase_plain, tc.utf32);
-        bench("uppercase scalar compressed", utf32_uppercase_compressed, tc.utf32);
-        bench("lowercase scalar plain", utf32_lowercase_plain, tc.utf32);
-        bench("lowercase scalar compressed", utf32_lowercase_compressed, tc.utf32);
-    }
-}
+    app.run();
 
+    return EXIT_SUCCESS;
+}
