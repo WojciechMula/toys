@@ -67,7 +67,7 @@ uint64_t global_rdtsc_overhead = (uint64_t) UINT64_MAX;
         if (global_rdtsc_overhead == UINT64_MAX) {                      \
            RDTSC_SET_OVERHEAD(rdtsc_overhead_func(1), repeat);          \
         }                                                               \
-        printf("%-30s\t: ", test_name); fflush(stdout);                 \
+        printf("%-40s\t: ", test_name); fflush(stdout);                 \
         uint64_t cycles_start, cycles_final, cycles_diff;               \
         uint64_t min_diff = (uint64_t)-1;                               \
         uint64_t sum_diff = 0;                                          \
