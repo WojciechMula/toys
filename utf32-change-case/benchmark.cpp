@@ -36,6 +36,7 @@ public:
             printf("testcase %s\n", tc.utf32.name().c_str());
             bench(avx2_utf32_uppercase_plain, tc.utf32);
             bench(avx2_utf32_uppercase_compressed, tc.utf32);
+            bench(avx2_utf32_uppercase_compressed_unrolled4, tc.utf32);
             bench(utf32_uppercase_plain, tc.utf32);
             bench(utf32_uppercase_compressed, tc.utf32);
             bench(utf32_lowercase_plain, tc.utf32);

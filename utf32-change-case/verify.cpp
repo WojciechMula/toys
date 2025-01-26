@@ -37,6 +37,7 @@ public:
 
             verify(avx2_utf32_uppercase_plain, tc.utf32, tc.uppercase);
             verify(avx2_utf32_uppercase_compressed, tc.utf32, tc.uppercase);
+            verify(avx2_utf32_uppercase_compressed_unrolled4, tc.utf32, tc.uppercase);
             verify(utf32_uppercase_plain, tc.utf32, tc.uppercase);
             verify(utf32_uppercase_compressed, tc.utf32, tc.uppercase);
             verify(utf32_lowercase_plain, tc.utf32, tc.lowercase);
