@@ -29,12 +29,12 @@ def make_stats(text, conv, n):
 
         upper = [conv(c) for c in tmp]
         if upper == tmp:
-            stats.unchanged += 1     
+            stats.unchanged += 1
         else:
             stats.changed_case += 1
 
     return stats
-    
+
 
 table = Table()
 table.set_header(["dataset", "block size", "blocks", "ASCII", "changed case", "not changed"])

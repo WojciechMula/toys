@@ -1,4 +1,3 @@
-from itertools import product
 from io import StringIO
 
 
@@ -67,17 +66,17 @@ def make_lookup(f, conv, name):
             if len(dst) == 1:
                 dstcode = ord(dst) ^ code
             else:
-                dstcode = 0x8000_0000;
+                dstcode = 0x8000_0000
 
             if ofs:
                 write(" 0x%04x," % dstcode)
             else:
                 write("0x%04x," % dstcode)
-        
+
         write('\n')
-    
+
     if True:
-        writeln(" // fallback");
+        writeln(" // fallback")
         for ofs in range(size):
             if ofs:
                 write(" 0x%04x," % 0)
@@ -85,8 +84,8 @@ def make_lookup(f, conv, name):
                 write("0x%04x," % 0)
         else:
             write('\n')
-            
-    writeln("};");
+
+    writeln("};")
 
     return f
 

@@ -1,4 +1,3 @@
-from itertools import product
 from io import StringIO
 
 
@@ -19,7 +18,7 @@ def make_lookup(f, trans, name):
         f.write(s + '\n')
 
     writeln(f"size_t cpp_utf32_{name}(const uint32_t* input, size_t n, uint32_t* output) {{")
-    writeln("  size_t j=0;");
+    writeln("  size_t j=0;")
     writeln("  for (size_t i=0; i < n; i++)")
     writeln("  switch (input[i]) {")
     for src_code in range(0x1_ffff):
@@ -28,9 +27,9 @@ def make_lookup(f, trans, name):
         if src == dst:
             continue
 
-        writeln(f"    case 0x{src_code:x}:");
+        writeln(f"    case 0x{src_code:x}:")
         for c in dst:
-            dst_code = ord(c);
+            dst_code = ord(c)
             writeln(f"      output[j++] = 0x{dst_code:x};")
             writeln("      break;")
 
@@ -39,8 +38,8 @@ def make_lookup(f, trans, name):
         writeln("        output[j++] = input[i];")
         writeln("    }")
 
-    writeln("  return j;");
-    writeln("};");
+    writeln("  return j;")
+    writeln("};")
 
     return f
 

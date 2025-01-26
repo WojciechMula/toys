@@ -1,4 +1,3 @@
-from itertools import product
 from io import StringIO
 
 
@@ -36,7 +35,7 @@ def make_lookup(f, conv, name):
     size = 2**N
 
     long_replacements = []
-    long_replacements_total = 0;
+    long_replacements_total = 0
 
     writeln(f"const uint16_t UTF32_{name}_OFFSET[UTF32_UPPERCASE_MAX_HI_BITS] = {{")
     offset = 0
@@ -45,7 +44,7 @@ def make_lookup(f, conv, name):
             writeln(f" {offset},")
             offset += size
         else:
-            writeln(f" 0xffff,")
+            writeln(" 0xffff,")
     else:
         writeln("};")
 
@@ -79,16 +78,15 @@ def make_lookup(f, conv, name):
                 write(" 0x%04x," % dstcode)
             else:
                 write("0x%04x," % dstcode)
-        
+
         write('\n')
-    
-    writeln("};");
+
+    writeln("};")
 
     writeln("")
 
     writeln(f"constexpr size_t UTF32_{name}_LONG_REPL_SIZE = {long_replacements_total};")
-    writeln(f"uint32_t UTF32_{name}_LONG_REPL[UTF32_{name}_LONG_REPL_SIZE] = {{");
-    #raise ValueError((long_replacements_total, long_replacements))
+    writeln(f"uint32_t UTF32_{name}_LONG_REPL[UTF32_{name}_LONG_REPL_SIZE] = {{")
     for repl in long_replacements:
         (src, dst) = repl
         writeln(f" // '{src}' => '{dst}' ({len(dst)})")
@@ -97,7 +95,7 @@ def make_lookup(f, conv, name):
         else:
             writeln("")
 
-    writeln("};");
+    writeln("};")
 
     return f
 
