@@ -27,25 +27,33 @@ def make_stats(text, conv, n):
             stats.ascii += 1
             continue
 
-        upper = [conv(c) for c in tmp]
-        if upper == tmp:
-            stats.unchanged += 1
-        else:
+        changed = sum(int(conv(c) != c) for c in tmp)
+        if changed > 0:
             stats.changed_case += 1
+            stats.changed_case_hist[changed] = stats.changed_case_hist.get(changed, 0) + 1
+        else:
+            stats.unchanged += 1
 
     return stats
 
 
-table = Table()
-table.set_header(["dataset", "block size", "blocks", "ASCII", "changed case", "not changed"])
+table_lower = Table()
+table_lower.set_header(["dataset", "block size", "blocks", "ASCII", "changed case", "not changed"])
+
+table_upper = Table()
+table_upper.set_header(["dataset", "block size", "blocks", "ASCII", "changed case", "not changed"])
 
 for path in sorted(Path("../datasets").glob("*.utf32")):
     text = path.read_text(encoding='utf32')
+    block_size = 8
+    blocks = len(text) // block_size
 
-    for block_size in [8]:
+    cases = [
+        (lambda s: s.upper(), table_upper),
+        (lambda s: s.lower(), table_lower),
+    ]
+    for conv, table in cases:
         stats = make_stats(text, lambda s: s.upper(), block_size)
-
-        blocks = len(text) // block_size
 
         ascii        = '%.1f%%' % (100 * stats.ascii / stats.total)
         changed_case = '%.1f%%' % (100 * stats.changed_case / stats.nonascii)
@@ -60,4 +68,10 @@ for path in sorted(Path("../datasets").glob("*.utf32")):
             unchanged
         ])
 
-print(table)
+path = Path('table_upper.rst')
+print(f"Creating {path}")
+path.write_text(str(table_upper))
+
+path = Path('table_lower.rst')
+print(f"Creating {path}")
+path.write_text(str(table_lower))
