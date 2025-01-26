@@ -31,6 +31,7 @@ def make_lookup(f, trans, name):
         for c in dst:
             dst_code = ord(c)
             writeln(f"      output[j++] = 0x{dst_code:x};")
+        else:
             writeln("      break;")
 
     else:
