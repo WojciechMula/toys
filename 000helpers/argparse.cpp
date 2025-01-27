@@ -60,6 +60,20 @@ public:
         return v;
     }
 
+    std::vector<std::string> consume_all_arguments(const std::string& flag) {
+        std::vector<std::string> result;   
+        while (true) {
+            const auto s = consume_argument(flag);
+            if (not s) {
+                break;
+            }
+
+            result.push_back(s.value());
+        }
+
+        return result;
+    }
+
     std::optional<size_t> consume_usize(const std::string& flag) {
         const auto s = consume_argument(flag);
         if (not s) {

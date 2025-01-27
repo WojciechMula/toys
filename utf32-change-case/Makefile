@@ -3,7 +3,7 @@ FLAGS=-Wall -Wextra -pedantic -O3 -march=native -std=c++20 -ggdb # -Werror
 ALL=verify \
     benchmark
 
-DEPS=impl.cpp scalar.cpp avx2.cpp plain.cpp.inl compressed.cpp.inl compressed_v2.cpp.inl compressed_avx2.cpp.inl cpp_lookup.cpp.inl
+DEPS=application_base.cpp impl.cpp scalar.cpp avx2.cpp plain.cpp.inl compressed.cpp.inl compressed_v2.cpp.inl compressed_avx2.cpp.inl cpp_lookup.cpp.inl
 
 .PHONY: all
 all: $(ALL)

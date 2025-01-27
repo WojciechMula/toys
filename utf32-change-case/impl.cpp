@@ -28,15 +28,3 @@ function_names_t function_names() {
 
     return names;
 }
-
-size_t longest_function_label(const function_names_t& names) {
-    size_t max = 0;
-    for (const auto& item: names) {
-        const size_t len = item.second.size();
-        if (len > max) {
-            max = len;
-        }
-    }
-
-    return max;
-}

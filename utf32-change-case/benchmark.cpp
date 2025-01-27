@@ -8,28 +8,21 @@
 #include "impl.cpp"
 #include "testcase.cpp"
 #include "argparse.cpp"
+#include "application_base.cpp"
 #include "benchmark.h"
 
 
-class Application {
-    std::optional<std::string> procedure;
-    std::optional<std::string> testcase;
+class Application: public ApplicationBase {
     size_t repeat;
 
-    function_names_t fn_names;
-    std::vector<Testcase> testcases;
-
 public:
-    Application(std::optional<std::string> procedure, std::optional<std::string> testcase, size_t repeat)
-        : procedure{procedure}
-        , testcase{testcase}
-        , repeat{repeat}
-        , fn_names(function_names())
-        , testcases{load_testcases("datasets")} {}
+    Application(std::vector<std::string> procedure, std::vector<std::string> testcase, size_t repeat)
+        : ApplicationBase{procedure, testcase}
+        , repeat{repeat} {}
 
     void run() {
         for (const auto& tc: testcases) {
-            if (testcase and tc.utf32.name().find(testcase.value()) == std::string::npos) {
+            if (not can_run_testcase(tc)) {
                 continue;
             }
 
@@ -52,7 +45,7 @@ private:
     template <typename CONV_CASE>
     void bench(CONV_CASE conv, const File& input) {
         const auto& name = fn_names.at(conv);
-        if (procedure and name.find(procedure.value()) == std::string::npos) {
+        if (not can_run_procedure(name)) {
             return;
         }
 
@@ -71,9 +64,9 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
-    auto procedure = args.consume_argument("--procedure");
-    auto testcase = args.consume_argument("--testcase");
-    auto repeat = args.consume_usize("--repeat").value_or(100);
+    const auto procedure = args.consume_all_arguments("--procedure");
+    const auto testcase = args.consume_all_arguments("--testcase");
+    const auto repeat = args.consume_usize("--repeat").value_or(100);
 
     Application app{procedure, testcase, repeat};
 

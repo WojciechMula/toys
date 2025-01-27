@@ -8,30 +8,22 @@
 #include "impl.cpp"
 #include "testcase.cpp"
 #include "argparse.cpp"
+#include "application_base.cpp"
 
 
-class Application {
-    std::optional<std::string> procedure;
-    std::optional<std::string> testcase;
-
-    function_names_t fn_names;
-    std::vector<Testcase> testcases;
-
+class Application: public ApplicationBase {
     int passed;
     int failed;
 
 public:
-    Application(std::optional<std::string> procedure, std::optional<std::string> testcase)
-        : procedure{procedure}
-        , testcase{testcase}
-        , fn_names(function_names())
-        , testcases{load_testcases("datasets")}
+    Application(std::vector<std::string> procedure, std::vector<std::string> testcase)
+        : ApplicationBase{procedure, testcase}
         , passed{0}
         , failed{0} {}
 
     bool run() {
         for (const auto& tc: testcases) {
-            if (testcase and tc.utf32.name().find(testcase.value()) == std::string::npos) {
+            if (not can_run_testcase(tc)) {
                 continue;
             }
 
@@ -65,7 +57,7 @@ private:
     template <typename CONV_CASE>
     void verify(CONV_CASE conv, const File& input, const File& reference) {
         const auto& name = fn_names.at(conv);
-        if (procedure and name.find(procedure.value()) == std::string::npos) {
+        if (not can_run_procedure(name)) {
             return;
         }
 
@@ -125,8 +117,8 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
-    auto procedure = args.consume_argument("--procedure");
-    auto testcase = args.consume_argument("--testcase");
+    auto procedure = args.consume_all_arguments("--procedure");
+    auto testcase = args.consume_all_arguments("--testcase");
 
     Application app{procedure, testcase};
 
