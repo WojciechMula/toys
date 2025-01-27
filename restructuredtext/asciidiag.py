@@ -263,7 +263,9 @@ def parse_attributes(line, styles):
     tmp = [None] * len(line)
     for i, char in enumerate(line):
         if char not in ('^', ' '):
-            assert char in styles, (char, styles)
+            if char not in styles:
+                styles_list = ', '.join(sorted(styles))
+                raise ValueError(f"attribute character '{char}' is not valid style code; known styles are {styles_list}")
             tmp[i] = char
 
     return tmp
