@@ -39,8 +39,10 @@ public:
             bench(avx2_utf32_uppercase_compressed_unrolled4, tc.utf32);
             bench(utf32_uppercase_plain, tc.utf32);
             bench(utf32_uppercase_compressed, tc.utf32);
+            bench(utf32_uppercase_compressed_v2, tc.utf32);
             bench(utf32_lowercase_plain, tc.utf32);
             bench(utf32_lowercase_compressed, tc.utf32);
+            bench(utf32_lowercase_compressed_v2, tc.utf32);
             bench(cpp_utf32_uppercase, tc.utf32);
             bench(cpp_utf32_lowercase, tc.utf32);
         }

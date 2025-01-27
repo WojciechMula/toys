@@ -14,8 +14,10 @@ function_names_t function_names() {
 
     names[utf32_uppercase_plain] = "scalar uppercase [plain]";
     names[utf32_uppercase_compressed] = "scalar uppercase [compressed]";
+    names[utf32_uppercase_compressed_v2] = "scalar uppercase [compressed v2]";
     names[utf32_lowercase_plain] = "scalar lowercase [plain]";
     names[utf32_lowercase_compressed] = "scalar lowercase [compressed]";
+    names[utf32_lowercase_compressed_v2] = "scalar lowercase [compressed v2]";
 
     names[avx2_utf32_uppercase_plain] = "AVX2 uppercase [plain]";
     names[avx2_utf32_uppercase_compressed] = "AVX2 uppercase [compressed]";
