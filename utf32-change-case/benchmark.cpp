@@ -1,6 +1,5 @@
 #include <filesystem>
 #include <vector>
-#include <format>
 #include <fstream>
 #include <cstdio>
 #include <cassert>

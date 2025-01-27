@@ -1,4 +1,4 @@
-FLAGS=-Wall -Wextra -pedantic -O3 -march=native -std=c++20 -ggdb # -Werror
+FLAGS=-Wall -Wextra -pedantic -O3 -march=native -std=c++17 -ggdb # -Werror
 
 ALL=verify \
     benchmark

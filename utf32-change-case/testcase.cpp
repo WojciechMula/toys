@@ -10,7 +10,8 @@ public:
         filename = path.stem();
         data = load_file(path);
         if (data.size() % 4 != 0) {
-            throw std::runtime_error(std::format("'{}' size is not multiple of 4, likely it's not UTF-32 bit encoded", path.string()));
+            const auto err = "'" + path.string() + "' size is not multiple of 4, likely it's not UTF-32 bit encoded";
+            throw std::runtime_error(err);
         }
     }
 
@@ -58,12 +59,12 @@ std::vector<Testcase> load_testcases(const std::filesystem::path& rootdir) {
             const auto uppercase = append_extension(path, ".uppercase");
             const auto lowercase = append_extension(path, ".lowercase");
             if (not std::filesystem::exists(uppercase)) {
-                const auto err = std::format("path '{}' not found, run `make` in '{}'", uppercase.string(), rootdir.string());
+                const auto err = "path '" + uppercase.string() + "' not found, run `make` in '" + rootdir.string() + "'";
                 throw std::runtime_error(err);
             }
 
             if (not std::filesystem::exists(lowercase)) {
-                const auto err = std::format("path '{}' not found, run `make` in '{}'", lowercase.string(), rootdir.string());
+                const auto err = "path '" + lowercase.string() + "' not found, run `make` in '" + rootdir.string() + "'";
                 throw std::runtime_error(err);
             }
 
