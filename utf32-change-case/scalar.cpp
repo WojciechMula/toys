@@ -45,9 +45,9 @@ size_t utf32_lowercase_plain(const uint32_t* input, size_t n, uint32_t* output) 
     size_t j=0;
     for (size_t i=0; i < n; i++) {
         const uint32_t src = input[i];
-        if (src <= 0x1'ffff) {
+        if (likely(src <= 0x1'ffff)) {
             const uint32_t dst = UTF32_LOWERCASE_PLAIN[src];
-            if (int32_t(dst) < 0) {
+            if (unlikely(int32_t(dst) < 0)) {
                 // there's exactly one replacement pair for lowercase
                 // 'İ' => 'i̇' (2)
                 output[j++] = 0x0069;
@@ -106,7 +106,7 @@ size_t utf32_uppercase_compressed_v2(const uint32_t* input, size_t n, uint32_t* 
     for (size_t i=0; i < n; i++) {
         const uint32_t src = input[i];
         const uint32_t key = src >> 8; // use higher 9 bits
-        if (likely(key >= UTF32_UPPERCASE_V2_MAX_HI_BITS)) {
+        if (unlikely(key >= UTF32_UPPERCASE_V2_MAX_HI_BITS)) {
             output[j++] = src;
             continue;
         }

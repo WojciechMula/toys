@@ -35,7 +35,7 @@ def make_lookup(f, conv, name):
     long_replacements = []
     long_replacements_total = 0
 
-    writeln(f"constexpr uint32_t UTF32_{name}_V2_OFFSET[UTF32_UPPERCASE_V2_MAX_HI_BITS] = {{")
+    writeln(f"constexpr uint32_t UTF32_{name}_V2_OFFSET[UTF32_{name}_V2_MAX_HI_BITS] = {{")
     offset = 0
     for key, group in enumerate(by_key):
         if group:

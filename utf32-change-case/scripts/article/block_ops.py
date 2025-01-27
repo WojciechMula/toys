@@ -43,7 +43,7 @@ table_lower.set_header(["dataset", "block size", "blocks", "ASCII", "changed cas
 table_upper = Table()
 table_upper.set_header(["dataset", "block size", "blocks", "ASCII", "changed case", "not changed"])
 
-for path in sorted(Path("../datasets").glob("*.utf32")):
+for path in sorted(Path("../../datasets").glob("*.utf32")):
     text = path.read_text(encoding='utf32')
     block_size = 8
     blocks = len(text) // block_size
