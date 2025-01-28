@@ -17,49 +17,60 @@ def make_lookup(f, conv, name):
     def writeln(s):
         f.write(s + '\n')
 
-    N = 7
+    N = 8
     by_key = [[] for _ in range(1024*100)]
     for src_code in range(0x1_ffff):
         src = chr(src_code)
         dst = conv(src)
         if src != dst:
-            # we use 10 higher bits
             key = src_code >> N
-            by_key[key].append((src, dst))
+            by_key[key].append((src_code, src, dst))
 
     while len(by_key[-1]) == 0:
         del by_key[-1]
 
-    writeln(f"constexpr size_t UTF32_{name}_MAX_HI_BITS = %d;" % len(by_key))
+    writeln(f"constexpr size_t UTF32_{name}_V1_MAX_HI_BITS = %d;" % len(by_key))
     offset = 0
-    size = 2**N
 
     long_replacements = []
     long_replacements_total = 0
 
-    writeln(f"const uint16_t UTF32_{name}_OFFSET[UTF32_{name}_MAX_HI_BITS] = {{")
+    writeln(f"constexpr uint32_t UTF32_{name}_V1_OFFSET[UTF32_{name}_V1_MAX_HI_BITS] = {{")
     offset = 0
     for key, group in enumerate(by_key):
         if group:
-            writeln(f" {offset},")
-            offset += size
+            # encoding:
+            # - min: u8
+            # - max: u8
+            # - offset: u16
+
+            min = group[0][0] & 0xff
+            max = group[-1][0] & 0xff
+            assert offset < 2**16
+
+            codeword = (offset << 16) | (max << 8) | min
+            offset += max - min + 1
         else:
-            writeln(" 0xffff,")
+            min = 0xff
+            max = 0x00
+            codeword = (max << 8) | min
+
+        writeln(f" 0x{codeword:08x},")
     else:
         writeln("};")
 
-    writeln(f"uint32_t UTF32_{name}_DATA[UTF32_{name}_MAX_HI_BITS * {size} + 1] = {{")
+    writeln(f"constexpr uint32_t UTF32_{name}_V1_DATA[{offset}] = {{")
     for key, group in enumerate(by_key):
         if not group:
             continue
 
-        min = key << N
-        max = (key << N) + (size - 1)
-        writeln(" // 0x%04x .. 0x%04x" % (min, max))
+        min = group[0][0]
+        max = group[-1][0]
+        writeln(f" // 0x{key:04x}: 0x{min:04x} .. 0x{max:04x}")
         write(' ')
-        for ofs in range(size):
-            code = (key << N) | ofs
-            src = chr(code)
+        for ofs in range(min, max + 1):
+            src_code = (key << N) | ofs
+            src = chr(src_code)
             dst = conv(src)
             if len(dst) == 1:
                 dstcode = ord(dst)
@@ -71,29 +82,11 @@ def make_lookup(f, conv, name):
                 else:
                     assert False
 
-                long_replacements.append((src, dst))
                 long_replacements_total += len(dst)
 
-            if ofs:
-                write(" 0x%04x," % dstcode)
-            else:
-                write("0x%04x," % dstcode)
-
-        write('\n')
-
-    writeln("};")
-
-    writeln("")
-
-    writeln(f"constexpr size_t UTF32_{name}_LONG_REPL_SIZE = {long_replacements_total};")
-    writeln(f"uint32_t UTF32_{name}_LONG_REPL[UTF32_{name}_LONG_REPL_SIZE] = {{")
-    for repl in long_replacements:
-        (src, dst) = repl
-        writeln(f" // '{src}' => '{dst}' ({len(dst)})")
-        for c in dst:
-            write(" 0x%04x," % ord(c))
+            write("0x%04x," % dstcode)
         else:
-            writeln("")
+            write('\n')
 
     writeln("};")
 

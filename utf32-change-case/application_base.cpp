@@ -25,7 +25,7 @@ protected:
     }
 
     bool can_run_procedure(const std::string& name) const {
-        for (const auto& frag: testcase) {
+        for (const auto& frag: procedure) {
             if (name.find(frag) == std::string::npos) {
                 return false;
             }

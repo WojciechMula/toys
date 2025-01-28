@@ -77,14 +77,14 @@ size_t avx2_utf32_uppercase_compressed(const uint32_t* input, size_t n, uint32_t
 
         _mm256_storeu_si256((__m256i*)(&output[j]), t3);
         if (_mm256_movemask_ps(_mm256_castsi256_ps(t2))) {
-            const size_t d = utf32_uppercase_compressed(input + i, 8, output + j);
+            const size_t d = utf32_uppercase_compressed_v2(input + i, 8, output + j);
             j += d;
         } else {
             j += 8;
         }
     }
 
-    const size_t d = utf32_uppercase_compressed(input + i, n - i, output + j);
+    const size_t d = utf32_uppercase_compressed_v2(input + i, n - i, output + j);
 
     return d + j;
 }
@@ -216,12 +216,12 @@ size_t avx2_utf32_uppercase_compressed_unrolled4(const uint32_t* input_ptr, size
         const __m256i tmp = _mm256_or4_si256(result0, result1, result2, result3);
         if (_mm256_movemask_ps(_mm256_castsi256_ps(tmp))) {
             j -= 32;
-            const size_t d = utf32_uppercase_compressed(input_ptr + i, 32, output + j);
+            const size_t d = utf32_uppercase_compressed_v2(input_ptr + i, 32, output + j);
             j += d;
         }
     }
 
-    const size_t d = utf32_uppercase_compressed(input_ptr + i, n - i, output + j);
+    const size_t d = utf32_uppercase_compressed_v2(input_ptr + i, n - i, output + j);
 
     return d + j;
 }
