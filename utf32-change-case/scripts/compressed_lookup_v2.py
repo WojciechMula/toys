@@ -19,7 +19,7 @@ def make_lookup(f, conv, name):
 
     N = 7
     by_key = [[] for _ in range(1024*100)]
-    for src_code in range(0x1_ffff):
+    for src_code in range(0x1_ffff + 1):
         src = chr(src_code)
         dst = conv(src)
         if src != dst:

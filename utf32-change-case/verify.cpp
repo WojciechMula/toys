@@ -29,12 +29,16 @@ public:
             verify(avx2_utf32_uppercase_plain, tc.utf32, tc.uppercase);
             verify(avx2_utf32_uppercase_compressed, tc.utf32, tc.uppercase);
             verify(avx2_utf32_uppercase_compressed_unrolled4, tc.utf32, tc.uppercase);
+            verify(avx2_utf32_uppercase_compressed_v3, tc.utf32, tc.uppercase);
+            verify(avx2_utf32_lowercase_compressed_v3, tc.utf32, tc.lowercase);
             verify(utf32_uppercase_plain, tc.utf32, tc.uppercase);
             verify(utf32_uppercase_compressed_v1, tc.utf32, tc.uppercase);
             verify(utf32_uppercase_compressed_v2, tc.utf32, tc.uppercase);
+            verify(utf32_uppercase_compressed_v3, tc.utf32, tc.uppercase);
             verify(utf32_lowercase_plain, tc.utf32, tc.lowercase);
             verify(utf32_lowercase_compressed_v1, tc.utf32, tc.lowercase);
             verify(utf32_lowercase_compressed_v2, tc.utf32, tc.lowercase);
+            verify(utf32_lowercase_compressed_v3, tc.utf32, tc.lowercase);
             verify(cpp_utf32_uppercase, tc.utf32, tc.uppercase);
             verify(cpp_utf32_lowercase, tc.utf32, tc.lowercase);
         }

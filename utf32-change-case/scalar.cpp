@@ -5,6 +5,7 @@
 #include "plain.cpp.inl"
 #include "compressed_v1.cpp.inl"
 #include "compressed_v2.cpp.inl"
+#include "compressed_v3.cpp.inl"
 
 #define likely(x)   __builtin_expect(!!(x), 1)
 #define unlikely(x) __builtin_expect(!!(x), 0)
@@ -200,6 +201,65 @@ size_t utf32_lowercase_compressed_v1(const uint32_t* input, size_t n, uint32_t* 
             }
         } else {
             output[j++] = src;
+        }
+    }
+
+    return j;
+}
+
+// --- version 3 ------------------------------------------------------------------
+
+#include "aux_conv.cpp.inl"
+
+size_t utf32_uppercase_compressed_v3(const uint32_t* input, size_t n, uint32_t* output) {
+    size_t j=0;
+    for (size_t i=0; i < n; i++) {
+        const uint32_t src = input[i];
+        const uint32_t key = src >> 4; // use 13 higher bits
+        if (unlikely(key >= UTF32_UPPERCASE_V3_MAX_HI_BITS)) {
+            output[j++] = src;
+            continue;
+        }
+
+        const size_t group_id = UTF32_UPPERCASE_V3_LOOKUP[key];
+        const size_t ofs      = src & 0xf;
+
+        const uint32_t diff = UTF32_UPPERCASE_V3_DATA[group_id * 16 + ofs];
+        if (likely(int32_t(diff) >= 0)) {
+            output[j++] = src ^ diff;
+        } else {
+            if ((diff & 0xc000'0000) == 0x8000'0000) {
+                aux_uppercase_utf32_char_with_two_codepoints(src, output + j);
+                j += 2;
+            } else {
+                aux_uppercase_utf32_char_with_three_codepoints(src, output + j);
+                j += 3;
+            }
+        }
+    }
+
+    return j;
+}
+
+size_t utf32_lowercase_compressed_v3(const uint32_t* input, size_t n, uint32_t* output) {
+    size_t j=0;
+    for (size_t i=0; i < n; i++) {
+        const uint32_t src = input[i];
+        const uint32_t key = src >> 4; // use 13 higher bits
+        if (unlikely(key >= UTF32_LOWERCASE_V3_MAX_HI_BITS)) {
+            output[j++] = src;
+            continue;
+        }
+
+        const size_t group_id = UTF32_LOWERCASE_V3_LOOKUP[key];
+        const size_t ofs      = src & 0xf;
+
+        const uint32_t diff = UTF32_LOWERCASE_V3_DATA[group_id * 16 + ofs];
+        if (likely(int32_t(diff) >= 0)) {
+            output[j++] = src ^ diff;
+        } else {
+            aux_lowercase_utf32_char_with_two_codepoints(src, output + j);
+            j += 2;
         }
     }
 
