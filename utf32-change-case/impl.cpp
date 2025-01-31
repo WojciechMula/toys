@@ -25,6 +25,7 @@ function_names_t function_names() {
     names[avx2_utf32_uppercase_compressed] = "AVX2 uppercase [compressed]";
     names[avx2_utf32_uppercase_compressed_v3] = "AVX2 uppercase [compressed v3]";
     names[avx2_utf32_uppercase_compressed_unrolled4] = "AVX2 uppercase [compressed 4 x unrolled]";
+    names[avx2_utf32_uppercase_compressed_v4] = "AVX2 uppercase [compressed v4]";
     names[avx2_utf32_lowercase_compressed_v3] = "AVX2 lowercase [compressed v3]";
 
     names[cpp_utf32_uppercase] = "c++ uppercase";

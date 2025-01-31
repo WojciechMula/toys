@@ -333,3 +333,72 @@ size_t avx2_utf32_lowercase_compressed_v3(const uint32_t* input, size_t n, uint3
 
     return d + j;
 }
+
+#include "compressed_v4.cpp.inl"
+
+static __m256i select(__m256i c, __m256i a, __m256i b) {
+    return _mm256_or_si256(
+        _mm256_and_si256(c, a),
+        _mm256_andnot_si256(c, b)
+    );
+}
+
+size_t avx2_utf32_uppercase_compressed_v4(const uint32_t* input, size_t n, uint32_t* output) {
+    size_t j=0;
+    size_t i=0;
+
+    const __m256i mask_0fff    = _mm256_set1_epi32(0x0fff);
+    const __m256i mask_00ff    = _mm256_set1_epi32(0x00ff);
+    const __m256i mask_000f    = _mm256_set1_epi32(0x000f);
+
+    const __m128i lo_lookup1 = _mm_loadu_si128((const __m128i*)&UTF32_UPPERCASE_V4_LOOKUP[0]);
+    const __m128i hi_lookup1 = _mm_loadu_si128((const __m128i*)&UTF32_UPPERCASE_V4_LOOKUP[16]);
+
+    const __m256i lo_lookup = _mm256_set_m128i(lo_lookup1, lo_lookup1);
+    const __m256i hi_lookup = _mm256_set_m128i(hi_lookup1, hi_lookup1);
+
+    for (i=0; i < 8*(n / 8); i += 8) {
+        const __m256i src = _mm256_loadu_si256((const __m256i*)(&input[i]));
+
+        if (_mm256_testz_si256(src, _mm256_set1_epi32(0xffffff80))) {
+            const __m256i ge_a = _mm256_cmpgt_epi32(src, _mm256_set1_epi32('a' - 1)); // char >= 'a'
+            const __m256i le_z = _mm256_cmpgt_epi32(_mm256_set1_epi32('z' + 1), src); // char <= 'z'
+
+            const __m256i v0 = _mm256_and_si256(ge_a, le_z);
+            const __m256i v1 = _mm256_and_si256(v0, _mm256_set1_epi32(0x20));
+            const __m256i v2 = _mm256_xor_si256(src, v1);
+
+            _mm256_storeu_si256((__m256i*)(&output[j]), v2);
+            j += 8;
+            continue;
+        }
+
+        // key = min((src >> 4), UTF32_LOWERCASE_V4_MAX_HI_BITS)
+        const __m256i key         = _mm256_srli_epi32(src, 12);
+        const __m256i lo          = _mm256_and_si256(_mm256_shuffle_epi8(lo_lookup, key), mask_00ff);
+        const __m256i hi          = _mm256_and_si256(_mm256_shuffle_epi8(hi_lookup, key), mask_00ff);
+        const __m256i mask        = _mm256_cmpgt_epi32(key, mask_000f);
+
+        const __m256i ofs_0       = select(mask, hi, lo);
+        const __m256i ofs_1       = _mm256_slli_epi32(ofs_0, 12);
+        const __m256i ofs_2       = _mm256_and_si256(src, mask_0fff);
+
+        const __m256i indices     = _mm256_add_epi32(ofs_2, ofs_1);
+
+        // const uint32_t diff = UTF32_UPPERCASE_V4_DATA[indices];
+        const __m256i diff        = _mm256_i32gather_epi32((const int*)UTF32_UPPERCASE_V4_DATA, indices, 4);
+        const __m256i out         = _mm256_xor_si256(diff, src);
+
+        _mm256_storeu_si256((__m256i*)(&output[j]), out);
+        if (_mm256_movemask_ps(_mm256_castsi256_ps(diff))) {
+            const size_t d = utf32_uppercase_compressed_v3(input + i, 8, output + j);
+            j += d;
+        } else {
+            j += 8;
+        }
+    }
+
+    const size_t d = utf32_uppercase_compressed_v3(input + i, n - i, output + j);
+
+    return d + j;
+}

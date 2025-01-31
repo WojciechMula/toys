@@ -11,6 +11,7 @@ DEPS=application_base.cpp \
      compressed_v1.cpp.inl \
      compressed_v2.cpp.inl \
      compressed_v3.cpp.inl \
+     compressed_v4.cpp.inl \
      compressed_avx2.cpp.inl \
      aux_conv.cpp.inl \
      cpp_lookup.cpp.inl
@@ -44,6 +45,10 @@ compressed_v2.cpp.inl: scripts/compressed_lookup_v2.py
 
 compressed_v3.cpp.inl: scripts/compressed_lookup_v3.py
 	python3 scripts/compressed_lookup_v3.py $(TMP)/$@
+	mv $(TMP)/$@ $@
+
+compressed_v4.cpp.inl: scripts/compressed_lookup_v4.py
+	python3 scripts/compressed_lookup_v4.py $(TMP)/$@
 	mv $(TMP)/$@ $@
 
 aux_conv.cpp.inl: scripts/aux_conv_cpp.py
