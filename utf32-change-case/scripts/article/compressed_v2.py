@@ -1,5 +1,6 @@
 from contextlib import redirect_stdout
 
+
 def mktable(conv):
     N = 8
     L = {}
@@ -12,7 +13,6 @@ def mktable(conv):
                 L[key] = []
 
             L[key].append(src_code)
-
 
     total = 0
     for id, (key, chars) in enumerate(L.items()):
