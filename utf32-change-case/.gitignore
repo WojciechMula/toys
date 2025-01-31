@@ -1,3 +1,5 @@
 benchmark
 verify
+benchmark_avx512
+verify_avx512
 *.cpp.inl

@@ -43,6 +43,9 @@ public:
             bench(utf32_lowercase_compressed_v3, tc.utf32);
             bench(cpp_utf32_uppercase, tc.utf32);
             bench(cpp_utf32_lowercase, tc.utf32);
+        #ifdef HAVE_AVX512
+            bench(avx512_utf32_uppercase_compressed_v6, tc.utf32);
+        #endif
         }
     }
 
