@@ -32,15 +32,15 @@ benchmark: $(DEPS) benchmark.cpp
 	$(CXX) $(FLAGS) benchmark.cpp -o $@
 
 plain.cpp.inl: scripts/plain_lookup.py
-	python3 scripts/plain_lookup.py > $(TMP)/$@
+	python3 scripts/plain_lookup.py $(TMP)/$@
 	mv $(TMP)/$@ $@
 
 compressed_v1.cpp.inl: scripts/compressed_lookup_v1.py
-	python3 scripts/compressed_lookup_v1.py > $(TMP)/$@
+	python3 scripts/compressed_lookup_v1.py $(TMP)/$@
 	mv $(TMP)/$@ $@
 
 compressed_v2.cpp.inl: scripts/compressed_lookup_v2.py
-	python3 scripts/compressed_lookup_v2.py > $(TMP)/$@
+	python3 scripts/compressed_lookup_v2.py $(TMP)/$@
 	mv $(TMP)/$@ $@
 
 compressed_v3.cpp.inl: scripts/compressed_lookup_v3.py
@@ -56,9 +56,9 @@ aux_conv.cpp.inl: scripts/aux_conv_cpp.py
 	mv $(TMP)/$@ $@
 
 compressed_avx2.cpp.inl: scripts/compressed_lookup_avx2.py
-	python3 scripts/compressed_lookup_avx2.py > $(TMP)/$@
+	python3 scripts/compressed_lookup_avx2.py $(TMP)/$@
 	mv $(TMP)/$@ $@
 
 cpp_lookup.cpp.inl: scripts/cpp_lookup.py
-	python3 scripts/cpp_lookup.py > $(TMP)/$@
+	python3 scripts/cpp_lookup.py $(TMP)/$@
 	mv $(TMP)/$@ $@

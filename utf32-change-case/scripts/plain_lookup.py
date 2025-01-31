@@ -1,31 +1,44 @@
+import sys
 from io import StringIO
+from pathlib import Path
+from contextlib import redirect_stdout
 
 
 def main():
     f = StringIO()
 
-    make_lookup(f, lambda s: s.upper(), "UPPERCASE")
-    make_lookup(f, lambda s: s.lower(), "LOWERCASE")
+    f = StringIO()
 
-    print(f.getvalue())
+    path = Path(sys.argv[1])
+
+    f = StringIO()
+    with redirect_stdout(f):
+        print("// Code generated automatically; DO NOT EDIT")
+        print()
+        make_lookup(lambda s: s.upper(), "UPPERCASE")
+        make_lookup(lambda s: s.lower(), "LOWERCASE")
+
+    try:
+        old = path.read_text()
+    except FileNotFoundError:
+        old = ''
+
+    new = f.getvalue()
+    if old != new:
+        print(f"generating {path}")
+        path.write_text(new)
 
 
-def make_lookup(f, trans, name):
-    def write(s):
-        f.write(s)
-
-    def writeln(s):
-        f.write(s + '\n')
-
+def make_lookup(trans, name):
     long_replacements = []
     long_replacements_total = 0
 
-    writeln(f"const uint32_t UTF32_{name}_PLAIN[0x1ffff] = {{")
+    print(f"const uint32_t UTF32_{name}_PLAIN[0x1ffff] = {{")
     for src_code in range(0x1_ffff):
         src = chr(src_code)
         dst = trans(src)
         if len(dst) == 1:
-            writeln(" 0x%04x," % ord(dst))
+            print(" 0x%04x," % ord(dst))
         else:
             if len(dst) == 2:
                 dstcode = 0x8000_0000 | long_replacements_total
@@ -34,27 +47,26 @@ def make_lookup(f, trans, name):
             else:
                 assert False
 
-            writeln(" 0x%04x," % dstcode)
+            print(" 0x%04x," % dstcode)
 
             long_replacements.append((src, dst))
             long_replacements_total += len(dst)
 
-    writeln("};")
+    print("};")
 
-    writeln("")
+    print("")
 
-    writeln(f"constexpr size_t UTF32_{name}_PLAIN_LONG_REPL_SIZE = {long_replacements_total};")
-    writeln(f"uint32_t UTF32_{name}_PLAIN_LONG_REPL[UTF32_{name}_PLAIN_LONG_REPL_SIZE] = {{")
+    print(f"constexpr size_t UTF32_{name}_PLAIN_LONG_REPL_SIZE = {long_replacements_total};")
+    print(f"uint32_t UTF32_{name}_PLAIN_LONG_REPL[UTF32_{name}_PLAIN_LONG_REPL_SIZE] = {{")
     for repl in long_replacements:
         (src, dst) = repl
-        writeln(f" // '{src}' => '{dst}' ({len(dst)})")
+        print(f" // '{src}' => '{dst}' ({len(dst)})")
         for c in dst:
-            write(" 0x%04x," % ord(c))
+            print(" 0x%04x," % ord(c), end='')
         else:
-            writeln("")
-    writeln("};")
+            print()
 
-    return f
+    print("};")
 
 
 if __name__ == '__main__':
