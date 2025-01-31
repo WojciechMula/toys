@@ -5,14 +5,17 @@ from contextlib import redirect_stdout
 
 
 def main():
-    path = Path(sys.argv[1])
+    path        = Path(sys.argv[1])
+    suffix      = sys.argv[2]
+    N           = int(sys.argv[3])
+    trim_lookup = (sys.argv[4] == 'trim')
 
     f = StringIO()
     with redirect_stdout(f):
         print("// Code generated automatically; DO NOT EDIT")
         print()
-        make_lookup(lambda s: s.upper(), "UPPERCASE")
-        make_lookup(lambda s: s.lower(), "LOWERCASE")
+        make_lookup(N, lambda s: s.upper(), "UPPERCASE", suffix, trim_lookup)
+        make_lookup(N, lambda s: s.lower(), "LOWERCASE", suffix, trim_lookup)
 
     try:
         old = path.read_text()
@@ -25,8 +28,7 @@ def main():
         path.write_text(new)
 
 
-def make_lookup(conv, name):
-    N = 4
+def make_lookup(N, conv, name, suffix, trim_lookup):
     group_size = 2**N
 
     groups = {}
@@ -35,7 +37,7 @@ def make_lookup(conv, name):
     groups[(0,) * group_size] = 0
     lookup = []
 
-    for hi in range(0x0_1fff + 1):
+    for hi in range((0x1_ffff >> N) + 1):
         tmp = [0] * group_size
         for lo in range(group_size):
             src_code = (hi << N) | lo
@@ -61,14 +63,15 @@ def make_lookup(conv, name):
 
     assert len(groups) < 256
 
-    while lookup[-1] == 0:
-        del lookup[-1]
+    if trim_lookup:
+        while lookup[-1] == 0:
+            del lookup[-1]
 
-    size_const = f"UTF32_{name}_V3_MAX_HI_BITS"
+    size_const = f"UTF32_{name}_{suffix}_MAX_HI_BITS"
     print(f"constexpr size_t {size_const} = %d;" % len(lookup))
     print()
 
-    print(f"constexpr uint8_t UTF32_{name}_V3_LOOKUP[{size_const} + 4] = {{")
+    print(f"constexpr uint8_t UTF32_{name}_{suffix}_LOOKUP[{size_const} + 4] = {{")
     for id in lookup:
         print(f" {id},")
     else:
@@ -79,9 +82,9 @@ def make_lookup(conv, name):
     tmp = list(groups.items())
     tmp.sort(key=lambda kv: kv[1])
 
-    size_const = f"UTF32_{name}_V3_DATA_SIZE"
+    size_const = f"UTF32_{name}_{suffix}_DATA_SIZE"
     print(f"constexpr size_t {size_const} = %d;" % len(tmp))
-    print(f"constexpr uint32_t UTF32_{name}_V3_DATA[{size_const} * {group_size}] = {{")
+    print(f"constexpr uint32_t UTF32_{name}_{suffix}_DATA[{size_const} * {group_size}] = {{")
     for arr, id in tmp:
         print(f" // 0x{id:x}")
         for diff in arr:
