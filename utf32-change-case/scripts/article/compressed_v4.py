@@ -28,7 +28,6 @@ def mktable():
     print("    * - #")
     print("      - higher bits")
     print("      - lower bits")
-    print("      - row size [bytes]")
     print("      - uppercase 1st level entries")
     print("      - uppercase 2nd level entries")
     print("      - uppercase total size [bytes]")
@@ -38,24 +37,18 @@ def mktable():
     print("      - total size [bytes]")
 
     for id, lower_bits in enumerate(range(1, 17), 1):
-        max_upper, count_upper = stats(lower_bits, lambda s: s.upper())
-        max_lower, count_lower = stats(lower_bits, lambda s: s.lower())
+        upper_1st_level_entries, upper_2nd_level_entries  = stats(lower_bits, lambda s: s.upper())
+        lower_1st_level_entries, lower_2nd_level_entries  = stats(lower_bits, lambda s: s.lower())
 
         higher_bits = 17 - lower_bits
         row_size = 2**lower_bits * 4
 
-        upper_1st_level_entries = max_upper
-        upper_2nd_level_entries = count_upper
-        upper_size = upper_1st_level_entries * 4 + upper_2nd_level_entries * row_size
-
-        lower_1st_level_entries = max_lower
-        lower_2nd_level_entries = count_lower
-        lower_size = lower_1st_level_entries * 4 + lower_2nd_level_entries * row_size
+        upper_size = upper_1st_level_entries * 1 + upper_2nd_level_entries * row_size
+        lower_size = lower_1st_level_entries * 1 + lower_2nd_level_entries * row_size
 
         print(f"    * - {id}")
         print(f"      - {higher_bits}")
         print(f"      - {lower_bits}")
-        print(f"      - {row_size}")
         print(f"      - {upper_1st_level_entries:,}")
         print(f"      - {upper_2nd_level_entries:,}")
         print(f"      - {upper_size:,}")
@@ -66,14 +59,28 @@ def mktable():
 
 
 def stats(N, conv):
-    lookup = set()
+    lookup = {}
     for src_code in range(0x1_ffff + 1):
+        key = src_code >> N
         src = chr(src_code)
-        if src != conv(src):
-            key = src_code >> N
-            lookup.add(key)
+        dst = conv(src)
+        if key not in lookup:
+            lookup[key] = []
 
-    return (max(lookup), len(lookup))
+        L = lookup[key]
+        if src == dst:
+            L.append(0)
+        if src != dst:
+            if len(dst) == 1:
+                L.append(ord(dst) ^ src_code)
+            else:
+                L.append(0x8000_0000)
+
+    rows = set()
+    for row in lookup.values():
+        rows.add(tuple(row))
+
+    return (len(lookup), len(rows))
 
 
 if __name__ == '__main__':
