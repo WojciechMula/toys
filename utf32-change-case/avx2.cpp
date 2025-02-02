@@ -374,17 +374,27 @@ size_t avx2_utf32_uppercase_compressed_v4(const uint32_t* input, size_t n, uint3
             continue;
         }
 
-        // key = min((src >> 4), UTF32_LOWERCASE_V4_MAX_HI_BITS)
-        const __m256i key         = _mm256_srli_epi32(src, 12);
-        const __m256i lo          = _mm256_and_si256(_mm256_shuffle_epi8(lo_lookup, key), mask_00ff);
-        const __m256i hi          = _mm256_and_si256(_mm256_shuffle_epi8(hi_lookup, key), mask_00ff);
+        // key = min((src >> 12), UTF32_LOWERCASE_V4_MAX_HI_BITS)
+        const __m256i key_0       = _mm256_srli_epi32(src, 12);
+        const __m256i key         = _mm256_min_epi32(key_0, _mm256_set1_epi32(UTF32_LOWERCASE_V4_MAX_HI_BITS));
+
+        // lo = lookup for bits 15:12, where bit #16 is 0
+        const __m256i lo          = _mm256_shuffle_epi8(lo_lookup, key);
+
+        // hi = lookup for bits 15:12, where bit #16 is 1
+        const __m256i hi          = _mm256_shuffle_epi8(hi_lookup, key);
+
+        // mask: bit #16 to mask
         const __m256i mask        = _mm256_cmpgt_epi32(key, mask_000f);
 
+        // group_id = lookup[key] & 0xff
         const __m256i ofs_0       = select(mask, hi, lo);
-        const __m256i ofs_1       = _mm256_slli_epi32(ofs_0, 12);
-        const __m256i ofs_2       = _mm256_and_si256(src, mask_0fff);
+        const __m256i ofs_1       = _mm256_and_si256(ofs_0, mask_00ff);
+        const __m256i ofs_2       = _mm256_slli_epi32(ofs_1, 12);
+        const __m256i ofs_3       = _mm256_and_si256(src, mask_0fff);
 
-        const __m256i indices     = _mm256_add_epi32(ofs_2, ofs_1);
+        // indices = (group_id << 12) + (src_code & 0xfff)
+        const __m256i indices     = _mm256_add_epi32(ofs_3, ofs_2);
 
         // const uint32_t diff = UTF32_UPPERCASE_V4_DATA[indices];
         const __m256i diff        = _mm256_i32gather_epi32((const int*)UTF32_UPPERCASE_V4_DATA, indices, 4);
