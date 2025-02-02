@@ -7,8 +7,6 @@ from contextlib import redirect_stdout
 def main():
     f = StringIO()
 
-    f = StringIO()
-
     path = Path(sys.argv[1])
 
     f = StringIO()
