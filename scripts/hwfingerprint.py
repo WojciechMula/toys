@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-from pathlib import Path
 import subprocess
+
 
 def main():
     model = get_cpu_model()
     gcc   = get_gcc_version()
 
-    print(f"CPU: {model}");
-    print(f"GCC: {gcc}");
+    print(f"CPU: {model}")
+    print(f"GCC: {gcc}")
 
 
 def get_cpu_model():

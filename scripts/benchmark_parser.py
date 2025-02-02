@@ -1,5 +1,6 @@
 __all__ = ['parse', 'update_speedup', 'get_maximum_speedup', 'merge_many']
 
+
 class Measurement(object):
     __slots__ = ['best', 'avg', 'speedup']
 
@@ -8,7 +9,6 @@ class Measurement(object):
         self.avg     = avg
         self.speedup = None
 
-
     def min(self, x):
         assert type(x) is Measurement
 
@@ -16,13 +16,11 @@ class Measurement(object):
         self.avg     = min(self.avg, x.avg)
         self.speedup = None
 
-
     def __str__(self):
         if self.speedup is None:
             return '<%0.3f, %0.3f>' % (self.best, self.avg)
         else:
             return '<%0.3f, %0.3f, %0.2fx>' % (self.best, self.avg, self.speedup)
-
 
     __repr__ = __str__
 
@@ -32,7 +30,7 @@ class struct(object):
 
 
 def parse(file):
-    
+
     d = struct()
     d.result = []
     d.dict   = None
@@ -50,7 +48,7 @@ def parse(file):
 
         if not line:
             continue
-        
+
         if ':' not in line:
             append_dict()
             d.result.append(line)
@@ -76,7 +74,6 @@ def parse(file):
 
 
 def parse_line(line):
-    
     name, tail = line.rsplit(':', 1)
     name = name.strip()
     tmp  = tail.split()
@@ -98,7 +95,7 @@ def merge_many(measurements):
     return m1
 
 
-def update_speedup_aux(measurements, reference_key = None, field = None):
+def update_speedup_aux(measurements, reference_key=None, field=None):
     assert type(measurements) is dict
 
     if reference_key is None:
@@ -115,7 +112,7 @@ def update_speedup_aux(measurements, reference_key = None, field = None):
         m.speedup = reference_value / getattr(m, field)
 
 
-def update_speedup(x, reference_key = None, field = None):
+def update_speedup(x, reference_key=None, field=None):
     if type(x) is dict:
         update_speedup_aux(x, reference_key, field)
     else:
@@ -144,7 +141,7 @@ def get_maximum_speedup(x):
 ################################################################################
 
 
-TEST_INPUT="""
+TEST_INPUT = """
 rdtsc_overhead set to 33
 
 size 1000

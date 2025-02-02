@@ -13,9 +13,7 @@ class Base:
         except IOError as e:
             if e.errno == errno.ENOENT:
                 return
-
             raise
-
 
     def __contains__(self, name):
         return name in self.flags
@@ -42,7 +40,6 @@ class MacOS(Base):
         return subprocess.Popen("sysctl -n machdep.cpu ".split(),  stdout=subprocess.PIPE).communicate()[0].decode("utf-8").lower().split()
 
 
-
 if platform.system() == 'Darwin':
     CPUFlags = MacOS
 else:
@@ -51,15 +48,15 @@ else:
     else:
         CPUFlags = Linux
 
-def main():
 
+def main():
     import sys
 
     flags = CPUFlags()
 
     if len(sys.argv) == 2:
         if sys.argv[1] in flags:
-            print ("present")
+            print("present")
 
 
 if __name__ == '__main__':

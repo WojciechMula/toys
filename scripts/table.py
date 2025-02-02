@@ -27,7 +27,7 @@ class TableBase(object):
         return tmp
 
     def is_raw(self, row):
-        return all(type(val) == str for val in row)
+        return all(isinstance(val, str) for val in row)
 
     def iter_spans(self, row):
         for item in row:
@@ -49,14 +49,12 @@ class TableValidator(object):
             raise ValueError("Table doesn't have header which define column layout")
         self.validate()
 
-
     def get_table_columns_count(self):
         # only from headers
 
         for header in self.table.headers:
             if self.table.is_raw(header):
                 return len(header)
-
 
     def validate(self):
         for i, header in enumerate(self.table.headers):
@@ -68,7 +66,6 @@ class TableValidator(object):
             n = self.get_columns_count(row)
             if n != self.columns:
                 raise ValueError("row #%d has %d column(s), expected %d: %s" % (i, n, self.columns, row))
-
 
     def get_columns_count(self, row):
         n = 0
@@ -82,8 +79,8 @@ ALIGN_RIGHT = '>'
 ALIGN_LEFT = '<'
 CENTER = '^'
 
-class RestructuredTextTableRenderer(object):
 
+class RestructuredTextTableRenderer(object):
     def __init__(self, table):
         self.validator  = TableValidator(table)
         self.table      = table
@@ -91,17 +88,13 @@ class RestructuredTextTableRenderer(object):
         self.widths     = self._calculate_widths()
         self._adjust_widths()
 
-
     def get_headers(self):
         return self.table.headers
-
 
     def get_rows(self):
         return self.table.rows
 
-
     def _calculate_widths(self):
-
         width = [0] * self.validator.columns
 
         # get width from fixed
@@ -117,7 +110,6 @@ class RestructuredTextTableRenderer(object):
                 index += 1
 
         return width
-
 
     def _adjust_widths(self):
         for row in self.get_headers() + self.get_rows():
@@ -145,7 +137,6 @@ class RestructuredTextTableRenderer(object):
 
                 index += count
 
-
     def _get_columns_width(self, start, count):
         assert count >= 1
 
@@ -154,12 +145,10 @@ class RestructuredTextTableRenderer(object):
             w += self.widths[index]
             w += 2 * self.padding
 
-        w += (count - 1) # for the columns spacing '|'
+        w += (count - 1)  # for the columns spacing '|'
         return w
 
-
     def _render_separator(self, row, fill):
-
         assert len(fill) == 1
 
         result = '+'
@@ -171,9 +160,7 @@ class RestructuredTextTableRenderer(object):
 
         return result
 
-
-    def _render_row(self, row, align = None):
-
+    def _render_row(self, row, align=None):
         if align is not None:
             def get_align(text):
                 return align
@@ -198,7 +185,6 @@ class RestructuredTextTableRenderer(object):
 
         return result
 
-
     def _merge_rendered_separators(self, sep1, sep2):
         # sep1 = '+-----+-----+------+'
         # sep2 = '+---+-----------+--+'
@@ -214,15 +200,13 @@ class RestructuredTextTableRenderer(object):
 
         return ''.join(merge(*pair) for pair in zip(sep1, sep2))
 
-
-    def get_image(self): # rest = RestructuredText
-
+    def get_image(self):
         lines = []
 
         lines.append(self._render_separator(self.table.headers[0], '-'))
         for header in self.table.headers:
             prev = lines[-1]
-            curr = self._render_separator(header, '-');
+            curr = self._render_separator(header, '-')
             lines[-1] = self._merge_rendered_separators(prev, curr)
 
             lines.append(self._render_row(header, CENTER))
@@ -232,12 +216,11 @@ class RestructuredTextTableRenderer(object):
 
         for row in self.get_rows():
             prev = lines[-1]
-            curr = self._render_separator(header, '-');
+            curr = self._render_separator(header, '-')
             lines[-1] = self._merge_rendered_separators(prev, curr)
 
             lines.append(self._render_row(row))
             lines.append(self._render_separator(row, '-'))
-
 
         lines[last_header_sep] = lines[last_header_sep].replace('-', '=')
 
@@ -245,14 +228,11 @@ class RestructuredTextTableRenderer(object):
 
 
 class Table(TableBase):
-
     def __unicode__(self):
-
         renderer = RestructuredTextTableRenderer(self)
         return renderer.get_image()
 
     def __str__(self):
-
         renderer = RestructuredTextTableRenderer(self)
         return renderer.get_image()
 
@@ -266,7 +246,6 @@ def is_float_or_int(text):
 
 
 if __name__ == '__main__':
-
     table = Table()
 
     table.set_header(["procedure", "size", "time"])
@@ -275,7 +254,6 @@ if __name__ == '__main__':
     table.add_row(["baz", "111", "0.2"])
 
     print(table)
-
 
     table2 = Table()
     table2.add_header([("The first experiment", 5)])
