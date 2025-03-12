@@ -1,3 +1,14 @@
+void dump_epu8_hex(__m256i v) {
+    uint8_t tmp[32];
+
+    _mm256_storeu_si256((__m256i*)tmp, v);
+    printf("[%02x", tmp[0]);
+    for (int i=1; i < 32; i++)
+        printf(" %02x", tmp[i]);
+
+    printf("]\n");
+}
+
 void dump_epu16(__m256i v) {
     uint16_t tmp[16];
 
