@@ -166,5 +166,6 @@ int main() {
     test(verify_base32_encoding_sse_translate_hex);
     test(verify_base32_encoding_sse_expand);
     test(smoke_test);
+
     return 0;
 }

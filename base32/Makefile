@@ -5,7 +5,8 @@ DEPS=common.h \
      scalar_encoding.cpp
 
 ALL: encoding \
-     verify_sse_encoding
+     verify_sse_encoding \
+     verify_sse_decoding
 
 all: $(ALL)
 
@@ -14,3 +15,6 @@ encoding: encoding.cpp $(DEPS)
 
 verify_sse_encoding: verify_sse_encoding.cpp sse_encoding.cpp common.h
 	$(CXX) $(FLAGS) verify_sse_encoding.cpp -o $@
+
+verify_sse_decoding: verify_sse_decoding.cpp sse_decoding.cpp common.h
+	$(CXX) $(FLAGS) verify_sse_decoding.cpp -o $@
