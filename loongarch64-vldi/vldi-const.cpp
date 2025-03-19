@@ -187,7 +187,7 @@ void match_u32_aux(uint32_t x, std::vector<MatchResult>& res) {
         res.push_back(MatchResult{b1, VldiOperation::BroadcastU8ShiftedBy8OrFFToU32});
     }
 
-    if (((uint32_t(b2) << 8) | 0xffff) == x) {
+    if (((uint32_t(b2) << 16) | 0xffff) == x) {
         res.push_back(MatchResult{b2, VldiOperation::BroadcastU8ShiftedBy8OrFFFFToU32});
     }
 
