@@ -8,7 +8,8 @@ CFLAGS=-std=c99
 ALL=is_power_of_two \
     is_power_of_two_bmi1 \
     single_bit_to_mask \
-    all-higher-set
+    all-higher-set \
+    closest-bit-4x4
 
 
 all: $(ALL)
@@ -24,6 +25,9 @@ single_bit_to_mask: single_bit_to_mask.c
 
 all-higher-set: all-higher-set.c
 	$(CC) $(FLAGS) $(CFLAGS) -O2 $< -o $@
+
+closest-bit-4x4: closest-bit-4x4.cpp
+	$(CXX) $(CXXFLAGS) $(FLAGS) -O2 $< -o $@
 
 clean:
 	$(RM) $(ALL)
